@@ -19,6 +19,10 @@ export const NamedThemes: NamedTheme[] = [
         value: {
             backgroundColor: "white",
             textColor: "black",
+            borderColor: "black",
+            borderWidth: "2px",
+            lightDarkButtonBackgroundColor: "gray",
+            sunIconColor: "white",
         }
     },
     
@@ -28,6 +32,9 @@ export const NamedThemes: NamedTheme[] = [
         value: {
             backgroundColor: "black",
             textColor: "white",
+            borderColor: "white",
+            borderWidth: "2px",
+            lightDarkButtonBackgroundColor: "gray"
         }
     }
 ];

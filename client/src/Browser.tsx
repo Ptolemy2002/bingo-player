@@ -2,9 +2,11 @@ import { Row } from 'react-bootstrap';
 import { Outlet } from 'react-router';
 import { createBrowserRouter } from 'react-router-dom';
 import NotFoundPage from 'src/pages/NotFoundPage';
+import Header from 'src/components/Header';
 
 export function PageLayout() {
     return <>
+        <Header title="Bingo Player" />
         <Row as="main">
             <Outlet />
         </Row>

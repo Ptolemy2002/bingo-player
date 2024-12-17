@@ -20,6 +20,11 @@ export default Object.assign(
         --bs-navbar-toggler-border-color: ${({$borderColor}) => $borderColor};
         --bs-border-width: ${({$borderWidth}) => $borderWidth};
 
+        > .navbar-toggler {
+            // Allows us to override the box-shadow of the toggler
+            color: ${({$borderColor}) => $borderColor};
+        }
+
         ${({$css}) => $css}
     `,
     {

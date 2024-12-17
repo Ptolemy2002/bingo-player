@@ -13,7 +13,4 @@ export type ToggleThemeLightDarkButtonStyleAttributes = WithCSSProp<{
     $backgroundColor?: RequiredCSSProperties["backgroundColor"];
     $hoverBackgroundColor?: RequiredCSSProperties["backgroundColor"];
     $activeBackgroundColor?: RequiredCSSProperties["backgroundColor"];
-    $borderColor?: RequiredCSSProperties["borderColor"];
-    $hoverBorderColor?: RequiredCSSProperties["borderColor"];
-    $activeBorderColor?: RequiredCSSProperties["borderColor"];
 }>;

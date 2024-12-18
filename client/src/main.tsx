@@ -48,6 +48,9 @@ export const GlobalStyle = createGlobalStyle`
     }
 
     main {
+        // Override default bootstrap gutter, which causes the main element
+        // to extend past the root width.
+        --bs-gutter-x: 0 !important;
         flex-grow: 1;
     }
 `;

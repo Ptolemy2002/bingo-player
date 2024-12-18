@@ -8,7 +8,8 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "postinstall": "npx typesync",
+    "postinstall": "npx typesync && bash ./scripts/link-shared.sh",
+    "link-shared": "bash ./scripts/link-shared.sh",
     "uninstall": "bash ./scripts/uninstall.sh",
     "reinstall": "bash ./scripts/reinstall.sh",
     "rmzi": "bash ./scripts/rmzi.sh"

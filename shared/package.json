@@ -1,0 +1,22 @@
+{
+    "name": "shared",
+    "version": "1.0.0",
+    "private": true,
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "files": [
+        "/dist"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Ptolemy2002/bingo-player",
+        "directory": "shared"
+    },
+    "scripts": {
+        "build": "tsc --project ./tsconfig.json",
+        "postinstall": "npx typesync",
+        "uninstall": "bash ./scripts/uninstall.sh",
+        "reinstall": "bash ./scripts/reinstall.sh"
+    },
+    "devDependencies": {}
+}

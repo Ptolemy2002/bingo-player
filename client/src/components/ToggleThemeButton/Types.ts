@@ -4,7 +4,7 @@ import { Tooltip } from "react-tooltip";
 
 export type ToggleThemeButtonProps = {
     className?: string;
-    tooltipClassName?: string;
+    tooltipId?: string;
     CurrentThemeTooltip?: FC<CurrentThemeTooltipProps>;
 };
 

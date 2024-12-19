@@ -5,17 +5,18 @@ import DefaultCurrentThemeTooltip from "./CurrentThemeTooltipStyled";
 
 export default function ToggleThemeButtonBase({
     className,
+    tooltipId="toggle-theme-tooltip",
     CurrentThemeTooltip=DefaultCurrentThemeTooltip
 }: ToggleThemeButtonProps) {
     const [{icon, displayName}, {nextTheme}] = useNamedTheme();
     
     return <>
-        <CurrentThemeTooltip displayName={displayName} />
+        <CurrentThemeTooltip id={tooltipId} displayName={displayName} />
 
         <Button
             className={className}
             onClick={() => nextTheme()}
-            data-tooltip-id="toggle-theme-tooltip"
+            data-tooltip-id={tooltipId}
         >
             {icon}
         </Button>

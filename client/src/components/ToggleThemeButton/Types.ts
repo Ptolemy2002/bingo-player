@@ -1,23 +1,20 @@
-import { RequiredCSSProperties, WithCSSProp } from "@ptolemy2002/react-styled-component-utils";
+import { RequiredCSSProperties, StyledComponentPropsWithCSS } from "@ptolemy2002/react-styled-component-utils";
 import { FC, ComponentProps } from "react";
 import { Tooltip } from "react-tooltip";
 
-export type ToggleThemeButtonProps = {
+export type ToggleThemeButtonProps = StyledComponentPropsWithCSS<{
     className?: string;
     tooltipId?: string;
-    CurrentThemeTooltip?: FC<CurrentThemeTooltipProps>;
-};
-
-export type ToggleThemeButtonStyleAttributes = WithCSSProp<{
-    $backgroundColor?: RequiredCSSProperties["backgroundColor"];
-    $hoverBackgroundColor?: RequiredCSSProperties["backgroundColor"];
-    $activeBackgroundColor?: RequiredCSSProperties["backgroundColor"];
+    CurrentThemeTooltip?: FC<CurrentThemeTooltipProps["functional"]>;
+}, {
+    backgroundColor?: RequiredCSSProperties["backgroundColor"];
+    hoverBackgroundColor?: RequiredCSSProperties["backgroundColor"];
+    activeBackgroundColor?: RequiredCSSProperties["backgroundColor"];
 }>;
 
-export type CurrentThemeTooltipProps = ComponentProps<typeof Tooltip> & {
+export type CurrentThemeTooltipProps = StyledComponentPropsWithCSS<ComponentProps<typeof Tooltip> & {
     className?: string;
-};
-export type CurrentThemeTooltipStyleAttributes = WithCSSProp<{
-    $backgroundColor?: RequiredCSSProperties["backgroundColor"];
-    $textColor?: RequiredCSSProperties["color"];
+}, {
+    backgroundColor?: RequiredCSSProperties["backgroundColor"];
+    textColor?: RequiredCSSProperties["color"];
 }>;

@@ -1,9 +1,9 @@
 import styled from "styled-components";
-import { ToggleThemeButtonStyleAttributes } from "./Types";
+import { ToggleThemeButtonProps } from "./Types";
 import Base from "./Base";
 
 export default Object.assign(
-    styled(Base).attrs<ToggleThemeButtonStyleAttributes>(
+    styled(Base).attrs<ToggleThemeButtonProps["style"]>(
         ({theme, ...props}) => ({
             $backgroundColor:
                 props.$backgroundColor

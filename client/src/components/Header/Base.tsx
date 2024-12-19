@@ -4,7 +4,7 @@ import { HeaderProps } from "./Types";
 import MenuIcon from "src/components/icons/MenuIcon";
 import ToggleThemeButton from "src/components/ToggleThemeButton";
 
-export default function HeaderBase({title, className}: HeaderProps) {
+export default function HeaderBase({title, className}: HeaderProps["functional"]) {
     return (
         <Navbar
             as="header"

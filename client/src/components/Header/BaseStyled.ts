@@ -1,9 +1,9 @@
 import styled from "styled-components";
-import { HeaderStyleAttributes } from "./Types";
+import { HeaderProps } from "./Types";
 import Base from "./Base";
 
 export default Object.assign(
-    styled(Base).attrs<HeaderStyleAttributes>(
+    styled(Base).attrs<HeaderProps["style"]>(
         ({theme, ...props}) => ({
             $css: props.$css ?? null,
             $linkColor: props.$linkColor ?? theme.textColor,

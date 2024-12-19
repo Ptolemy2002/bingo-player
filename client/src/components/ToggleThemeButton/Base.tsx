@@ -7,7 +7,7 @@ export default function ToggleThemeButtonBase({
     className,
     tooltipId="toggle-theme-tooltip",
     CurrentThemeTooltip=DefaultCurrentThemeTooltip
-}: ToggleThemeButtonProps) {
+}: ToggleThemeButtonProps["functional"]) {
     const [{icon}, {nextTheme}] = useNamedTheme();
     
     return <>

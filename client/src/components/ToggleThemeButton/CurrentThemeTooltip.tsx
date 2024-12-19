@@ -7,7 +7,7 @@ export default function CurrentThemeTooltipBase({
     id="toggle-theme-tooltip",
     className,
     ...props
-}: CurrentThemeTooltipProps) {
+}: CurrentThemeTooltipProps["functional"]) {
     const [{id: themeId}, {setTheme}] = useNamedTheme();
     const isLg = useBreakpointQuery("lg", "min");
 

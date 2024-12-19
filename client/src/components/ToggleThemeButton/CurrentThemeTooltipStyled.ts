@@ -1,9 +1,9 @@
 import styled from "styled-components";
-import { CurrentThemeTooltipStyleAttributes } from "./Types";
+import { CurrentThemeTooltipProps } from "./Types";
 import Base from "./CurrentThemeTooltip";
 
 export default Object.assign(
-    styled(Base).attrs<CurrentThemeTooltipStyleAttributes>(
+    styled(Base).attrs<CurrentThemeTooltipProps["style"]>(
         ({theme, ...props}) => ({
             $backgroundColor:
                 props.$backgroundColor

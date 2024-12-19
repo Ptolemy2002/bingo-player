@@ -1,6 +1,15 @@
-import styled from "styled-components";
+import styled, { css, RuleSet } from "styled-components";
 import { ToggleThemeButtonStyleAttributes } from "./Types";
 import Base from "./Base";
+
+export const TooltipGlobalStyles: RuleSet = css`
+    // The reason we're doing this here is that the tooltip is rendered outside of its
+    // actual parent component, so we need to add a class and target it.
+    .toggle-button-tooltip {
+        --bs-tooltip-bg: ${({ theme }) => theme.tooltipBackgroundColor};
+        --bs-tooltip-color: ${({ theme }) => theme.tooltipTextColor};
+    }
+`;
 
 export default Object.assign(
     styled(Base).attrs<ToggleThemeButtonStyleAttributes>(

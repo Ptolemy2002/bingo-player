@@ -6,7 +6,6 @@ import { NamedThemeProvider } from 'src/NamedTheme.tsx';
 import { ErrorBoundary } from 'react-error-boundary';
 import { EnvProvider } from 'src/Env';
 import CacheProvider from "react-inlinesvg/provider";
-import { TooltipGlobalStyles } from 'src/components/ToggleThemeButton';
 
 export const GlobalStyle = createGlobalStyle`
     :root {
@@ -51,8 +50,6 @@ export const GlobalStyle = createGlobalStyle`
     main {
         flex-grow: 1;
     }
-
-    ${TooltipGlobalStyles}
 `;
 
 createRoot(document.getElementById('root')!).render(

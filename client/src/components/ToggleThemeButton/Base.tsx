@@ -1,33 +1,23 @@
 import { Button } from "react-bootstrap";
 import { useNamedTheme } from "src/NamedTheme";
 import { ToggleThemeButtonProps } from "./Types";
-import OverlayTrigger from "react-bootstrap/OverlayTrigger";
-import { useBreakpointQuery } from "@ptolemy2002/react-bs-media-queries";
-import { Tooltip } from "react-bootstrap";
+import DefaultCurrentThemeTooltip from "./CurrentThemeTooltipStyled";
 
 export default function ToggleThemeButtonBase({
     className,
-    tooltipClassName="toggle-button-tooltip"
+    CurrentThemeTooltip=DefaultCurrentThemeTooltip
 }: ToggleThemeButtonProps) {
     const [{icon, displayName}, {nextTheme}] = useNamedTheme();
-    const isLg = useBreakpointQuery("lg", "min");
+    
+    return <>
+        <CurrentThemeTooltip displayName={displayName} />
 
-    return (
-        <OverlayTrigger
-            placement={isLg ? "left" : "right"}
-            delay={{show: 250, hide: 400}}
-            overlay={
-                <Tooltip className={tooltipClassName}>
-                    Current Theme: {displayName}
-                </Tooltip>
-            }
+        <Button
+            className={className}
+            onClick={() => nextTheme()}
+            data-tooltip-id="toggle-theme-tooltip"
         >
-            <Button
-                className={className}
-                onClick={() => nextTheme()}
-            >
-                {icon}
-            </Button>
-        </OverlayTrigger>
-    );
+            {icon}
+        </Button>
+    </>;
 }

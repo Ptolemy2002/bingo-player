@@ -17,7 +17,7 @@ declare module "styled-components" {
         sunIconColor?: RequiredCSSProperties["fill"],
         moonIconColor?: RequiredCSSProperties["fill"],
 
-        tooltipBackgroundColor: RequiredCSSProperties["backgroundColor"],
-        tooltipTextColor: RequiredCSSProperties["color"]
+        currentThemeTooltipBackgroundColor?: RequiredCSSProperties["backgroundColor"],
+        currentThemeTooltipTextColor?: RequiredCSSProperties["color"]
     }
 }

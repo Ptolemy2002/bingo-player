@@ -28,8 +28,8 @@ export const NamedThemes: NamedTheme[] = [
             borderWidth: "2px",
             sunIconColor: "black",
 
-            tooltipBackgroundColor: "black",
-            tooltipTextColor: "white",
+            currentThemeTooltipBackgroundColor: "black",
+            currentThemeTooltipTextColor: "white",
         }
     },
     
@@ -43,8 +43,8 @@ export const NamedThemes: NamedTheme[] = [
             borderColor: "white",
             borderWidth: "2px",
 
-            tooltipBackgroundColor: "white",
-            tooltipTextColor: "black"
+            currentThemeTooltipBackgroundColor: "white",
+            currentThemeTooltipTextColor: "black"
         }
     }
 ];

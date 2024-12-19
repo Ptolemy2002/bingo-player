@@ -50,6 +50,11 @@ export const GlobalStyle = createGlobalStyle`
     main {
         flex-grow: 1;
     }
+
+    footer {
+        margin: 0;
+        width: 100%;
+    }
 `;
 
 createRoot(document.getElementById('root')!).render(

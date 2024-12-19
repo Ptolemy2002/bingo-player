@@ -8,10 +8,10 @@ export default function ToggleThemeButtonBase({
     tooltipId="toggle-theme-tooltip",
     CurrentThemeTooltip=DefaultCurrentThemeTooltip
 }: ToggleThemeButtonProps) {
-    const [{icon, displayName}, {nextTheme}] = useNamedTheme();
+    const [{icon}, {nextTheme}] = useNamedTheme();
     
     return <>
-        <CurrentThemeTooltip id={tooltipId} displayName={displayName} />
+        <CurrentThemeTooltip id={tooltipId} />
 
         <Button
             className={className}

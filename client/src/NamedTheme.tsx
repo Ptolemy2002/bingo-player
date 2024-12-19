@@ -26,7 +26,6 @@ export const NamedThemes: NamedTheme[] = [
             textColor: "black",
             borderColor: "black",
             borderWidth: "2px",
-            sunIconColor: "black",
 
             currentThemeTooltipBackgroundColor: "black",
             currentThemeTooltipTextColor: "white",

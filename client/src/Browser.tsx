@@ -2,6 +2,7 @@ import { Outlet } from 'react-router';
 import { createBrowserRouter } from 'react-router-dom';
 import NotFoundPage from 'src/pages/NotFoundPage';
 import Header from 'src/components/Header';
+import Footer from 'src/components/Footer';
 
 export function PageLayout() {
     return <>
@@ -9,6 +10,9 @@ export function PageLayout() {
         <main>
             <Outlet />
         </main>
+        <Footer>
+            Ptolemy Henson
+        </Footer>
     </>;
 }
 
@@ -20,7 +24,9 @@ export const router = createBrowserRouter([{
     children: [
         {
             path: "/",
-            element: <div>Home</div>
+            element: <div>
+                Welcome to Bingo Player!
+            </div>
         },
 
         // The reason we don't use errorElement here is because we want to render the NotFoundPage

@@ -15,7 +15,6 @@ export type ToggleThemeButtonStyleAttributes = WithCSSProp<{
 }>;
 
 export type CurrentThemeTooltipProps = ComponentProps<typeof Tooltip> & {
-    displayName: string;
     className?: string;
 };
 export type CurrentThemeTooltipStyleAttributes = WithCSSProp<{

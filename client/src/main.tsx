@@ -50,6 +50,13 @@ export const GlobalStyle = createGlobalStyle`
     main {
         flex-grow: 1;
     }
+
+    // The reason we're doing this here is that the tooltip is rendered outside of its
+    // actual parent component, so we need to add a class and target it.
+    .toggle-button-tooltip {
+        --bs-tooltip-bg: ${({ theme }) => theme.tooltipBackgroundColor};
+        --bs-tooltip-color: ${({ theme }) => theme.tooltipTextColor};
+    }
 `;
 
 createRoot(document.getElementById('root')!).render(

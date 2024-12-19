@@ -28,6 +28,6 @@ export default Object.assign(
         ${({$css}) => $css}
     `,
     {
-        displayName: "styled(ToggleThemeLightDarkButton)",
+        displayName: "styled(ToggleThemeButton)",
     }
 );

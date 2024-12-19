@@ -24,6 +24,9 @@
     "directory": "client"
   },
   "dependencies": {
+    "@ptolemy2002/js-math-utils": "^2.0.1",
+    "@ptolemy2002/js-utils": "^3.1.0",
+    "@ptolemy2002/react-bs-media-queries": "^1.0.5",
     "@ptolemy2002/react-styled-component-utils": "^1.0.0",
     "@ptolemy2002/ts-utils": "^2.0.1",
     "axios": "^1.7.2",

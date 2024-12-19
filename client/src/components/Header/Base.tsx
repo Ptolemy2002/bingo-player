@@ -2,7 +2,7 @@ import { Navbar, Nav, NavbarToggle, NavbarCollapse } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import { HeaderProps } from "./Types";
 import MenuIcon from "src/components/icons/MenuIcon";
-import ToggleThemeLightDarkButton from "src/components/ToggleThemeLightDarkButton";
+import ToggleThemeButton from "src/components/ToggleThemeButton";
 
 export default function HeaderBase({title, className}: HeaderProps) {
     return (
@@ -31,7 +31,7 @@ export default function HeaderBase({title, className}: HeaderProps) {
                 </ul>
 
                 <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
-                    <ToggleThemeLightDarkButton />
+                    <ToggleThemeButton />
                 </ul>
             </NavbarCollapse>
         </Navbar>

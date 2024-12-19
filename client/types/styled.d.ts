@@ -10,10 +10,14 @@ declare module "styled-components" {
         borderColor: RequiredCSSProperties["borderColor"],
         borderWidth: RequiredCSSProperties["borderWidth"],
 
-        lightDarkButtonBackgroundColor: RequiredCSSProperties["backgroundColor"],
-        lightDarkButtonActiveBackgroundColor?: RequiredCSSProperties["backgroundColor"],
+        toggleThemeButtonBackgroundColor?: RequiredCSSProperties["backgroundColor"],
+        toggleThemeButtonActiveBackgroundColor?: RequiredCSSProperties["backgroundColor"],
+        toggleThemeButtonHoverBackgroundColor?: RequiredCSSProperties["backgroundColor"],
 
         sunIconColor?: RequiredCSSProperties["fill"],
-        moonIconColor?: RequiredCSSProperties["fill"]
+        moonIconColor?: RequiredCSSProperties["fill"],
+
+        tooltipBackgroundColor: RequiredCSSProperties["backgroundColor"],
+        tooltipTextColor: RequiredCSSProperties["color"]
     }
 }

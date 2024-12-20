@@ -8,21 +8,26 @@ export default Object.assign(
             $css: props.$css ?? null,
             $linkColor: props.$linkColor ?? theme.textColor,
             $activeLinkColor: props.$activeLinkColor ?? props.$linkColor ?? theme.activeTextColor ?? theme.textColor,
+            $hoverLinkColor: props.$hoverLinkColor ?? props.$linkColor ?? theme.textColor,
             $brandColor: props.$brandColor ?? props.$linkColor ?? theme.textColor,
             $brandHoverColor: props.$brandHoverColor ?? props.$brandColor ?? props.$linkColor ?? theme.textColor,
-            $borderColor: props.$borderColor ?? theme.borderColor,
-            $borderWidth: props.$borderWidth ?? theme.borderWidth
+            $togglerBorderColor: props.$togglerBorderColor ?? theme.borderColor,
+            $togglerBorderWidth: props.$togglerBorderWidth ?? theme.borderWidth
         })
     )`
+        --bs-navbar-color: ${({$linkColor}) => $linkColor};
+        --bs-navbar-hover-color: ${({$hoverLinkColor}) => $hoverLinkColor};
+        --bs-navbar-active-color: ${({$activeLinkColor}) => $activeLinkColor};
+
         --bs-navbar-brand-color: ${({$brandColor}) => $brandColor};
         --bs-navbar-brand-hover-color: ${({$brandHoverColor}) => $brandHoverColor};
-        --bs-navbar-active-color: ${({$activeLinkColor}) => $activeLinkColor};
-        --bs-navbar-toggler-border-color: ${({$borderColor}) => $borderColor};
-        --bs-border-width: ${({$borderWidth}) => $borderWidth};
+        
+        --bs-navbar-toggler-border-color: ${({$togglerBorderColor}) => $togglerBorderColor};
+        --bs-border-width: ${({$togglerBorderWidth}) => $togglerBorderWidth};
 
         > .navbar-toggler {
             // Allows us to override the box-shadow of the toggler
-            color: ${({$borderColor}) => $borderColor};
+            color: ${({$togglerBorderColor}) => $togglerBorderColor};
         }
 
         ${({$css}) => $css}

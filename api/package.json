@@ -13,11 +13,12 @@
     "swagger-autogen": "tsx src/services/swagger.ts"
   },
   "repository": {
-      "type": "git",
-      "url": "https://github.com/Ptolemy2002/bingo-player",
-      "directory": "api"
+    "type": "git",
+    "url": "https://github.com/Ptolemy2002/bingo-player",
+    "directory": "api"
   },
   "dependencies": {
+    "@ptolemy2002/regex-utils": "^2.0.1",
     "app-module-path": "^2.2.0",
     "cookie-parser": "~1.4.4",
     "cors": "^2.8.5",
@@ -26,6 +27,7 @@
     "express": "~4.16.1",
     "express-rate-limit": "^7.4.1",
     "http-errors": "^2.0.0",
+    "mongoose": "^8.9.2",
     "morgan": "~1.9.1",
     "ms": "^2.1.3",
     "swagger-autogen": "^2.23.7",

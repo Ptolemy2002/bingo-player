@@ -6,8 +6,9 @@ export type HeaderProps = StyledComponentPropsWithCSS<{
 }, {
     linkColor?: RequiredCSSProperties["color"];
     activeLinkColor?: RequiredCSSProperties["color"];
+    hoverLinkColor?: RequiredCSSProperties["color"];
     brandColor?: RequiredCSSProperties["color"];
     brandHoverColor?: RequiredCSSProperties["color"];
-    borderColor?: RequiredCSSProperties["borderColor"];
-    borderWidth?: RequiredCSSProperties["borderWidth"];
+    togglerBorderColor?: RequiredCSSProperties["borderColor"];
+    togglerBorderWidth?: RequiredCSSProperties["borderWidth"];
 }>;

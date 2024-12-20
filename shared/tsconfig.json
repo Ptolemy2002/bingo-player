@@ -6,6 +6,7 @@
     "declaration": true,
     "outDir": "./dist",
     "skipLibCheck": true,
+    "strictNullChecks": true,
     "maxNodeModuleJsDepth": 0
   },
   "include": [

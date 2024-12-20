@@ -1,3 +1,1 @@
-export function sayHello() {
-    console.log('Hello from lib');
-}
+export * from "./Space";

@@ -1,5 +1,5 @@
 import mongoose, { Schema, Types } from 'mongoose';
-import { MongoSpace, ZodMongoSpaceShape } from 'shared';
+import { CleanMongoSpace, ZodMongoSpaceShape } from 'shared';
 import { zodValidateWithErrors } from '@ptolemy2002/regex-utils';
 
 const SpaceSchema = new Schema<
@@ -7,7 +7,7 @@ const SpaceSchema = new Schema<
     // instance, as that's what mongoose has in the object
     // itself. However, whenever we respond to the client, we
     // will convert it to match the string format.
-    Omit<MongoSpace, "_id"> & { _id: Types.ObjectId }
+    Omit<CleanMongoSpace, "_id"> & { _id: Types.ObjectId }
 >({
     name: {
         type: String,

@@ -55,9 +55,4 @@ const SpaceSchema = new Schema<
     }
 });
 
-// Create the Index
-SpaceSchema.index({
-    name: 1
-});
-
 export default mongoose.model('spaces', SpaceSchema);

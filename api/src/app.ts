@@ -11,6 +11,7 @@ import cors from 'cors';
 import { HttpError } from 'http-errors';
 import swaggerUi from 'swagger-ui-express';
 import swaggerFile from 'services/swagger_output.json';
+import mongoose from 'mongoose';
 
 import getEnv from 'env';
 const env = getEnv();
@@ -18,6 +19,11 @@ const env = getEnv();
 import indexRouter from 'routes/index';
 
 const app = express();
+
+// Connect to MongoDB
+mongoose.connect(env.mongoConnectionString)
+    .then(() =>  console.log('Successfully connected to MongoDB'))
+    .catch((err) => console.error("Error Connecting to MongoDB:", err));
 
 app.use(logger('dev'));
 app.use(express.json());

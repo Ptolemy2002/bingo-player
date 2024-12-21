@@ -1,14 +1,18 @@
 import swaggerAutogen from "swagger-autogen";
 import getEnv from "../env";
+import { stripWords } from "@ptolemy2002/js-utils";
 const env = getEnv();
 
 const outputFile = './swagger_output.json';
 const endpointFiles = ['src/routes/index.ts'];
 
-const url = (
-    (env.isProd && env.prodApiUrl) || env.devApiUrl
-).split('://').slice(1).join('://');
-const baseUrl = url.endsWith('/api/v1') ? url.slice(0, -7) : url;
+if (!env.apiURL) throw new Error("API URL for production is not defined in the environment variables");
+const baseUrl = stripWords(
+	env.apiURL, "/",
+	/^https?:\/\//.test(env.apiURL) ? 2 : 0,
+	env.apiURL.endsWith("/api/v1") ? 2 : 0
+);
+console.log("Detected Swagger Base URL:", baseUrl);
 
 const doc = {
 	info: {
@@ -22,9 +26,7 @@ const doc = {
 	produces: ["application/json"],
 
 	definitions: {
-		User: {
-			id: 1,
-		},
+		
 	}
 };
 

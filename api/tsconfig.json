@@ -10,7 +10,8 @@
     "strict": true,
     "skipLibCheck": true,
     "moduleResolution": "node",
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "types": ["node"]
   },
-  "include": ["src", "types/**/*.d.ts"]
+  "include": ["src", "bin", "types/**/*.d.ts"]
 }

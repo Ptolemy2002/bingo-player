@@ -3,7 +3,7 @@
   "info": {
     "version": "1.0.0",
     "title": "Bingo Player API",
-    "description": "Documentation of the V2X F24 API"
+    "description": "Documentation of the Bingo Player API"
   },
   "host": "localhost:8080",
   "basePath": "/",
@@ -82,75 +82,6 @@
               }
             }
           }
-        }
-      }
-    },
-    "/user": {
-      "post": {
-        "tags": [
-          "User"
-        ],
-        "description": "Create a new user.",
-        "parameters": [
-          {
-            "name": "user",
-            "in": "body",
-            "description": "User object",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/User"
-            }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "User created successfully.",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "ok": {
-                  "type": "boolean",
-                  "example": true
-                },
-                "user": {
-                  "$ref": "#/definitions/User"
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            }
-          },
-          "500": {
-            "description": "Internal server error.",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "ok": {
-                  "type": "boolean",
-                  "example": false
-                },
-                "message": {
-                  "type": "string",
-                  "example": "An error occured."
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  "definitions": {
-    "User": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "number",
-          "example": 1
         }
       }
     }

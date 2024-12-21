@@ -55,4 +55,14 @@ const SpaceSchema = new Schema<
     }
 });
 
+// Define the search index for the spaces collection
+SpaceSchema.searchIndex({
+    name: "default_spaces",
+    definition: {
+        mappings: {
+            dynamic: true
+        }
+    }
+});
+
 export default mongoose.model('spaces', SpaceSchema);

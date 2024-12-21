@@ -51,6 +51,7 @@ export const EnvSchema = z.object({
     PROD_API_URL: nullableUrl(null),
     DEV_CLIENT_URL: url("http://localhost:3000", false),
     PROD_CLIENT_URL: nullableUrl(null),
+    MONGO_CONNECTION_STRING: z.string().url(),  
     
     // Additional environment variables here
 });
@@ -65,6 +66,9 @@ export type EnvType = {
     prodApiUrl: string | null,
     devClientUrl: string,
     prodClientUrl: string | null,
+    apiURL: string | null,
+    clientURL: string | null,
+    mongoConnectionString: string,
 
     // Additional environment variables here
 };
@@ -83,7 +87,10 @@ export default function getEnv(createNew=false): EnvType {
             devApiUrl: Env.DEV_API_URL,
             prodApiUrl: Env.PROD_API_URL,
             devClientUrl: Env.DEV_CLIENT_URL,
-            prodClientUrl: Env.PROD_CLIENT_URL
+            prodClientUrl: Env.PROD_CLIENT_URL,
+            apiURL: Env.NODE_ENV === "production" ? Env.PROD_API_URL : Env.DEV_API_URL,
+            clientURL: Env.NODE_ENV === "production" ? Env.PROD_CLIENT_URL : Env.DEV_CLIENT_URL,
+            mongoConnectionString: Env.MONGO_CONNECTION_STRING
         });
     }
 

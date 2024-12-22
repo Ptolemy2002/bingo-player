@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "@ptolemy2002/js-utils": "^3.2.0",
-    "@ptolemy2002/regex-utils": "^2.0.1",
+    "@ptolemy2002/regex-utils": "^2.1.0",
     "app-module-path": "^2.2.0",
     "cookie-parser": "~1.4.4",
     "cors": "^2.8.5",

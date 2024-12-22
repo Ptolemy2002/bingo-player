@@ -1,3 +1,4 @@
+import { interpretZodError } from "@ptolemy2002/regex-utils";
 import getEnv from "env";
 import { Router } from "express";
 import { ListPropParams, ListPropResponseBody, ZodListPropParamsSchema } from "shared";
@@ -59,7 +60,7 @@ router.get<
         res.status(400).json({
             ok: false,
             code: "BAD_INPUT",
-            message: error.message,
+            message: interpretZodError(error),
             help
         });
         return;

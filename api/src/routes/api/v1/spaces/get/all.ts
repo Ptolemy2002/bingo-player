@@ -1,24 +1,25 @@
 import getEnv from "env";
 import { Router } from "express";
 import SpaceModel from "models/SpaceModel";
-import { GetAllSpacesResponseBody } from "shared";
+import { GetSpacesResponseBody } from "shared";
+
 const router = Router();
 
 router.get<
     // Path
-    "/all",
+    "/get/all",
     // URL Parameters
     {},
     // Response body
-    GetAllSpacesResponseBody,
+    GetSpacesResponseBody,
     // Request body
     {},
     // Query Parameters
     {}
->('/all', (_, res) => {
+>('/get/all', (_, res) => {
     /*
         #swagger.start
-        #swagger.path = '/api/v1/spaces/all'
+        #swagger.path = '/api/v1/spaces/get/all'
         #swagger.method = 'get'
         #swagger.description = 'Get all spaces in the database.'
 
@@ -43,7 +44,7 @@ router.get<
                 "application/json": {
                     ok: false,
                     code: "NOT_FOUND",
-                    message: "No matching spaces found.",
+                    message: "No spaces found.",
                     help: "https://example.com/docs"
                 }
             }
@@ -51,11 +52,11 @@ router.get<
         #swagger.end
     */
     const env = getEnv();
-    const help = env.apiURL + "/api/v1/docs/#/Spaces/get_api_v1_spaces_all";
+    const help = env.getDocsURL(1) + "/#/Spaces/get_api_v1_spaces_get_all";
 
     SpaceModel.find({}).then(spaces => {
         if (spaces.length === 0) {
-            res.status(404).send({
+            res.status(404).json({
                 ok: false,
                 code: "NOT_FOUND",
                 message: "No matching spaces found.",
@@ -64,18 +65,13 @@ router.get<
             return;
         }
 
-        res.send({
+        res.json({
             ok: true,
-            spaces: spaces.map(
-                s => ({
-                    ...s.toJSON(),
-                    _id: s._id.toString()
-                })
-            ),
+            spaces: spaces.map(s => s.toClientJSON()),
             help
         });
     });
 });
 
-const spacesRouter = router;
-export default spacesRouter;
+const getAllSpacesRouter = router;
+export default getAllSpacesRouter;

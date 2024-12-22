@@ -1,4 +1,4 @@
-import mongoose, { Schema, Types } from 'mongoose';
+import { Schema, Types, model } from 'mongoose';
 import { CleanMongoSpace, ZodMongoSpaceShape } from 'shared';
 import { zodValidateWithErrors } from '@ptolemy2002/regex-utils';
 
@@ -8,6 +8,10 @@ const SpaceSchema = new Schema<
     // itself. However, whenever we respond to the client, we
     // will convert it to match the string format.
     Omit<CleanMongoSpace, "_id"> & { _id: Types.ObjectId }
+    // Methods
+    & Readonly<{
+        toClientJSON: () => CleanMongoSpace
+    }>
 >({
     name: {
         type: String,
@@ -55,6 +59,13 @@ const SpaceSchema = new Schema<
     }
 });
 
+SpaceSchema.methods.toClientJSON = function() {
+    const space = this.toJSON();
+    space._id = space._id.toString();
+    delete space.__v;
+    return space;
+}
+
 // Define the search index for the spaces collection
 SpaceSchema.searchIndex({
     name: "default_spaces",
@@ -65,4 +76,5 @@ SpaceSchema.searchIndex({
     }
 });
 
-export default mongoose.model('spaces', SpaceSchema);
+const SpaceModel = model('spaces', SpaceSchema);
+export default SpaceModel;

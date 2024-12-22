@@ -1,5 +1,6 @@
 import { z, ZodString, ZodLiteral, ZodNull, ZodUnion } from 'zod';
 import dotEnv from 'dotenv';
+import { stripWords } from '@ptolemy2002/js-utils';
 dotEnv.config();
 
 function nullableUrl(defaultValue?: string | null, emptyIsDefault = true) {
@@ -68,6 +69,7 @@ export type EnvType = {
     prodClientUrl: string | null,
     apiURL: string,
     clientURL: string,
+    getDocsURL: (version: number) => string,
     mongoConnectionString: string,
 
     // Additional environment variables here
@@ -83,6 +85,9 @@ export default function getEnv(createNew=false): EnvType {
             if (!Env.PROD_CLIENT_URL) throw new Error("PROD_CLIENT_URL is required in production environment");
         }
 
+        const apiURL = Env.NODE_ENV === "production" ? Env.PROD_API_URL! : Env.DEV_API_URL;
+        const clientURL = Env.NODE_ENV === "production" ? Env.PROD_CLIENT_URL! : Env.DEV_CLIENT_URL;
+
         EnvInstance = Object.freeze({
             port: Env.PORT,
             nodeEnv: Env.NODE_ENV,
@@ -93,8 +98,9 @@ export default function getEnv(createNew=false): EnvType {
             prodApiUrl: Env.PROD_API_URL,
             devClientUrl: Env.DEV_CLIENT_URL,
             prodClientUrl: Env.PROD_CLIENT_URL,
-            apiURL: Env.NODE_ENV === "production" ? Env.PROD_API_URL! : Env.DEV_API_URL,
-            clientURL: Env.NODE_ENV === "production" ? Env.PROD_CLIENT_URL! : Env.DEV_CLIENT_URL,
+            apiURL,
+            clientURL,
+            getDocsURL: (v) => (/\/api\/v\d+$/.test(apiURL) ? stripWords(apiURL, "/", 0, 2) : apiURL) + `/api/v${v}/docs`,
             mongoConnectionString: Env.MONGO_CONNECTION_STRING
         });
     }

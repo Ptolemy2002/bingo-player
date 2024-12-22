@@ -13,6 +13,21 @@ router.use("/", indexRoutes
                 $ref: "#/definitions/ErrorResponse"
             }
         }
+
+        #swagger.responses[501] = {
+            description: "Not implemented.",
+            schema: {
+                $ref: "#/definitions/ErrorResponse"
+            },
+            examples: {
+                "application/json": {
+                    ok: false,
+                    code: "NOT_IMPLEMENTED",
+                    message: "Not implemented",
+                    help: "https://example.com/docs"
+                }
+            }
+        }
     */
 );
 

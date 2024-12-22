@@ -9,7 +9,7 @@ const endpointFiles = ['src/routes/index.ts', 'src/routes/api/v1/index.ts'];
 const baseUrl = stripWords(
 	env.apiURL, "/",
 	/^https?:\/\//.test(env.apiURL) ? 2 : 0,
-	env.apiURL.endsWith("/api/v1") ? 2 : 0
+	/\/api\/v\d+$/.test(env.apiURL) ? 2 : 0
 );
 console.log("Detected Swagger Base URL:", baseUrl);
 

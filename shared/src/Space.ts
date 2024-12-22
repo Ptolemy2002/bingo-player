@@ -29,6 +29,24 @@ export type CleanMongoSpace = z.infer<typeof ZodMongoSpaceSchema>;
 export type MongoSpace = z.input<typeof ZodMongoSpaceSchema>;
 export const ZodMongoSpaceShape = ZodMongoSpaceSchema._def.schema.shape;
 
+export const ZodSpaceQueryPropSchema = z.enum([
+    "id",
+    "name",
+    "description",
+    "examples",
+    "aliases",
+    "tags",
+
+    "_id",
+    "known-as",
+    "alias",
+    "tag",
+    "example"
+], {
+    message: "Invalid space query prop"
+});
+export type SpaceQueryProp = z.input<typeof ZodSpaceQueryPropSchema>;
+
 // The clean functions will populate values for all optional
 // fields and perform transformations such as trimming strings
 // and converting tags to lowercase.

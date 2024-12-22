@@ -29,6 +29,20 @@
             "schema": {
               "$ref": "#/definitions/ErrorResponse"
             }
+          },
+          "501": {
+            "description": "Not implemented.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "ok": false,
+                "code": "NOT_IMPLEMENTED",
+                "message": "Not implemented",
+                "help": "https://example.com/docs"
+              }
+            }
           }
         }
       }
@@ -55,11 +69,25 @@
             "schema": {
               "$ref": "#/definitions/ErrorResponse"
             }
+          },
+          "501": {
+            "description": "Not implemented.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "ok": false,
+                "code": "NOT_IMPLEMENTED",
+                "message": "Not implemented",
+                "help": "https://example.com/docs"
+              }
+            }
           }
         }
       }
     },
-    "/api/v1/spaces/all": {
+    "/api/v1/spaces/get/all": {
       "get": {
         "tags": [
           "Spaces"
@@ -100,8 +128,131 @@
               "application/json": {
                 "ok": false,
                 "code": "NOT_FOUND",
-                "message": "No matching spaces found.",
+                "message": "No spaces found.",
                 "help": "https://example.com/docs"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/spaces/count/all": {
+      "get": {
+        "tags": [
+          "Spaces"
+        ],
+        "description": "Get the number of spaces in the database.",
+        "responses": {
+          "200": {
+            "description": "Number of spaces found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "ok": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "count": {
+                  "type": "number",
+                  "example": 42
+                },
+                "help": {
+                  "type": "string",
+                  "example": "https://example.com/docs"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "No spaces found.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "ok": false,
+                "code": "NOT_FOUND",
+                "message": "No spaces found.",
+                "help": "https://example.com/docs"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/spaces/get/all/list/{prop}": {
+      "get": {
+        "tags": [
+          "Spaces"
+        ],
+        "description": "Get all values for a given space query prop.",
+        "parameters": [
+          {
+            "name": "prop",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "The space query prop to list."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of values found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "ok": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "values": {
+                  "type": "array",
+                  "example": [
+                    "value1",
+                    "value2"
+                  ],
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "help": {
+                  "type": "string",
+                  "example": "https://example.com/docs"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "ok": false,
+                "code": "BAD_INPUT",
+                "message": "Invalid space query prop",
+                "help": "https://example.com/docs"
+              }
+            }
+          },
+          "404": {
+            "description": "No matching spaces found.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "ok": false,
+                "code": "NOT_FOUND",
+                "message": "No matching spaces found.",
+                "help": "http://example.com/docs"
               }
             }
           }

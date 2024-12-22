@@ -27,20 +27,7 @@
           "500": {
             "description": "Internal server error.",
             "schema": {
-              "type": "object",
-              "properties": {
-                "ok": {
-                  "type": "boolean",
-                  "example": false
-                },
-                "message": {
-                  "type": "string",
-                  "example": "An error occured."
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
+              "$ref": "#/definitions/ErrorResponse"
             }
           }
         }
@@ -66,22 +53,244 @@
           "500": {
             "description": "Internal server error.",
             "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/spaces/all": {
+      "get": {
+        "tags": [
+          "Spaces"
+        ],
+        "description": "Get all spaces in the database.",
+        "responses": {
+          "200": {
+            "description": "Spaces found",
+            "schema": {
               "type": "object",
               "properties": {
                 "ok": {
                   "type": "boolean",
-                  "example": false
+                  "example": true
                 },
-                "message": {
+                "spaces": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/CleanMongoSpace"
+                  }
+                },
+                "help": {
                   "type": "string",
-                  "example": "An error occured."
+                  "example": "https://example.com/docs"
                 }
               },
               "xml": {
                 "name": "main"
               }
             }
+          },
+          "404": {
+            "description": "No matching spaces found.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "ok": false,
+                "code": "NOT_FOUND",
+                "message": "No matching spaces found.",
+                "help": "https://example.com/docs"
+              }
+            }
           }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Space": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "examples": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "aliases": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "id",
+        "name"
+      ]
+    },
+    "CleanSpace": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "examples": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "aliases": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "description",
+        "examples",
+        "aliases",
+        "tags"
+      ]
+    },
+    "MongoSpace": {
+      "type": "object",
+      "properties": {
+        "_id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "examples": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "aliases": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "_id",
+        "name"
+      ]
+    },
+    "CleanMongoSpace": {
+      "type": "object",
+      "properties": {
+        "_id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "examples": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "aliases": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "_id",
+        "name",
+        "description",
+        "examples",
+        "aliases",
+        "tags"
+      ]
+    },
+    "ErrorCode": {
+      "type": "string",
+      "enum": [
+        "UNKNOWN",
+        "BAD_INPUT",
+        "INTERNAL",
+        "NOT_FOUND",
+        "NOT_IMPLEMENTED"
+      ]
+    },
+    "ErrorResponse": {
+      "type": "object",
+      "properties": {
+        "ok": {
+          "type": "boolean",
+          "enum": [
+            false
+          ]
+        },
+        "code": {
+          "$ref": "#/definitions/ErrorCode"
+        },
+        "message": {
+          "type": "string"
+        },
+        "help": {
+          "type": "string",
+          "required": false,
+          "description": "URL to the documentation"
         }
       }
     }

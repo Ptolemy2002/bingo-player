@@ -10,8 +10,7 @@ router.use("/", indexRoutes
         #swagger.responses[500] = {
             description: "Internal server error.",
             schema: {
-                ok: false,
-                message: "An error occured."
+                $ref: "#/definitions/ErrorResponse"
             }
         }
     */

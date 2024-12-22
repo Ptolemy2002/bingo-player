@@ -1,4 +1,5 @@
 import express from 'express';
+import apiRouter from 'routes/api/v1';
 const router = express.Router();
 
 // Root route
@@ -22,6 +23,8 @@ router.get("/ping", (req, res) => {
     */
     res.send("pong");
 });
+
+router.use("/api/v1", apiRouter);
 
 const indexRoutes = router;
 export default indexRoutes;

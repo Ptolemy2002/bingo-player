@@ -66,8 +66,8 @@ export type EnvType = {
     prodApiUrl: string | null,
     devClientUrl: string,
     prodClientUrl: string | null,
-    apiURL: string | null,
-    clientURL: string | null,
+    apiURL: string,
+    clientURL: string,
     mongoConnectionString: string,
 
     // Additional environment variables here
@@ -78,6 +78,11 @@ let EnvInstance: EnvType | null = null;
 export default function getEnv(createNew=false): EnvType {
     if (createNew || Env === null) Env = EnvSchema.parse(process.env);
     if (createNew || !EnvInstance) {
+        if (Env.NODE_ENV === "production") {
+            if (!Env.PROD_API_URL) throw new Error("PROD_API_URL is required in production environment");
+            if (!Env.PROD_CLIENT_URL) throw new Error("PROD_CLIENT_URL is required in production environment");
+        }
+
         EnvInstance = Object.freeze({
             port: Env.PORT,
             nodeEnv: Env.NODE_ENV,
@@ -88,8 +93,8 @@ export default function getEnv(createNew=false): EnvType {
             prodApiUrl: Env.PROD_API_URL,
             devClientUrl: Env.DEV_CLIENT_URL,
             prodClientUrl: Env.PROD_CLIENT_URL,
-            apiURL: Env.NODE_ENV === "production" ? Env.PROD_API_URL : Env.DEV_API_URL,
-            clientURL: Env.NODE_ENV === "production" ? Env.PROD_CLIENT_URL : Env.DEV_CLIENT_URL,
+            apiURL: Env.NODE_ENV === "production" ? Env.PROD_API_URL! : Env.DEV_API_URL,
+            clientURL: Env.NODE_ENV === "production" ? Env.PROD_CLIENT_URL! : Env.DEV_CLIENT_URL,
             mongoConnectionString: Env.MONGO_CONNECTION_STRING
         });
     }

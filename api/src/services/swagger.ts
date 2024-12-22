@@ -6,7 +6,6 @@ const env = getEnv();
 const outputFile = './swagger_output.json';
 const endpointFiles = ['src/routes/index.ts'];
 
-if (!env.apiURL) throw new Error("API URL for production is not defined in the environment variables");
 const baseUrl = stripWords(
 	env.apiURL, "/",
 	/^https?:\/\//.test(env.apiURL) ? 2 : 0,

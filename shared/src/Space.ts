@@ -17,6 +17,22 @@ export const ZodSpaceSchema = z.object({
 export type CleanSpace = z.infer<typeof ZodSpaceSchema>;
 export type Space = z.input<typeof ZodSpaceSchema>;
 export const ZodSpaceShape = ZodSpaceSchema.shape;
+export const SwaggerSpaceSchema = {
+    $id: "abc123",
+    $name: "My Space",
+    description: "This is a space",
+    examples: ["Example 1", "Example 2"],
+    aliases: ["Alias 1", "Alias 2"],
+    tags: ["tag-1", "tag-2"]
+};
+export const SwaggerCleanSpaceSchema = {
+    $id: "abc123",
+    $name: "My Space",
+    $description: "This is a space",
+    $examples: ["Example 1", "Example 2"],
+    $aliases: ["Alias 1", "Alias 2"],
+    $tags: ["tag-1", "tag-2"]
+}
 
 export const ZodMongoSpaceSchema =
     ZodSpaceSchema.omit({ id: true })
@@ -28,6 +44,22 @@ export const ZodMongoSpaceSchema =
 export type CleanMongoSpace = z.infer<typeof ZodMongoSpaceSchema>;
 export type MongoSpace = z.input<typeof ZodMongoSpaceSchema>;
 export const ZodMongoSpaceShape = ZodMongoSpaceSchema._def.schema.shape;
+export const SwaggerMongoSpaceSchema = {
+    $_id: "abc123",
+    $name: "My Space",
+    description: "This is a space",
+    examples: ["Example 1", "Example 2"],
+    aliases: ["Alias 1", "Alias 2"],
+    tags: ["tag-1", "tag-2"]
+};
+export const SwaggerCleanMongoSpaceSchema = {
+    $_id: "abc123",
+    $name: "My Space",
+    $description: "This is a space",
+    $examples: ["Example 1", "Example 2"],
+    $aliases: ["Alias 1", "Alias 2"],
+    $tags: ["tag-1", "tag-2"]
+}
 
 export const ZodSpaceQueryPropSchema = z.enum([
     "id",
@@ -46,6 +78,21 @@ export const ZodSpaceQueryPropSchema = z.enum([
     message: "Invalid space query prop"
 });
 export type SpaceQueryProp = z.input<typeof ZodSpaceQueryPropSchema>;
+export const SwaggerSpaceQueryPropSchema = {
+    "@enum": [
+        "id",
+        "name",
+        "description",
+        "examples",
+        "aliases",
+        "tags",
+        "_id",
+        "known-as",
+        "alias",
+        "tag",
+        "example"
+    ]
+};
 
 // The clean functions will populate values for all optional
 // fields and perform transformations such as trimming strings

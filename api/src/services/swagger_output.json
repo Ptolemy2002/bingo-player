@@ -659,10 +659,6 @@
             }
           }
         },
-        "required": [
-          "_id",
-          "name"
-        ],
         "xml": {
           "name": "MongoSpace"
         }
@@ -714,7 +710,6 @@
           }
         },
         "required": [
-          "_id",
           "name",
           "description",
           "examples",
@@ -765,14 +760,12 @@
             "example": false
           },
           "code": {
-            "xml": {
-              "name": "errorcode"
-            },
-            "$ref": "#/components/schemas/ErrorCode"
+            "type": "string",
+            "example": "UNKNOWN"
           },
           "message": {
             "type": "string",
-            "example": "An error message. Can also be an array of messages or null."
+            "example": "An error occurred"
           },
           "help": {
             "type": "string",

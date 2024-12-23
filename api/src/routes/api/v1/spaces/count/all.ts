@@ -24,25 +24,19 @@ router.get<
 
         #swagger.responses[200] = {
             description: "Number of spaces found",
-            schema: {
-                ok: true,
-                count: 42,
-                help: "https://example.com/docs"
-            }
-        }
-
-        #swagger.responses[404] = {
-            description: "No spaces found.",
-            schema: {
-                $ref: "#/definitions/ErrorResponse"
-            },
-
-            examples: {
+            content: {
                 "application/json": {
-                    ok: false,
-                    code: "NOT_FOUND",
-                    message: "No spaces found.",
-                    help: "https://example.com/docs"
+                    schema: {
+                        $ok: true,
+                        $count: 42,
+                        help: "https://example.com/docs"
+                    },
+
+                    example: {
+                        ok: true,
+                        count: 42,
+                        help: "https://example.com/docs"
+                    }
                 }
             }
         }

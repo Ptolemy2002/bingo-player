@@ -26,28 +26,48 @@ router.get<
             in: 'path',
             description: 'The space query prop to list.',
             required: true,
-            type: 'string'
+            type: 'string',
+            schema: {
+                $ref: "#/components/schemas/SpaceQueryProp"
+            }
         }
         #swagger.responses[200] = {
             description: "List of values found",
-            schema: {
-                ok: true,
-                values: ["value1", "value2"],
-                help: "https://example.com/docs"
+            content: {
+                "application/json": {
+                    schema: {
+                        $ok: true,
+                        $values: [
+                            "string"
+                        ],
+                        help: "https://example.com/docs"
+                    },
+                    example: {
+                        ok: true,
+                        values: [
+                            "value1",
+                            "value2"
+                        ],
+                        help: "https://example.com/docs"
+                    }
+                }
             }
         }
         
         #swagger.responses[400] = {
             description: "Invalid input",
-            schema: {
-                $ref: "#/definitions/ErrorResponse"
-            },
-            examples: {
+            content: {
                 "application/json": {
-                    ok: false,
-                    code: "BAD_INPUT",
-                    message: "Invalid space query prop",
-                    help: "https://example.com/docs"
+                    schema: {
+                        $ref: "#/components/schemas/ErrorResponse"
+                    },
+
+                    example: {
+                        ok: false,
+                        code: "BAD_INPUT",
+                        message: "Invalid input.",
+                        help: "https://example.com/docs"
+                    }
                 }
             }
         }

@@ -1,20 +1,14 @@
 {
-  "swagger": "2.0",
+  "openapi": "3.0.0",
   "info": {
     "version": "1.0.0",
     "title": "Bingo Player API",
     "description": "Documentation of the Bingo Player API"
   },
-  "host": "localhost:8080",
-  "basePath": "/",
-  "schemes": [
-    "http"
-  ],
-  "consumes": [
-    "application/json"
-  ],
-  "produces": [
-    "application/json"
+  "servers": [
+    {
+      "url": "http://localhost:8080/"
+    }
   ],
   "paths": {
     "/": {
@@ -26,21 +20,27 @@
           },
           "500": {
             "description": "Internal server error.",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
             }
           },
           "501": {
             "description": "Not implemented.",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
-            },
-            "examples": {
+            "content": {
               "application/json": {
-                "ok": false,
-                "code": "NOT_IMPLEMENTED",
-                "message": "Not implemented",
-                "help": "https://example.com/docs"
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "ok": false,
+                  "code": "NOT_IMPLEMENTED",
+                  "message": "This feature is not yet implemented.",
+                  "help": "https://example.com/docs"
+                }
               }
             }
           }
@@ -56,31 +56,50 @@
         "responses": {
           "200": {
             "description": "Server is up and running.",
-            "schema": {
-              "type": "string",
-              "example": "pong",
-              "xml": {
-                "name": "main"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "pong",
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "string",
+                  "example": "pong",
+                  "xml": {
+                    "name": "main"
+                  }
+                }
               }
             }
           },
           "500": {
             "description": "Internal server error.",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
             }
           },
           "501": {
             "description": "Not implemented.",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
-            },
-            "examples": {
+            "content": {
               "application/json": {
-                "ok": false,
-                "code": "NOT_IMPLEMENTED",
-                "message": "Not implemented",
-                "help": "https://example.com/docs"
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "ok": false,
+                  "code": "NOT_IMPLEMENTED",
+                  "message": "This feature is not yet implemented.",
+                  "help": "https://example.com/docs"
+                }
               }
             }
           }
@@ -96,40 +115,82 @@
         "responses": {
           "200": {
             "description": "Spaces found",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "ok": {
-                  "type": "boolean",
-                  "example": true
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ok": true,
+                  "$spaces": [
+                    {
+                      "$ref": "#/components/schemas/CleanMongoSpace"
+                    }
+                  ],
+                  "help": "https://example.com/docs"
                 },
-                "spaces": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/definitions/CleanMongoSpace"
-                  }
-                },
-                "help": {
-                  "type": "string",
-                  "example": "https://example.com/docs"
+                "example": {
+                  "ok": true,
+                  "spaces": [
+                    {
+                      "_id": "abc123",
+                      "name": "My Space",
+                      "description": "This is a space",
+                      "examples": [
+                        "Example 1",
+                        "Example 2"
+                      ],
+                      "aliases": [
+                        "Alias 1",
+                        "Alias 2"
+                      ],
+                      "tags": [
+                        "tag-1",
+                        "tag-2"
+                      ]
+                    }
+                  ],
+                  "help": "https://example.com/docs"
                 }
-              },
-              "xml": {
-                "name": "main"
               }
             }
           },
           "404": {
             "description": "No matching spaces found.",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
-            },
-            "examples": {
+            "content": {
               "application/json": {
-                "ok": false,
-                "code": "NOT_FOUND",
-                "message": "No spaces found.",
-                "help": "https://example.com/docs"
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "ok": false,
+                  "code": "NOT_FOUND",
+                  "message": "No matching spaces found.",
+                  "help": "http://example.com/docs"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "501": {
+            "description": "Not implemented.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "ok": false,
+                  "code": "NOT_IMPLEMENTED",
+                  "message": "This feature is not yet implemented.",
+                  "help": "https://example.com/docs"
+                }
               }
             }
           }
@@ -145,38 +206,60 @@
         "responses": {
           "200": {
             "description": "Number of spaces found",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "ok": {
-                  "type": "boolean",
-                  "example": true
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ok": true,
+                  "$count": 42,
+                  "help": "https://example.com/docs"
                 },
-                "count": {
-                  "type": "number",
-                  "example": 42
-                },
-                "help": {
-                  "type": "string",
-                  "example": "https://example.com/docs"
+                "example": {
+                  "ok": true,
+                  "count": 42,
+                  "help": "https://example.com/docs"
                 }
-              },
-              "xml": {
-                "name": "main"
               }
             }
           },
           "404": {
-            "description": "No spaces found.",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
-            },
-            "examples": {
+            "description": "No matching spaces found.",
+            "content": {
               "application/json": {
-                "ok": false,
-                "code": "NOT_FOUND",
-                "message": "No spaces found.",
-                "help": "https://example.com/docs"
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "ok": false,
+                  "code": "NOT_FOUND",
+                  "message": "No matching spaces found.",
+                  "help": "http://example.com/docs"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "501": {
+            "description": "Not implemented.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "ok": false,
+                  "code": "NOT_IMPLEMENTED",
+                  "message": "This feature is not yet implemented.",
+                  "help": "https://example.com/docs"
+                }
               }
             }
           }
@@ -194,65 +277,91 @@
             "name": "prop",
             "in": "path",
             "required": true,
-            "type": "string",
-            "description": "The space query prop to list."
+            "schema": {
+              "$ref": "#/components/schemas/SpaceQueryProp"
+            },
+            "description": "The space query prop to list.",
+            "type": "string"
           }
         ],
         "responses": {
           "200": {
             "description": "List of values found",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "ok": {
-                  "type": "boolean",
-                  "example": true
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ok": true,
+                  "$values": [
+                    "string"
+                  ],
+                  "help": "https://example.com/docs"
                 },
-                "values": {
-                  "type": "array",
-                  "example": [
+                "example": {
+                  "ok": true,
+                  "values": [
                     "value1",
                     "value2"
                   ],
-                  "items": {
-                    "type": "string"
-                  }
-                },
-                "help": {
-                  "type": "string",
-                  "example": "https://example.com/docs"
+                  "help": "https://example.com/docs"
                 }
-              },
-              "xml": {
-                "name": "main"
               }
             }
           },
           "400": {
             "description": "Invalid input",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
-            },
-            "examples": {
+            "content": {
               "application/json": {
-                "ok": false,
-                "code": "BAD_INPUT",
-                "message": "Invalid space query prop",
-                "help": "https://example.com/docs"
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "ok": false,
+                  "code": "BAD_INPUT",
+                  "message": "Invalid input.",
+                  "help": "https://example.com/docs"
+                }
               }
             }
           },
           "404": {
             "description": "No matching spaces found.",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
-            },
-            "examples": {
+            "content": {
               "application/json": {
-                "ok": false,
-                "code": "NOT_FOUND",
-                "message": "No matching spaces found.",
-                "help": "http://example.com/docs"
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "ok": false,
+                  "code": "NOT_FOUND",
+                  "message": "No matching spaces found.",
+                  "help": "http://example.com/docs"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "501": {
+            "description": "Not implemented.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "ok": false,
+                  "code": "NOT_IMPLEMENTED",
+                  "message": "This feature is not yet implemented.",
+                  "help": "https://example.com/docs"
+                }
               }
             }
           }
@@ -260,188 +369,293 @@
       }
     }
   },
-  "definitions": {
-    "Space": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "string"
-        },
-        "name": {
-          "type": "string"
-        },
-        "description": {
-          "type": "string"
-        },
-        "examples": {
-          "type": "array",
-          "items": {
-            "type": "string"
+  "components": {
+    "schemas": {
+      "Space": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "abc123"
+          },
+          "name": {
+            "type": "string",
+            "example": "My Space"
+          },
+          "description": {
+            "type": "string",
+            "example": "This is a space"
+          },
+          "examples": {
+            "type": "array",
+            "example": [
+              "Example 1",
+              "Example 2"
+            ],
+            "items": {
+              "type": "string"
+            }
+          },
+          "aliases": {
+            "type": "array",
+            "example": [
+              "Alias 1",
+              "Alias 2"
+            ],
+            "items": {
+              "type": "string"
+            }
+          },
+          "tags": {
+            "type": "array",
+            "example": [
+              "tag-1",
+              "tag-2"
+            ],
+            "items": {
+              "type": "string"
+            }
           }
         },
-        "aliases": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "tags": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
+        "required": [
+          "id",
+          "name"
+        ],
+        "xml": {
+          "name": "Space"
         }
       },
-      "required": [
-        "id",
-        "name"
-      ]
-    },
-    "CleanSpace": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "string"
-        },
-        "name": {
-          "type": "string"
-        },
-        "description": {
-          "type": "string"
-        },
-        "examples": {
-          "type": "array",
-          "items": {
-            "type": "string"
+      "CleanSpace": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "abc123"
+          },
+          "name": {
+            "type": "string",
+            "example": "My Space"
+          },
+          "description": {
+            "type": "string",
+            "example": "This is a space"
+          },
+          "examples": {
+            "type": "array",
+            "example": [
+              "Example 1",
+              "Example 2"
+            ],
+            "items": {
+              "type": "string"
+            }
+          },
+          "aliases": {
+            "type": "array",
+            "example": [
+              "Alias 1",
+              "Alias 2"
+            ],
+            "items": {
+              "type": "string"
+            }
+          },
+          "tags": {
+            "type": "array",
+            "example": [
+              "tag-1",
+              "tag-2"
+            ],
+            "items": {
+              "type": "string"
+            }
           }
         },
-        "aliases": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "tags": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
+        "required": [
+          "id",
+          "name",
+          "description",
+          "examples",
+          "aliases",
+          "tags"
+        ],
+        "xml": {
+          "name": "CleanSpace"
         }
       },
-      "required": [
-        "id",
-        "name",
-        "description",
-        "examples",
-        "aliases",
-        "tags"
-      ]
-    },
-    "MongoSpace": {
-      "type": "object",
-      "properties": {
-        "_id": {
-          "type": "string"
-        },
-        "name": {
-          "type": "string"
-        },
-        "description": {
-          "type": "string"
-        },
-        "examples": {
-          "type": "array",
-          "items": {
-            "type": "string"
+      "MongoSpace": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "example": "abc123"
+          },
+          "name": {
+            "type": "string",
+            "example": "My Space"
+          },
+          "description": {
+            "type": "string",
+            "example": "This is a space"
+          },
+          "examples": {
+            "type": "array",
+            "example": [
+              "Example 1",
+              "Example 2"
+            ],
+            "items": {
+              "type": "string"
+            }
+          },
+          "aliases": {
+            "type": "array",
+            "example": [
+              "Alias 1",
+              "Alias 2"
+            ],
+            "items": {
+              "type": "string"
+            }
+          },
+          "tags": {
+            "type": "array",
+            "example": [
+              "tag-1",
+              "tag-2"
+            ],
+            "items": {
+              "type": "string"
+            }
           }
         },
-        "aliases": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "tags": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
+        "required": [
+          "_id",
+          "name"
+        ],
+        "xml": {
+          "name": "MongoSpace"
         }
       },
-      "required": [
-        "_id",
-        "name"
-      ]
-    },
-    "CleanMongoSpace": {
-      "type": "object",
-      "properties": {
-        "_id": {
-          "type": "string"
-        },
-        "name": {
-          "type": "string"
-        },
-        "description": {
-          "type": "string"
-        },
-        "examples": {
-          "type": "array",
-          "items": {
-            "type": "string"
+      "CleanMongoSpace": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "example": "abc123"
+          },
+          "name": {
+            "type": "string",
+            "example": "My Space"
+          },
+          "description": {
+            "type": "string",
+            "example": "This is a space"
+          },
+          "examples": {
+            "type": "array",
+            "example": [
+              "Example 1",
+              "Example 2"
+            ],
+            "items": {
+              "type": "string"
+            }
+          },
+          "aliases": {
+            "type": "array",
+            "example": [
+              "Alias 1",
+              "Alias 2"
+            ],
+            "items": {
+              "type": "string"
+            }
+          },
+          "tags": {
+            "type": "array",
+            "example": [
+              "tag-1",
+              "tag-2"
+            ],
+            "items": {
+              "type": "string"
+            }
           }
         },
-        "aliases": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "tags": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
+        "required": [
+          "_id",
+          "name",
+          "description",
+          "examples",
+          "aliases",
+          "tags"
+        ],
+        "xml": {
+          "name": "CleanMongoSpace"
         }
       },
-      "required": [
-        "_id",
-        "name",
-        "description",
-        "examples",
-        "aliases",
-        "tags"
-      ]
-    },
-    "ErrorCode": {
-      "type": "string",
-      "enum": [
-        "UNKNOWN",
-        "BAD_INPUT",
-        "INTERNAL",
-        "NOT_FOUND",
-        "NOT_IMPLEMENTED"
-      ]
-    },
-    "ErrorResponse": {
-      "type": "object",
-      "properties": {
-        "ok": {
-          "type": "boolean",
-          "enum": [
-            false
-          ]
+      "SpaceQueryProp": {
+        "type": "string",
+        "enum": [
+          "id",
+          "name",
+          "description",
+          "examples",
+          "aliases",
+          "tags",
+          "_id",
+          "known-as",
+          "alias",
+          "tag",
+          "example"
+        ],
+        "xml": {
+          "name": "SpaceQueryProp"
+        }
+      },
+      "ErrorCode": {
+        "type": "string",
+        "enum": [
+          "UNKNOWN",
+          "BAD_INPUT",
+          "INTERNAL",
+          "NOT_FOUND",
+          "NOT_IMPLEMENTED"
+        ],
+        "xml": {
+          "name": "ErrorCode"
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "ok": {
+            "type": "boolean",
+            "example": false
+          },
+          "code": {
+            "xml": {
+              "name": "errorcode"
+            },
+            "$ref": "#/components/schemas/ErrorCode"
+          },
+          "message": {
+            "type": "string",
+            "example": "An error message. Can also be an array of messages or null."
+          },
+          "help": {
+            "type": "string",
+            "example": "https://example.com/docs"
+          }
         },
-        "code": {
-          "$ref": "#/definitions/ErrorCode"
-        },
-        "message": {
-          "type": "string"
-        },
-        "help": {
-          "type": "string",
-          "required": false,
-          "description": "URL to the documentation"
+        "required": [
+          "ok",
+          "code",
+          "message"
+        ],
+        "xml": {
+          "name": "ErrorResponse"
         }
       }
     }

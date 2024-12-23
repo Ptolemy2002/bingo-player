@@ -25,27 +25,30 @@ router.get<
 
         #swagger.responses[200] = {
             description: "Spaces found",
-            schema: {
-                ok: true,
-                spaces: [
-                    { $ref: "#/definitions/CleanMongoSpace" }
-                ],
-                help: "https://example.com/docs"
-            }
-        }
-
-        #swagger.responses[404] = {
-            description: "No matching spaces found.",
-            schema: {
-                $ref: "#/definitions/ErrorResponse"
-            },
-
-            examples: {
+            content: {
                 "application/json": {
-                    ok: false,
-                    code: "NOT_FOUND",
-                    message: "No spaces found.",
-                    help: "https://example.com/docs"
+                    schema: {
+                        $ok: true,
+                        $spaces: [
+                            { $ref: "#/definitions/CleanMongoSpace" }
+                        ],
+                        help: "https://example.com/docs"
+                    },
+
+                    example: {
+                        ok: true,
+                        spaces: [
+                            {
+                                _id: "abc123",
+                                name: "My Space",
+                                description: "This is a space",
+                                examples: ["Example 1", "Example 2"],
+                                aliases: ["Alias 1", "Alias 2"],
+                                tags: ["tag-1", "tag-2"]
+                            }
+                        ],
+                        help: "https://example.com/docs"
+                    }
                 }
             }
         }

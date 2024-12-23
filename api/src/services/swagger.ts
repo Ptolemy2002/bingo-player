@@ -1,6 +1,7 @@
 import swaggerAutogen from "swagger-autogen";
 import getEnv from "../env";
 import { stripWords } from "@ptolemy2002/js-utils";
+import SpaceModel from "models/SpaceModel";
 const env = getEnv();
 
 const outputFile = './swagger_output.json';
@@ -24,176 +25,81 @@ const doc = {
 	consumes: ["application/json"],
 	produces: ["application/json"],
 
-	"@definitions": {
-		Space: {
-			type: "object",
-			properties: {
-				id: {
-					type: "string"
-				},
-				name: {
-					type: "string"
-				},
-				description: {
-					type: "string"
-				},
-				examples: {
-					type: "array",
-					items: {
-						type: "string"
-					}
-				},
-				aliases: {
-					type: "array",
-					items: {
-						type: "string"
-					}
-				},
-				tags: {
-					type: "array",
-					items: {
-						type: "string"
-					}
-				}
+	components: {
+		schemas: {
+			Space: {
+				$id: "abc123",
+				$name: "My Space",
+				description: "This is a space",
+				examples: ["Example 1", "Example 2"],
+				aliases: ["Alias 1", "Alias 2"],
+				tags: ["tag-1", "tag-2"]
 			},
-			required: ["id", "name"]
-		},
 
-		CleanSpace: {
-			type: "object",
-			properties: {
-				id: {
-					type: "string"
-				},
-				name: {
-					type: "string"
-				},
-				description: {
-					type: "string"
-				},
-				examples: {
-					type: "array",
-					items: {
-						type: "string"
-					}
-				},
-				aliases: {
-					type: "array",
-					items: {
-						type: "string"
-					}
-				},
-				tags: {
-					type: "array",
-					items: {
-						type: "string"
-					}
-				}
+			CleanSpace: {
+				$id: "abc123",
+				$name: "My Space",
+				$description: "This is a space",
+				$examples: ["Example 1", "Example 2"],
+				$aliases: ["Alias 1", "Alias 2"],
+				$tags: ["tag-1", "tag-2"]
 			},
-			required: ["id", "name", "description", "examples", "aliases", "tags"]
-		},
 
-		MongoSpace: {
-			type: "object",
-			properties: {
-				_id: {
-					type: "string"
-				},
-				name: {
-					type: "string"
-				},
-				description: {
-					type: "string"
-				},
-				examples: {
-					type: "array",
-					items: {
-						type: "string"
-					}
-				},
-				aliases: {
-					type: "array",
-					items: {
-						type: "string"
-					}
-				},
-				tags: {
-					type: "array",
-					items: {
-						type: "string"
-					}
-				}
+			MongoSpace: {
+				$_id: "abc123",
+				$name: "My Space",
+				description: "This is a space",
+				examples: ["Example 1", "Example 2"],
+				aliases: ["Alias 1", "Alias 2"],
+				tags: ["tag-1", "tag-2"]
 			},
-			required: ["_id", "name"]
-		},
 
-		CleanMongoSpace: {
-			type: "object",
-			properties: {
-				_id: {
-					type: "string"
-				},
-				name: {
-					type: "string"
-				},
-				description: {
-					type: "string"
-				},
-				examples: {
-					type: "array",
-					items: {
-						type: "string"
-					}
-				},
-				aliases: {
-					type: "array",
-					items: {
-						type: "string"
-					}
-				},
-				tags: {
-					type: "array",
-					items: {
-						type: "string"
-					}
-				}
+			CleanMongoSpace: {
+				$_id: "abc123",
+				$name: "My Space",
+				$description: "This is a space",
+				$examples: ["Example 1", "Example 2"],
+				$aliases: ["Alias 1", "Alias 2"],
+				$tags: ["tag-1", "tag-2"]
 			},
-			required: ["_id", "name", "description", "examples", "aliases", "tags"]
-		},
 
-		ErrorCode: {
-			type: "string",
-			enum: [
-				"UNKNOWN",
-				"BAD_INPUT",
-				"INTERNAL",
-				"NOT_FOUND",
-				"NOT_IMPLEMENTED"
-			]
-		},
+			SpaceQueryProp: {
+				"@enum": [
+					"id",
+					"name",
+					"description",
+					"examples",
+					"aliases",
+					"tags",
+					"_id",
+					"known-as",
+					"alias",
+					"tag",
+					"example"
+				]
+			},
 
-		ErrorResponse: {
-			type: "object",
-			properties: {
-				ok: {
-					type: "boolean",
-					enum: [false]
-				},
+			ErrorCode: {
+				"@enum": [
+					"UNKNOWN",
+					"BAD_INPUT",
+					"INTERNAL",
+					"NOT_FOUND",
+					"NOT_IMPLEMENTED"
+				]
+			},
+
+			ErrorResponse: {
+				$ok: false,
 				// Code is either an error code or null
-				code: {
-					$ref: "#/definitions/ErrorCode"
+				$code: {
+					$ref: "#/components/schemas/ErrorCode"
 				},
-				message: {
-					type: "string"
-				},
-				help: {
-					type: "string",
-					required: false,
-					description: "URL to the documentation"
-				}
+				$message: "An error message. Can also be an array of messages or null.",
+				help: "https://example.com/docs"
 			}
 		}
 	}
 };
 
-export default swaggerAutogen()(outputFile, endpointFiles, doc);
+export default swaggerAutogen({openapi: "3.0.0"})(outputFile, endpointFiles, doc);

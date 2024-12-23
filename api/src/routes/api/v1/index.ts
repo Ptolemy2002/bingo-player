@@ -9,16 +9,47 @@ router.use("/spaces", spacesRouter
         
         #swagger.responses[404] = {
             description: "No matching spaces found.",
-            schema: {
-                $ref: "#/definitions/ErrorResponse"
-            },
-            
-            examples: {
+            content: {
                 "application/json": {
-                    ok: false,
-                    code: "NOT_FOUND",
-                    message: "No matching spaces found.",
-                    help: "http://example.com/docs"
+                    schema: {
+                        $ref: "#/components/schemas/ErrorResponse"
+                    },
+
+                    example: {
+                        ok: false,
+                        code: "NOT_FOUND",
+                        message: "No matching spaces found.",
+                        help: "http://example.com/docs"
+                    }
+                }
+            }
+        }
+
+        #swagger.responses[500] = {
+            description: "Internal server error.",
+            content: {
+                "application/json": {
+                    schema: {
+                        $ref: "#/components/schemas/ErrorResponse"
+                    }
+                }
+            }
+        }
+
+        #swagger.responses[501] = {
+            description: "Not implemented.",
+            content: {
+                "application/json": {
+                    schema: {
+                        $ref: "#/components/schemas/ErrorResponse"
+                    },
+
+                    example: {
+                        ok: false,
+                        code: "NOT_IMPLEMENTED",
+                        message: "This feature is not yet implemented.",
+                        help: "https://example.com/docs"
+                    }
                 }
             }
         }

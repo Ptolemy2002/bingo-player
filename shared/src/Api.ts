@@ -14,17 +14,42 @@ export const SwaggerErrorCodeSchema = {
 
 export type ErrorResponse = {ok: false, code: ErrorCode, message: string | string[] | null, help?: string};
 export const SwaggerErrorResponseSchema = {
-    $ok: false,
-    $code: "UNKNOWN",
-    $message: "An error occurred",
-    help: "https://example.com/docs"
+    type: "object",
+    properties: {
+        ok: {
+            type: "boolean",
+            required: true,
+            enum: [false]
+        },
+        code: {
+            type: "string",
+            required: true,
+            enum: SwaggerErrorCodeSchema["@enum"]
+        },
+
+        message: {
+            oneOf: [
+                {type: "string"},
+                {type: "array", items: {type: "string"}},
+                {type: "null"}
+            ],
+            required: true
+        },
+        help: {
+            oneOf: [
+                {type: "string"},
+                {type: "null"}
+            ],
+            required: false
+        }
+    }
 };
 
 export type SuccessResponse<T={}> = T & {ok: true, help?: string};
 
 export type GetSpacesResponseBody = SuccessResponse<{spaces: CleanMongoSpace[]}> | ErrorResponse;
 export type CountSpacesResponseBody = SuccessResponse<{count: number}> | ErrorResponse;
-export type ListPropResponseBody = SuccessResponse<{values: string[]}> | ErrorResponse;
+export type ListPropResponseBody = SuccessResponse<{values: (string | null)[]}> | ErrorResponse;
 
 export const ZodListPropParamsSchema = z.object({
     prop: ZodSpaceQueryPropSchema

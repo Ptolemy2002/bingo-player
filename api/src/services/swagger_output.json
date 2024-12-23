@@ -356,7 +356,7 @@
         "tags": [
           "Spaces"
         ],
-        "description": "Get all values for a given space query prop.",
+        "description": "  Get all values for a given space query prop.  The values are returned as an array of strings, but may contain null values.  ",
         "parameters": [
           {
             "name": "prop",
@@ -382,13 +382,7 @@
                       "example": true
                     },
                     "values": {
-                      "type": "array",
-                      "example": [
-                        "string"
-                      ],
-                      "items": {
-                        "type": "string"
-                      }
+                      "$ref": "#/components/schemas/NullableStringArray"
                     },
                     "help": {
                       "type": "string",
@@ -413,13 +407,7 @@
                       "example": true
                     },
                     "values": {
-                      "type": "array",
-                      "example": [
-                        "string"
-                      ],
-                      "items": {
-                        "type": "string"
-                      }
+                      "$ref": "#/components/schemas/NullableStringArray"
                     },
                     "help": {
                       "type": "string",
@@ -659,6 +647,10 @@
             }
           }
         },
+        "required": [
+          "_id",
+          "name"
+        ],
         "xml": {
           "name": "MongoSpace"
         }
@@ -710,6 +702,7 @@
           }
         },
         "required": [
+          "_id",
           "name",
           "description",
           "examples",
@@ -752,33 +745,68 @@
           "name": "ErrorCode"
         }
       },
+      "NullableStringArray": {
+        "type": "array",
+        "items": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
       "ErrorResponse": {
         "type": "object",
         "properties": {
           "ok": {
             "type": "boolean",
-            "example": false
+            "required": true,
+            "enum": [
+              false
+            ]
           },
           "code": {
             "type": "string",
-            "example": "UNKNOWN"
+            "required": true,
+            "enum": [
+              "UNKNOWN",
+              "BAD_INPUT",
+              "INTERNAL",
+              "NOT_FOUND",
+              "NOT_IMPLEMENTED"
+            ]
           },
           "message": {
-            "type": "string",
-            "example": "An error occurred"
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "required": true
           },
           "help": {
-            "type": "string",
-            "example": "https://example.com/docs"
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "required": false
           }
-        },
-        "required": [
-          "ok",
-          "code",
-          "message"
-        ],
-        "xml": {
-          "name": "ErrorResponse"
         }
       }
     }

@@ -10,6 +10,7 @@ import {
     SwaggerSpaceQueryPropSchema,
     SwaggerSpaceSchema,
 } from 'shared';
+import { on } from 'events';
 const env = getEnv();
 
 const outputFile = './swagger_output.json';
@@ -41,9 +42,21 @@ const doc = {
             MongoSpace: SwaggerMongoSpaceSchema,
             CleanMongoSpace: SwaggerCleanMongoSpaceSchema,
             SpaceQueryProp: SwaggerSpaceQueryPropSchema,
-            ErrorCode: SwaggerErrorCodeSchema,
-            ErrorResponse: SwaggerErrorResponseSchema,
+            ErrorCode: SwaggerErrorCodeSchema
         },
+
+        "@schemas": {
+            NullableStringArray: {
+                type: 'array',
+                items: {
+                    oneOf: [
+                        { type: 'string' },
+                        { type: 'null' },
+                    ]
+                }
+            },
+            ErrorResponse: SwaggerErrorResponseSchema
+        }
     },
 };
 

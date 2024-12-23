@@ -18,6 +18,7 @@
     "directory": "api"
   },
   "dependencies": {
+    "@ptolemy2002/express-utils": "^2.1.1",
     "@ptolemy2002/js-utils": "^3.2.0",
     "@ptolemy2002/regex-utils": "^2.1.0",
     "app-module-path": "^2.2.0",
@@ -25,7 +26,7 @@
     "cors": "^2.8.5",
     "debug": "~2.6.9",
     "dotenv": "^16.4.5",
-    "express": "~4.16.1",
+    "express": "^4.16.1",
     "express-rate-limit": "^7.4.1",
     "http-errors": "^2.0.0",
     "mongoose": "^8.9.2",

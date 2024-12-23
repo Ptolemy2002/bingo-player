@@ -24,20 +24,10 @@ router.get<
 
         #swagger.responses[200] = {
             description: "Number of spaces found",
-            content: {
-                "application/json": {
-                    schema: {
-                        $ok: true,
-                        $count: 42,
-                        help: "https://example.com/docs"
-                    },
-
-                    example: {
-                        ok: true,
-                        count: 42,
-                        help: "https://example.com/docs"
-                    }
-                }
+            schema: {
+                $ok: true,
+                $count: 42,
+                help: "https://example.com/docs"
             }
         }
         #swagger.end

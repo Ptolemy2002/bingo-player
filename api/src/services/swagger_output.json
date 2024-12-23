@@ -13,10 +13,33 @@
   "paths": {
     "/": {
       "get": {
-        "description": "",
+        "tags": [
+          "General"
+        ],
+        "description": "  Root route of the API. For API documentation, go to /api/v1/docs.  ",
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Root route.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Root route. For docs, go <a href='/api/v1/docs'>here</a>.",
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "string",
+                  "example": "Root route. For docs, go <a href='/api/v1/docs'>here</a>.",
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            }
           },
           "500": {
             "description": "Internal server error.",
@@ -118,36 +141,58 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ok": true,
-                  "$spaces": [
-                    {
-                      "$ref": "#/components/schemas/CleanMongoSpace"
+                  "type": "object",
+                  "properties": {
+                    "ok": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "spaces": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/CleanMongoSpace"
+                      }
+                    },
+                    "help": {
+                      "type": "string",
+                      "example": "https://example.com/docs"
                     }
+                  },
+                  "required": [
+                    "ok",
+                    "spaces"
                   ],
-                  "help": "https://example.com/docs"
-                },
-                "example": {
-                  "ok": true,
-                  "spaces": [
-                    {
-                      "_id": "abc123",
-                      "name": "My Space",
-                      "description": "This is a space",
-                      "examples": [
-                        "Example 1",
-                        "Example 2"
-                      ],
-                      "aliases": [
-                        "Alias 1",
-                        "Alias 2"
-                      ],
-                      "tags": [
-                        "tag-1",
-                        "tag-2"
-                      ]
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ok": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "spaces": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/CleanMongoSpace"
+                      }
+                    },
+                    "help": {
+                      "type": "string",
+                      "example": "https://example.com/docs"
                     }
+                  },
+                  "required": [
+                    "ok",
+                    "spaces"
                   ],
-                  "help": "https://example.com/docs"
+                  "xml": {
+                    "name": "main"
+                  }
                 }
               }
             }
@@ -209,14 +254,54 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ok": true,
-                  "$count": 42,
-                  "help": "https://example.com/docs"
-                },
-                "example": {
-                  "ok": true,
-                  "count": 42,
-                  "help": "https://example.com/docs"
+                  "type": "object",
+                  "properties": {
+                    "ok": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "count": {
+                      "type": "number",
+                      "example": 42
+                    },
+                    "help": {
+                      "type": "string",
+                      "example": "https://example.com/docs"
+                    }
+                  },
+                  "required": [
+                    "ok",
+                    "count"
+                  ],
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ok": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "count": {
+                      "type": "number",
+                      "example": 42
+                    },
+                    "help": {
+                      "type": "string",
+                      "example": "https://example.com/docs"
+                    }
+                  },
+                  "required": [
+                    "ok",
+                    "count"
+                  ],
+                  "xml": {
+                    "name": "main"
+                  }
                 }
               }
             }
@@ -290,19 +375,64 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ok": true,
-                  "$values": [
-                    "string"
+                  "type": "object",
+                  "properties": {
+                    "ok": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "values": {
+                      "type": "array",
+                      "example": [
+                        "string"
+                      ],
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "help": {
+                      "type": "string",
+                      "example": "https://example.com/docs"
+                    }
+                  },
+                  "required": [
+                    "ok",
+                    "values"
                   ],
-                  "help": "https://example.com/docs"
-                },
-                "example": {
-                  "ok": true,
-                  "values": [
-                    "value1",
-                    "value2"
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ok": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "values": {
+                      "type": "array",
+                      "example": [
+                        "string"
+                      ],
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "help": {
+                      "type": "string",
+                      "example": "https://example.com/docs"
+                    }
+                  },
+                  "required": [
+                    "ok",
+                    "values"
                   ],
-                  "help": "https://example.com/docs"
+                  "xml": {
+                    "name": "main"
+                  }
                 }
               }
             }

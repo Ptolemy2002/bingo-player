@@ -33,24 +33,12 @@ router.get<
         }
         #swagger.responses[200] = {
             description: "List of values found",
-            content: {
-                "application/json": {
-                    schema: {
-                        $ok: true,
-                        $values: [
-                            "string"
-                        ],
-                        help: "https://example.com/docs"
-                    },
-                    example: {
-                        ok: true,
-                        values: [
-                            "value1",
-                            "value2"
-                        ],
-                        help: "https://example.com/docs"
-                    }
-                }
+            schema: {
+                $ok: true,
+                $values: [
+                    "string"
+                ],
+                help: "https://example.com/docs"
             }
         }
         

@@ -4,6 +4,18 @@ const router = express.Router();
 
 // Root route
 router.get('/', function(req, res, next) {
+    /*
+        #swagger.tags = ['General']
+
+        #swagger.description = `
+            Root route of the API. For API documentation, go to /api/v1/docs.
+        `
+
+        #swagger.responses[200] = {
+            description: "Root route.",
+            schema: "Root route. For docs, go <a href='/api/v1/docs'>here</a>."
+        }
+    */
     res.send("Root route. For docs, go <a href='/api/v1/docs'>here</a>.");
 });
 

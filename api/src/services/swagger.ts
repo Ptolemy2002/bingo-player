@@ -60,7 +60,7 @@ const doc = {
     },
 };
 
-export default swaggerAutogen({ openapi: '3.1.0' })(
+export default swaggerAutogen({ openapi: '3.1.1' })(
     outputFile,
     endpointFiles,
     doc,

@@ -6,6 +6,24 @@ const router = Router();
 router.use("/spaces", spacesRouter
     /*
         #swagger.tags = ['Spaces']
+
+        #swagger.responses[400] = {
+            description: "Invalid input",
+            content: {
+                "application/json": {
+                    schema: {
+                        $ref: "#/components/schemas/ErrorResponse"
+                    },
+
+                    example: {
+                        ok: false,
+                        code: "BAD_INPUT",
+                        message: "Invalid input.",
+                        help: "https://example.com/docs"
+                    }
+                }
+            }
+        }
         
         #swagger.responses[404] = {
             description: "No matching spaces found.",

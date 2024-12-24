@@ -19,10 +19,12 @@
         "reinstall": "bash ./scripts/reinstall.sh"
     },
     "devDependencies": {
+        "@ptolemy2002/regex-utils": "^2.2.0",
         "mongoose": "^8.9.2",
         "zod": "^3.24.1"
     },
     "peerDependencies": {
+        "@ptolemy2002/regex-utils": "^2.2.0",
         "mongoose": "^8.9.2",
         "zod": "^3.24.1"
     }

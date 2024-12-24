@@ -1,9 +1,16 @@
+import { asyncErrorHandler } from "@ptolemy2002/express-utils";
 import getEnv from "env";
 import { Router } from "express";
 import SpaceModel from "models/SpaceModel";
 import { CountSpacesResponseBody } from "shared";
 
 const router = Router();
+
+export async function countAllSpaces() {
+    const count = await SpaceModel.countDocuments({});
+    return count;
+}
+
 router.get<
     // Path
     "/count/all",
@@ -15,7 +22,7 @@ router.get<
     {},
     // Query Parameters
     {}
->('/count/all', (_, res) => {
+>('/count/all', asyncErrorHandler(async (_, res) => {
     /*
         #swagger.start
         #swagger.path = '/api/v1/spaces/count/all'
@@ -35,24 +42,24 @@ router.get<
     const env = getEnv();
     const help = env.getDocsURL(1) + "/#/Spaces/get_api_v1_spaces_count_all";
 
-    SpaceModel.countDocuments({}).then(count => {
-        if (count === 0) {
-            res.status(404).json({
-                ok: false,
-                code: "NOT_FOUND",
-                message: "No spaces found.",
-                help
-            });
-            return;
-        }
+    const count = await countAllSpaces();
 
-        res.json({
-            ok: true,
-            count,
+    if (count === 0) {
+        res.status(404).json({
+            ok: false,
+            code: "NOT_FOUND",
+            message: "No spaces found.",
             help
         });
+        return;
+    }
+
+    res.json({
+        ok: true,
+        count,
+        help
     });
-});
+}));
 
 const countAllSpacesRouter = router;
 export default countAllSpacesRouter;

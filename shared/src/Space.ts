@@ -94,6 +94,30 @@ export const SwaggerSpaceQueryPropSchema = {
     ]
 };
 
+export const ZodSpaceQueryPropNonIdSchema = ZodSpaceQueryPropSchema.exclude(["id", "_id"]);
+export type SpaceQueryPropNonId = z.input<typeof ZodSpaceQueryPropNonIdSchema>;
+export const SwaggerSpaceQueryPropNonIdSchema = {
+    "@enum": [
+        "name",
+        "description",
+        "examples",
+        "aliases",
+        "tags",
+        "known-as",
+        "alias",
+        "tag",
+        "example"
+    ]
+};
+
+export function interpretSpaceQueryProp(prop: SpaceQueryProp): (keyof CleanMongoSpace) | "known-as" {
+    if (prop === "id") prop = "_id";
+    if (prop === "tag") prop = "tags";
+    if (prop === "alias") prop = "aliases";
+    if (prop === "example") prop = "examples";
+    return prop;
+}
+
 // The clean functions will populate values for all optional
 // fields and perform transformations such as trimming strings
 // and converting tags to lowercase.

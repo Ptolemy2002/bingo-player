@@ -7,10 +7,10 @@ import {
     SwaggerErrorCodeSchema,
     SwaggerErrorResponseSchema,
     SwaggerMongoSpaceSchema,
+    SwaggerSpaceQueryPropNonIdSchema,
     SwaggerSpaceQueryPropSchema,
-    SwaggerSpaceSchema,
+    SwaggerSpaceSchema
 } from 'shared';
-import { on } from 'events';
 const env = getEnv();
 
 const outputFile = './swagger_output.json';
@@ -42,6 +42,7 @@ const doc = {
             MongoSpace: SwaggerMongoSpaceSchema,
             CleanMongoSpace: SwaggerCleanMongoSpaceSchema,
             SpaceQueryProp: SwaggerSpaceQueryPropSchema,
+            SpaceQueryPropNonId: SwaggerSpaceQueryPropNonIdSchema,
             ErrorCode: SwaggerErrorCodeSchema
         },
 

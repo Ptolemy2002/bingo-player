@@ -1,37 +1,46 @@
-import { Router } from "express";
-import { transformRegex } from "@ptolemy2002/regex-utils";
-import { GetSpacesByPropParams, GetSpacesByPropQueryParamsInput, GetSpacesByPropQueryParamsOutput, GetSpacesResponseBody, interpretSpaceQueryProp, ListPropParams, SpaceQueryProp, ZodGetSpacesQueryParamsSchema, ZodSpaceQueryPropSchema } from "shared";
-import SpaceModel from "models/SpaceModel";
-import { Query } from "mongoose";
-import getEnv from "env";
+import { Router } from 'express';
+import { transformRegex } from '@ptolemy2002/regex-utils';
+import {
+    GetSpacesByPropParams,
+    GetSpacesByPropQueryParamsInput,
+    GetSpacesByPropQueryParamsOutput,
+    GetSpacesByPropResponseBody,
+    interpretSpaceQueryProp,
+    SpaceQueryProp,
+    ZodGetSpacesQueryParamsSchema,
+    ZodSpaceQueryPropSchema,
+} from 'shared';
+import SpaceModel from 'models/SpaceModel';
+import getEnv from 'env';
 
 const router = Router();
 
-export async function getSpacesByProp(prop: SpaceQueryProp, queryString: string, {
-    limit,
-    offset=0,
-    caseSensitive=false,
-    accentSensitive=false,
-    matchWhole=false,
-}: GetSpacesByPropQueryParamsOutput = {}) {
+export async function getSpacesByProp(
+    prop: SpaceQueryProp,
+    queryString: string,
+    {
+        limit,
+        offset = 0,
+        caseSensitive = false,
+        accentSensitive = false,
+        matchWhole = false,
+    }: GetSpacesByPropQueryParamsOutput = {},
+) {
     prop = interpretSpaceQueryProp(prop);
 
     const pattern = transformRegex(queryString, {
         caseInsensitive: !caseSensitive,
         accentInsensitive: !accentSensitive,
-        matchWhole
-    })
-    
+        matchWhole,
+    });
+
     let queryCondition;
-    if (prop === "known-as") {
+    if (prop === 'known-as') {
         queryCondition = {
-            $or: [
-                {name: pattern},
-                {aliases: pattern}
-            ]
-        }
+            $or: [{ name: pattern }, { aliases: pattern }],
+        };
     } else {
-        queryCondition = {[prop]: pattern};
+        queryCondition = { [prop]: pattern };
     }
 
     const query = SpaceModel.find(queryCondition);
@@ -42,11 +51,11 @@ export async function getSpacesByProp(prop: SpaceQueryProp, queryString: string,
 
 router.get<
     // Path
-    "/get/by-prop/:prop/:query",
+    '/get/by-prop/:prop/:query',
     // URL Parameters
     GetSpacesByPropParams,
     // Response body
-    GetSpacesResponseBody,
+    GetSpacesByPropResponseBody,
     // Request body
     {},
     // Query Parameters
@@ -161,27 +170,37 @@ router.get<
         #swagger.end
     */
     const env = getEnv();
-    const help = env.getDocsURL(1) + "/#/Spaces/get_api_v1_spaces_get_by_prop__prop___query_";
+    const help =
+        env.getDocsURL(1) +
+        '/#/Spaces/get_api_v1_spaces_get_by_prop__prop___query_';
 
-    const {prop: _prop, query} = req.params;
-    const {success: propSuccess, error: propError, data: prop} = ZodSpaceQueryPropSchema.safeParse(_prop);
+    const { prop: _prop, query } = req.params;
+    const {
+        success: propSuccess,
+        error: propError,
+        data: prop,
+    } = ZodSpaceQueryPropSchema.safeParse(_prop);
 
     if (!propSuccess) {
         res.status(400).json({
             ok: false,
-            code: "BAD_URL",
-            message: propError.errors[0].message
+            code: 'BAD_URL',
+            message: propError.errors[0].message,
         });
         return;
     }
 
-    const {success, error, data: queryData} = ZodGetSpacesQueryParamsSchema.safeParse(req.query);
+    const {
+        success,
+        error,
+        data: queryData,
+    } = ZodGetSpacesQueryParamsSchema.safeParse(req.query);
     if (!success) {
         res.status(400).json({
             ok: false,
-            code: "BAD_QUERY",
+            code: 'BAD_QUERY',
             message: error.errors[0].message,
-            help
+            help,
         });
         return;
     }
@@ -190,17 +209,17 @@ router.get<
     if (spaces.length === 0) {
         res.status(404).json({
             ok: false,
-            code: "NOT_FOUND",
-            message: "No matching spaces found.",
-            help
+            code: 'NOT_FOUND',
+            message: 'No matching spaces found.',
+            help,
         });
         return;
     }
 
     res.json({
         ok: true,
-        spaces: spaces.map(s => s.toClientJSON()),
-        help
+        spaces: spaces.map((s) => s.toClientJSON()),
+        help,
     });
 });
 

@@ -8,11 +8,19 @@ export const ZodGetSpacesByPropParamsSchema = z.object({
 });
 
 export const ZodGetSpacesQueryParamsSchema = z.object({
-    limit: z.coerce.number().int().optional(),
-    l: z.coerce.number().int().optional(),
+    limit: z.coerce.number().int()
+        .min(1, "limit must be non-negative and non-zero")
+        .optional(),
+    l: z.coerce.number().int()
+        .min(1, "limit must be non-negative and non-zero")
+        .optional(),
 
-    offset: z.coerce.number().int().optional(),
-    o: z.coerce.number().int().optional()
+    offset: z.coerce.number().int()
+        .min(0, "offset must be non-negative")
+        .optional(),
+    o: z.coerce.number().int()
+        .min(0, "offset must be non-negative")
+        .optional()
 }).transform((data) => {
     if (data.l) data.limit = data.l;
     if (data.o) data.offset = data.o;

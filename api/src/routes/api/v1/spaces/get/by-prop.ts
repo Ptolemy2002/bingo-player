@@ -6,9 +6,9 @@ import {
     GetSpacesByPropQueryParamsOutput,
     GetSpacesByPropResponseBody,
     interpretSpaceQueryProp,
-    SpaceQueryProp,
+    SpaceQueryPropNonId,
+    ZodGetSpacesByPropParamsSchema,
     ZodGetSpacesQueryParamsSchema,
-    ZodSpaceQueryPropSchema,
 } from 'shared';
 import SpaceModel from 'models/SpaceModel';
 import getEnv from 'env';
@@ -16,7 +16,7 @@ import getEnv from 'env';
 const router = Router();
 
 export async function getSpacesByProp(
-    prop: SpaceQueryProp,
+    prop: SpaceQueryPropNonId,
     queryString: string,
     {
         limit,
@@ -26,7 +26,12 @@ export async function getSpacesByProp(
         matchWhole = false,
     }: GetSpacesByPropQueryParamsOutput = {},
 ) {
-    prop = interpretSpaceQueryProp(prop);
+    // We should not get an id here, as the type of SpaceQueryPropNonId
+    // omits any fields that map to "_id". The reason this is necessary
+    // is because mongoose will otherwise attempt to convert the pattern
+    // to an ObjectId, which will fail, as RegExp cannot be used directly
+    // as a string.
+    prop = interpretSpaceQueryProp(prop) as SpaceQueryPropNonId;
 
     const pattern = transformRegex(queryString, {
         caseInsensitive: !caseSensitive,
@@ -174,22 +179,22 @@ router.get<
         env.getDocsURL(1) +
         '/#/Spaces/get_api_v1_spaces_get_by_prop__prop___query_';
 
-    const { prop: _prop, query } = req.params;
     const {
-        success: propSuccess,
-        error: propError,
-        data: prop,
-    } = ZodSpaceQueryPropSchema.safeParse(_prop);
+        success: paramsSuccess,
+        error: paramsError,
+        data: propData,
+    } = ZodGetSpacesByPropParamsSchema.safeParse(req.params);
 
-    if (!propSuccess) {
+    if (!paramsSuccess) {
         res.status(400).json({
             ok: false,
             code: 'BAD_URL',
-            message: propError.errors[0].message,
+            message: paramsError.errors[0].message,
         });
         return;
     }
 
+    const { prop, query } = propData;
     const {
         success,
         error,

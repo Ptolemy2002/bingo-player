@@ -148,7 +148,7 @@
           {
             "name": "offset",
             "in": "query",
-            "description": "Number of spaces to skip.",
+            "description": "Number of spaces to skip. Default is 0.",
             "required": false,
             "schema": {
               "type": "number"

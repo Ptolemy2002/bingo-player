@@ -13,4 +13,8 @@ export type GetSpacesByPropResponseBody = GetSpacesResponseBody; // unchanged fo
 
 export type CountSpacesResponseBody = SuccessResponse<{count: number}> | ErrorResponse;
 
+// For now, counting is a very similar operation to getting, so we can reuse types.
+export type CountSpacesByPropParams = GetSpacesByPropParams;
+export type CountSpacesByPropResponseBody = CountSpacesResponseBody;
+
 export type ListPropResponseBody = SuccessResponse<{values: (string | null)[]}> | ErrorResponse;

@@ -47,6 +47,10 @@ export const ZodGetSpacesByPropQueryParamsSchema = z.intersection(
 );
 // We can't directly get the shape of an intersection.
 
+// For now, counting is a very similar operation to getting, so we can reuse schemas.
+export const ZodCountSpacesByPropParamsSchema = ZodGetSpacesByPropParamsSchema;
+export const ZodCountSpacesByPropQueryParamsSchema = ZodGetSpacesByPropQueryParamsSchema;
+
 export const ZodListPropParamsSchema = z.object({
     prop: ZodSpaceQueryPropSchema
 });
@@ -56,5 +60,8 @@ export type GetSpacesQueryParams = z.input<typeof ZodGetSpacesQueryParamsSchema>
 
 export type GetSpacesByPropQueryParamsInput = z.input<typeof ZodGetSpacesByPropQueryParamsSchema>;
 export type GetSpacesByPropQueryParamsOutput = z.infer<typeof ZodGetSpacesByPropQueryParamsSchema>;
+
+export type CountSpacesByPropQueryParamsInput = z.input<typeof ZodCountSpacesByPropQueryParamsSchema>;
+export type CountSpacesByPropQueryParamsOutput = z.infer<typeof ZodCountSpacesByPropQueryParamsSchema>;
 
 export type ListPropParams = z.input<typeof ZodListPropParamsSchema>;

@@ -777,6 +777,242 @@
           }
         }
       }
+    },
+    "/api/v1/spaces/count/by-prop/{prop}/{query}": {
+      "get": {
+        "tags": [
+          "Spaces"
+        ],
+        "description": "Get the number of spaces in the database matching the given query.",
+        "parameters": [
+          {
+            "name": "prop",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/SpaceQueryPropNonId"
+            },
+            "description": "The space query prop to search.",
+            "type": "string"
+          },
+          {
+            "name": "query",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The query string to search for."
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Maximum number of spaces to count. By default, all spaces are counted.",
+            "required": false,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "l",
+            "in": "query",
+            "description": "Shorthand for limit.",
+            "required": false,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "Number of spaces to skip. Default is 0.",
+            "required": false,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "o",
+            "in": "query",
+            "description": "Shorthand for offset.",
+            "required": false,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "caseSensitive",
+            "in": "query",
+            "description": "Whether to match in a case-sensitive manner. Default is false.",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "cs",
+            "in": "query",
+            "description": "Shorthand for caseSensitive.",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "accentSensitive",
+            "in": "query",
+            "description": "Whether to match accents. Default is false.",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "as",
+            "in": "query",
+            "description": "Shorthand for accentSensitive.",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "matchWhole",
+            "in": "query",
+            "description": "Whether to match the whole string. Default is false.",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "mw",
+            "in": "query",
+            "description": "Shorthand for matchWhole.",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Number of spaces found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ok": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "count": {
+                      "type": "number",
+                      "example": 42
+                    },
+                    "help": {
+                      "type": "string",
+                      "example": "https://example.com/docs"
+                    }
+                  },
+                  "required": [
+                    "ok",
+                    "count"
+                  ],
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ok": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "count": {
+                      "type": "number",
+                      "example": 42
+                    },
+                    "help": {
+                      "type": "string",
+                      "example": "https://example.com/docs"
+                    }
+                  },
+                  "required": [
+                    "ok",
+                    "count"
+                  ],
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "ok": false,
+                  "code": "BAD_INPUT",
+                  "message": "Invalid input.",
+                  "help": "https://example.com/docs"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No matching spaces found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "ok": false,
+                  "code": "NOT_FOUND",
+                  "message": "No matching spaces found.",
+                  "help": "http://example.com/docs"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "501": {
+            "description": "Not implemented.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "ok": false,
+                  "code": "NOT_IMPLEMENTED",
+                  "message": "This feature is not yet implemented.",
+                  "help": "https://example.com/docs"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {

@@ -1,21 +1,21 @@
-import { Router } from 'express';
 import { transformRegex } from '@ptolemy2002/regex-utils';
 import {
-    GetSpacesByPropParams,
-    GetSpacesByPropQueryParamsInput,
-    GetSpacesByPropQueryParamsOutput,
-    GetSpacesByPropResponseBody,
+    CountSpacesByPropParams,
+    CountSpacesByPropQueryParamsOutput,
+    CountSpacesByPropResponseBody,
     interpretSpaceQueryProp,
     SpaceQueryPropNonId,
-    ZodGetSpacesByPropParamsSchema,
-    ZodGetSpacesByPropQueryParamsSchema
+    ZodCountSpacesByPropParamsSchema,
+    ZodCountSpacesByPropQueryParamsSchema
 } from 'shared';
 import SpaceModel from 'models/SpaceModel';
+import { Router } from 'express';
+import { asyncErrorHandler } from '@ptolemy2002/express-utils';
 import getEnv from 'env';
 
 const router = Router();
 
-export async function getSpacesByProp(
+export async function countSpacesByProp(
     prop: SpaceQueryPropNonId,
     queryString: string,
     {
@@ -24,7 +24,7 @@ export async function getSpacesByProp(
         caseSensitive = false,
         accentSensitive = false,
         matchWhole = false,
-    }: GetSpacesByPropQueryParamsOutput = {},
+    }: CountSpacesByPropQueryParamsOutput = {},
 ) {
     // We should not get an id here, as the type of SpaceQueryPropNonId
     // omits any fields that map to "_id". The reason this is necessary
@@ -48,32 +48,29 @@ export async function getSpacesByProp(
         queryCondition = { [prop]: pattern };
     }
 
-    const query = SpaceModel.find(queryCondition);
+    const query = SpaceModel.countDocuments(queryCondition);
     if (limit) query.limit(limit);
     if (offset) query.skip(offset);
     return query.exec();
 }
-
 router.get<
     // Path
-    '/get/by-prop/:prop/:query',
+    "/count/by-prop/:prop/:query",
     // URL Parameters
-    GetSpacesByPropParams,
+    CountSpacesByPropParams,
     // Response body
-    GetSpacesByPropResponseBody,
+    CountSpacesByPropResponseBody,
     // Request body
     {},
     // Query Parameters
-    GetSpacesByPropQueryParamsInput
->('/get/by-prop/:prop/:query', async (req, res) => {
+    CountSpacesByPropQueryParamsOutput
+>('/count/by-prop/:prop/:query', asyncErrorHandler(async (req, res) => {
     /*
         #swagger.start
-        #swagger.path = '/api/v1/spaces/get/by-prop/{prop}/{query}'
+        #swagger.path = '/api/v1/spaces/count/by-prop/{prop}/{query}'
         #swagger.method = 'get'
-        #swagger.description = `
-            Get spaces by a given space query prop.
-            The spaces are returned as an array of CleanMongoSpace objects.
-        `
+        #swagger.description = 'Get the number of spaces in the database matching the given query.'
+
         #swagger.parameters['prop'] = {
             in: 'path',
             description: 'The space query prop to search.',
@@ -93,7 +90,7 @@ router.get<
 
         #swagger.parameters['limit'] = {
             in: 'query',
-            description: 'Maximum number of spaces to return. By default, all spaces are returned.',
+            description: 'Maximum number of spaces to count. By default, all spaces are counted.',
             required: false,
             type: 'number'
         }
@@ -162,28 +159,25 @@ router.get<
         }
 
         #swagger.responses[200] = {
-            description: "Spaces found",
+            description: "Number of spaces found",
             schema: {
                 $ok: true,
-                $spaces: [
-                    { $ref: "#/components/schemas/CleanMongoSpace" }
-                ],
+                $count: 42,
                 help: "https://example.com/docs"
             }
         }
-
         #swagger.end
     */
     const env = getEnv();
     const help =
         env.getDocsURL(1) +
-        '/#/Spaces/get_api_v1_spaces_get_by_prop__prop___query_';
+        '/#/Spaces/get_api_v1_spaces_count_by_prop__prop___query_';
 
     const {
         success: paramsSuccess,
         error: paramsError,
         data: propData,
-    } = ZodGetSpacesByPropParamsSchema.safeParse(req.params);
+    } = ZodCountSpacesByPropParamsSchema.safeParse(req.params);
 
     if (!paramsSuccess) {
         res.status(400).json({
@@ -199,7 +193,7 @@ router.get<
         success,
         error,
         data: queryData,
-    } = ZodGetSpacesByPropQueryParamsSchema.safeParse(req.query);
+    } = ZodCountSpacesByPropQueryParamsSchema.safeParse(req.query);
     if (!success) {
         res.status(400).json({
             ok: false,
@@ -210,23 +204,23 @@ router.get<
         return;
     }
 
-    const spaces = await getSpacesByProp(prop, query, queryData);
-    if (spaces.length === 0) {
+    const count = await countSpacesByProp(prop, query, queryData);
+    if (count === 0) {
         res.status(404).json({
             ok: false,
-            code: 'NOT_FOUND',
-            message: 'No matching spaces found.',
-            help,
+            code: "NOT_FOUND",
+            message: "No spaces found.",
+            help
         });
         return;
     }
 
     res.json({
         ok: true,
-        spaces: spaces.map((s) => s.toClientJSON()),
-        help,
+        count,
+        help
     });
-});
+}));
 
-const getSpacesByPropRouter = router;
-export default getSpacesByPropRouter;
+const countSpacesByPropRouter = router;
+export default countSpacesByPropRouter;

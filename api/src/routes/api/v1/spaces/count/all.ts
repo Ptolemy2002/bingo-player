@@ -4,7 +4,7 @@ import { Router } from "express";
 import SpaceModel from "models/SpaceModel";
 import { CountSpacesResponseBody } from "shared";
 
-const router = Router();
+export const router = Router();
 
 export async function countAllSpaces() {
     const count = await SpaceModel.countDocuments({});

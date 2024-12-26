@@ -2,14 +2,7 @@ import swaggerAutogen from 'swagger-autogen';
 import getEnv from '../env';
 import { stripWords } from '@ptolemy2002/js-utils';
 import {
-    SwaggerCleanMongoSpaceSchema,
-    SwaggerCleanSpaceSchema,
-    SwaggerErrorCodeSchema,
-    SwaggerErrorResponseSchema,
-    SwaggerMongoSpaceSchema,
-    SwaggerSpaceQueryPropNonIdSchema,
-    SwaggerSpaceQueryPropSchema,
-    SwaggerSpaceSchema
+    swaggerGenerator
 } from 'shared';
 const env = getEnv();
 
@@ -24,6 +17,7 @@ const baseUrl = stripWords(
 );
 console.log('Detected Swagger Base URL:', baseUrl);
 
+const generatedSchemas = swaggerGenerator.generateComponents().components?.schemas ?? {};
 const doc = {
     info: {
         version: '1.0.0',
@@ -36,28 +30,7 @@ const doc = {
     produces: ['application/json'],
 
     components: {
-        schemas: {
-            Space: SwaggerSpaceSchema,
-            CleanSpace: SwaggerCleanSpaceSchema,
-            MongoSpace: SwaggerMongoSpaceSchema,
-            CleanMongoSpace: SwaggerCleanMongoSpaceSchema,
-            SpaceQueryProp: SwaggerSpaceQueryPropSchema,
-            SpaceQueryPropNonId: SwaggerSpaceQueryPropNonIdSchema,
-            ErrorCode: SwaggerErrorCodeSchema
-        },
-
-        "@schemas": {
-            NullableStringArray: {
-                type: 'array',
-                items: {
-                    oneOf: [
-                        { type: 'string' },
-                        { type: 'null' },
-                    ]
-                }
-            },
-            ErrorResponse: SwaggerErrorResponseSchema
-        }
+        "@schemas": generatedSchemas
     },
 };
 

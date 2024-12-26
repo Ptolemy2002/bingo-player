@@ -157,62 +157,16 @@
         ],
         "responses": {
           "200": {
-            "description": "Spaces found",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "ok": {
-                      "type": "boolean",
-                      "example": true
-                    },
-                    "spaces": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/CleanMongoSpace"
-                      }
-                    },
-                    "help": {
-                      "type": "string",
-                      "example": "https://example.com/docs"
-                    }
-                  },
-                  "required": [
-                    "ok",
-                    "spaces"
-                  ],
-                  "xml": {
-                    "name": "main"
-                  }
+                  "$ref": "#/components/schemas/GetSpaces200ResponseBody"
                 }
               },
               "application/xml": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "ok": {
-                      "type": "boolean",
-                      "example": true
-                    },
-                    "spaces": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/CleanMongoSpace"
-                      }
-                    },
-                    "help": {
-                      "type": "string",
-                      "example": "https://example.com/docs"
-                    }
-                  },
-                  "required": [
-                    "ok",
-                    "spaces"
-                  ],
-                  "xml": {
-                    "name": "main"
-                  }
+                  "$ref": "#/components/schemas/GetSpaces200ResponseBody"
                 }
               }
             }
@@ -286,58 +240,16 @@
         "description": "Get the number of spaces in the database.",
         "responses": {
           "200": {
-            "description": "Number of spaces found",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "ok": {
-                      "type": "boolean",
-                      "example": true
-                    },
-                    "count": {
-                      "type": "number",
-                      "example": 42
-                    },
-                    "help": {
-                      "type": "string",
-                      "example": "https://example.com/docs"
-                    }
-                  },
-                  "required": [
-                    "ok",
-                    "count"
-                  ],
-                  "xml": {
-                    "name": "main"
-                  }
+                  "$ref": "#/components/schemas/CountSpaces200ResponseBody"
                 }
               },
               "application/xml": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "ok": {
-                      "type": "boolean",
-                      "example": true
-                    },
-                    "count": {
-                      "type": "number",
-                      "example": 42
-                    },
-                    "help": {
-                      "type": "string",
-                      "example": "https://example.com/docs"
-                    }
-                  },
-                  "required": [
-                    "ok",
-                    "count"
-                  ],
-                  "xml": {
-                    "name": "main"
-                  }
+                  "$ref": "#/components/schemas/CountSpaces200ResponseBody"
                 }
               }
             }
@@ -423,56 +335,16 @@
         ],
         "responses": {
           "200": {
-            "description": "List of values found",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "ok": {
-                      "type": "boolean",
-                      "example": true
-                    },
-                    "values": {
-                      "$ref": "#/components/schemas/NullableStringArray"
-                    },
-                    "help": {
-                      "type": "string",
-                      "example": "https://example.com/docs"
-                    }
-                  },
-                  "required": [
-                    "ok",
-                    "values"
-                  ],
-                  "xml": {
-                    "name": "main"
-                  }
+                  "$ref": "#/components/schemas/ListProp200ResponseBody"
                 }
               },
               "application/xml": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "ok": {
-                      "type": "boolean",
-                      "example": true
-                    },
-                    "values": {
-                      "$ref": "#/components/schemas/NullableStringArray"
-                    },
-                    "help": {
-                      "type": "string",
-                      "example": "https://example.com/docs"
-                    }
-                  },
-                  "required": [
-                    "ok",
-                    "values"
-                  ],
-                  "xml": {
-                    "name": "main"
-                  }
+                  "$ref": "#/components/schemas/ListProp200ResponseBody"
                 }
               }
             }
@@ -657,62 +529,16 @@
         ],
         "responses": {
           "200": {
-            "description": "Spaces found",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "ok": {
-                      "type": "boolean",
-                      "example": true
-                    },
-                    "spaces": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/CleanMongoSpace"
-                      }
-                    },
-                    "help": {
-                      "type": "string",
-                      "example": "https://example.com/docs"
-                    }
-                  },
-                  "required": [
-                    "ok",
-                    "spaces"
-                  ],
-                  "xml": {
-                    "name": "main"
-                  }
+                  "$ref": "#/components/schemas/GetSpacesByProp200ResponseBody"
                 }
               },
               "application/xml": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "ok": {
-                      "type": "boolean",
-                      "example": true
-                    },
-                    "spaces": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/CleanMongoSpace"
-                      }
-                    },
-                    "help": {
-                      "type": "string",
-                      "example": "https://example.com/docs"
-                    }
-                  },
-                  "required": [
-                    "ok",
-                    "spaces"
-                  ],
-                  "xml": {
-                    "name": "main"
-                  }
+                  "$ref": "#/components/schemas/GetSpacesByProp200ResponseBody"
                 }
               }
             }
@@ -897,58 +723,16 @@
         ],
         "responses": {
           "200": {
-            "description": "Number of spaces found",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "ok": {
-                      "type": "boolean",
-                      "example": true
-                    },
-                    "count": {
-                      "type": "number",
-                      "example": 42
-                    },
-                    "help": {
-                      "type": "string",
-                      "example": "https://example.com/docs"
-                    }
-                  },
-                  "required": [
-                    "ok",
-                    "count"
-                  ],
-                  "xml": {
-                    "name": "main"
-                  }
+                  "$ref": "#/components/schemas/CountSpacesByProp200ResponseBody"
                 }
               },
               "application/xml": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "ok": {
-                      "type": "boolean",
-                      "example": true
-                    },
-                    "count": {
-                      "type": "number",
-                      "example": 42
-                    },
-                    "help": {
-                      "type": "string",
-                      "example": "https://example.com/docs"
-                    }
-                  },
-                  "required": [
-                    "ok",
-                    "count"
-                  ],
-                  "xml": {
-                    "name": "main"
-                  }
+                  "$ref": "#/components/schemas/CountSpacesByProp200ResponseBody"
                 }
               }
             }
@@ -1017,229 +801,141 @@
   },
   "components": {
     "schemas": {
-      "Space": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "example": "abc123"
-          },
-          "name": {
-            "type": "string",
-            "example": "My Space"
-          },
-          "description": {
-            "type": "string",
-            "example": "This is a space"
-          },
-          "examples": {
-            "type": "array",
-            "example": [
-              "Example 1",
-              "Example 2"
-            ],
-            "items": {
-              "type": "string"
-            }
-          },
-          "aliases": {
-            "type": "array",
-            "example": [
-              "Alias 1",
-              "Alias 2"
-            ],
-            "items": {
-              "type": "string"
-            }
-          },
-          "tags": {
-            "type": "array",
-            "example": [
-              "tag-1",
-              "tag-2"
-            ],
-            "items": {
-              "type": "string"
-            }
-          }
-        },
-        "required": [
-          "id",
-          "name"
-        ],
-        "xml": {
-          "name": "Space"
-        }
-      },
       "CleanSpace": {
         "type": "object",
         "properties": {
           "id": {
             "type": "string",
+            "description": "The ID of the space.",
             "example": "abc123"
           },
           "name": {
             "type": "string",
+            "minLength": 1,
+            "description": "The name of the space.",
             "example": "My Space"
           },
           "description": {
-            "type": "string",
-            "example": "This is a space"
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "The description of the space.",
+            "example": "A space for my things."
           },
           "examples": {
             "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "default": [],
+            "description": "Examples of the space.",
             "example": [
               "Example 1",
               "Example 2"
-            ],
-            "items": {
-              "type": "string"
-            }
+            ]
           },
           "aliases": {
             "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "default": [],
+            "description": "Aliases for the space.",
             "example": [
               "Alias 1",
               "Alias 2"
-            ],
-            "items": {
-              "type": "string"
-            }
+            ]
           },
           "tags": {
             "type": "array",
-            "example": [
-              "tag-1",
-              "tag-2"
-            ],
             "items": {
-              "type": "string"
-            }
+              "type": "string",
+              "pattern": "^[a-zA-Z0-9_-]+$"
+            },
+            "default": [],
+            "description": "Tags for the space.",
+            "example": [
+              "tag1",
+              "tag2"
+            ]
           }
         },
         "required": [
           "id",
-          "name",
-          "description",
-          "examples",
-          "aliases",
-          "tags"
-        ],
-        "xml": {
-          "name": "CleanSpace"
-        }
-      },
-      "MongoSpace": {
-        "type": "object",
-        "properties": {
-          "_id": {
-            "type": "string",
-            "example": "abc123"
-          },
-          "name": {
-            "type": "string",
-            "example": "My Space"
-          },
-          "description": {
-            "type": "string",
-            "example": "This is a space"
-          },
-          "examples": {
-            "type": "array",
-            "example": [
-              "Example 1",
-              "Example 2"
-            ],
-            "items": {
-              "type": "string"
-            }
-          },
-          "aliases": {
-            "type": "array",
-            "example": [
-              "Alias 1",
-              "Alias 2"
-            ],
-            "items": {
-              "type": "string"
-            }
-          },
-          "tags": {
-            "type": "array",
-            "example": [
-              "tag-1",
-              "tag-2"
-            ],
-            "items": {
-              "type": "string"
-            }
-          }
-        },
-        "required": [
-          "_id",
           "name"
         ],
-        "xml": {
-          "name": "MongoSpace"
-        }
+        "description": "A space for a Bingo Board."
       },
       "CleanMongoSpace": {
         "type": "object",
         "properties": {
-          "_id": {
-            "type": "string",
-            "example": "abc123"
-          },
           "name": {
             "type": "string",
+            "minLength": 1,
+            "description": "The name of the space.",
             "example": "My Space"
           },
           "description": {
-            "type": "string",
-            "example": "This is a space"
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "The description of the space.",
+            "example": "A space for my things."
           },
           "examples": {
             "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "default": [],
+            "description": "Examples of the space.",
             "example": [
               "Example 1",
               "Example 2"
-            ],
-            "items": {
-              "type": "string"
-            }
+            ]
           },
           "aliases": {
             "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "default": [],
+            "description": "Aliases for the space.",
             "example": [
               "Alias 1",
               "Alias 2"
-            ],
-            "items": {
-              "type": "string"
-            }
+            ]
           },
           "tags": {
             "type": "array",
-            "example": [
-              "tag-1",
-              "tag-2"
-            ],
             "items": {
-              "type": "string"
-            }
+              "type": "string",
+              "pattern": "^[a-zA-Z0-9_-]+$"
+            },
+            "default": [],
+            "description": "Tags for the space.",
+            "example": [
+              "tag1",
+              "tag2"
+            ]
+          },
+          "_id": {
+            "type": "string",
+            "description": "The ID of the space.",
+            "example": "abc123"
           }
         },
         "required": [
-          "_id",
           "name",
-          "description",
-          "examples",
-          "aliases",
-          "tags"
+          "_id"
         ],
-        "xml": {
-          "name": "CleanMongoSpace"
-        }
+        "description": "The MongoDB representation of a Space."
       },
       "SpaceQueryProp": {
         "type": "string",
@@ -1256,9 +952,7 @@
           "tag",
           "example"
         ],
-        "xml": {
-          "name": "SpaceQueryProp"
-        }
+        "description": "A property of a space that can be queried."
       },
       "SpaceQueryPropNonId": {
         "type": "string",
@@ -1272,10 +966,7 @@
           "alias",
           "tag",
           "example"
-        ],
-        "xml": {
-          "name": "SpaceQueryPropNonId"
-        }
+        ]
       },
       "ErrorCode": {
         "type": "string",
@@ -1289,49 +980,31 @@
           "NOT_FOUND",
           "NOT_IMPLEMENTED"
         ],
-        "xml": {
-          "name": "ErrorCode"
-        }
-      },
-      "NullableStringArray": {
-        "type": "array",
-        "items": {
-          "oneOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        }
+        "description": "An error code that may be returned by the server."
       },
       "ErrorResponse": {
         "type": "object",
         "properties": {
           "ok": {
             "type": "boolean",
-            "required": true,
             "enum": [
               false
-            ]
+            ],
+            "description": "Whether the operation was successful.",
+            "example": false
           },
           "code": {
-            "type": "string",
-            "required": true,
-            "enum": [
-              "UNKNOWN",
-              "BAD_INPUT",
-              "BAD_URL",
-              "BAD_QUERY",
-              "BAD_BODY",
-              "INTERNAL",
-              "NOT_FOUND",
-              "NOT_IMPLEMENTED"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ErrorCode"
+              },
+              {
+                "description": "The error code."
+              }
             ]
           },
           "message": {
-            "oneOf": [
+            "anyOf": [
               {
                 "type": "string"
               },
@@ -1345,20 +1018,579 @@
                 "type": "null"
               }
             ],
-            "required": true
+            "description": "A message describing the error.",
+            "example": "The parameters provided were invalid."
           },
           "help": {
-            "oneOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "required": false
+            "type": "string",
+            "description": "A URL to the docs page that may help the user resolve the error.",
+            "example": "https://example.com/docs"
           }
-        }
+        },
+        "required": [
+          "ok",
+          "code",
+          "message"
+        ],
+        "description": "An error response from the server."
+      },
+      "GetSpaces200ResponseBody": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "spaces": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/CleanMongoSpace"
+                },
+                "description": "The spaces that match the query."
+              }
+            },
+            "required": [
+              "spaces"
+            ],
+            "description": "The response from getting spaces."
+          },
+          {
+            "type": "object",
+            "properties": {
+              "ok": {
+                "type": "boolean",
+                "enum": [
+                  true
+                ],
+                "description": "Whether the operation was successful.",
+                "example": true
+              },
+              "help": {
+                "type": "string",
+                "description": "A URL to the docs page that may help the user understand the response.",
+                "example": "https://example.com/docs"
+              }
+            },
+            "required": [
+              "ok"
+            ]
+          }
+        ]
+      },
+      "GetSpacesResponseBody": {
+        "anyOf": [
+          {
+            "$ref": "#/components/schemas/GetSpaces200ResponseBody"
+          },
+          {
+            "$ref": "#/components/schemas/ErrorResponse"
+          }
+        ]
+      },
+      "GetSpacesQueryParams": {
+        "type": "object",
+        "properties": {
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "The maximum number of spaces to return. Must be a positive integer and non-zero.",
+            "example": 10
+          },
+          "l": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "Shorthand for limit.",
+            "example": 10
+          },
+          "offset": {
+            "type": "integer",
+            "exclusiveMinimum": 0,
+            "default": 0,
+            "description": "The number of spaces to skip before returning results. Must be a non-negative integer."
+          },
+          "o": {
+            "type": "integer",
+            "exclusiveMinimum": 0,
+            "default": 0,
+            "description": "Shorthand for offset."
+          }
+        },
+        "description": "Query parameters for getting all spaces."
+      },
+      "GetSpacesByPropParams": {
+        "type": "object",
+        "properties": {
+          "prop": {
+            "$ref": "#/components/schemas/SpaceQueryPropNonId"
+          },
+          "query": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "prop",
+          "query"
+        ],
+        "description": "Parameters for getting spaces filtered by a property value."
+      },
+      "GetSpacesByPropQueryParams": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/GetSpacesQueryParams"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "caseSensitive": {
+                "type": "string",
+                "enum": [
+                  "true",
+                  "false",
+                  "t",
+                  "f",
+                  "yes",
+                  "no",
+                  "y",
+                  "n",
+                  "1",
+                  "0",
+                  "on",
+                  "off"
+                ],
+                "default": "f",
+                "description": "Whether to match the query case-sensitively. False if not provided."
+              },
+              "cs": {
+                "type": "string",
+                "enum": [
+                  "true",
+                  "false",
+                  "t",
+                  "f",
+                  "yes",
+                  "no",
+                  "y",
+                  "n",
+                  "1",
+                  "0",
+                  "on",
+                  "off"
+                ],
+                "default": "f",
+                "description": "Shorthand for caseSensitive."
+              },
+              "accentSensitive": {
+                "type": "string",
+                "enum": [
+                  "true",
+                  "false",
+                  "t",
+                  "f",
+                  "yes",
+                  "no",
+                  "y",
+                  "n",
+                  "1",
+                  "0",
+                  "on",
+                  "off"
+                ],
+                "default": "f",
+                "description": "Whether to match the query accent-sensitively. False if not provided."
+              },
+              "as": {
+                "type": "string",
+                "enum": [
+                  "true",
+                  "false",
+                  "t",
+                  "f",
+                  "yes",
+                  "no",
+                  "y",
+                  "n",
+                  "1",
+                  "0",
+                  "on",
+                  "off"
+                ],
+                "default": "f",
+                "description": "Shorthand for accentSensitive."
+              },
+              "matchWhole": {
+                "type": "string",
+                "enum": [
+                  "true",
+                  "false",
+                  "t",
+                  "f",
+                  "yes",
+                  "no",
+                  "y",
+                  "n",
+                  "1",
+                  "0",
+                  "on",
+                  "off"
+                ],
+                "default": "f",
+                "description": "Whether to match the query as the whole string. False if not provided."
+              },
+              "mw": {
+                "type": "string",
+                "enum": [
+                  "true",
+                  "false",
+                  "t",
+                  "f",
+                  "yes",
+                  "no",
+                  "y",
+                  "n",
+                  "1",
+                  "0",
+                  "on",
+                  "off"
+                ],
+                "default": "f",
+                "description": "Shorthand for matchWhole."
+              }
+            }
+          }
+        ],
+        "description": "Query parameters for getting spaces filtered by a property value."
+      },
+      "GetSpacesByProp200ResponseBody": {
+        "anyOf": [
+          {
+            "$ref": "#/components/schemas/GetSpaces200ResponseBody"
+          },
+          {
+            "$ref": "#/components/schemas/ErrorResponse"
+          }
+        ]
+      },
+      "GetSpacesByPropResponseBody": {
+        "anyOf": [
+          {
+            "$ref": "#/components/schemas/GetSpaces200ResponseBody"
+          },
+          {
+            "$ref": "#/components/schemas/ErrorResponse"
+          }
+        ]
+      },
+      "CountSpaces200ResponseBody": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "count": {
+                "type": "number",
+                "minimum": 0,
+                "description": "The number of spaces that match the query."
+              }
+            },
+            "required": [
+              "count"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "ok": {
+                "type": "boolean",
+                "enum": [
+                  true
+                ],
+                "description": "Whether the operation was successful.",
+                "example": true
+              },
+              "help": {
+                "type": "string",
+                "description": "A URL to the docs page that may help the user understand the response.",
+                "example": "https://example.com/docs"
+              }
+            },
+            "required": [
+              "ok"
+            ]
+          }
+        ],
+        "description": "The response from counting spaces."
+      },
+      "CountSpacesResponseBody": {
+        "anyOf": [
+          {
+            "$ref": "#/components/schemas/CountSpaces200ResponseBody"
+          },
+          {
+            "$ref": "#/components/schemas/ErrorResponse"
+          }
+        ]
+      },
+      "CountSpacesByProp200ResponseBody": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "count": {
+                "type": "number",
+                "minimum": 0,
+                "description": "The number of spaces that match the query."
+              }
+            },
+            "required": [
+              "count"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "ok": {
+                "type": "boolean",
+                "enum": [
+                  true
+                ],
+                "description": "Whether the operation was successful.",
+                "example": true
+              },
+              "help": {
+                "type": "string",
+                "description": "A URL to the docs page that may help the user understand the response.",
+                "example": "https://example.com/docs"
+              }
+            },
+            "required": [
+              "ok"
+            ]
+          }
+        ],
+        "description": "The response from counting spaces."
+      },
+      "CountSpacesByPropResponseBody": {
+        "anyOf": [
+          {
+            "$ref": "#/components/schemas/CountSpaces200ResponseBody"
+          },
+          {
+            "$ref": "#/components/schemas/ErrorResponse"
+          }
+        ]
+      },
+      "CountSpacesByPropParams": {
+        "type": "object",
+        "properties": {
+          "prop": {
+            "$ref": "#/components/schemas/SpaceQueryPropNonId"
+          },
+          "query": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "prop",
+          "query"
+        ],
+        "description": "Parameters for getting spaces filtered by a property value."
+      },
+      "CountSpacesByPropQueryParams": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/GetSpacesQueryParams"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "caseSensitive": {
+                "type": "string",
+                "enum": [
+                  "true",
+                  "false",
+                  "t",
+                  "f",
+                  "yes",
+                  "no",
+                  "y",
+                  "n",
+                  "1",
+                  "0",
+                  "on",
+                  "off"
+                ],
+                "default": "f",
+                "description": "Whether to match the query case-sensitively. False if not provided."
+              },
+              "cs": {
+                "type": "string",
+                "enum": [
+                  "true",
+                  "false",
+                  "t",
+                  "f",
+                  "yes",
+                  "no",
+                  "y",
+                  "n",
+                  "1",
+                  "0",
+                  "on",
+                  "off"
+                ],
+                "default": "f",
+                "description": "Shorthand for caseSensitive."
+              },
+              "accentSensitive": {
+                "type": "string",
+                "enum": [
+                  "true",
+                  "false",
+                  "t",
+                  "f",
+                  "yes",
+                  "no",
+                  "y",
+                  "n",
+                  "1",
+                  "0",
+                  "on",
+                  "off"
+                ],
+                "default": "f",
+                "description": "Whether to match the query accent-sensitively. False if not provided."
+              },
+              "as": {
+                "type": "string",
+                "enum": [
+                  "true",
+                  "false",
+                  "t",
+                  "f",
+                  "yes",
+                  "no",
+                  "y",
+                  "n",
+                  "1",
+                  "0",
+                  "on",
+                  "off"
+                ],
+                "default": "f",
+                "description": "Shorthand for accentSensitive."
+              },
+              "matchWhole": {
+                "type": "string",
+                "enum": [
+                  "true",
+                  "false",
+                  "t",
+                  "f",
+                  "yes",
+                  "no",
+                  "y",
+                  "n",
+                  "1",
+                  "0",
+                  "on",
+                  "off"
+                ],
+                "default": "f",
+                "description": "Whether to match the query as the whole string. False if not provided."
+              },
+              "mw": {
+                "type": "string",
+                "enum": [
+                  "true",
+                  "false",
+                  "t",
+                  "f",
+                  "yes",
+                  "no",
+                  "y",
+                  "n",
+                  "1",
+                  "0",
+                  "on",
+                  "off"
+                ],
+                "default": "f",
+                "description": "Shorthand for matchWhole."
+              }
+            }
+          }
+        ],
+        "description": "Query parameters for getting spaces filtered by a property value."
+      },
+      "ListPropParams": {
+        "type": "object",
+        "properties": {
+          "prop": {
+            "$ref": "#/components/schemas/SpaceQueryProp"
+          }
+        },
+        "required": [
+          "prop"
+        ],
+        "description": "Parameters for listing all values of a property."
+      },
+      "ListProp200ResponseBody": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "values": {
+                "type": "array",
+                "items": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "description": "The values of the property."
+              }
+            },
+            "required": [
+              "values"
+            ],
+            "description": "List of values found"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "ok": {
+                "type": "boolean",
+                "enum": [
+                  true
+                ],
+                "description": "Whether the operation was successful.",
+                "example": true
+              },
+              "help": {
+                "type": "string",
+                "description": "A URL to the docs page that may help the user understand the response.",
+                "example": "https://example.com/docs"
+              }
+            },
+            "required": [
+              "ok"
+            ]
+          }
+        ]
+      },
+      "ListPropResponseBody": {
+        "anyOf": [
+          {
+            "$ref": "#/components/schemas/ListProp200ResponseBody"
+          },
+          {
+            "$ref": "#/components/schemas/ErrorResponse"
+          }
+        ]
       }
     }
   }

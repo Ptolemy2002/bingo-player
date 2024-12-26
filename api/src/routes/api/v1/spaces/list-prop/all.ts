@@ -56,11 +56,8 @@ router.get<
             }
         }
         #swagger.responses[200] = {
-            description: "List of values found",
             schema: {
-                $ok: true,
-                $values: { $ref: "#/components/schemas/NullableStringArray" },
-                help: "https://example.com/docs"
+                $ref: "#/components/schemas/ListProp200ResponseBody"
             }
         }
         #swagger.end

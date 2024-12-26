@@ -5,7 +5,7 @@ import {
     GetSpacesByPropQueryParamsInput,
     GetSpacesByPropQueryParamsOutput,
     GetSpacesByPropResponseBody,
-    interpretSpaceQueryProp,
+    interpretSpaceQueryPropNonId,
     SpaceQueryPropNonId,
     ZodGetSpacesByPropParamsSchema,
     ZodGetSpacesByPropQueryParamsSchema
@@ -31,7 +31,7 @@ export async function getSpacesByProp(
     // is because mongoose will otherwise attempt to convert the pattern
     // to an ObjectId, which will fail, as RegExp cannot be used directly
     // as a string.
-    prop = interpretSpaceQueryProp(prop) as SpaceQueryPropNonId;
+    prop = interpretSpaceQueryPropNonId(prop);
 
     const pattern = transformRegex(queryString, {
         caseInsensitive: !caseSensitive,
@@ -162,13 +162,8 @@ router.get<
         }
 
         #swagger.responses[200] = {
-            description: "Spaces found",
             schema: {
-                $ok: true,
-                $spaces: [
-                    { $ref: "#/components/schemas/CleanMongoSpace" }
-                ],
-                help: "https://example.com/docs"
+                $ref: "#/components/schemas/GetSpacesByProp200ResponseBody"
             }
         }
 

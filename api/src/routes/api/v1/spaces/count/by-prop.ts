@@ -3,7 +3,7 @@ import {
     CountSpacesByPropParams,
     CountSpacesByPropQueryParamsOutput,
     CountSpacesByPropResponseBody,
-    interpretSpaceQueryProp,
+    interpretSpaceQueryPropNonId,
     SpaceQueryPropNonId,
     ZodCountSpacesByPropParamsSchema,
     ZodCountSpacesByPropQueryParamsSchema
@@ -31,7 +31,7 @@ export async function countSpacesByProp(
     // is because mongoose will otherwise attempt to convert the pattern
     // to an ObjectId, which will fail, as RegExp cannot be used directly
     // as a string.
-    prop = interpretSpaceQueryProp(prop) as SpaceQueryPropNonId;
+    prop = interpretSpaceQueryPropNonId(prop);
 
     const pattern = transformRegex(queryString, {
         caseInsensitive: !caseSensitive,
@@ -159,11 +159,8 @@ router.get<
         }
 
         #swagger.responses[200] = {
-            description: "Number of spaces found",
             schema: {
-                $ok: true,
-                $count: 42,
-                help: "https://example.com/docs"
+                $ref: "#/components/schemas/CountSpacesByProp200ResponseBody"
             }
         }
         #swagger.end

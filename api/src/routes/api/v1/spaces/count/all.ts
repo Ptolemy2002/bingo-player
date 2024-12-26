@@ -30,11 +30,8 @@ router.get<
         #swagger.description = 'Get the number of spaces in the database.'
 
         #swagger.responses[200] = {
-            description: "Number of spaces found",
             schema: {
-                $ok: true,
-                $count: 42,
-                help: "https://example.com/docs"
+                $ref: "#/components/schemas/CountSpaces200ResponseBody"
             }
         }
         #swagger.end

@@ -47,13 +47,8 @@ router.get<
         }
 
         #swagger.responses[200] = {
-            description: "Spaces found",
             schema: {
-                $ok: true,
-                $spaces: [
-                    { $ref: "#/components/schemas/CleanMongoSpace" }
-                ],
-                help: "https://example.com/docs"
+                $ref: "#/components/schemas/GetSpaces200ResponseBody"
             }
         }
         #swagger.end

@@ -1,7 +1,14 @@
-import { CleanMongoSpace, SpaceQueryProp, ZodSpaceSchema, ZodMongoSpaceSchema, Space, CleanSpace, MongoSpace} from "./Zod";
+import { CleanMongoSpace, SpaceQueryProp, ZodSpaceSchema, ZodMongoSpaceSchema, Space, CleanSpace, MongoSpace, SpaceQueryPropNonId} from "./Zod";
 
 export function interpretSpaceQueryProp(prop: SpaceQueryProp): (keyof CleanMongoSpace) | "known-as" {
     if (prop === "id") prop = "_id";
+    if (prop === "tag") prop = "tags";
+    if (prop === "alias") prop = "aliases";
+    if (prop === "example") prop = "examples";
+    return prop;
+}
+
+export function interpretSpaceQueryPropNonId(prop: SpaceQueryPropNonId): (Exclude<keyof CleanMongoSpace, "id" | "_id">) | "known-as" {
     if (prop === "tag") prop = "tags";
     if (prop === "alias") prop = "aliases";
     if (prop === "example") prop = "examples";

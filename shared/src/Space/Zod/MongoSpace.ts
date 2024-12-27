@@ -4,7 +4,7 @@ import { ZodSpaceSchema } from "./Space";
 import { swaggerRegistry } from "../../Swagger";
 
 export const ZodMongoSpaceSchema = swaggerRegistry.register(
-    "CleanMongoSpace",
+    "MongoSpace",
     ZodSpaceSchema.omit({ id: true })
     .merge(z.object({
         _id: z.string()

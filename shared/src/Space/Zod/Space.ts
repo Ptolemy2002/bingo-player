@@ -2,7 +2,7 @@ import { swaggerRegistry } from "../../Swagger";
 import { z } from "zod";
 
 export const ZodSpaceSchema = swaggerRegistry.register(
-    "CleanSpace",
+    "Space",
     z.object({
         id: z.string()
             .openapi({

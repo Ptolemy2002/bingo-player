@@ -7,7 +7,24 @@
     "outDir": "./dist",
     "skipLibCheck": true,
     "strictNullChecks": true,
-    "maxNodeModuleJsDepth": 0
+    "maxNodeModuleJsDepth": 0,
+    "esModuleInterop": true,
+
+    "paths":{
+      "src/*":[
+        "./src/*"
+      ]
+    },
+
+    "plugins":[
+      {
+         "transform":"typescript-transform-paths"
+      },
+      {
+         "transform":"typescript-transform-paths",
+         "afterDeclarations": true
+      }
+   ]
   },
   "include": [
     "src",

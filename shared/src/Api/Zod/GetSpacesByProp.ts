@@ -1,9 +1,9 @@
-import { ZodSpaceQueryPropNonIdSchema } from '../../Space';
+import { ZodSpaceQueryPropNonIdSchema } from 'src/Space';
 import {
     ZodGetSpacesQueryParamsSchema,
     ZodGetSpacesResponseBodySchema,
 } from './GetSpaces';
-import { swaggerRegistry } from '../../Swagger';
+import { swaggerRegistry } from 'src/Swagger';
 import { z } from 'zod';
 import {
     AccentSensitiveQueryParamSchema,

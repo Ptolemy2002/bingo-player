@@ -1,6 +1,6 @@
-import { swaggerRegistry } from "../../Swagger";
+import { swaggerRegistry } from "src/Swagger";
 import { z } from "zod";
-import { ErrorCodeEnum } from "../Other";
+import { ErrorCodeEnum } from "src/Api/Other";
 
 export const ZodErrorCodeSchema = swaggerRegistry.register(
     "ErrorCode",

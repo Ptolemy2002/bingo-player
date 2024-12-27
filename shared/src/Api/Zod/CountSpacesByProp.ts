@@ -1,4 +1,4 @@
-import { swaggerRegistry } from "../../Swagger";
+import { swaggerRegistry } from "src/Swagger";
 import { ZodGetSpacesByPropParamsSchema, ZodGetSpacesByPropQueryParamsSchema } from "./GetSpacesByProp";
 import { ZodCountSpacesResponseBody, ZodCountSpaces200ResponseBody } from "./CountSpaces";
 import { z } from "zod";

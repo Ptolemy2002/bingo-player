@@ -1,5 +1,5 @@
 import { OpenApiGeneratorV31 } from "@asteasolutions/zod-to-openapi";
-import { swaggerRegistry } from "./Swagger";
+import { swaggerRegistry } from "src/Swagger";
 
 export * from "./Swagger";
 export * from "./Space";

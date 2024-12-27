@@ -1,4 +1,4 @@
-import { swaggerRegistry } from "../../Swagger";
+import { swaggerRegistry } from "src/Swagger";
 import { z } from "zod";
 import { ZodErrorCodeSchema } from "./ErrorCode";
 

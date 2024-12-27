@@ -1,7 +1,7 @@
 import { Types } from "mongoose";
 import { z } from "zod";
 import { ZodSpaceSchema } from "./Space";
-import { swaggerRegistry } from "../../Swagger";
+import { swaggerRegistry } from "src/Swagger";
 
 export const ZodMongoSpaceSchema = swaggerRegistry.register(
     "MongoSpace",

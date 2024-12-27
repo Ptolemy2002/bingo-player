@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { swaggerRegistry } from "../../Swagger";
+import { swaggerRegistry } from "src/Swagger";
 import { zodSuccessResponseSchema } from "./SuccessResponse";
 import { ZodErrorResponseSchema } from "./ErrorResponse";
 

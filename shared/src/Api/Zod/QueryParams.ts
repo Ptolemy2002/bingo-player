@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { swaggerRegistry } from "../../Swagger";
+import { swaggerRegistry } from "src/Swagger";
 import { ZodCoercedBoolean } from "@ptolemy2002/regex-utils";
 
 export const LimitQueryParamSchema = swaggerRegistry.registerParameter(

@@ -1,6 +1,6 @@
-import { swaggerRegistry } from "../../Swagger";
+import { swaggerRegistry } from "src/Swagger";
 import { z } from "zod";
-import { ZodMongoSpaceSchema } from "../../Space";
+import { ZodMongoSpaceSchema } from "src/Space";
 import { ZodErrorResponseSchema } from "./ErrorResponse";
 import { zodSuccessResponseSchema } from "./SuccessResponse";
 

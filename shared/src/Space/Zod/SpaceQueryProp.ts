@@ -1,6 +1,6 @@
 import { z } from "zod";
-import { SpaceQueryPropEnum } from "../Other";
-import { swaggerRegistry } from "../../Swagger";
+import { SpaceQueryPropEnum } from "src/Space/Other";
+import { swaggerRegistry } from "src/Swagger";
 
 export const ZodSpaceQueryPropSchema = swaggerRegistry.register(
     "SpaceQueryProp",

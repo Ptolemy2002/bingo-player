@@ -339,7 +339,7 @@
             "in": "path",
             "required": true,
             "schema": {
-              "$ref": "#/components/schemas/SpaceQueryPropNonId"
+              "$ref": "#/components/schemas/SpaceQueryProp"
             },
             "description": "The space query prop to list.",
             "type": "string"
@@ -1608,7 +1608,7 @@
         "type": "object",
         "properties": {
           "prop": {
-            "$ref": "#/components/schemas/SpaceQueryPropNonId"
+            "$ref": "#/components/schemas/SpaceQueryProp"
           }
         },
         "required": [

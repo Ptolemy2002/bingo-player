@@ -1,6 +1,6 @@
 import { swaggerRegistry } from "src/Swagger";
 import { z } from "zod";
-import { ZodSpaceQueryPropNonIdSchema } from "src/Space";
+import { ZodSpaceQueryPropSchema } from "src/Space";
 import { ZodErrorResponseSchema } from "./ErrorResponse";
 import { zodSuccessResponseSchema } from "./SuccessResponse";
 import { ZodLimitQueryParamSchema, ZodLimitShorthandQueryParamSchema, ZodOffsetQueryParamSchema, ZodOffsetShorthandQueryParamSchema } from "./QueryParams";
@@ -8,7 +8,7 @@ import { ZodLimitQueryParamSchema, ZodLimitShorthandQueryParamSchema, ZodOffsetQ
 export const ZodListPropParamsSchema = swaggerRegistry.register(
     "ListPropParams",
     z.object({
-        prop: ZodSpaceQueryPropNonIdSchema
+        prop: ZodSpaceQueryPropSchema
     }).openapi({
         description: "Parameters for listing all values of a property."
     })

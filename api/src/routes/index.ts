@@ -9,30 +9,15 @@ router.use("/", indexRoutes
 
         #swagger.responses[500] = {
             description: "Internal server error.",
-            content: {
-                "application/json": {
-                    schema: {
-                        $ref: "#/components/schemas/ErrorResponse"
-                    }
-                }
+            schema: {
+                $ref: "#/components/schemas/ErrorResponse"
             }
         }
 
         #swagger.responses[501] = {
             description: "Not implemented.",
-            content: {
-                "application/json": {
-                    schema: {
-                        $ref: "#/components/schemas/ErrorResponse"
-                    },
-
-                    example: {
-                        ok: false,
-                        code: "NOT_IMPLEMENTED",
-                        message: "This feature is not yet implemented.",
-                        help: "https://example.com/docs"
-                    }
-                }
+            schema: {
+                $ref: "#/components/schemas/ErrorResponse501"
             }
         }
     */

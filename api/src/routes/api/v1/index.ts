@@ -9,66 +9,29 @@ router.use("/spaces", spacesRouter
 
         #swagger.responses[400] = {
             description: "Invalid input",
-            content: {
-                "application/json": {
-                    schema: {
-                        $ref: "#/components/schemas/ErrorResponse"
-                    },
-
-                    example: {
-                        ok: false,
-                        code: "BAD_INPUT",
-                        message: "Invalid input.",
-                        help: "https://example.com/docs"
-                    }
-                }
+            schema: {
+                $ref: "#/components/schemas/ErrorResponse400"
             }
         }
         
         #swagger.responses[404] = {
             description: "No matching spaces found.",
-            content: {
-                "application/json": {
-                    schema: {
-                        $ref: "#/components/schemas/ErrorResponse"
-                    },
-
-                    example: {
-                        ok: false,
-                        code: "NOT_FOUND",
-                        message: "No matching spaces found.",
-                        help: "http://example.com/docs"
-                    }
-                }
+            schema: {
+                $ref: "#/components/schemas/ErrorResponse404"
             }
         }
 
         #swagger.responses[500] = {
             description: "Internal server error.",
-            content: {
-                "application/json": {
-                    schema: {
-                        $ref: "#/components/schemas/ErrorResponse"
-                    }
-                }
+            schema: {
+                $ref: "#/components/schemas/ErrorResponse"
             }
         }
 
         #swagger.responses[501] = {
             description: "Not implemented.",
-            content: {
-                "application/json": {
-                    schema: {
-                        $ref: "#/components/schemas/ErrorResponse"
-                    },
-
-                    example: {
-                        ok: false,
-                        code: "NOT_IMPLEMENTED",
-                        message: "This feature is not yet implemented.",
-                        help: "https://example.com/docs"
-                    }
-                }
+            schema: {
+                $ref: "#/components/schemas/ErrorResponse501"
             }
         }
     */

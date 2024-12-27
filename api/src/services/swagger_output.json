@@ -1059,15 +1059,11 @@
             "example": "https://example.com/docs"
           },
           "code": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ErrorCode"
-              },
-              {
-                "description": "The error code.",
-                "example": "NOT_IMPLEMENTED"
-              }
-            ]
+            "type": "string",
+            "enum": [
+              "NOT_IMPLEMENTED"
+            ],
+            "description": "The error code."
           },
           "message": {
             "allOf": [
@@ -1104,15 +1100,14 @@
             "example": "https://example.com/docs"
           },
           "code": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ErrorCode"
-              },
-              {
-                "description": "The error code.",
-                "example": "BAD_INPUT"
-              }
-            ]
+            "type": "string",
+            "enum": [
+              "BAD_INPUT",
+              "BAD_BODY",
+              "BAD_QUERY",
+              "BAD_URL"
+            ],
+            "description": "The error code."
           },
           "message": {
             "allOf": [
@@ -1149,15 +1144,11 @@
             "example": "https://example.com/docs"
           },
           "code": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ErrorCode"
-              },
-              {
-                "description": "The error code.",
-                "example": "NOT_FOUND"
-              }
-            ]
+            "type": "string",
+            "enum": [
+              "NOT_FOUND"
+            ],
+            "description": "The error code."
           },
           "message": {
             "allOf": [

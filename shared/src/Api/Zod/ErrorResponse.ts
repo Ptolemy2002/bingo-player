@@ -35,10 +35,11 @@ export const ZodErrorResponseSchema = swaggerRegistry.register(
 export const ZodErrorResponse501Schema = swaggerRegistry.register(
     "ErrorResponse501",
     ZodErrorResponseBaseSchema.merge(z.object({
-        code: ZodErrorCodeSchema.openapi({
-            description: "The error code.",
-            example: "NOT_IMPLEMENTED"
-        }),
+        code: ZodErrorCodeSchema
+            .extract(["NOT_IMPLEMENTED"])
+            .openapi({
+                description: "The error code."
+            }),
         message: ZodErrorMessageSchema.openapi({
             description: "A message describing an error.",
             example: "This feature is not yet implemented."
@@ -51,10 +52,10 @@ export const ZodErrorResponse501Schema = swaggerRegistry.register(
 export const ZodErrorResponse400Schema = swaggerRegistry.register(
     "ErrorResponse400",
     ZodErrorResponseBaseSchema.merge(z.object({
-        code: ZodErrorCodeSchema.openapi({
-            description: "The error code.",
-            example: "BAD_INPUT"
-        }),
+        code: ZodErrorCodeSchema
+            .extract(["BAD_INPUT", "BAD_BODY", "BAD_QUERY", "BAD_URL"]).openapi({
+                description: "The error code."
+            }),
         message: ZodErrorMessageSchema.openapi({
             description: "A message describing an error.",
             example: "Invalid input."
@@ -67,10 +68,11 @@ export const ZodErrorResponse400Schema = swaggerRegistry.register(
 export const ZodErrorResponse404Schema = swaggerRegistry.register(
     "ErrorResponse404",
     ZodErrorResponseBaseSchema.merge(z.object({
-        code: ZodErrorCodeSchema.openapi({
-            description: "The error code.",
-            example: "NOT_FOUND"
-        }),
+        code: ZodErrorCodeSchema
+            .extract(["NOT_FOUND"])
+            .openapi({
+                description: "The error code."
+            }),
         message: ZodErrorMessageSchema.openapi({
             description: "A message describing an error.",
             example: "No resources found."

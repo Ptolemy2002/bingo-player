@@ -17,8 +17,9 @@ const baseUrl = stripWords(
 );
 console.log('Detected Swagger Base URL:', baseUrl);
 
-const generatedSchemas = swaggerGenerator.generateComponents().components?.schemas ?? {};
-const genetatedParameters = swaggerGenerator.generateComponents().components?.parameters ?? {};
+const generatedComponents = swaggerGenerator.generateComponents().components ?? {};
+const generatedSchemas = generatedComponents.schemas ?? {};
+const genetatedParameters = generatedComponents.parameters ?? {};
 
 const doc = {
     info: {

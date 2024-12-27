@@ -437,94 +437,34 @@
             "description": "The query string to search for."
           },
           {
-            "name": "limit",
-            "in": "query",
-            "description": "Maximum number of spaces to return. By default, all spaces are returned.",
-            "required": false,
-            "schema": {
-              "type": "number"
-            }
+            "$ref": "#/components/parameters/offset"
           },
           {
-            "name": "l",
-            "in": "query",
-            "description": "Shorthand for limit.",
-            "required": false,
-            "schema": {
-              "type": "number"
-            }
+            "$ref": "#/components/parameters/o"
           },
           {
-            "name": "offset",
-            "in": "query",
-            "description": "Number of spaces to skip. Default is 0.",
-            "required": false,
-            "schema": {
-              "type": "number"
-            }
+            "$ref": "#/components/parameters/limit"
           },
           {
-            "name": "o",
-            "in": "query",
-            "description": "Shorthand for offset.",
-            "required": false,
-            "schema": {
-              "type": "number"
-            }
+            "$ref": "#/components/parameters/l"
           },
           {
-            "name": "caseSensitive",
-            "in": "query",
-            "description": "Whether to match in a case-sensitive manner. Default is false.",
-            "required": false,
-            "schema": {
-              "type": "boolean"
-            }
+            "$ref": "#/components/parameters/caseSensitive"
           },
           {
-            "name": "cs",
-            "in": "query",
-            "description": "Shorthand for caseSensitive.",
-            "required": false,
-            "schema": {
-              "type": "boolean"
-            }
+            "$ref": "#/components/parameters/cs"
           },
           {
-            "name": "accentSensitive",
-            "in": "query",
-            "description": "Whether to match accents. Default is false.",
-            "required": false,
-            "schema": {
-              "type": "boolean"
-            }
+            "$ref": "#/components/parameters/accentSensitive"
           },
           {
-            "name": "as",
-            "in": "query",
-            "description": "Shorthand for accentSensitive.",
-            "required": false,
-            "schema": {
-              "type": "boolean"
-            }
+            "$ref": "#/components/parameters/as"
           },
           {
-            "name": "matchWhole",
-            "in": "query",
-            "description": "Whether to match the whole string. Default is false.",
-            "required": false,
-            "schema": {
-              "type": "boolean"
-            }
+            "$ref": "#/components/parameters/matchWhole"
           },
           {
-            "name": "mw",
-            "in": "query",
-            "description": "Shorthand for matchWhole.",
-            "required": false,
-            "schema": {
-              "type": "boolean"
-            }
+            "$ref": "#/components/parameters/mw"
           }
         ],
         "responses": {
@@ -631,94 +571,34 @@
             "description": "The query string to search for."
           },
           {
-            "name": "limit",
-            "in": "query",
-            "description": "Maximum number of spaces to count. By default, all spaces are counted.",
-            "required": false,
-            "schema": {
-              "type": "number"
-            }
+            "$ref": "#/components/parameters/offset"
           },
           {
-            "name": "l",
-            "in": "query",
-            "description": "Shorthand for limit.",
-            "required": false,
-            "schema": {
-              "type": "number"
-            }
+            "$ref": "#/components/parameters/o"
           },
           {
-            "name": "offset",
-            "in": "query",
-            "description": "Number of spaces to skip. Default is 0.",
-            "required": false,
-            "schema": {
-              "type": "number"
-            }
+            "$ref": "#/components/parameters/limit"
           },
           {
-            "name": "o",
-            "in": "query",
-            "description": "Shorthand for offset.",
-            "required": false,
-            "schema": {
-              "type": "number"
-            }
+            "$ref": "#/components/parameters/l"
           },
           {
-            "name": "caseSensitive",
-            "in": "query",
-            "description": "Whether to match in a case-sensitive manner. Default is false.",
-            "required": false,
-            "schema": {
-              "type": "boolean"
-            }
+            "$ref": "#/components/parameters/caseSensitive"
           },
           {
-            "name": "cs",
-            "in": "query",
-            "description": "Shorthand for caseSensitive.",
-            "required": false,
-            "schema": {
-              "type": "boolean"
-            }
+            "$ref": "#/components/parameters/cs"
           },
           {
-            "name": "accentSensitive",
-            "in": "query",
-            "description": "Whether to match accents. Default is false.",
-            "required": false,
-            "schema": {
-              "type": "boolean"
-            }
+            "$ref": "#/components/parameters/accentSensitive"
           },
           {
-            "name": "as",
-            "in": "query",
-            "description": "Shorthand for accentSensitive.",
-            "required": false,
-            "schema": {
-              "type": "boolean"
-            }
+            "$ref": "#/components/parameters/as"
           },
           {
-            "name": "matchWhole",
-            "in": "query",
-            "description": "Whether to match the whole string. Default is false.",
-            "required": false,
-            "schema": {
-              "type": "boolean"
-            }
+            "$ref": "#/components/parameters/matchWhole"
           },
           {
-            "name": "mw",
-            "in": "query",
-            "description": "Shorthand for matchWhole.",
-            "required": false,
-            "schema": {
-              "type": "boolean"
-            }
+            "$ref": "#/components/parameters/mw"
           }
         ],
         "responses": {
@@ -800,6 +680,88 @@
     }
   },
   "components": {
+    "parameters": {
+      "limit": {
+        "schema": {
+          "$ref": "#/components/schemas/limit"
+        },
+        "required": false,
+        "in": "query",
+        "name": "limit"
+      },
+      "l": {
+        "schema": {
+          "$ref": "#/components/schemas/l"
+        },
+        "required": false,
+        "in": "query",
+        "name": "limit"
+      },
+      "offset": {
+        "schema": {
+          "$ref": "#/components/schemas/offset"
+        },
+        "required": false,
+        "in": "query",
+        "name": "offset"
+      },
+      "o": {
+        "schema": {
+          "$ref": "#/components/schemas/o"
+        },
+        "required": false,
+        "in": "query",
+        "name": "offset"
+      },
+      "caseSensitive": {
+        "schema": {
+          "$ref": "#/components/schemas/caseSensitive"
+        },
+        "required": false,
+        "in": "query",
+        "name": "caseSensitive"
+      },
+      "cs": {
+        "schema": {
+          "$ref": "#/components/schemas/cs"
+        },
+        "required": false,
+        "in": "query",
+        "name": "caseSensitive"
+      },
+      "accentSensitive": {
+        "schema": {
+          "$ref": "#/components/schemas/accentSensitive"
+        },
+        "required": false,
+        "in": "query",
+        "name": "accentSensitive"
+      },
+      "as": {
+        "schema": {
+          "$ref": "#/components/schemas/as"
+        },
+        "required": false,
+        "in": "query",
+        "name": "accentSensitive"
+      },
+      "matchWhole": {
+        "schema": {
+          "$ref": "#/components/schemas/matchWhole"
+        },
+        "required": false,
+        "in": "query",
+        "name": "matchWhole"
+      },
+      "mw": {
+        "schema": {
+          "$ref": "#/components/schemas/mw"
+        },
+        "required": false,
+        "in": "query",
+        "name": "matchWhole"
+      }
+    },
     "schemas": {
       "CleanSpace": {
         "type": "object",
@@ -1131,6 +1093,120 @@
         ],
         "description": "Parameters for getting spaces filtered by a property value."
       },
+      "caseSensitive": {
+        "type": "string",
+        "enum": [
+          "true",
+          "false",
+          "t",
+          "f",
+          "yes",
+          "no",
+          "y",
+          "n",
+          "1",
+          "0",
+          "on",
+          "off"
+        ],
+        "default": "f",
+        "description": "[Query Parameter] Whether to match the query case-sensitively. False if not provided."
+      },
+      "cs": {
+        "type": "string",
+        "enum": [
+          "true",
+          "false",
+          "t",
+          "f",
+          "yes",
+          "no",
+          "y",
+          "n",
+          "1",
+          "0",
+          "on",
+          "off"
+        ],
+        "default": "f",
+        "description": "[Query Parameter] Shorthand for caseSensitive."
+      },
+      "accentSensitive": {
+        "type": "string",
+        "enum": [
+          "true",
+          "false",
+          "t",
+          "f",
+          "yes",
+          "no",
+          "y",
+          "n",
+          "1",
+          "0",
+          "on",
+          "off"
+        ],
+        "default": "f",
+        "description": "[Query Parameter] Whether to match the query accent-sensitively. False if not provided."
+      },
+      "as": {
+        "type": "string",
+        "enum": [
+          "true",
+          "false",
+          "t",
+          "f",
+          "yes",
+          "no",
+          "y",
+          "n",
+          "1",
+          "0",
+          "on",
+          "off"
+        ],
+        "default": "f",
+        "description": "[Query Parameter] Shorthand for accentSensitive."
+      },
+      "matchWhole": {
+        "type": "string",
+        "enum": [
+          "true",
+          "false",
+          "t",
+          "f",
+          "yes",
+          "no",
+          "y",
+          "n",
+          "1",
+          "0",
+          "on",
+          "off"
+        ],
+        "default": "f",
+        "description": "[Query Parameter] Whether to match the query as the whole string. False if not provided."
+      },
+      "mw": {
+        "type": "string",
+        "enum": [
+          "true",
+          "false",
+          "t",
+          "f",
+          "yes",
+          "no",
+          "y",
+          "n",
+          "1",
+          "0",
+          "on",
+          "off"
+        ],
+        "default": "f",
+        "description": "[Query Parameter] Shorthand for matchWhole."
+      },
       "GetSpacesByPropQueryParams": {
         "allOf": [
           {
@@ -1140,118 +1216,22 @@
             "type": "object",
             "properties": {
               "caseSensitive": {
-                "type": "string",
-                "enum": [
-                  "true",
-                  "false",
-                  "t",
-                  "f",
-                  "yes",
-                  "no",
-                  "y",
-                  "n",
-                  "1",
-                  "0",
-                  "on",
-                  "off"
-                ],
-                "default": "f",
-                "description": "Whether to match the query case-sensitively. False if not provided."
+                "$ref": "#/components/schemas/caseSensitive"
               },
               "cs": {
-                "type": "string",
-                "enum": [
-                  "true",
-                  "false",
-                  "t",
-                  "f",
-                  "yes",
-                  "no",
-                  "y",
-                  "n",
-                  "1",
-                  "0",
-                  "on",
-                  "off"
-                ],
-                "default": "f",
-                "description": "Shorthand for caseSensitive."
+                "$ref": "#/components/schemas/cs"
               },
               "accentSensitive": {
-                "type": "string",
-                "enum": [
-                  "true",
-                  "false",
-                  "t",
-                  "f",
-                  "yes",
-                  "no",
-                  "y",
-                  "n",
-                  "1",
-                  "0",
-                  "on",
-                  "off"
-                ],
-                "default": "f",
-                "description": "Whether to match the query accent-sensitively. False if not provided."
+                "$ref": "#/components/schemas/accentSensitive"
               },
               "as": {
-                "type": "string",
-                "enum": [
-                  "true",
-                  "false",
-                  "t",
-                  "f",
-                  "yes",
-                  "no",
-                  "y",
-                  "n",
-                  "1",
-                  "0",
-                  "on",
-                  "off"
-                ],
-                "default": "f",
-                "description": "Shorthand for accentSensitive."
+                "$ref": "#/components/schemas/as"
               },
               "matchWhole": {
-                "type": "string",
-                "enum": [
-                  "true",
-                  "false",
-                  "t",
-                  "f",
-                  "yes",
-                  "no",
-                  "y",
-                  "n",
-                  "1",
-                  "0",
-                  "on",
-                  "off"
-                ],
-                "default": "f",
-                "description": "Whether to match the query as the whole string. False if not provided."
+                "$ref": "#/components/schemas/matchWhole"
               },
               "mw": {
-                "type": "string",
-                "enum": [
-                  "true",
-                  "false",
-                  "t",
-                  "f",
-                  "yes",
-                  "no",
-                  "y",
-                  "n",
-                  "1",
-                  "0",
-                  "on",
-                  "off"
-                ],
-                "default": "f",
-                "description": "Shorthand for matchWhole."
+                "$ref": "#/components/schemas/mw"
               }
             }
           }
@@ -1401,118 +1381,22 @@
             "type": "object",
             "properties": {
               "caseSensitive": {
-                "type": "string",
-                "enum": [
-                  "true",
-                  "false",
-                  "t",
-                  "f",
-                  "yes",
-                  "no",
-                  "y",
-                  "n",
-                  "1",
-                  "0",
-                  "on",
-                  "off"
-                ],
-                "default": "f",
-                "description": "Whether to match the query case-sensitively. False if not provided."
+                "$ref": "#/components/schemas/caseSensitive"
               },
               "cs": {
-                "type": "string",
-                "enum": [
-                  "true",
-                  "false",
-                  "t",
-                  "f",
-                  "yes",
-                  "no",
-                  "y",
-                  "n",
-                  "1",
-                  "0",
-                  "on",
-                  "off"
-                ],
-                "default": "f",
-                "description": "Shorthand for caseSensitive."
+                "$ref": "#/components/schemas/cs"
               },
               "accentSensitive": {
-                "type": "string",
-                "enum": [
-                  "true",
-                  "false",
-                  "t",
-                  "f",
-                  "yes",
-                  "no",
-                  "y",
-                  "n",
-                  "1",
-                  "0",
-                  "on",
-                  "off"
-                ],
-                "default": "f",
-                "description": "Whether to match the query accent-sensitively. False if not provided."
+                "$ref": "#/components/schemas/accentSensitive"
               },
               "as": {
-                "type": "string",
-                "enum": [
-                  "true",
-                  "false",
-                  "t",
-                  "f",
-                  "yes",
-                  "no",
-                  "y",
-                  "n",
-                  "1",
-                  "0",
-                  "on",
-                  "off"
-                ],
-                "default": "f",
-                "description": "Shorthand for accentSensitive."
+                "$ref": "#/components/schemas/as"
               },
               "matchWhole": {
-                "type": "string",
-                "enum": [
-                  "true",
-                  "false",
-                  "t",
-                  "f",
-                  "yes",
-                  "no",
-                  "y",
-                  "n",
-                  "1",
-                  "0",
-                  "on",
-                  "off"
-                ],
-                "default": "f",
-                "description": "Whether to match the query as the whole string. False if not provided."
+                "$ref": "#/components/schemas/matchWhole"
               },
               "mw": {
-                "type": "string",
-                "enum": [
-                  "true",
-                  "false",
-                  "t",
-                  "f",
-                  "yes",
-                  "no",
-                  "y",
-                  "n",
-                  "1",
-                  "0",
-                  "on",
-                  "off"
-                ],
-                "default": "f",
-                "description": "Shorthand for matchWhole."
+                "$ref": "#/components/schemas/mw"
               }
             }
           }
@@ -1591,6 +1475,30 @@
             "$ref": "#/components/schemas/ErrorResponse"
           }
         ]
+      },
+      "limit": {
+        "type": "integer",
+        "minimum": 1,
+        "description": "[Query Parameter] The maximum number of spaces to return. Must be a positive integer and non-zero.",
+        "example": 10
+      },
+      "l": {
+        "type": "integer",
+        "minimum": 1,
+        "description": "[Query Parameter] Shorthand for limit.",
+        "example": 10
+      },
+      "offset": {
+        "type": "integer",
+        "exclusiveMinimum": 0,
+        "default": 0,
+        "description": "[Query Parameter] The number of spaces to skip before returning results. Must be a non-negative integer."
+      },
+      "o": {
+        "type": "integer",
+        "exclusiveMinimum": 0,
+        "default": 0,
+        "description": "[Query Parameter] Shorthand for offset."
       }
     }
   }

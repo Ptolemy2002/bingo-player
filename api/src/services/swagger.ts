@@ -18,6 +18,8 @@ const baseUrl = stripWords(
 console.log('Detected Swagger Base URL:', baseUrl);
 
 const generatedSchemas = swaggerGenerator.generateComponents().components?.schemas ?? {};
+const genetatedParameters = swaggerGenerator.generateComponents().components?.parameters ?? {};
+
 const doc = {
     info: {
         version: '1.0.0',
@@ -30,6 +32,7 @@ const doc = {
     produces: ['application/json'],
 
     components: {
+        parameters: genetatedParameters,
         "@schemas": generatedSchemas
     },
 };

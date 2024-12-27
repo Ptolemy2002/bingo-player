@@ -95,68 +95,22 @@ router.get<
             type: 'number'
         }
 
-        #swagger.parameters['l'] = {
-            in: 'query',
-            description: 'Shorthand for limit.',
-            required: false,
-            type: 'number'
-        }
-        
-        #swagger.parameters['offset'] = {
-            in: 'query',
-            description: 'Number of spaces to skip. Default is 0.',
-            required: false,
-            type: 'number'
-        }
+        #swagger.parameters['$ref'] = [
+            "#/components/parameters/offset",
+            "#/components/parameters/o",
 
-        #swagger.parameters['o'] = {
-            in: 'query',
-            description: 'Shorthand for offset.',
-            required: false,
-            type: 'number'
-        }
+            "#/components/parameters/limit",
+            "#/components/parameters/l",
 
-        #swagger.parameters['caseSensitive'] = {
-            in: 'query',
-            description: 'Whether to match in a case-sensitive manner. Default is false.',
-            required: false,
-            type: 'boolean'
-        }
+            "#/components/parameters/caseSensitive",
+            "#/components/parameters/cs",
 
-        #swagger.parameters['cs'] = {
-            in: 'query',
-            description: 'Shorthand for caseSensitive.',
-            required: false,
-            type: 'boolean'
-        }
+            "#/components/parameters/accentSensitive",
+            "#/components/parameters/as",
 
-        #swagger.parameters['accentSensitive'] = {
-            in: 'query',
-            description: 'Whether to match accents. Default is false.',
-            required: false,
-            type: 'boolean'
-        }
-
-        #swagger.parameters['as'] = {
-            in: 'query',
-            description: 'Shorthand for accentSensitive.',
-            required: false,
-            type: 'boolean'
-        }
-
-        #swagger.parameters['matchWhole'] = {
-            in: 'query',
-            description: 'Whether to match the whole string. Default is false.',
-            required: false,
-            type: 'boolean'
-        }
-
-        #swagger.parameters['mw'] = {
-            in: 'query',
-            description: 'Shorthand for matchWhole.',
-            required: false,
-            type: 'boolean'
-        }
+            "#/components/parameters/matchWhole",
+            "#/components/parameters/mw"
+        ]
 
         #swagger.responses[200] = {
             schema: {

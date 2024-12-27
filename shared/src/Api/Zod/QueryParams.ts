@@ -2,7 +2,7 @@ import { z } from "zod";
 import { swaggerRegistry } from "src/Swagger";
 import { ZodCoercedBoolean } from "@ptolemy2002/regex-utils";
 
-export const LimitQueryParamSchema = swaggerRegistry.registerParameter(
+export const ZodLimitQueryParamSchema = swaggerRegistry.registerParameter(
     "limit",
     z.coerce.number().int()
         .min(1, "limit must be non-negative and non-zero")
@@ -11,48 +11,52 @@ export const LimitQueryParamSchema = swaggerRegistry.registerParameter(
             description: "[Query Parameter] The maximum number of spaces to return. Must be a positive integer and non-zero.",
             example: 10,
             param: {
+                name: "limit",
                 in: "query"
             }
         })
 );
 
-export const LimitShorthandQueryParamSchema = swaggerRegistry.registerParameter(
+export const ZodLimitShorthandQueryParamSchema = swaggerRegistry.registerParameter(
     "l",
-    LimitQueryParamSchema.openapi({
+    ZodLimitQueryParamSchema.openapi({
         description: "[Query Parameter] Shorthand for limit.",
         example: 10,
         param: {
+            name: "l",
             in: "query"
         }
     })
 );
 
-export const OffsetQueryParamSchema = swaggerRegistry.registerParameter(
+export const ZodOffsetQueryParamSchema = swaggerRegistry.registerParameter(
     "offset",
     z.coerce.number().int()
-        .positive()
+        .min(0, "offset must be non-negative")
         .optional()
         .openapi({
             description: "[Query Parameter] The number of spaces to skip before returning results. Must be a non-negative integer.",
             default: 0,
             param: {
+                name: "offset",
                 in: "query"
             }
         })
 );
 
-export const OffsetShorthandQueryParamSchema = swaggerRegistry.registerParameter(
+export const ZodOffsetShorthandQueryParamSchema = swaggerRegistry.registerParameter(
     "o",
-    OffsetQueryParamSchema.openapi({
+    ZodOffsetQueryParamSchema.openapi({
         description: "[Query Parameter] Shorthand for offset.",
         default: 0,
         param: {
+            name: "o",
             in: "query"
         }
     })
 );
 
-export const CaseSensitiveQueryParamSchema = swaggerRegistry.registerParameter(
+export const ZodCaseSensitiveQueryParamSchema = swaggerRegistry.registerParameter(
     "caseSensitive",
     ZodCoercedBoolean
         .optional()
@@ -60,23 +64,25 @@ export const CaseSensitiveQueryParamSchema = swaggerRegistry.registerParameter(
             description: "[Query Parameter] Whether to match the query case-sensitively. False if not provided.",
             default: "f",
             param: {
+                name: "caseSensitive",
                 in: "query"
             }
         })
 );
 
-export const CaseSensitiveShorthandQueryParamSchema = swaggerRegistry.registerParameter(
+export const ZodCaseSensitiveShorthandQueryParamSchema = swaggerRegistry.registerParameter(
     "cs",
-    CaseSensitiveQueryParamSchema.openapi({
+    ZodCaseSensitiveQueryParamSchema.openapi({
         description: "[Query Parameter] Shorthand for caseSensitive.",
         default: "f",
         param: {
+            name: "cs",
             in: "query"
         }
     })
 );
 
-export const AccentSensitiveQueryParamSchema = swaggerRegistry.registerParameter(
+export const ZodAccentSensitiveQueryParamSchema = swaggerRegistry.registerParameter(
     "accentSensitive",
     ZodCoercedBoolean
         .optional()
@@ -84,23 +90,25 @@ export const AccentSensitiveQueryParamSchema = swaggerRegistry.registerParameter
             description: "[Query Parameter] Whether to match the query accent-sensitively. False if not provided.",
             default: "f",
             param: {
+                name: "accentSensitive",
                 in: "query"
             }
         })
 );
 
-export const AccentSensitiveShorthandQueryParamSchema = swaggerRegistry.registerParameter(
+export const ZodAccentSensitiveShorthandQueryParamSchema = swaggerRegistry.registerParameter(
     "as",
-    AccentSensitiveQueryParamSchema.openapi({
+    ZodAccentSensitiveQueryParamSchema.openapi({
         description: "[Query Parameter] Shorthand for accentSensitive.",
         default: "f",
         param: {
+            name: "as",
             in: "query"
         }
     })
 );
 
-export const MatchWholeQueryParamSchema = swaggerRegistry.registerParameter(
+export const ZodMatchWholeQueryParamSchema = swaggerRegistry.registerParameter(
     "matchWhole",
     ZodCoercedBoolean
         .optional()
@@ -108,17 +116,19 @@ export const MatchWholeQueryParamSchema = swaggerRegistry.registerParameter(
             description: "[Query Parameter] Whether to match the query as the whole string. False if not provided.",
             default: "f",
             param: {
+                name: "matchWhole",
                 in: "query"
             }
         })
 );
 
-export const MatchWholeShorthandQueryParamSchema = swaggerRegistry.registerParameter(
+export const ZodMatchWholeShorthandQueryParamSchema = swaggerRegistry.registerParameter(
     "mw",
-    MatchWholeQueryParamSchema.openapi({
+    ZodMatchWholeQueryParamSchema.openapi({
         description: "[Query Parameter] Shorthand for matchWhole.",
         default: "f",
         param: {
+            name: "mw",
             in: "query"
         }
     })

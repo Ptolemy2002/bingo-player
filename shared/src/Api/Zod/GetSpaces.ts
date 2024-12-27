@@ -3,6 +3,7 @@ import { z } from "zod";
 import { ZodMongoSpaceSchema } from "src/Space";
 import { ZodErrorResponseSchema } from "./ErrorResponse";
 import { zodSuccessResponseSchema } from "./SuccessResponse";
+import { ZodLimitQueryParamSchema, ZodLimitShorthandQueryParamSchema, ZodOffsetQueryParamSchema, ZodOffsetShorthandQueryParamSchema } from "./QueryParams";
 
 export const ZodGetSpaces200ResponseBodySchema = swaggerRegistry.register(
     "GetSpaces200ResponseBody",
@@ -28,38 +29,14 @@ export const ZodGetSpacesResponseBodySchema = swaggerRegistry.register(
 export const ZodGetSpacesQueryParamsSchema = swaggerRegistry.register(
     "GetSpacesQueryParams",
     z.object({
-        limit: z.coerce.number().int()
-            .min(1, "limit must be non-negative and non-zero")
-            .optional()
-            .openapi({
-                description: "The maximum number of spaces to return. Must be a positive integer and non-zero.",
-                example: 10
-            }),
-        l: z.coerce.number().int()
-            .min(1, "limit must be non-negative and non-zero")
-            .optional()
-            .openapi({
-                description: "Shorthand for limit.",
-                example: 10
-            }),
+        limit: ZodLimitQueryParamSchema,
+        l: ZodLimitShorthandQueryParamSchema,
 
-        offset: z.coerce.number().int()
-            .positive()
-            .optional()
-            .openapi({
-                description: "The number of spaces to skip before returning results. Must be a non-negative integer.",
-                default: 0
-            }),
-        o: z.coerce.number().int()
-            .positive()
-            .optional()
-            .openapi({
-                description: "Shorthand for offset.",
-                default: 0
-            }),
+        offset: ZodOffsetQueryParamSchema,
+        o: ZodOffsetShorthandQueryParamSchema,
     }).transform((data) => {
-        if (data.l) data.limit = data.l;
-        if (data.o) data.offset = data.o;
+        if (data.l !== undefined) data.limit = data.l;
+        if (data.o !== undefined) data.offset = data.o;
         return data;
     }).openapi({
         description: "Query parameters for getting all spaces."

@@ -339,10 +339,22 @@
             "in": "path",
             "required": true,
             "schema": {
-              "$ref": "#/components/schemas/SpaceQueryProp"
+              "$ref": "#/components/schemas/SpaceQueryPropNonId"
             },
             "description": "The space query prop to list.",
             "type": "string"
+          },
+          {
+            "$ref": "#/components/parameters/offset"
+          },
+          {
+            "$ref": "#/components/parameters/o"
+          },
+          {
+            "$ref": "#/components/parameters/limit"
+          },
+          {
+            "$ref": "#/components/parameters/l"
           }
         ],
         "responses": {
@@ -704,80 +716,80 @@
           "$ref": "#/components/schemas/limit"
         },
         "required": false,
-        "in": "query",
-        "name": "limit"
+        "name": "limit",
+        "in": "query"
       },
       "l": {
         "schema": {
           "$ref": "#/components/schemas/l"
         },
         "required": false,
-        "in": "query",
-        "name": "limit"
+        "name": "l",
+        "in": "query"
       },
       "offset": {
         "schema": {
           "$ref": "#/components/schemas/offset"
         },
         "required": false,
-        "in": "query",
-        "name": "offset"
+        "name": "offset",
+        "in": "query"
       },
       "o": {
         "schema": {
           "$ref": "#/components/schemas/o"
         },
         "required": false,
-        "in": "query",
-        "name": "offset"
+        "name": "o",
+        "in": "query"
       },
       "caseSensitive": {
         "schema": {
           "$ref": "#/components/schemas/caseSensitive"
         },
         "required": false,
-        "in": "query",
-        "name": "caseSensitive"
+        "name": "caseSensitive",
+        "in": "query"
       },
       "cs": {
         "schema": {
           "$ref": "#/components/schemas/cs"
         },
         "required": false,
-        "in": "query",
-        "name": "caseSensitive"
+        "name": "cs",
+        "in": "query"
       },
       "accentSensitive": {
         "schema": {
           "$ref": "#/components/schemas/accentSensitive"
         },
         "required": false,
-        "in": "query",
-        "name": "accentSensitive"
+        "name": "accentSensitive",
+        "in": "query"
       },
       "as": {
         "schema": {
           "$ref": "#/components/schemas/as"
         },
         "required": false,
-        "in": "query",
-        "name": "accentSensitive"
+        "name": "as",
+        "in": "query"
       },
       "matchWhole": {
         "schema": {
           "$ref": "#/components/schemas/matchWhole"
         },
         "required": false,
-        "in": "query",
-        "name": "matchWhole"
+        "name": "matchWhole",
+        "in": "query"
       },
       "mw": {
         "schema": {
           "$ref": "#/components/schemas/mw"
         },
         "required": false,
-        "in": "query",
-        "name": "matchWhole"
+        "name": "mw",
+        "in": "query"
       }
     },
     "schemas": {
@@ -1218,32 +1230,50 @@
           }
         ]
       },
+      "limit": {
+        "type": "integer",
+        "minimum": 1,
+        "description": "[Query Parameter] The maximum number of spaces to return. Must be a positive integer and non-zero.",
+        "example": 10
+      },
+      "l": {
+        "type": "integer",
+        "minimum": 1,
+        "description": "[Query Parameter] Shorthand for limit.",
+        "example": 10
+      },
+      "offset": {
+        "type": [
+          "integer",
+          "null"
+        ],
+        "minimum": 0,
+        "default": 0,
+        "description": "[Query Parameter] The number of spaces to skip before returning results. Must be a non-negative integer."
+      },
+      "o": {
+        "type": [
+          "integer",
+          "null"
+        ],
+        "minimum": 0,
+        "default": 0,
+        "description": "[Query Parameter] Shorthand for offset."
+      },
       "GetSpacesQueryParams": {
         "type": "object",
         "properties": {
           "limit": {
-            "type": "integer",
-            "minimum": 1,
-            "description": "The maximum number of spaces to return. Must be a positive integer and non-zero.",
-            "example": 10
+            "$ref": "#/components/schemas/limit"
           },
           "l": {
-            "type": "integer",
-            "minimum": 1,
-            "description": "Shorthand for limit.",
-            "example": 10
+            "$ref": "#/components/schemas/l"
           },
           "offset": {
-            "type": "integer",
-            "exclusiveMinimum": 0,
-            "default": 0,
-            "description": "The number of spaces to skip before returning results. Must be a non-negative integer."
+            "$ref": "#/components/schemas/offset"
           },
           "o": {
-            "type": "integer",
-            "exclusiveMinimum": 0,
-            "default": 0,
-            "description": "Shorthand for offset."
+            "$ref": "#/components/schemas/o"
           }
         },
         "description": "Query parameters for getting all spaces."
@@ -1578,13 +1608,31 @@
         "type": "object",
         "properties": {
           "prop": {
-            "$ref": "#/components/schemas/SpaceQueryProp"
+            "$ref": "#/components/schemas/SpaceQueryPropNonId"
           }
         },
         "required": [
           "prop"
         ],
         "description": "Parameters for listing all values of a property."
+      },
+      "ListPropQueryParams": {
+        "type": "object",
+        "properties": {
+          "limit": {
+            "$ref": "#/components/schemas/limit"
+          },
+          "l": {
+            "$ref": "#/components/schemas/l"
+          },
+          "offset": {
+            "$ref": "#/components/schemas/offset"
+          },
+          "o": {
+            "$ref": "#/components/schemas/o"
+          }
+        },
+        "description": "Query parameters for listing all values under a property."
       },
       "ListProp200ResponseBody": {
         "allOf": [
@@ -1646,30 +1694,6 @@
             "$ref": "#/components/schemas/ErrorResponse"
           }
         ]
-      },
-      "limit": {
-        "type": "integer",
-        "minimum": 1,
-        "description": "[Query Parameter] The maximum number of spaces to return. Must be a positive integer and non-zero.",
-        "example": 10
-      },
-      "l": {
-        "type": "integer",
-        "minimum": 1,
-        "description": "[Query Parameter] Shorthand for limit.",
-        "example": 10
-      },
-      "offset": {
-        "type": "integer",
-        "exclusiveMinimum": 0,
-        "default": 0,
-        "description": "[Query Parameter] The number of spaces to skip before returning results. Must be a non-negative integer."
-      },
-      "o": {
-        "type": "integer",
-        "exclusiveMinimum": 0,
-        "default": 0,
-        "description": "[Query Parameter] Shorthand for offset."
       }
     }
   }

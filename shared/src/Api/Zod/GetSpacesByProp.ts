@@ -6,12 +6,12 @@ import {
 import { swaggerRegistry } from 'src/Swagger';
 import { z } from 'zod';
 import {
-    AccentSensitiveQueryParamSchema,
-    AccentSensitiveShorthandQueryParamSchema,
-    CaseSensitiveQueryParamSchema,
-    CaseSensitiveShorthandQueryParamSchema,
-    MatchWholeQueryParamSchema,
-    MatchWholeShorthandQueryParamSchema,
+    ZodAccentSensitiveQueryParamSchema,
+    ZodAccentSensitiveShorthandQueryParamSchema,
+    ZodCaseSensitiveQueryParamSchema,
+    ZodCaseSensitiveShorthandQueryParamSchema,
+    ZodMatchWholeQueryParamSchema,
+    ZodMatchWholeShorthandQueryParamSchema,
 } from './QueryParams';
 
 export const ZodGetSpacesByPropParamsSchema = swaggerRegistry.register(
@@ -31,14 +31,14 @@ export const ZodGetSpacesByPropQueryParamsSchema = swaggerRegistry.register(
     z.intersection(
         ZodGetSpacesQueryParamsSchema,
         z.object({
-                caseSensitive: CaseSensitiveQueryParamSchema,
-                cs: CaseSensitiveShorthandQueryParamSchema,
+                caseSensitive: ZodCaseSensitiveQueryParamSchema,
+                cs: ZodCaseSensitiveShorthandQueryParamSchema,
 
-                accentSensitive: AccentSensitiveQueryParamSchema,
-                as: AccentSensitiveShorthandQueryParamSchema,
+                accentSensitive: ZodAccentSensitiveQueryParamSchema,
+                as: ZodAccentSensitiveShorthandQueryParamSchema,
 
-                matchWhole: MatchWholeQueryParamSchema,
-                mw: MatchWholeShorthandQueryParamSchema,
+                matchWhole: ZodMatchWholeQueryParamSchema,
+                mw: ZodMatchWholeShorthandQueryParamSchema,
             })
             .transform((data) => {
                 if (data.cs) data.caseSensitive = data.cs;

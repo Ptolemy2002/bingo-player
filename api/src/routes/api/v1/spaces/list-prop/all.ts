@@ -16,43 +16,45 @@ import {
 
 const router = Router();
 
-export async function listAllSpacePropValues(
-    prop: SpaceQueryProp,
-    { limit, offset = 0 }: ListPropQueryParams,
-): Promise<(string | null)[]> {
+export async function listAllSpacePropValues(prop: SpaceQueryProp, {
+    limit,
+    offset = 0
+}: ListPropQueryParams): Promise<(string | null)[]> {
     prop = interpretSpaceQueryProp(prop);
 
-    if (prop === 'known-as') {
-        // Aliases and names
-        const names = await listAllSpacePropValues('name', { limit, offset });
-        const aliases = await listAllSpacePropValues('aliases', {
-            limit,
-            offset,
-        });
-        return [...new Set([...names, ...aliases])];
+    let aggregationPipeline: PipelineStage[] = [];
+    if (prop === "known-as") {
+        // If the property is "known-as", combine "name" and "aliases" into a single array
+        aggregationPipeline = [
+            { 
+                $project: { knownAs: { $concatArrays: [[ "$name" ], "$aliases"] } } 
+            },
+            { $unwind: "$knownAs" },
+            { $group: { _id: "$knownAs" } },
+            { $skip: offset }
+        ];
+    } else {
+        aggregationPipeline = [
+            { $unwind: { path: `$${prop}`, preserveNullAndEmptyArrays: true } },
+            { $group: { _id: `$${prop}` } },
+            { $skip: offset }
+        ];
     }
+    if (limit) aggregationPipeline.push({ $limit: limit });
 
-    const aggregations: PipelineStage[] = [
-        { $unwind: { path: `$${prop}`, preserveNullAndEmptyArrays: true } },
-        { $group: { _id: `$${prop}` } },
-        { $skip: offset },
-    ];
-
-    if (limit) aggregations.push({ $limit: limit });
-
-    const query = SpaceModel.aggregate(aggregations);
+    const query = SpaceModel.aggregate(aggregationPipeline);
 
     const values = await query.exec();
-    // One extra map step to ensure we map over the actual values.
-    return values
-        .map((v) => v._id)
-        .map((v) => {
-            if (v === null) {
-                return null;
-            }
-            return String(v);
-        });
+    // Extract and format the actual values
+    return values.map(v => v._id).map((v) => {
+        if (v === null) {
+            return null;
+        }
+        
+        return String(v);
+    });
 }
+
 
 router.get<
     // Path

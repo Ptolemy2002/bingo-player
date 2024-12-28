@@ -3,7 +3,7 @@ import { swaggerRegistry } from "src/Swagger";
 import { zodSuccessResponseSchema } from "./SuccessResponse";
 import { ZodErrorResponseSchema } from "./ErrorResponse";
 
-export const ZodCountSpaces200ResponseBody = swaggerRegistry.register(
+export const ZodCountSpaces200ResponseBodySchema = swaggerRegistry.register(
     "CountSpaces200ResponseBody",
     zodSuccessResponseSchema(z.object({
         count: z.number()
@@ -16,13 +16,13 @@ export const ZodCountSpaces200ResponseBody = swaggerRegistry.register(
     })
 );
 
-export const ZodCountSpacesResponseBody = swaggerRegistry.register(
+export const ZodCountSpacesResponseBodySchema = swaggerRegistry.register(
     "CountSpacesResponseBody",
     z.union([
-        ZodCountSpaces200ResponseBody,
+        ZodCountSpaces200ResponseBodySchema,
         ZodErrorResponseSchema
     ])
 );
 
-export type CountSpaces200ResponseBody = z.infer<typeof ZodCountSpaces200ResponseBody>;
-export type CountSpacesResponseBody = z.infer<typeof ZodCountSpacesResponseBody>;
+export type CountSpaces200ResponseBody = z.infer<typeof ZodCountSpaces200ResponseBodySchema>;
+export type CountSpacesResponseBody = z.infer<typeof ZodCountSpacesResponseBodySchema>;

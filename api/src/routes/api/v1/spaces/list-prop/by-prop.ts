@@ -1,5 +1,5 @@
 import { asyncErrorHandler } from '@ptolemy2002/express-utils';
-import { interpretZodError } from '@ptolemy2002/regex-utils';
+import { interpretZodError, transformRegex } from '@ptolemy2002/regex-utils';
 import getEnv from 'env';
 import { Router } from 'express';
 import SpaceModel from 'models/SpaceModel';
@@ -7,23 +7,37 @@ import { PipelineStage } from 'mongoose';
 import {
     interpretSortOrder,
     interpretSpaceQueryProp,
-    ListPropParams,
-    ListPropQueryParams,
-    ListPropResponseBody,
+    ListPropByPropResponseBody,
     SpaceQueryProp,
-    ZodListPropParamsSchema,
-    ZodListPropQueryParamsSchema,
+    ListPropByPropQueryParams,
+    ListPropByPropParams,
+    ZodListPropByPropParamsSchema,
+    ZodListPropByPropQueryParamsSchema,
 } from 'shared';
 
 const router = Router();
 
-export async function listAllSpacePropValues(prop: SpaceQueryProp, {
-    limit,
-    offset = 0,
-    sortBy="id",
-    sortOrder="asc"
-}: ListPropQueryParams): Promise<(string | null)[]> {
-    prop = interpretSpaceQueryProp(prop);
+export async function listSpacePropValuesByProp(
+    queryProp: SpaceQueryProp,
+    queryString: string,
+    listProp: SpaceQueryProp,
+    {
+        limit,
+        offset = 0,
+        sortBy="id",
+        sortOrder="asc",
+        caseSensitive = false,
+        accentSensitive = false,
+        matchWhole = false,
+    }: ListPropByPropQueryParams): Promise<(string | null)[]> {
+    queryProp = interpretSpaceQueryProp(queryProp);
+    listProp = interpretSpaceQueryProp(listProp);
+
+    const pattern = transformRegex(queryString, {
+        caseInsensitive: !caseSensitive,
+        accentInsensitive: !accentSensitive,
+        matchWhole,
+    });
 
     const sortOrderNum = interpretSortOrder(sortOrder) === "asc" ? 1 : -1;
     const sortObject: Record<string, 1 | -1> = {};
@@ -38,12 +52,13 @@ export async function listAllSpacePropValues(prop: SpaceQueryProp, {
     if (sortBy !== "_id") sortObject["_id"] = sortOrderNum;
 
     let aggregationPipeline: PipelineStage[] = [];
-    if (prop === "known-as") {
+    if (listProp === "known-as") {
         // If the property is "known-as", combine "name" and "aliases" into a single array
         aggregationPipeline = [
             { 
                 $project: { knownAs: { $concatArrays: [[ "$name" ], "$aliases"] } } 
             },
+            { $match: { knownAs: pattern } },
             { $unwind: "$knownAs" },
             { $group: { _id: "$knownAs" } },
             { $sort: sortObject },
@@ -51,8 +66,9 @@ export async function listAllSpacePropValues(prop: SpaceQueryProp, {
         ];
     } else {
         aggregationPipeline = [
-            { $unwind: { path: `$${prop}`, preserveNullAndEmptyArrays: true } },
-            { $group: { _id: `$${prop}` } },
+            { $match: { [queryProp]: pattern } },
+            { $unwind: { path: `$${listProp}`, preserveNullAndEmptyArrays: true } },
+            { $group: { _id: `$${listProp}` } },
             { $sort: sortObject },
             { $skip: offset }
         ];
@@ -78,29 +94,45 @@ export async function listAllSpacePropValues(prop: SpaceQueryProp, {
 
 
 router.get<
-    // Path
-    '/get/all/list/:prop',
     // URL Parameters
-    ListPropParams,
+    ListPropByPropParams,
     // Response body
-    ListPropResponseBody,
+    ListPropByPropResponseBody,
     // Request body
     {},
     // Query Parameters
-    ListPropQueryParams
+    ListPropByPropQueryParams
 >(
-    '/get/all/list/:prop',
+    '/get/by-prop/:queryProp/:query/list/:listProp',
     asyncErrorHandler(async (req, res) => {
         /*
         #swagger.start
-        #swagger.tags = ['Spaces', 'List']
-        #swagger.path = '/api/v1/spaces/get/all/list/{prop}'
+        #swagger.tags = ['Spaces', 'List', 'Query']
+        #swagger.path = '/api/v1/spaces/get/by-prop/{queryProp}/{query}/list/{listProp}'
         #swagger.method = 'get'
         #swagger.description = `
-            Get all values for a given space query prop.
+            Get all values for a given space query prop that appear in the spaces that match the given query.
             The values are returned as an array of strings, but may contain null values.
         `
-        #swagger.parameters['prop'] = {
+
+        #swagger.parameters['queryProp'] = {
+            in: 'path',
+            description: 'The space query prop to search.',
+            required: true,
+            type: 'string',
+            schema: {
+                $ref: "#/components/schemas/SpaceQueryPropNonId"
+            }
+        }
+
+        #swagger.parameters['query'] = {
+            in: 'path',
+            description: 'The query string to search for.',
+            required: true,
+            type: 'string'
+        }
+
+        #swagger.parameters['listProp'] = {
             in: 'path',
             description: 'The space query prop to list.',
             required: true,
@@ -117,6 +149,15 @@ router.get<
             "#/components/parameters/limit",
             "#/components/parameters/l",
 
+            "#/components/parameters/caseSensitive",
+            "#/components/parameters/cs",
+
+            "#/components/parameters/accentSensitive",
+            "#/components/parameters/as",
+
+            "#/components/parameters/matchWhole",
+            "#/components/parameters/mw",
+
             "#/components/parameters/sortBy",
             "#/components/parameters/sb",
 
@@ -126,7 +167,7 @@ router.get<
 
         #swagger.responses[200] = {
             schema: {
-                $ref: "#/components/schemas/ListProp200ResponseBody"
+                $ref: "#/components/schemas/ListPropByProp200ResponseBody"
             }
         }
         #swagger.end
@@ -135,12 +176,12 @@ router.get<
         const help =
             env.getDocsURL(1) +
             '/#/Spaces/get_api_v1_spaces_get_all_list__prop_';
-
+        
         const {
             success: paramsSuccess,
             error: paramsError,
             data: params,
-        } = ZodListPropParamsSchema.safeParse(req.params);
+        } = ZodListPropByPropParamsSchema.safeParse(req.params);
         if (!paramsSuccess) {
             res.status(400).json({
                 ok: false,
@@ -155,7 +196,7 @@ router.get<
             success: querySuccess,
             error: queryError,
             data: query,
-        } = ZodListPropQueryParamsSchema.safeParse(req.query);
+        } = ZodListPropByPropQueryParamsSchema.safeParse(req.query);
         if (!querySuccess) {
             res.status(400).json({
                 ok: false,
@@ -166,14 +207,14 @@ router.get<
             return;
         }
 
-        const { prop } = params;
+        const { queryProp, query: queryString, listProp } = params;
         res.json({
             ok: true,
-            values: await listAllSpacePropValues(prop, query),
+            values: await listSpacePropValuesByProp(queryProp, queryString, listProp, query),
             help,
         });
     }),
 );
 
-const listAllSpacePropValuesRouter = router;
-export default listAllSpacePropValuesRouter;
+const listSpacePropValuesByPropRouter = router;
+export default listSpacePropValuesByPropRouter;

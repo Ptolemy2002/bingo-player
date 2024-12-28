@@ -10,5 +10,6 @@ export * from "./CountSpaces";
 export * from "./CountSpacesByProp";
 
 export * from "./ListProp";
+export * from "./ListPropByProp";
 
 export * from "./QueryParams";

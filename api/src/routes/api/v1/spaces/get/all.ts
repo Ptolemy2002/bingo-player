@@ -63,6 +63,7 @@ router.get<
 >('/get/all', asyncErrorHandler(async (req, res) => {
     /*
         #swagger.start
+        #swagger.tags = ['Spaces', 'Get']
         #swagger.path = '/api/v1/spaces/get/all'
         #swagger.method = 'get'
         #swagger.description = 'Get all spaces in the database.'

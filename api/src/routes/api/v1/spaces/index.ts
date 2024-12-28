@@ -4,6 +4,7 @@ import countAllSpacesRouter from "./count/all";
 import listAllSpacePropValuesRouter from "./list-prop/all";
 import getSpacesByPropRouter from "./get/by-prop";
 import countSpacesByPropRouter from "./count/by-prop";
+import listSpacePropValuesByPropRouter from "./list-prop/by-prop";
 
 const router = Router();
 
@@ -14,6 +15,7 @@ router.use("/", listAllSpacePropValuesRouter);
 
 router.use("/", getSpacesByPropRouter);
 router.use("/", countSpacesByPropRouter);
+router.use("/", listSpacePropValuesByPropRouter);
 
 const spacesRouter = router;
 export default spacesRouter;

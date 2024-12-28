@@ -25,6 +25,7 @@ router.get<
 >('/count/all', asyncErrorHandler(async (_, res) => {
     /*
         #swagger.start
+        #swagger.tags = ['Spaces', 'Count']
         #swagger.path = '/api/v1/spaces/count/all'
         #swagger.method = 'get'
         #swagger.description = 'Get the number of spaces in the database.'

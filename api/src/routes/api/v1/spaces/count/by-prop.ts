@@ -67,6 +67,7 @@ router.get<
 >('/count/by-prop/:prop/:query', asyncErrorHandler(async (req, res) => {
     /*
         #swagger.start
+        #swagger.tags = ['Spaces', 'Count', 'Query']
         #swagger.path = '/api/v1/spaces/count/by-prop/{prop}/{query}'
         #swagger.method = 'get'
         #swagger.description = 'Get the number of spaces in the database matching the given query.'

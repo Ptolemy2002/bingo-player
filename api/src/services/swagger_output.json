@@ -140,7 +140,8 @@
     "/api/v1/spaces/get/all": {
       "get": {
         "tags": [
-          "Spaces"
+          "Spaces",
+          "Get"
         ],
         "description": "Get all spaces in the database.",
         "parameters": [
@@ -251,7 +252,8 @@
     "/api/v1/spaces/count/all": {
       "get": {
         "tags": [
-          "Spaces"
+          "Spaces",
+          "Count"
         ],
         "description": "Get the number of spaces in the database.",
         "responses": {
@@ -336,7 +338,8 @@
     "/api/v1/spaces/get/all/list/{prop}": {
       "get": {
         "tags": [
-          "Spaces"
+          "Spaces",
+          "List"
         ],
         "description": "  Get all values for a given space query prop.  The values are returned as an array of strings, but may contain null values.  ",
         "parameters": [
@@ -457,7 +460,9 @@
     "/api/v1/spaces/get/by-prop/{prop}/{query}": {
       "get": {
         "tags": [
-          "Spaces"
+          "Spaces",
+          "Get",
+          "Query"
         ],
         "description": "  Get spaces by a given space query prop.  The spaces are returned as an array of CleanMongoSpace objects.  ",
         "parameters": [
@@ -605,7 +610,9 @@
     "/api/v1/spaces/count/by-prop/{prop}/{query}": {
       "get": {
         "tags": [
-          "Spaces"
+          "Spaces",
+          "Count",
+          "Query"
         ],
         "description": "Get the number of spaces in the database matching the given query.",
         "parameters": [
@@ -671,6 +678,166 @@
               "application/xml": {
                 "schema": {
                   "$ref": "#/components/schemas/CountSpacesByProp200ResponseBody"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse400"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse400"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No matching spaces found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse404"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse404"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "501": {
+            "description": "Not implemented.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse501"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse501"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/spaces/get/by-prop/{queryProp}/{query}/list/{listProp}": {
+      "get": {
+        "tags": [
+          "Spaces",
+          "List",
+          "Query"
+        ],
+        "description": "  Get all values for a given space query prop that appear in the spaces that match the given query.  The values are returned as an array of strings, but may contain null values.  ",
+        "parameters": [
+          {
+            "name": "queryProp",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/SpaceQueryPropNonId"
+            },
+            "description": "The space query prop to search.",
+            "type": "string"
+          },
+          {
+            "name": "query",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The query string to search for."
+          },
+          {
+            "name": "listProp",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/SpaceQueryProp"
+            },
+            "description": "The space query prop to list.",
+            "type": "string"
+          },
+          {
+            "$ref": "#/components/parameters/offset"
+          },
+          {
+            "$ref": "#/components/parameters/o"
+          },
+          {
+            "$ref": "#/components/parameters/limit"
+          },
+          {
+            "$ref": "#/components/parameters/l"
+          },
+          {
+            "$ref": "#/components/parameters/caseSensitive"
+          },
+          {
+            "$ref": "#/components/parameters/cs"
+          },
+          {
+            "$ref": "#/components/parameters/accentSensitive"
+          },
+          {
+            "$ref": "#/components/parameters/as"
+          },
+          {
+            "$ref": "#/components/parameters/matchWhole"
+          },
+          {
+            "$ref": "#/components/parameters/mw"
+          },
+          {
+            "$ref": "#/components/parameters/sortBy"
+          },
+          {
+            "$ref": "#/components/parameters/sb"
+          },
+          {
+            "$ref": "#/components/parameters/sortOrder"
+          },
+          {
+            "$ref": "#/components/parameters/so"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListPropByProp200ResponseBody"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListPropByProp200ResponseBody"
                 }
               }
             }
@@ -1843,6 +2010,87 @@
         ]
       },
       "ListPropResponseBody": {
+        "anyOf": [
+          {
+            "$ref": "#/components/schemas/ListProp200ResponseBody"
+          },
+          {
+            "$ref": "#/components/schemas/ErrorResponse"
+          }
+        ]
+      },
+      "ListPropByPropParams": {
+        "type": "object",
+        "properties": {
+          "listProp": {
+            "$ref": "#/components/schemas/SpaceQueryProp"
+          },
+          "query": {
+            "type": "string"
+          },
+          "queryProp": {
+            "$ref": "#/components/schemas/SpaceQueryProp"
+          }
+        },
+        "required": [
+          "listProp",
+          "query",
+          "queryProp"
+        ],
+        "description": "URL Parameters for listing all values of a property for a subset of spaces."
+      },
+      "ListPropByProp200ResponseBody": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "values": {
+                "type": "array",
+                "items": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "description": "The values of the property."
+              }
+            },
+            "required": [
+              "values"
+            ],
+            "description": "List of values found"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "ok": {
+                "type": "boolean",
+                "enum": [
+                  true
+                ],
+                "description": "Whether the operation was successful.",
+                "example": true
+              },
+              "help": {
+                "type": "string",
+                "description": "A URL to the docs page that may help the user understand the response.",
+                "example": "https://example.com/docs"
+              }
+            },
+            "required": [
+              "ok"
+            ]
+          }
+        ]
+      },
+      "ListPropByPropResponseBody": {
         "anyOf": [
           {
             "$ref": "#/components/schemas/ListProp200ResponseBody"

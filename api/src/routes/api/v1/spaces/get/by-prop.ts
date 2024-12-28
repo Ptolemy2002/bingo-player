@@ -10,7 +10,8 @@ import {
     interpretSpaceQueryPropNonId,
     SpaceQueryPropNonId,
     ZodGetSpacesByPropParamsSchema,
-    ZodGetSpacesByPropQueryParamsSchema
+    ZodGetSpacesByPropQueryParamsSchema,
+    interpretSortOrder
 } from 'shared';
 import SpaceModel from 'models/SpaceModel';
 import getEnv from 'env';
@@ -40,7 +41,7 @@ export async function getSpacesByProp(
         matchWhole,
     });
 
-    const sortOrderNum = sortOrder === "asc" ? 1 : -1;
+    const sortOrderNum = interpretSortOrder(sortOrder) === "asc" ? 1 : -1;
     const sortObject: Record<string, 1 | -1> = {
         [sortBy === 'known-as' ? 'knownAs' : sortBy]: sortOrderNum
     };
@@ -104,6 +105,7 @@ router.get<
 >('/get/by-prop/:prop/:query', async (req, res) => {
     /*
         #swagger.start
+        #swagger.tags = ['Spaces', 'Get', 'Query']
         #swagger.path = '/api/v1/spaces/get/by-prop/{prop}/{query}'
         #swagger.method = 'get'
         #swagger.description = `

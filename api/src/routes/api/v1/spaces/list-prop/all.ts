@@ -5,6 +5,7 @@ import { Router } from 'express';
 import SpaceModel from 'models/SpaceModel';
 import { PipelineStage } from 'mongoose';
 import {
+    interpretSortOrder,
     interpretSpaceQueryProp,
     ListPropParams,
     ListPropQueryParams,
@@ -18,9 +19,23 @@ const router = Router();
 
 export async function listAllSpacePropValues(prop: SpaceQueryProp, {
     limit,
-    offset = 0
+    offset = 0,
+    sortBy="id",
+    sortOrder="asc"
 }: ListPropQueryParams): Promise<(string | null)[]> {
     prop = interpretSpaceQueryProp(prop);
+
+    const sortOrderNum = interpretSortOrder(sortOrder) === "asc" ? 1 : -1;
+    const sortObject: Record<string, 1 | -1> = {};
+
+    sortBy = interpretSpaceQueryProp(sortBy);
+    if (sortBy === "known-as") {
+        sortObject["knownAs"] = sortOrderNum;
+    } else {
+        sortObject[sortBy] = sortOrderNum;
+    }
+
+    if (sortBy !== "_id") sortObject["_id"] = sortOrderNum;
 
     let aggregationPipeline: PipelineStage[] = [];
     if (prop === "known-as") {
@@ -31,18 +46,24 @@ export async function listAllSpacePropValues(prop: SpaceQueryProp, {
             },
             { $unwind: "$knownAs" },
             { $group: { _id: "$knownAs" } },
+            { $sort: sortObject },
             { $skip: offset }
         ];
     } else {
         aggregationPipeline = [
             { $unwind: { path: `$${prop}`, preserveNullAndEmptyArrays: true } },
             { $group: { _id: `$${prop}` } },
+            { $sort: sortObject },
             { $skip: offset }
         ];
     }
-    if (limit) aggregationPipeline.push({ $limit: limit });
 
-    const query = SpaceModel.aggregate(aggregationPipeline);
+    // Remove __v field
+    aggregationPipeline.push({ $unset: "__v" });
+
+    if (limit !== undefined) aggregationPipeline.push({ $limit: limit });
+
+    const query = SpaceModel.aggregate<{_id: string}>(aggregationPipeline);
 
     const values = await query.exec();
     // Extract and format the actual values
@@ -93,7 +114,13 @@ router.get<
             "#/components/parameters/o",
 
             "#/components/parameters/limit",
-            "#/components/parameters/l"
+            "#/components/parameters/l",
+
+            "#/components/parameters/sortBy",
+            "#/components/parameters/sb",
+
+            "#/components/parameters/sortOrder",
+            "#/components/parameters/so"
         ]
 
         #swagger.responses[200] = {

@@ -145,22 +145,28 @@
         "description": "Get all spaces in the database.",
         "parameters": [
           {
-            "name": "limit",
-            "in": "query",
-            "description": "Maximum number of spaces to return.",
-            "required": false,
-            "schema": {
-              "type": "number"
-            }
+            "$ref": "#/components/parameters/limit"
           },
           {
-            "name": "offset",
-            "in": "query",
-            "description": "Number of spaces to skip. Default is 0.",
-            "required": false,
-            "schema": {
-              "type": "number"
-            }
+            "$ref": "#/components/parameters/l"
+          },
+          {
+            "$ref": "#/components/parameters/offset"
+          },
+          {
+            "$ref": "#/components/parameters/o"
+          },
+          {
+            "$ref": "#/components/parameters/sortBy"
+          },
+          {
+            "$ref": "#/components/parameters/sb"
+          },
+          {
+            "$ref": "#/components/parameters/sortOrder"
+          },
+          {
+            "$ref": "#/components/parameters/so"
           }
         ],
         "responses": {
@@ -355,6 +361,18 @@
           },
           {
             "$ref": "#/components/parameters/l"
+          },
+          {
+            "$ref": "#/components/parameters/sortBy"
+          },
+          {
+            "$ref": "#/components/parameters/sb"
+          },
+          {
+            "$ref": "#/components/parameters/sortOrder"
+          },
+          {
+            "$ref": "#/components/parameters/so"
           }
         ],
         "responses": {
@@ -491,6 +509,18 @@
           },
           {
             "$ref": "#/components/parameters/mw"
+          },
+          {
+            "$ref": "#/components/parameters/sortBy"
+          },
+          {
+            "$ref": "#/components/parameters/sb"
+          },
+          {
+            "$ref": "#/components/parameters/sortOrder"
+          },
+          {
+            "$ref": "#/components/parameters/so"
           }
         ],
         "responses": {
@@ -789,6 +819,38 @@
         },
         "required": false,
         "name": "mw",
+        "in": "query"
+      },
+      "sortOrder": {
+        "schema": {
+          "$ref": "#/components/schemas/sortOrder"
+        },
+        "required": false,
+        "name": "sortOrder",
+        "in": "query"
+      },
+      "so": {
+        "schema": {
+          "$ref": "#/components/schemas/so"
+        },
+        "required": false,
+        "name": "so",
+        "in": "query"
+      },
+      "sortBy": {
+        "schema": {
+          "$ref": "#/components/schemas/sortBy"
+        },
+        "required": false,
+        "name": "sortBy",
+        "in": "query"
+      },
+      "sb": {
+        "schema": {
+          "$ref": "#/components/schemas/sb"
+        },
+        "required": false,
+        "name": "sb",
         "in": "query"
       }
     },
@@ -1179,6 +1241,17 @@
           "message"
         ]
       },
+      "SortOrder": {
+        "type": "string",
+        "enum": [
+          "asc",
+          "ascending",
+          "desc",
+          "descending"
+        ],
+        "description": "The order to sort by.",
+        "example": "asc"
+      },
       "GetSpaces200ResponseBody": {
         "allOf": [
           {
@@ -1260,6 +1333,66 @@
         "default": 0,
         "description": "[Query Parameter] Shorthand for offset."
       },
+      "sortBy": {
+        "type": "string",
+        "enum": [
+          "id",
+          "name",
+          "description",
+          "examples",
+          "aliases",
+          "tags",
+          "_id",
+          "known-as",
+          "alias",
+          "tag",
+          "example"
+        ],
+        "default": "id",
+        "description": "[Query Parameter] The field to sort by. Defaults to id."
+      },
+      "sb": {
+        "type": "string",
+        "enum": [
+          "id",
+          "name",
+          "description",
+          "examples",
+          "aliases",
+          "tags",
+          "_id",
+          "known-as",
+          "alias",
+          "tag",
+          "example"
+        ],
+        "default": "id",
+        "description": "[Query Parameter] Shorthand for sortBy."
+      },
+      "sortOrder": {
+        "type": "string",
+        "enum": [
+          "asc",
+          "ascending",
+          "desc",
+          "descending"
+        ],
+        "default": "asc",
+        "description": "[Query Parameter] The order to sort the field by. Defaults to ascending.",
+        "example": "asc"
+      },
+      "so": {
+        "type": "string",
+        "enum": [
+          "asc",
+          "ascending",
+          "desc",
+          "descending"
+        ],
+        "default": "asc",
+        "description": "[Query Parameter] Shorthand for sortOrder.",
+        "example": "asc"
+      },
       "GetSpacesQueryParams": {
         "type": "object",
         "properties": {
@@ -1274,6 +1407,18 @@
           },
           "o": {
             "$ref": "#/components/schemas/o"
+          },
+          "sortBy": {
+            "$ref": "#/components/schemas/sortBy"
+          },
+          "sb": {
+            "$ref": "#/components/schemas/sb"
+          },
+          "sortOrder": {
+            "$ref": "#/components/schemas/sortOrder"
+          },
+          "so": {
+            "$ref": "#/components/schemas/so"
           }
         },
         "description": "Query parameters for getting all spaces."
@@ -1630,6 +1775,18 @@
           },
           "o": {
             "$ref": "#/components/schemas/o"
+          },
+          "sortBy": {
+            "$ref": "#/components/schemas/sortBy"
+          },
+          "sb": {
+            "$ref": "#/components/schemas/sb"
+          },
+          "sortOrder": {
+            "$ref": "#/components/schemas/sortOrder"
+          },
+          "so": {
+            "$ref": "#/components/schemas/so"
           }
         },
         "description": "Query parameters for listing all values under a property."

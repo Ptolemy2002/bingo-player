@@ -3,7 +3,7 @@ import { z } from "zod";
 import { ZodMongoSpaceSchema } from "src/Space";
 import { ZodErrorResponseSchema } from "./ErrorResponse";
 import { zodSuccessResponseSchema } from "./SuccessResponse";
-import { ZodLimitQueryParamSchema, ZodLimitShorthandQueryParamSchema, ZodOffsetQueryParamSchema, ZodOffsetShorthandQueryParamSchema } from "./QueryParams";
+import { ZodLimitQueryParamSchema, ZodLimitShorthandQueryParamSchema, ZodOffsetQueryParamSchema, ZodOffsetShorthandQueryParamSchema, ZodSortByQueryParamSchema, ZodSortByShorthandQueryParamSchema, ZodSortOrderQueryParamSchema, ZodSortOrderShorthandQueryParamSchema } from "./QueryParams";
 
 export const ZodGetSpaces200ResponseBodySchema = swaggerRegistry.register(
     "GetSpaces200ResponseBody",
@@ -34,9 +34,17 @@ export const ZodGetSpacesQueryParamsSchema = swaggerRegistry.register(
 
         offset: ZodOffsetQueryParamSchema,
         o: ZodOffsetShorthandQueryParamSchema,
+
+        sortBy: ZodSortByQueryParamSchema,
+        sb: ZodSortByShorthandQueryParamSchema,
+
+        sortOrder: ZodSortOrderQueryParamSchema,
+        so: ZodSortOrderShorthandQueryParamSchema
     }).transform((data) => {
         if (data.l !== undefined) data.limit = data.l;
         if (data.o !== undefined) data.offset = data.o;
+        if (data.sb !== undefined) data.sortBy = data.sb;
+        if (data.so !== undefined) data.sortOrder = data.so;
         return data;
     }).openapi({
         description: "Query parameters for getting all spaces."

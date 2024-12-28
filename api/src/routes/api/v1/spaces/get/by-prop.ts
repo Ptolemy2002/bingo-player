@@ -2,6 +2,8 @@ import { Router } from 'express';
 import { transformRegex } from '@ptolemy2002/regex-utils';
 import {
     GetSpacesByPropParams,
+    CleanMongoSpace,
+    interpretSpaceQueryProp,
     GetSpacesByPropQueryParamsInput,
     GetSpacesByPropQueryParamsOutput,
     GetSpacesByPropResponseBody,
@@ -12,6 +14,7 @@ import {
 } from 'shared';
 import SpaceModel from 'models/SpaceModel';
 import getEnv from 'env';
+import { PipelineStage } from 'mongoose';
 
 const router = Router();
 
@@ -24,14 +27,12 @@ export async function getSpacesByProp(
         caseSensitive = false,
         accentSensitive = false,
         matchWhole = false,
+        sortBy = "id",
+        sortOrder = "asc",
     }: GetSpacesByPropQueryParamsOutput = {},
 ) {
-    // We should not get an id here, as the type of SpaceQueryPropNonId
-    // omits any fields that map to "_id". The reason this is necessary
-    // is because mongoose will otherwise attempt to convert the pattern
-    // to an ObjectId, which will fail, as RegExp cannot be used directly
-    // as a string.
     prop = interpretSpaceQueryPropNonId(prop);
+    sortBy = interpretSpaceQueryProp(sortBy);
 
     const pattern = transformRegex(queryString, {
         caseInsensitive: !caseSensitive,
@@ -39,18 +40,53 @@ export async function getSpacesByProp(
         matchWhole,
     });
 
-    let queryCondition;
-    if (prop === 'known-as') {
-        queryCondition = {
-            $or: [{ name: pattern }, { aliases: pattern }],
-        };
-    } else {
-        queryCondition = { [prop]: pattern };
+    const sortOrderNum = sortOrder === "asc" ? 1 : -1;
+    const sortObject: Record<string, 1 | -1> = {
+        [sortBy === 'known-as' ? 'knownAs' : sortBy]: sortOrderNum
+    };
+    if (sortBy !== "_id") sortObject["_id"] = sortOrderNum;
+
+    const aggregationPipeline: PipelineStage[] = [];
+
+    // If query prop or sort prop is 'known-as', create 'knownAs' field
+    if (prop === 'known-as' || sortBy === 'known-as') {
+        aggregationPipeline.push({
+            $addFields: {
+                knownAs: { $concatArrays: [[ "$name"], "$aliases"] }
+            }
+        });
     }
 
-    const query = SpaceModel.find(queryCondition);
-    if (limit) query.limit(limit);
-    if (offset) query.skip(offset);
+    // Build match condition
+    if (prop === 'known-as') {
+        aggregationPipeline.push({
+            $match: {
+                knownAs: pattern
+            }
+        });
+    } else {
+        aggregationPipeline.push({
+            $match: {
+                [prop]: pattern
+            }
+        });
+    }
+
+    // Add sort stage
+    aggregationPipeline.push({ $sort: sortObject });
+
+    // If 'knownAs' field was created, remove it
+    if (prop === 'known-as' || sortBy === 'known-as') {
+        aggregationPipeline.push({ $unset: "knownAs" });
+    }
+
+    // Remove __v field
+    aggregationPipeline.push({ $unset: "__v" });
+
+    if (limit !== undefined) aggregationPipeline.push({ $limit: limit });
+    if (offset !== undefined) aggregationPipeline.push({ $skip: offset });
+
+    const query = SpaceModel.aggregate<CleanMongoSpace>(aggregationPipeline);
     return query.exec();
 }
 
@@ -105,7 +141,13 @@ router.get<
             "#/components/parameters/as",
 
             "#/components/parameters/matchWhole",
-            "#/components/parameters/mw"
+            "#/components/parameters/mw",
+
+            "#/components/parameters/sortBy",
+            "#/components/parameters/sb",
+
+            "#/components/parameters/sortOrder",
+            "#/components/parameters/so"
         ]
 
         #swagger.responses[200] = {
@@ -165,7 +207,7 @@ router.get<
 
     res.json({
         ok: true,
-        spaces: spaces.map((s) => s.toClientJSON()),
+        spaces,
         help,
     });
 });

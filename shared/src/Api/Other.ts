@@ -8,3 +8,10 @@ export const ErrorCodeEnum = [
     "NOT_FOUND",
     "NOT_IMPLEMENTED"
 ] as const;
+
+export const SortOrderEnum = [
+    "asc",
+    "ascending",
+    "desc",
+    "descending"
+] as const;

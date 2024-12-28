@@ -3,14 +3,49 @@ import { interpretZodError } from "@ptolemy2002/regex-utils";
 import getEnv from "env";
 import { Router } from "express";
 import SpaceModel from "models/SpaceModel";
-import { GetSpacesQueryParams, GetSpacesResponseBody, ZodGetSpacesQueryParamsSchema } from "shared";
+import { PipelineStage } from "mongoose";
+import { CleanMongoSpace, GetSpacesQueryParams, GetSpacesResponseBody, interpretSortOrder, interpretSpaceQueryProp, ZodGetSpacesQueryParamsSchema } from "shared";
 
 const router = Router();
 
-export async function getAllSpaces({limit, offset}: GetSpacesQueryParams = {}) {
-    let query = SpaceModel.find({});
-    if (limit) query = query.limit(limit);
-    if (offset) query = query.skip(offset);
+export async function getAllSpaces({
+    limit, offset, sortBy="id", sortOrder="asc"
+}: GetSpacesQueryParams = {}) {
+    const aggregationPipeline: PipelineStage[] = [];
+
+    const sortOrderNum = interpretSortOrder(sortOrder) === "asc" ? 1 : -1;
+    const sortObject: Record<string, 1 | -1> = {};
+
+    sortBy = interpretSpaceQueryProp(sortBy);
+    if (sortBy === "known-as") {
+        sortObject["knownAs"] = sortOrderNum;
+    } else {
+        sortObject[sortBy] = sortOrderNum;
+    }
+    if (sortBy !== "_id") sortObject["_id"] = sortOrderNum;
+
+    // Check if the "known-as" was used for sorting
+    const usedKnownAs = (sortBy  === "known-as");
+
+    if (usedKnownAs) {
+        aggregationPipeline.push({ 
+            $addFields: { knownAs: { $concatArrays: [[ "$name" ], "$aliases"] } } 
+        });
+    }
+
+    aggregationPipeline.push({ $sort: sortObject });
+
+    if (usedKnownAs) {
+        aggregationPipeline.push({$unset: "knownAs"}); 
+    }
+
+    if (limit !== undefined) aggregationPipeline.push({ $limit: limit });
+    if (offset !== undefined) aggregationPipeline.push({ $skip: offset });
+
+    // Populate all properties
+    aggregationPipeline.push({ $replaceRoot: { newRoot: "$$ROOT" } });
+
+    const query = SpaceModel.aggregate<CleanMongoSpace>(aggregationPipeline);
     return query.exec();
 }
 
@@ -32,19 +67,19 @@ router.get<
         #swagger.method = 'get'
         #swagger.description = 'Get all spaces in the database.'
 
-        #swagger.parameters['limit'] = {
-            in: 'query',
-            description: 'Maximum number of spaces to return.',
-            required: false,
-            type: 'number'
-        }
+        #swagger.parameters['$ref'] = [
+            "#/components/parameters/limit",
+            "#/components/parameters/l",
 
-        #swagger.parameters['offset'] = {
-            in: 'query',
-            description: 'Number of spaces to skip. Default is 0.',
-            required: false,
-            type: 'number'
-        }
+            "#/components/parameters/offset",
+            "#/components/parameters/o",
+
+            "#/components/parameters/sortBy",
+            "#/components/parameters/sb",
+
+            "#/components/parameters/sortOrder",
+            "#/components/parameters/so"
+        ]
 
         #swagger.responses[200] = {
             schema: {
@@ -81,7 +116,7 @@ router.get<
 
     res.json({
         ok: true,
-        spaces: spaces.map(s => s.toClientJSON()),
+        spaces,
         help
     });
 }));

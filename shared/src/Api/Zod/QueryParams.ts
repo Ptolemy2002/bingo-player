@@ -1,6 +1,8 @@
 import { z } from "zod";
 import { swaggerRegistry } from "src/Swagger";
 import { ZodCoercedBoolean } from "@ptolemy2002/regex-utils";
+import { ZodSortOrderSchema } from "./SortOrder";
+import { ZodSpaceQueryPropSchema } from "src/Space";
 
 export const ZodLimitQueryParamSchema = swaggerRegistry.registerParameter(
     "limit",
@@ -129,6 +131,59 @@ export const ZodMatchWholeShorthandQueryParamSchema = swaggerRegistry.registerPa
         default: "f",
         param: {
             name: "mw",
+            in: "query"
+        }
+    })
+);
+
+export const ZodSortOrderQueryParamSchema = swaggerRegistry.registerParameter(
+    "sortOrder",
+    ZodSortOrderSchema
+        .optional()
+        .openapi({
+            description: "[Query Parameter] The order to sort the field by. Defaults to ascending.",
+            default: "asc",
+            param: {
+                name: "sortOrder",
+                in: "query"
+            }
+        })
+);
+
+export const ZodSortOrderShorthandQueryParamSchema = swaggerRegistry.registerParameter(
+    "so",
+    ZodSortOrderQueryParamSchema
+    .openapi({
+        description: "[Query Parameter] Shorthand for sortOrder.",
+        default: "asc",
+        param: {
+            name: "so",
+            in: "query"
+        }
+    })
+);
+
+export const ZodSortByQueryParamSchema = swaggerRegistry.registerParameter(
+    "sortBy",
+    ZodSpaceQueryPropSchema
+        .optional()
+        .openapi({
+            description: "[Query Parameter] The field to sort by. Defaults to id.",
+            default: "id",
+            param: {
+                name: "sortBy",
+                in: "query"
+            }
+        })
+);
+
+export const ZodSortByShorthandQueryParamSchema = swaggerRegistry.registerParameter(
+    "sb",
+    ZodSortByQueryParamSchema
+    .openapi({
+        description: "[Query Parameter] Shorthand for sortBy.",
+        param: {
+            name: "sb",
             in: "query"
         }
     })

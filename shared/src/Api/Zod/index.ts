@@ -13,3 +13,4 @@ export * from "./ListProp";
 export * from "./ListPropByProp";
 
 export * from "./QueryParams";
+export * from "./SortOrder";

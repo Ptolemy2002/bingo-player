@@ -457,6 +457,94 @@
         }
       }
     },
+    "/spaces/get/by-prop/{prop}/{query}": {
+      "get": {
+        "tags": [
+          "Spaces"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "prop",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "query",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse400"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse400"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No matching spaces found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse404"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse404"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "501": {
+            "description": "Not implemented.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse501"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse501"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/spaces/get/by-prop/{prop}/{query}": {
       "get": {
         "tags": [
@@ -1408,13 +1496,51 @@
           "message"
         ]
       },
+      "SuccessResponseBase": {
+        "type": "object",
+        "properties": {
+          "ok": {
+            "type": "boolean",
+            "enum": [
+              true
+            ],
+            "description": "Whether the operation was successful.",
+            "example": true
+          },
+          "help": {
+            "type": "string",
+            "description": "A URL to the docs page that may help the user understand the response.",
+            "example": "https://example.com/docs"
+          }
+        },
+        "required": [
+          "ok"
+        ],
+        "description": "A successful response from the server."
+      },
       "SortOrder": {
-        "type": "string",
-        "enum": [
-          "asc",
-          "ascending",
-          "desc",
-          "descending"
+        "anyOf": [
+          {
+            "type": "number",
+            "enum": [
+              1
+            ]
+          },
+          {
+            "type": "number",
+            "enum": [
+              -1
+            ]
+          },
+          {
+            "type": "string",
+            "enum": [
+              "asc",
+              "ascending",
+              "desc",
+              "descending"
+            ]
+          }
         ],
         "description": "The order to sort by.",
         "example": "asc"
@@ -1438,25 +1564,7 @@
             "description": "The response from getting spaces."
           },
           {
-            "type": "object",
-            "properties": {
-              "ok": {
-                "type": "boolean",
-                "enum": [
-                  true
-                ],
-                "description": "Whether the operation was successful.",
-                "example": true
-              },
-              "help": {
-                "type": "string",
-                "description": "A URL to the docs page that may help the user understand the response.",
-                "example": "https://example.com/docs"
-              }
-            },
-            "required": [
-              "ok"
-            ]
+            "$ref": "#/components/schemas/SuccessResponseBase"
           }
         ]
       },
@@ -1537,24 +1645,56 @@
         "description": "[Query Parameter] Shorthand for sortBy."
       },
       "sortOrder": {
-        "type": "string",
-        "enum": [
-          "asc",
-          "ascending",
-          "desc",
-          "descending"
+        "anyOf": [
+          {
+            "type": "number",
+            "enum": [
+              1
+            ]
+          },
+          {
+            "type": "number",
+            "enum": [
+              -1
+            ]
+          },
+          {
+            "type": "string",
+            "enum": [
+              "asc",
+              "ascending",
+              "desc",
+              "descending"
+            ]
+          }
         ],
         "default": "asc",
         "description": "[Query Parameter] The order to sort the field by. Defaults to ascending.",
         "example": "asc"
       },
       "so": {
-        "type": "string",
-        "enum": [
-          "asc",
-          "ascending",
-          "desc",
-          "descending"
+        "anyOf": [
+          {
+            "type": "number",
+            "enum": [
+              1
+            ]
+          },
+          {
+            "type": "number",
+            "enum": [
+              -1
+            ]
+          },
+          {
+            "type": "string",
+            "enum": [
+              "asc",
+              "ascending",
+              "desc",
+              "descending"
+            ]
+          }
         ],
         "default": "asc",
         "description": "[Query Parameter] Shorthand for sortOrder.",
@@ -1752,12 +1892,25 @@
         "description": "Query parameters for getting spaces filtered by a property value."
       },
       "GetSpacesByProp200ResponseBody": {
-        "anyOf": [
+        "allOf": [
           {
-            "$ref": "#/components/schemas/GetSpaces200ResponseBody"
+            "type": "object",
+            "properties": {
+              "spaces": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/MongoSpace"
+                },
+                "description": "The spaces that match the query."
+              }
+            },
+            "required": [
+              "spaces"
+            ],
+            "description": "The response from getting spaces."
           },
           {
-            "$ref": "#/components/schemas/ErrorResponse"
+            "$ref": "#/components/schemas/SuccessResponseBase"
           }
         ]
       },
@@ -1787,25 +1940,7 @@
             ]
           },
           {
-            "type": "object",
-            "properties": {
-              "ok": {
-                "type": "boolean",
-                "enum": [
-                  true
-                ],
-                "description": "Whether the operation was successful.",
-                "example": true
-              },
-              "help": {
-                "type": "string",
-                "description": "A URL to the docs page that may help the user understand the response.",
-                "example": "https://example.com/docs"
-              }
-            },
-            "required": [
-              "ok"
-            ]
+            "$ref": "#/components/schemas/SuccessResponseBase"
           }
         ],
         "description": "The response from counting spaces."
@@ -1836,25 +1971,7 @@
             ]
           },
           {
-            "type": "object",
-            "properties": {
-              "ok": {
-                "type": "boolean",
-                "enum": [
-                  true
-                ],
-                "description": "Whether the operation was successful.",
-                "example": true
-              },
-              "help": {
-                "type": "string",
-                "description": "A URL to the docs page that may help the user understand the response.",
-                "example": "https://example.com/docs"
-              }
-            },
-            "required": [
-              "ok"
-            ]
+            "$ref": "#/components/schemas/SuccessResponseBase"
           }
         ],
         "description": "The response from counting spaces."
@@ -1987,25 +2104,7 @@
             "description": "List of values found"
           },
           {
-            "type": "object",
-            "properties": {
-              "ok": {
-                "type": "boolean",
-                "enum": [
-                  true
-                ],
-                "description": "Whether the operation was successful.",
-                "example": true
-              },
-              "help": {
-                "type": "string",
-                "description": "A URL to the docs page that may help the user understand the response.",
-                "example": "https://example.com/docs"
-              }
-            },
-            "required": [
-              "ok"
-            ]
+            "$ref": "#/components/schemas/SuccessResponseBase"
           }
         ]
       },
@@ -2068,25 +2167,7 @@
             "description": "List of values found"
           },
           {
-            "type": "object",
-            "properties": {
-              "ok": {
-                "type": "boolean",
-                "enum": [
-                  true
-                ],
-                "description": "Whether the operation was successful.",
-                "example": true
-              },
-              "help": {
-                "type": "string",
-                "description": "A URL to the docs page that may help the user understand the response.",
-                "example": "https://example.com/docs"
-              }
-            },
-            "required": [
-              "ok"
-            ]
+            "$ref": "#/components/schemas/SuccessResponseBase"
           }
         ]
       },

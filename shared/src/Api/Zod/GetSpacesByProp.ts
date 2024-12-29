@@ -1,5 +1,6 @@
 import { ZodSpaceQueryPropNonIdSchema } from 'src/Space';
 import {
+    ZodGetSpaces200ResponseBodySchema,
     ZodGetSpacesQueryParamsSchema,
     ZodGetSpacesResponseBodySchema,
 } from './GetSpaces';
@@ -55,7 +56,7 @@ export const ZodGetSpacesByPropQueryParamsSchema = swaggerRegistry.register(
 
 export const ZodGetSpacesByProp200ResponseBodySchema = swaggerRegistry.register(
     'GetSpacesByProp200ResponseBody',
-    ZodGetSpacesResponseBodySchema,
+    ZodGetSpaces200ResponseBodySchema
 );
 export const ZodGetSpacesByPropResponseBodySchema = swaggerRegistry.register(
     'GetSpacesByPropResponseBody',

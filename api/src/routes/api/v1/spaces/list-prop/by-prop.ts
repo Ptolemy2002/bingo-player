@@ -39,7 +39,7 @@ export async function listSpacePropValuesByProp(
         matchWhole,
     });
 
-    const sortOrderNum = interpretSortOrder(sortOrder) === "asc" ? 1 : -1;
+    const sortOrderNum = interpretSortOrder(sortOrder);
     const sortObject: Record<string, 1 | -1> = {};
 
     sortBy = interpretSpaceQueryProp(sortBy);

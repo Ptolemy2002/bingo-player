@@ -1,108 +1,18 @@
-import { Router } from 'express';
-import { transformRegex } from '@ptolemy2002/regex-utils';
+import { Router, Request, Response } from 'express';
 import {
-    GetSpacesByPropParams,
     CleanMongoSpace,
-    interpretSpaceQueryProp,
-    GetSpacesByPropQueryParamsInput,
-    GetSpacesByPropQueryParamsOutput,
-    GetSpacesByPropResponseBody,
-    interpretSpaceQueryPropNonId,
-    SpaceQueryPropNonId,
     ZodGetSpacesByPropParamsSchema,
     ZodGetSpacesByPropQueryParamsSchema,
-    interpretSortOrder
+    GetSpacesByProp200ResponseBody
 } from 'shared';
 import SpaceModel from 'models/SpaceModel';
-import getEnv from 'env';
-import { PipelineStage } from 'mongoose';
+import RouteHandler from 'lib/RouteHandler';
+import SpaceAggregationBuilder from '../utils/SpaceAggregationBuilder';
+import { asyncErrorHandler } from '@ptolemy2002/express-utils';
 
 const router = Router();
 
-export async function getSpacesByProp(
-    prop: SpaceQueryPropNonId,
-    queryString: string,
-    {
-        limit,
-        offset = 0,
-        caseSensitive = false,
-        accentSensitive = false,
-        matchWhole = false,
-        sortBy = "id",
-        sortOrder = "asc",
-    }: GetSpacesByPropQueryParamsOutput = {},
-) {
-    prop = interpretSpaceQueryPropNonId(prop);
-    sortBy = interpretSpaceQueryProp(sortBy);
-
-    const pattern = transformRegex(queryString, {
-        caseInsensitive: !caseSensitive,
-        accentInsensitive: !accentSensitive,
-        matchWhole,
-    });
-
-    const sortOrderNum = interpretSortOrder(sortOrder) === "asc" ? 1 : -1;
-    const sortObject: Record<string, 1 | -1> = {
-        [sortBy === 'known-as' ? 'knownAs' : sortBy]: sortOrderNum
-    };
-    if (sortBy !== "_id") sortObject["_id"] = sortOrderNum;
-
-    const aggregationPipeline: PipelineStage[] = [];
-
-    // If query prop or sort prop is 'known-as', create 'knownAs' field
-    if (prop === 'known-as' || sortBy === 'known-as') {
-        aggregationPipeline.push({
-            $addFields: {
-                knownAs: { $concatArrays: [[ "$name"], "$aliases"] }
-            }
-        });
-    }
-
-    // Build match condition
-    if (prop === 'known-as') {
-        aggregationPipeline.push({
-            $match: {
-                knownAs: pattern
-            }
-        });
-    } else {
-        aggregationPipeline.push({
-            $match: {
-                [prop]: pattern
-            }
-        });
-    }
-
-    // Add sort stage
-    aggregationPipeline.push({ $sort: sortObject });
-
-    // If 'knownAs' field was created, remove it
-    if (prop === 'known-as' || sortBy === 'known-as') {
-        aggregationPipeline.push({ $unset: "knownAs" });
-    }
-
-    // Remove __v field
-    aggregationPipeline.push({ $unset: "__v" });
-
-    if (limit !== undefined) aggregationPipeline.push({ $limit: limit });
-    if (offset !== undefined) aggregationPipeline.push({ $skip: offset });
-
-    const query = SpaceModel.aggregate<CleanMongoSpace>(aggregationPipeline);
-    return query.exec();
-}
-
-router.get<
-    // Path
-    '/get/by-prop/:prop/:query',
-    // URL Parameters
-    GetSpacesByPropParams,
-    // Response body
-    GetSpacesByPropResponseBody,
-    // Request body
-    {},
-    // Query Parameters
-    GetSpacesByPropQueryParamsInput
->('/get/by-prop/:prop/:query', async (req, res) => {
+export class GetSpacesByPropHandler extends RouteHandler {
     /*
         #swagger.start
         #swagger.tags = ['Spaces', 'Get', 'Query']
@@ -160,59 +70,57 @@ router.get<
 
         #swagger.end
     */
-    const env = getEnv();
-    const help =
-        env.getDocsURL(1) +
-        '/#/Spaces/get_api_v1_spaces_get_by_prop__prop___query_';
-
-    const {
-        success: paramsSuccess,
-        error: paramsError,
-        data: propData,
-    } = ZodGetSpacesByPropParamsSchema.safeParse(req.params);
-
-    if (!paramsSuccess) {
-        res.status(400).json({
-            ok: false,
-            code: 'BAD_URL',
-            message: paramsError.errors[0].message,
-        });
-        return;
+    constructor() {
+        super(1, '/#/Spaces/get_api_v1_spaces_get_by_prop__prop___query_');
     }
 
-    const { prop, query } = propData;
-    const {
-        success,
-        error,
-        data: queryData,
-    } = ZodGetSpacesByPropQueryParamsSchema.safeParse(req.query);
-    if (!success) {
-        res.status(400).json({
-            ok: false,
-            code: 'BAD_QUERY',
-            message: error.errors[0].message,
-            help,
-        });
+    async handle(req: Request, res: Response) {
+        const { success: paramsSuccess, error: paramsError, data: params } = ZodGetSpacesByPropParamsSchema.safeParse(req.params);
+
+        if (!paramsSuccess) {
+            res.status(400)
+                .json(this.buildZodErrorResponse(paramsError, "BAD_URL"));
+            return;
+        }
+
+        const { prop: queryProp, query: queryString } = params;
+        const { success: querySuccess, error: queryError, data: queryData } = ZodGetSpacesByPropQueryParamsSchema.safeParse(req.query);
+        if (!querySuccess) {
+            res.status(400)
+                .json(this.buildZodErrorResponse(queryError, "BAD_QUERY"));
+            return;
+        }
+
+        const pipeline = new SpaceAggregationBuilder({
+            ...queryData,
+            queryProp,
+            queryString
+        })
+            .then("add-known-as")
+            .then("match")
+            .then("sort")
+            .then("cleanup")
+            .then("pagination")
+            .build();
+        
+        const spaces = await SpaceModel.aggregate<CleanMongoSpace>(pipeline).exec();
+
+        if (spaces.length === 0) {
+            res.status(404)
+                .json(this.buildNotFoundResponse("No matching spaces found."));
+            return;
+        }
+
+        res.status(200)
+            .json(this.buildSuccessResponse<GetSpacesByProp200ResponseBody>({ spaces }));
         return;
     }
+}
 
-    const spaces = await getSpacesByProp(prop, query, queryData);
-    if (spaces.length === 0) {
-        res.status(404).json({
-            ok: false,
-            code: 'NOT_FOUND',
-            message: 'No matching spaces found.',
-            help,
-        });
-        return;
-    }
-
-    res.json({
-        ok: true,
-        spaces,
-        help,
-    });
-});
+router.get('/get/by-prop/:prop/:query', asyncErrorHandler(async (req, res) => {
+    const handler = new GetSpacesByPropHandler();
+    return await handler.handle(req, res);
+}));
 
 const getSpacesByPropRouter = router;
 export default getSpacesByPropRouter;

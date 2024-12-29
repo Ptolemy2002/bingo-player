@@ -1,12 +1,14 @@
 import { SortOrder } from "./Zod/SortOrder";
 
-export function interpretSortOrder(sortOrder: SortOrder): "asc" | "desc" {
+export function interpretSortOrder(sortOrder: SortOrder): 1 | -1 {
+    if (typeof sortOrder === "number") return sortOrder;
+    
     switch (sortOrder) {
         case "asc":
         case "ascending":
-            return "asc";
+            return 1;
         case "desc":
         case "descending":
-            return "desc";
+            return -1;
     }
 }

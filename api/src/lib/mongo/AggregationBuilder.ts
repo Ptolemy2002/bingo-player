@@ -49,4 +49,9 @@ export default class AggregationBuilder<StageType extends string> {
             return acc;
         }, [] as PipelineStage[]);
     }
+
+    compose(other: AggregationBuilder<StageType>): this {
+        this.pipeline.push(...other.pipeline);
+        return this;
+    }
 }

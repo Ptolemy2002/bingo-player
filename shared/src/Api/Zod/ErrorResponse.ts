@@ -86,6 +86,8 @@ export const ZodErrorResponse404Schema = swaggerRegistry.register(
 export type ErrorResponseBase = z.infer<typeof ZodErrorResponseBaseSchema>;
 
 export type ErrorResponse = z.infer<typeof ZodErrorResponseSchema>;
+export type ErrorResponseWithCode<EC extends string> = Omit<ErrorResponse, "code"> & { code: EC };
+
 export type ErrorResponse501 = z.infer<typeof ZodErrorResponse501Schema>;
 export type ErrorResponse400 = z.infer<typeof ZodErrorResponse400Schema>;
 export type ErrorResponse404 = z.infer<typeof ZodErrorResponse404Schema>;

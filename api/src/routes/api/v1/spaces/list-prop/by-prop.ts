@@ -1,111 +1,18 @@
 import { asyncErrorHandler } from '@ptolemy2002/express-utils';
-import { interpretZodError, transformRegex } from '@ptolemy2002/regex-utils';
-import getEnv from 'env';
-import { Router } from 'express';
+import { Request, Response, Router } from 'express';
+import RouteHandler from 'lib/RouteHandler';
 import SpaceModel from 'models/SpaceModel';
-import { PipelineStage } from 'mongoose';
 import {
-    interpretSortOrder,
-    interpretSpaceQueryProp,
-    ListPropByPropResponseBody,
-    SpaceQueryProp,
-    ListPropByPropQueryParams,
-    ListPropByPropParams,
     ZodListPropByPropParamsSchema,
     ZodListPropByPropQueryParamsSchema,
+    ListPropByProp200ResponseBody,
 } from 'shared';
+import SpaceAggregationBuilder from '../utils/SpaceAggregationBuilder';
 
 const router = Router();
 
-export async function listSpacePropValuesByProp(
-    queryProp: SpaceQueryProp,
-    queryString: string,
-    listProp: SpaceQueryProp,
-    {
-        limit,
-        offset = 0,
-        sortBy="id",
-        sortOrder="asc",
-        caseSensitive = false,
-        accentSensitive = false,
-        matchWhole = false,
-    }: ListPropByPropQueryParams): Promise<(string | null)[]> {
-    queryProp = interpretSpaceQueryProp(queryProp);
-    listProp = interpretSpaceQueryProp(listProp);
-
-    const pattern = transformRegex(queryString, {
-        caseInsensitive: !caseSensitive,
-        accentInsensitive: !accentSensitive,
-        matchWhole,
-    });
-
-    const sortOrderNum = interpretSortOrder(sortOrder);
-    const sortObject: Record<string, 1 | -1> = {};
-
-    sortBy = interpretSpaceQueryProp(sortBy);
-    if (sortBy === "known-as") {
-        sortObject["knownAs"] = sortOrderNum;
-    } else {
-        sortObject[sortBy] = sortOrderNum;
-    }
-
-    if (sortBy !== "_id") sortObject["_id"] = sortOrderNum;
-
-    let aggregationPipeline: PipelineStage[] = [];
-    if (listProp === "known-as") {
-        // If the property is "known-as", combine "name" and "aliases" into a single array
-        aggregationPipeline = [
-            { 
-                $project: { knownAs: { $concatArrays: [[ "$name" ], "$aliases"] } } 
-            },
-            { $match: { knownAs: pattern } },
-            { $unwind: "$knownAs" },
-            { $group: { _id: "$knownAs" } },
-            { $sort: sortObject },
-            { $skip: offset }
-        ];
-    } else {
-        aggregationPipeline = [
-            { $match: { [queryProp]: pattern } },
-            { $unwind: { path: `$${listProp}`, preserveNullAndEmptyArrays: true } },
-            { $group: { _id: `$${listProp}` } },
-            { $sort: sortObject },
-            { $skip: offset }
-        ];
-    }
-
-    // Remove __v field
-    aggregationPipeline.push({ $unset: "__v" });
-
-    if (limit !== undefined) aggregationPipeline.push({ $limit: limit });
-
-    const query = SpaceModel.aggregate<{_id: string}>(aggregationPipeline);
-
-    const values = await query.exec();
-    // Extract and format the actual values
-    return values.map(v => v._id).map((v) => {
-        if (v === null) {
-            return null;
-        }
-        
-        return String(v);
-    });
-}
-
-
-router.get<
-    // URL Parameters
-    ListPropByPropParams,
-    // Response body
-    ListPropByPropResponseBody,
-    // Request body
-    {},
-    // Query Parameters
-    ListPropByPropQueryParams
->(
-    '/get/by-prop/:queryProp/:query/list/:listProp',
-    asyncErrorHandler(async (req, res) => {
-        /*
+export class ListPropByPropHandler extends RouteHandler {
+    /*
         #swagger.start
         #swagger.tags = ['Spaces', 'List', 'Query']
         #swagger.path = '/api/v1/spaces/get/by-prop/{queryProp}/{query}/list/{listProp}'
@@ -158,9 +65,6 @@ router.get<
             "#/components/parameters/matchWhole",
             "#/components/parameters/mw",
 
-            "#/components/parameters/sortBy",
-            "#/components/parameters/sb",
-
             "#/components/parameters/sortOrder",
             "#/components/parameters/so"
         ]
@@ -172,49 +76,75 @@ router.get<
         }
         #swagger.end
     */
-        const env = getEnv();
-        const help =
-            env.getDocsURL(1) +
-            '/#/Spaces/get_api_v1_spaces_get_all_list__prop_';
-        
+    constructor() {
+        super(1, '/#/Spaces/get_api_v1_spaces_get_all_list__prop_');
+    }
+
+    async handle(req: Request, res: Response) {
         const {
             success: paramsSuccess,
             error: paramsError,
-            data: params,
+            data: paramsData,
         } = ZodListPropByPropParamsSchema.safeParse(req.params);
+
         if (!paramsSuccess) {
-            res.status(400).json({
-                ok: false,
-                code: 'BAD_URL',
-                message: interpretZodError(paramsError),
-                help,
-            });
+            res.status(400).json(this.buildZodErrorResponse(paramsError, "BAD_URL"));
             return;
         }
 
         const {
             success: querySuccess,
             error: queryError,
-            data: query,
+            data: queryData,
         } = ZodListPropByPropQueryParamsSchema.safeParse(req.query);
+
         if (!querySuccess) {
-            res.status(400).json({
-                ok: false,
-                code: 'BAD_QUERY',
-                message: interpretZodError(queryError),
-                help,
-            });
+            res.status(400).json(this.buildZodErrorResponse(queryError, "BAD_QUERY"));
             return;
         }
 
-        const { queryProp, query: queryString, listProp } = params;
-        res.json({
-            ok: true,
-            values: await listSpacePropValuesByProp(queryProp, queryString, listProp, query),
-            help,
-        });
-    }),
-);
+        const { queryProp, query: queryString, listProp } = paramsData;
+
+        const pipeline = new SpaceAggregationBuilder(queryData)
+            .then("add-known-as")
+            .thenMatch({
+                queryProp,
+                queryString,
+            })
+            .thenUnwindListProp({
+                listProp
+            })
+            .then("group-list-prop")
+            .thenSort({
+                // The group stage will include each group's value
+                // under the _id field.
+                sortBy: "_id"
+            })
+            .then("pagination")
+            .then("cleanup")
+            .build();
+        
+        const values = await SpaceModel.aggregate<{_id: string}>(pipeline).exec();
+
+        if (values.length === 0) {
+            res.status(404)
+                .json(this.buildNotFoundResponse("No matching spaces found."));
+            return;
+        }
+
+        const propValues = values.map(({_id}) => _id);
+        res.status(200).json(
+            this.buildSuccessResponse<ListPropByProp200ResponseBody>({values: propValues})
+        );
+    }
+}
+
+
+router.get('/get/by-prop/:queryProp/:query/list/:listProp', asyncErrorHandler(async (req, res) => {
+    // #swagger.ignore = true
+    const handler = new ListPropByPropHandler();
+    return await handler.handle(req, res);
+}));
 
 const listSpacePropValuesByPropRouter = router;
 export default listSpacePropValuesByPropRouter;

@@ -1,7 +1,8 @@
 import getEnv, { EnvType } from 'env';
-import { ErrorCode, ErrorResponse, ErrorResponse400, SuccessResponseBase } from 'shared';
+import { ErrorCode, ErrorResponse, ErrorResponse400, ErrorResponse404, ErrorResponse501, ErrorResponseWithCode, SuccessResponseBase } from 'shared';
 import { ZodError } from 'zod';
 import { interpretZodError } from '@ptolemy2002/regex-utils';
+import { Request, Response } from 'express';
 
 export default class RouteHandler {
     protected _docsEndpoint: string;
@@ -56,10 +57,10 @@ export default class RouteHandler {
         } as T;
     }
 
-    protected buildErrorResponse(
-        code: ErrorCode = "UNKNOWN",
+    protected buildErrorResponse<EC extends ErrorCode = "UNKNOWN">(
+        code: EC,
         message: ErrorResponse["message"] = "Internal server error."
-    ): ErrorResponse {
+    ): ErrorResponseWithCode<EC> {
         return {
             ok: false,
             code,
@@ -71,7 +72,7 @@ export default class RouteHandler {
     protected buildZodErrorResponse(
         error: ZodError,
         code: ErrorResponse400['code'] = 'BAD_INPUT',
-    ) {
+    ): ErrorResponse400 {
         return this.buildErrorResponse(
             code,
             interpretZodError(error)
@@ -79,14 +80,18 @@ export default class RouteHandler {
     }
 
     protected buildNotFoundResponse(
-        message: string = 'No resources found.'
-    ) {
+        message: ErrorResponse["message"] = 'No resources found.'
+    ): ErrorResponse404 {
         return this.buildErrorResponse('NOT_FOUND', message);
     }
 
     protected buildNotImplementedResponse(
-        message: string = 'This feature is not yet implemented.'
-    ) {
+        message: ErrorResponse["message"] = 'This feature is not yet implemented.'
+    ): ErrorResponse501 {
         return this.buildErrorResponse('NOT_IMPLEMENTED', message);
+    }
+
+    async handle(req: Request, res: Response) {
+        throw new Error('Handler Method not implemented.');
     }
 }

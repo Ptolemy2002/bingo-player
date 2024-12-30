@@ -366,12 +366,6 @@
             "$ref": "#/components/parameters/l"
           },
           {
-            "$ref": "#/components/parameters/sortBy"
-          },
-          {
-            "$ref": "#/components/parameters/sb"
-          },
-          {
             "$ref": "#/components/parameters/sortOrder"
           },
           {
@@ -812,12 +806,6 @@
           },
           {
             "$ref": "#/components/parameters/mw"
-          },
-          {
-            "$ref": "#/components/parameters/sortBy"
-          },
-          {
-            "$ref": "#/components/parameters/sb"
           },
           {
             "$ref": "#/components/parameters/sortOrder"
@@ -1477,7 +1465,7 @@
       "limit": {
         "type": "integer",
         "minimum": 1,
-        "description": "[Query Parameter] The maximum number of spaces to return. Must be a positive integer and non-zero.",
+        "description": "[Query Parameter] The maximum number of resources to return. Must be a positive integer and non-zero. If not provided, the server will return all found resources.",
         "example": 10
       },
       "l": {
@@ -1493,7 +1481,7 @@
         ],
         "minimum": 0,
         "default": 0,
-        "description": "[Query Parameter] The number of spaces to skip before returning results. Must be a non-negative integer."
+        "description": "[Query Parameter] The number of spaces to skip before returning results. Must be a non-negative integer. If not provided, it will be considered 0."
       },
       "o": {
         "type": [
@@ -1520,7 +1508,7 @@
           "example"
         ],
         "default": "id",
-        "description": "[Query Parameter] The field to sort by. Defaults to id."
+        "description": "[Query Parameter] The field to sort by. 'id' if not provided."
       },
       "sb": {
         "type": "string",
@@ -1549,7 +1537,7 @@
           "descending"
         ],
         "default": "asc",
-        "description": "[Query Parameter] The order to sort the field by. Defaults to ascending.",
+        "description": "[Query Parameter] The order to sort the field by. Ascending if not provided.",
         "example": "asc"
       },
       "so": {
@@ -1915,12 +1903,6 @@
           },
           "o": {
             "$ref": "#/components/schemas/o"
-          },
-          "sortBy": {
-            "$ref": "#/components/schemas/sortBy"
-          },
-          "sb": {
-            "$ref": "#/components/schemas/sb"
           },
           "sortOrder": {
             "$ref": "#/components/schemas/sortOrder"

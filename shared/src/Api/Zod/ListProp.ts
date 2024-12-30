@@ -24,15 +24,11 @@ export const ZodListPropQueryParamsSchema = swaggerRegistry.register(
         offset: ZodOffsetQueryParamSchema,
         o: ZodOffsetShorthandQueryParamSchema,
 
-        sortBy: ZodSortByQueryParamSchema,
-        sb: ZodSortByShorthandQueryParamSchema,
-
         sortOrder: ZodSortOrderQueryParamSchema,
         so: ZodSortOrderShorthandQueryParamSchema
     }).transform((data) => {
         if (data.l !== undefined) data.limit = data.l;
         if (data.o !== undefined) data.offset = data.o;
-        if (data.sb !== undefined) data.sortBy = data.sb;
         if (data.so !== undefined) data.sortOrder = data.so
         return data;
     }).openapi({

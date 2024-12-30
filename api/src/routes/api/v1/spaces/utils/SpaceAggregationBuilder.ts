@@ -75,44 +75,41 @@ export default class SpaceAggregationBuilder extends AggregationBuilder<SpaceAgg
         return hasKnownAs;
     }
 
-    thenSort(options?: Partial<SpaceAggregationOptions['sort']>) {
+    setOptions(options?: Partial<AllSpaceAggregationOptions>) {
         this.options = { ...this.options, ...(options ?? {}) };
-        return this.then('sort');
+        return this;
+    }
+
+    thenSort(options?: Partial<SpaceAggregationOptions['sort']>) {
+        return this.setOptions(options).then('sort');
     }
 
     thenMatch(options?: Partial<SpaceAggregationOptions['match']>) {
-        this.options = { ...this.options, ...(options ?? {}) };
-        return this.then('match');
+        return this.setOptions(options).then('match');
     }
 
     thenSkip(options?: Partial<SpaceAggregationOptions['skip']>) {
-        this.options = { ...this.options, ...(options ?? {}) };
-        return this.then('skip');
+        return this.setOptions(options).then('skip');
     }
 
     thenLimit(options?: Partial<SpaceAggregationOptions['limit']>) {
-        this.options = { ...this.options, ...(options ?? {}) };
-        return this.then('limit');
+        return this.setOptions(options).then('limit');
     }
 
     thenPagination(options?: Partial<SpaceAggregationOptions['pagination']>) {
-        this.options = { ...this.options, ...(options ?? {}) };
-        return this.then('pagination');
+        return this.setOptions(options).then('pagination');
     }
 
     thenUnwindListProp(options?: Partial<SpaceAggregationOptions['list']>) {
-        this.options = { ...this.options, ...(options ?? {}) };
-        return this.then('unwind-list-prop');
+        return this.setOptions(options).then('unwind-list-prop');
     }
 
     thenGroupListProp(options?: Partial<SpaceAggregationOptions['list']>) {
-        this.options = { ...this.options, ...(options ?? {}) };
-        return this.then('group-list-prop');
+        return this.setOptions(options).then('group-list-prop');
     }
 
     thenCount(options?: Partial<SpaceAggregationOptions['count']>) {
-        this.options = { ...this.options, ...(options ?? {}) };
-        return this.then('count');
+        return this.setOptions(options).then('count');
     }
 
     generateStage(
@@ -136,7 +133,7 @@ export default class SpaceAggregationBuilder extends AggregationBuilder<SpaceAgg
 
             case 'sort': {
                 const sortBy = interpretSpaceQueryProp(
-                    this.options.sortBy ?? 'id',
+                    this.options.sortBy ?? '_id',
                 );
                 const sortOrder = interpretSortOrder(
                     this.options.sortOrder ?? 'asc',
@@ -220,11 +217,7 @@ export default class SpaceAggregationBuilder extends AggregationBuilder<SpaceAgg
             }
 
             case 'skip': {
-                const { offset } = this.options;
-                if (offset === undefined) {
-                    throw new TypeError('An offset is required for skip stage.');
-                }
-
+                const { offset=0 } = this.options;
                 return {
                     type: 'skip',
                     stages: [
@@ -238,7 +231,11 @@ export default class SpaceAggregationBuilder extends AggregationBuilder<SpaceAgg
             case 'limit': {
                 const { limit } = this.options;
                 if (limit === undefined) {
-                    throw new TypeError('A limit is required for limit stage.');
+                    // Don't do anything
+                    return {
+                        type: 'limit',
+                        stages: [],
+                    };
                 }
 
                 return {

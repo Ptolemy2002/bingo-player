@@ -10,7 +10,9 @@ export const ZodLimitQueryParamSchema = swaggerRegistry.registerParameter(
         .min(1, "limit must be non-negative and non-zero")
         .optional()
         .openapi({
-            description: "[Query Parameter] The maximum number of spaces to return. Must be a positive integer and non-zero.",
+            description:
+                "[Query Parameter] The maximum number of resources to return. Must be a positive integer and non-zero."
+                + " If not provided, the server will return all found resources.",
             example: 10,
             param: {
                 name: "limit",
@@ -37,7 +39,9 @@ export const ZodOffsetQueryParamSchema = swaggerRegistry.registerParameter(
         .min(0, "offset must be non-negative")
         .optional()
         .openapi({
-            description: "[Query Parameter] The number of spaces to skip before returning results. Must be a non-negative integer.",
+            description: 
+                "[Query Parameter] The number of spaces to skip before returning results. Must be a non-negative integer."
+                + " If not provided, it will be considered 0.",
             default: 0,
             param: {
                 name: "offset",
@@ -141,7 +145,7 @@ export const ZodSortOrderQueryParamSchema = swaggerRegistry.registerParameter(
     ZodSortOrderSchema
         .optional()
         .openapi({
-            description: "[Query Parameter] The order to sort the field by. Defaults to ascending.",
+            description: "[Query Parameter] The order to sort the field by. Ascending if not provided.",
             default: "asc",
             param: {
                 name: "sortOrder",
@@ -168,7 +172,7 @@ export const ZodSortByQueryParamSchema = swaggerRegistry.registerParameter(
     ZodSpaceQueryPropSchema
         .optional()
         .openapi({
-            description: "[Query Parameter] The field to sort by. Defaults to id.",
+            description: "[Query Parameter] The field to sort by. 'id' if not provided.",
             default: "id",
             param: {
                 name: "sortBy",

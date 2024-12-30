@@ -457,94 +457,6 @@
         }
       }
     },
-    "/spaces/get/by-prop/{prop}/{query}": {
-      "get": {
-        "tags": [
-          "Spaces"
-        ],
-        "description": "",
-        "parameters": [
-          {
-            "name": "prop",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "query",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Invalid input",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse400"
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse400"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "No matching spaces found.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse404"
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse404"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal server error.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "501": {
-            "description": "Not implemented.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse501"
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse501"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/v1/spaces/get/by-prop/{prop}/{query}": {
       "get": {
         "tags": [
@@ -1519,28 +1431,12 @@
         "description": "A successful response from the server."
       },
       "SortOrder": {
-        "anyOf": [
-          {
-            "type": "number",
-            "enum": [
-              1
-            ]
-          },
-          {
-            "type": "number",
-            "enum": [
-              -1
-            ]
-          },
-          {
-            "type": "string",
-            "enum": [
-              "asc",
-              "ascending",
-              "desc",
-              "descending"
-            ]
-          }
+        "type": "string",
+        "enum": [
+          "asc",
+          "ascending",
+          "desc",
+          "descending"
         ],
         "description": "The order to sort by.",
         "example": "asc"
@@ -1645,56 +1541,24 @@
         "description": "[Query Parameter] Shorthand for sortBy."
       },
       "sortOrder": {
-        "anyOf": [
-          {
-            "type": "number",
-            "enum": [
-              1
-            ]
-          },
-          {
-            "type": "number",
-            "enum": [
-              -1
-            ]
-          },
-          {
-            "type": "string",
-            "enum": [
-              "asc",
-              "ascending",
-              "desc",
-              "descending"
-            ]
-          }
+        "type": "string",
+        "enum": [
+          "asc",
+          "ascending",
+          "desc",
+          "descending"
         ],
         "default": "asc",
         "description": "[Query Parameter] The order to sort the field by. Defaults to ascending.",
         "example": "asc"
       },
       "so": {
-        "anyOf": [
-          {
-            "type": "number",
-            "enum": [
-              1
-            ]
-          },
-          {
-            "type": "number",
-            "enum": [
-              -1
-            ]
-          },
-          {
-            "type": "string",
-            "enum": [
-              "asc",
-              "ascending",
-              "desc",
-              "descending"
-            ]
-          }
+        "type": "string",
+        "enum": [
+          "asc",
+          "ascending",
+          "desc",
+          "descending"
         ],
         "default": "asc",
         "description": "[Query Parameter] Shorthand for sortOrder.",
@@ -2003,35 +1867,27 @@
         "description": "Parameters for getting spaces filtered by a property value."
       },
       "CountSpacesByPropQueryParams": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/GetSpacesQueryParams"
+        "type": "object",
+        "properties": {
+          "caseSensitive": {
+            "$ref": "#/components/schemas/caseSensitive"
           },
-          {
-            "type": "object",
-            "properties": {
-              "caseSensitive": {
-                "$ref": "#/components/schemas/caseSensitive"
-              },
-              "cs": {
-                "$ref": "#/components/schemas/cs"
-              },
-              "accentSensitive": {
-                "$ref": "#/components/schemas/accentSensitive"
-              },
-              "as": {
-                "$ref": "#/components/schemas/as"
-              },
-              "matchWhole": {
-                "$ref": "#/components/schemas/matchWhole"
-              },
-              "mw": {
-                "$ref": "#/components/schemas/mw"
-              }
-            }
+          "cs": {
+            "$ref": "#/components/schemas/cs"
+          },
+          "accentSensitive": {
+            "$ref": "#/components/schemas/accentSensitive"
+          },
+          "as": {
+            "$ref": "#/components/schemas/as"
+          },
+          "matchWhole": {
+            "$ref": "#/components/schemas/matchWhole"
+          },
+          "mw": {
+            "$ref": "#/components/schemas/mw"
           }
-        ],
-        "description": "Query parameters for getting spaces filtered by a property value."
+        }
       },
       "ListPropParams": {
         "type": "object",

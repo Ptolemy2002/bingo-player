@@ -109,11 +109,11 @@ export class GetSpacesByPropHandler extends RouteHandler {
 
         res.status(200)
             .json(this.buildSuccessResponse<GetSpacesByProp200ResponseBody>({ spaces }));
-        return;
     }
 }
 
 router.get('/get/by-prop/:prop/:query', asyncErrorHandler(async (req, res) => {
+    // #swagger.ignore = true
     const handler = new GetSpacesByPropHandler();
     return await handler.handle(req, res);
 }));

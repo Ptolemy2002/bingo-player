@@ -1,70 +1,14 @@
-import { transformRegex } from '@ptolemy2002/regex-utils';
-import {
-    CountSpacesByPropParams,
-    CountSpacesByPropQueryParamsOutput,
-    CountSpacesByPropResponseBody,
-    interpretSpaceQueryPropNonId,
-    SpaceQueryPropNonId,
-    ZodCountSpacesByPropParamsSchema,
-    ZodCountSpacesByPropQueryParamsSchema
-} from 'shared';
-import SpaceModel from 'models/SpaceModel';
-import { Router } from 'express';
+import { Request, Response, Router } from 'express';
 import { asyncErrorHandler } from '@ptolemy2002/express-utils';
-import getEnv from 'env';
+import RouteHandler from 'lib/RouteHandler';
+import { ZodCountSpacesByPropParamsSchema, ZodCountSpacesByPropQueryParamsSchema,CountSpacesByProp200ResponseBody } from 'shared';
+import SpaceAggregationBuilder from '../utils/SpaceAggregationBuilder';
+import SpaceModel from 'models/SpaceModel';
+import { register } from 'module';
 
 const router = Router();
 
-export async function countSpacesByProp(
-    prop: SpaceQueryPropNonId,
-    queryString: string,
-    {
-        limit,
-        offset = 0,
-        caseSensitive = false,
-        accentSensitive = false,
-        matchWhole = false,
-    }: CountSpacesByPropQueryParamsOutput = {},
-) {
-    // We should not get an id here, as the type of SpaceQueryPropNonId
-    // omits any fields that map to "_id". The reason this is necessary
-    // is because mongoose will otherwise attempt to convert the pattern
-    // to an ObjectId, which will fail, as RegExp cannot be used directly
-    // as a string.
-    prop = interpretSpaceQueryPropNonId(prop);
-
-    const pattern = transformRegex(queryString, {
-        caseInsensitive: !caseSensitive,
-        accentInsensitive: !accentSensitive,
-        matchWhole,
-    });
-
-    let queryCondition;
-    if (prop === 'known-as') {
-        queryCondition = {
-            $or: [{ name: pattern }, { aliases: pattern }],
-        };
-    } else {
-        queryCondition = { [prop]: pattern };
-    }
-
-    const query = SpaceModel.countDocuments(queryCondition);
-    if (limit) query.limit(limit);
-    if (offset) query.skip(offset);
-    return query.exec();
-}
-router.get<
-    // Path
-    "/count/by-prop/:prop/:query",
-    // URL Parameters
-    CountSpacesByPropParams,
-    // Response body
-    CountSpacesByPropResponseBody,
-    // Request body
-    {},
-    // Query Parameters
-    CountSpacesByPropQueryParamsOutput
->('/count/by-prop/:prop/:query', asyncErrorHandler(async (req, res) => {
+export class CountSpacesByPropHandler extends RouteHandler {
     /*
         #swagger.start
         #swagger.tags = ['Spaces', 'Count', 'Query']
@@ -120,58 +64,50 @@ router.get<
         }
         #swagger.end
     */
-    const env = getEnv();
-    const help =
-        env.getDocsURL(1) +
-        '/#/Spaces/get_api_v1_spaces_count_by_prop__prop___query_';
-
-    const {
-        success: paramsSuccess,
-        error: paramsError,
-        data: propData,
-    } = ZodCountSpacesByPropParamsSchema.safeParse(req.params);
-
-    if (!paramsSuccess) {
-        res.status(400).json({
-            ok: false,
-            code: 'BAD_URL',
-            message: paramsError.errors[0].message,
-        });
-        return;
+    constructor() {
+        super(1, '/#/Spaces/get_api_v1_spaces_count_by_prop__prop___query_');
     }
 
-    const { prop, query } = propData;
-    const {
-        success,
-        error,
-        data: queryData,
-    } = ZodCountSpacesByPropQueryParamsSchema.safeParse(req.query);
-    if (!success) {
-        res.status(400).json({
-            ok: false,
-            code: 'BAD_QUERY',
-            message: error.errors[0].message,
-            help,
-        });
-        return;
-    }
+    async handle(req: Request, res: Response) {
+        const { success: paramsSuccess, error: paramsError, data: params } = ZodCountSpacesByPropParamsSchema.safeParse(req.params);
 
-    const count = await countSpacesByProp(prop, query, queryData);
-    if (count === 0) {
-        res.status(404).json({
-            ok: false,
-            code: "NOT_FOUND",
-            message: "No spaces found.",
-            help
-        });
-        return;
-    }
+        if (!paramsSuccess) {
+            res.status(400).json(this.buildZodErrorResponse(paramsError));
+            return;
+        }
 
-    res.json({
-        ok: true,
-        count,
-        help
-    });
+        const { prop: queryProp, query: queryString } = params;
+        const { success: querySuccess, error: queryError, data: queryData } = ZodCountSpacesByPropQueryParamsSchema.safeParse(req.query);
+
+        if (!querySuccess) {
+            res.status(400).json(this.buildZodErrorResponse(queryError));
+            return;
+        }
+
+        const pipeline = new SpaceAggregationBuilder(queryData)
+            .then("add-known-as")
+            .thenMatch({
+                queryProp,
+                queryString
+            })
+            .then("count")
+            .build();
+
+        const count = (await SpaceModel.aggregate<{ count: number }>(pipeline))[0]?.count ?? 0;
+        
+        if (count === 0) {
+            res.status(404).json(this.buildNotFoundResponse("No spaces found."));
+            return;
+        }
+
+        res.status(200).json(this.buildSuccessResponse<CountSpacesByProp200ResponseBody>({ count }));
+    }
+}
+
+router.get('/count/by-prop/:prop/:query', asyncErrorHandler(async (req, res) => {
+    // #swagger.ignore = true
+    const handler = new CountSpacesByPropHandler();
+    return await handler.handle(req, res);
 }));
 
 const countSpacesByPropRouter = router;

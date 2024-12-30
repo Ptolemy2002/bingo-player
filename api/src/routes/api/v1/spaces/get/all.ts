@@ -1,66 +1,13 @@
 import { asyncErrorHandler } from "@ptolemy2002/express-utils";
-import { interpretZodError } from "@ptolemy2002/regex-utils";
-import getEnv from "env";
-import { Router } from "express";
+import { Request, Response, Router } from "express";
+import RouteHandler from "lib/RouteHandler";
 import SpaceModel from "models/SpaceModel";
-import { PipelineStage } from "mongoose";
-import { CleanMongoSpace, GetSpacesQueryParams, GetSpacesResponseBody, interpretSortOrder, interpretSpaceQueryProp, ZodGetSpacesQueryParamsSchema } from "shared";
+import { GetSpaces200ResponseBody, ZodGetSpacesQueryParamsSchema } from "shared";
+import SpaceAggregationBuilder from "../utils/SpaceAggregationBuilder";
 
 const router = Router();
 
-export async function getAllSpaces({
-    limit, offset, sortBy="id", sortOrder="asc"
-}: GetSpacesQueryParams = {}) {
-    const aggregationPipeline: PipelineStage[] = [];
-
-    const sortOrderNum = interpretSortOrder(sortOrder) === "asc" ? 1 : -1;
-    const sortObject: Record<string, 1 | -1> = {};
-
-    sortBy = interpretSpaceQueryProp(sortBy);
-    if (sortBy === "known-as") {
-        sortObject["knownAs"] = sortOrderNum;
-    } else {
-        sortObject[sortBy] = sortOrderNum;
-    }
-    if (sortBy !== "_id") sortObject["_id"] = sortOrderNum;
-
-    // Check if the "known-as" was used for sorting
-    const usedKnownAs = (sortBy  === "known-as");
-
-    if (usedKnownAs) {
-        aggregationPipeline.push({ 
-            $addFields: { knownAs: { $concatArrays: [[ "$name" ], "$aliases"] } } 
-        });
-    }
-
-    aggregationPipeline.push({ $sort: sortObject });
-
-    if (usedKnownAs) {
-        aggregationPipeline.push({$unset: "knownAs"}); 
-    }
-
-    if (limit !== undefined) aggregationPipeline.push({ $limit: limit });
-    if (offset !== undefined) aggregationPipeline.push({ $skip: offset });
-
-    // Populate all properties
-    aggregationPipeline.push({ $replaceRoot: { newRoot: "$$ROOT" } });
-
-    const query = SpaceModel.aggregate<CleanMongoSpace>(aggregationPipeline);
-    return query.exec();
-}
-
-router.get<
-    // Path
-    "/get/all",
-    // URL Parameters
-    {},
-    // Response body
-    GetSpacesResponseBody,
-    // Request body
-    {},
-    // Query Parameters
-    GetSpacesQueryParams
->('/get/all', asyncErrorHandler(async (req, res) => {
+export class GetAllSpacesHandler extends RouteHandler {
     /*
         #swagger.start
         #swagger.tags = ['Spaces', 'Get']
@@ -89,37 +36,43 @@ router.get<
         }
         #swagger.end
     */
-    const env = getEnv();
-    const help = env.getDocsURL(1) + "/#/Spaces/get_api_v1_spaces_get_all";
-
-    const {success, error, data: query} = ZodGetSpacesQueryParamsSchema.safeParse(req.query);
-
-    if (!success) {
-        res.status(400).json({
-            ok: false,
-            code: "BAD_QUERY",
-            message: interpretZodError(error),
-            help
-        });
-        return;
+    constructor() {
+        super(1, '/#/Spaces/get_api_v1_spaces_get_all');
     }
 
-    const spaces = await getAllSpaces(query);
-    if (spaces.length === 0) {
-        res.status(404).json({
-            ok: false,
-            code: "NOT_FOUND",
-            message: "No matching spaces found.",
-            help
-        });
-        return;
-    }
+    async handle(req: Request, res: Response) {
+        const {success, error, data: query} = ZodGetSpacesQueryParamsSchema.safeParse(req.query);
 
-    res.json({
-        ok: true,
-        spaces,
-        help
-    });
+        if (!success) {
+            res.status(400).json(this.buildZodErrorResponse(error, "BAD_QUERY"));
+            return;
+        }
+
+        const pipeline = new SpaceAggregationBuilder(query)
+            .then("add-known-as")
+            .then("sort")
+            .then("cleanup")
+            .then("pagination")
+            .build();
+
+        const spaces = await SpaceModel.executeDocumentAggregation(pipeline);
+
+        if (spaces.length === 0) {
+            res.status(404)
+                .json(this.buildNotFoundResponse("No matching spaces found."));
+            return;
+        }
+
+        res.status(200).json(
+            this.buildSuccessResponse<GetSpaces200ResponseBody>({spaces})
+        );
+    }
+}
+
+router.get('/get/all', asyncErrorHandler(async (req, res) => {
+    // #swagger.ignore = true
+    const handler = new GetAllSpacesHandler();
+    return await handler.handle(req, res);
 }));
 
 const getAllSpacesRouter = router;

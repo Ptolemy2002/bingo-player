@@ -1,28 +1,14 @@
 import { asyncErrorHandler } from "@ptolemy2002/express-utils";
 import getEnv from "env";
-import { Router } from "express";
+import { Request, Response, Router } from "express";
+import { CountSpaces200ResponseBody, CountSpacesResponseBody } from "shared";
+import RouteHandler from "lib/RouteHandler";
+import SpaceAggregationBuilder from "../utils/SpaceAggregationBuilder";
 import SpaceModel from "models/SpaceModel";
-import { CountSpacesResponseBody } from "shared";
 
 export const router = Router();
 
-export async function countAllSpaces() {
-    const count = await SpaceModel.countDocuments({});
-    return count;
-}
-
-router.get<
-    // Path
-    "/count/all",
-    // URL Parameters
-    {},
-    // Response body
-    CountSpacesResponseBody,
-    // Request body
-    {},
-    // Query Parameters
-    {}
->('/count/all', asyncErrorHandler(async (_, res) => {
+export class CountAllSpacesHandler extends RouteHandler {
     /*
         #swagger.start
         #swagger.tags = ['Spaces', 'Count']
@@ -37,26 +23,33 @@ router.get<
         }
         #swagger.end
     */
-    const env = getEnv();
-    const help = env.getDocsURL(1) + "/#/Spaces/get_api_v1_spaces_count_all";
 
-    const count = await countAllSpaces();
-
-    if (count === 0) {
-        res.status(404).json({
-            ok: false,
-            code: "NOT_FOUND",
-            message: "No spaces found.",
-            help
-        });
-        return;
+    constructor() {
+        super(1, '/#/Spaces/get_api_v1_spaces_count_all');
     }
 
-    res.json({
-        ok: true,
-        count,
-        help
-    });
+    async handle(res: Response) {
+        const pipeline = new SpaceAggregationBuilder({
+            countFieldName: "count"
+        })
+        .then("count")
+        .build();
+
+        const count = (await SpaceModel.aggregate<{count: number}>(pipeline))[0]?.count ?? 0;
+
+        if (count === 0) {
+            res.status(404).json(this.buildNotFoundResponse("No spaces found."));
+            return;
+        }
+
+        res.status(200).json(this.buildSuccessResponse<CountSpaces200ResponseBody>({ count }));
+    }
+}
+
+router.get('/count/all', asyncErrorHandler(async (_, res) => {
+    // #swagger.ignore = true
+    const handler = new CountAllSpacesHandler();
+    return await handler.handle(res);
 }));
 
 const countAllSpacesRouter = router;

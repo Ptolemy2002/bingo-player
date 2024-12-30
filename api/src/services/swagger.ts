@@ -35,7 +35,7 @@ const doc = {
     components: {
         parameters: genetatedParameters,
         "@schemas": generatedSchemas
-    },
+    }
 };
 
 export default swaggerAutogen({ openapi: '3.1.1' })(

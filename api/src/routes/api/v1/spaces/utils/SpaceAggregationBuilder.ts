@@ -1,50 +1,63 @@
 import { transformRegex } from '@ptolemy2002/regex-utils';
+import { ValueOf, ValuesIntersection } from '@ptolemy2002/ts-utils';
 import AggregationBuilder, {
     StageGeneration,
 } from 'lib/mongo/AggregationBuilder';
-import { PipelineStage } from 'mongoose';
-import { SpaceQueryProp } from 'shared';
-import { SortOrder, interpretSpaceQueryProp, interpretSortOrder } from 'shared';
+import { SpaceQueryProp, SortOrder, interpretSpaceQueryProp, interpretSortOrder } from 'shared';
 
 export type SpaceAggregationStageType =
     | 'add-known-as'
     | 'sort'
+    | 'skip'
+    | 'limit'
     | 'pagination'
     | 'match'
     | 'cleanup'
     | 'unwind-all'
     | 'unwind-list-prop'
-    | 'group-list-prop';
+    | 'group-list-prop'
+    | 'count';
 
-export type SortOptions = {
-    sortBy?: SpaceQueryProp;
-    sortOrder?: SortOrder;
+export type SpaceAggregationOptions = {
+    sort: {
+        sortBy: SpaceQueryProp;
+        sortOrder: SortOrder;
+    },
+
+    match: {
+        queryProp: SpaceQueryProp;
+        queryString: string;
+        caseSensitive: boolean;
+        accentSensitive: boolean;
+        matchWhole: boolean;
+    },
+
+    list: {
+        listProp: SpaceQueryProp;
+    },
+
+    skip: {
+        offset: number;
+    },
+
+    limit: {
+        limit: number;
+    },
+
+    pagination: SpaceAggregationOptions['skip'] & SpaceAggregationOptions['limit'],
+
+    count: {
+        countFieldName: string;
+    }
 };
 
-export type MatchOptions = {
-    queryProp: SpaceQueryProp;
-    queryString: string;
-    caseSensitive?: boolean;
-    accentSensitive?: boolean;
-    matchWhole?: boolean;
-};
-
-export type ListOptions = {
-    listProp: SpaceQueryProp;
-};
-
-export type PaginationOptions = {
-    limit?: number;
-    offset?: number;
-};
+export type AllSpaceAggregationOptions = ValuesIntersection<SpaceAggregationOptions>;
 
 export default class SpaceAggregationBuilder extends AggregationBuilder<SpaceAggregationStageType> {
-    options: Partial<
-        SortOptions & MatchOptions & ListOptions & PaginationOptions
-    >;
+    options: Partial<AllSpaceAggregationOptions>;
 
     constructor(
-        options: Partial<SortOptions & MatchOptions & ListOptions> = {},
+        options: Partial<AllSpaceAggregationOptions> = {},
     ) {
         super();
         this.options = options;
@@ -62,31 +75,44 @@ export default class SpaceAggregationBuilder extends AggregationBuilder<SpaceAgg
         return hasKnownAs;
     }
 
-    thenSort(options?: Partial<SortOptions>) {
+    thenSort(options?: Partial<SpaceAggregationOptions['sort']>) {
         this.options = { ...this.options, ...(options ?? {}) };
         return this.then('sort');
     }
 
-    thenMatch(options?: Partial<MatchOptions>) {
+    thenMatch(options?: Partial<SpaceAggregationOptions['match']>) {
         this.options = { ...this.options, ...(options ?? {}) };
         return this.then('match');
     }
 
-    thenPagination(options?: Partial<PaginationOptions>) {
-        if (options) {
-            this.options = { ...this.options, ...(options ?? {}) };
-        }
+    thenSkip(options?: Partial<SpaceAggregationOptions['skip']>) {
+        this.options = { ...this.options, ...(options ?? {}) };
+        return this.then('skip');
+    }
+
+    thenLimit(options?: Partial<SpaceAggregationOptions['limit']>) {
+        this.options = { ...this.options, ...(options ?? {}) };
+        return this.then('limit');
+    }
+
+    thenPagination(options?: Partial<SpaceAggregationOptions['pagination']>) {
+        this.options = { ...this.options, ...(options ?? {}) };
         return this.then('pagination');
     }
 
-    thenUnwindListProp(options?: Partial<ListOptions>) {
+    thenUnwindListProp(options?: Partial<SpaceAggregationOptions['list']>) {
         this.options = { ...this.options, ...(options ?? {}) };
         return this.then('unwind-list-prop');
     }
 
-    thenGroupListProp(options?: Partial<ListOptions>) {
+    thenGroupListProp(options?: Partial<SpaceAggregationOptions['list']>) {
         this.options = { ...this.options, ...(options ?? {}) };
         return this.then('group-list-prop');
+    }
+
+    thenCount(options?: Partial<SpaceAggregationOptions['count']>) {
+        this.options = { ...this.options, ...(options ?? {}) };
+        return this.then('count');
     }
 
     generateStage(
@@ -193,24 +219,47 @@ export default class SpaceAggregationBuilder extends AggregationBuilder<SpaceAgg
                 };
             }
 
-            case 'pagination': {
-                const result: PipelineStage[] = [];
-                if (this.options.offset) {
-                    result.push({
-                        $skip: this.options.offset,
-                    });
-                }
-
-                if (this.options.limit) {
-                    result.push({
-                        $limit: this.options.limit,
-                    });
+            case 'skip': {
+                const { offset } = this.options;
+                if (offset === undefined) {
+                    throw new TypeError('An offset is required for skip stage.');
                 }
 
                 return {
-                    type: 'pagination',
-                    stages: result,
+                    type: 'skip',
+                    stages: [
+                        {
+                            $skip: offset,
+                        },
+                    ],
                 };
+            }
+
+            case 'limit': {
+                const { limit } = this.options;
+                if (limit === undefined) {
+                    throw new TypeError('A limit is required for limit stage.');
+                }
+
+                return {
+                    type: 'limit',
+                    stages: [
+                        {
+                            $limit: limit,
+                        },
+                    ],
+                };
+            }
+
+            case 'pagination': {
+                // Shortcut for skip and then limit
+                return {
+                    type: 'pagination',
+                    stages: [
+                        ...this.generateStage('skip').stages,
+                        ...this.generateStage('limit').stages
+                    ]
+                }
             }
 
             case 'unwind-list-prop': {
@@ -279,6 +328,19 @@ export default class SpaceAggregationBuilder extends AggregationBuilder<SpaceAgg
                     stages: propsToUnwind.map((prop) => ({
                         $unwind: `$${prop}`,
                     })),
+                };
+            }
+
+            case 'count': {
+                const { countFieldName='count' } = this.options;
+
+                return {
+                    type: 'count',
+                    stages: [
+                        {
+                            $count: countFieldName
+                        },
+                    ],
                 };
             }
         }

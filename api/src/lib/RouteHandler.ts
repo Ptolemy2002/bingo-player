@@ -2,7 +2,6 @@ import getEnv, { EnvType } from 'env';
 import { ErrorCode, ErrorResponse, ErrorResponse400, SuccessResponseBase } from 'shared';
 import { ZodError } from 'zod';
 import { interpretZodError } from '@ptolemy2002/regex-utils';
-import { PartialBy } from '@ptolemy2002/ts-utils';
 
 export default class RouteHandler {
     protected _docsEndpoint: string;

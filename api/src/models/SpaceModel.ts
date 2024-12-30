@@ -21,12 +21,13 @@ export type SpaceInstanceMethods = {
     toClientJSON(): CleanMongoSpace
 };
 
-export type SpaceStaticMethods = {
-    executeDocumentAggregation(pipeline: PipelineStage[]): Promise<CleanMongoSpace[]>
-};
+export type SpaceModel = Model<MongoDocumentSpace, {}, SpaceInstanceMethods>;
 
-type SpaceModel = Model<MongoDocumentSpace, {}, SpaceInstanceMethods>;
-const SpaceSchema = new Schema<MongoDocumentSpace, {}, SpaceInstanceMethods>({
+export interface SpaceModelWithStatics extends SpaceModel {
+    executeDocumentAggregation(pipeline: PipelineStage[]): Promise<CleanMongoSpace[]>
+}
+
+const SpaceSchema = new Schema<MongoDocumentSpace, SpaceModel, SpaceInstanceMethods>({
     name: {
         type: String,
         required: true,
@@ -82,6 +83,10 @@ SpaceSchema.method("toClientJSON", function() {
     };
 });
 
+SpaceSchema.static("executeDocumentAggregation", function(pipeline: PipelineStage[]) {
+    return this.aggregate<CleanMongoSpace>(pipeline).exec();
+});
+
 // Define the search index for the spaces collection
 SpaceSchema.searchIndex({
     name: "default_spaces",
@@ -92,11 +97,5 @@ SpaceSchema.searchIndex({
     }
 });
 
-export type SpaceModelWithStatics = Model<MongoDocumentSpace, {}, SpaceInstanceMethods> & SpaceStaticMethods;
-
 const SpaceModel = model<MongoDocumentSpace, SpaceModelWithStatics>('spaces', SpaceSchema);
-SpaceModel.executeDocumentAggregation = function(pipeline: PipelineStage[]) {
-    return SpaceModel.aggregate<CleanMongoSpace>(pipeline).exec();
-}
-
 export default SpaceModel;

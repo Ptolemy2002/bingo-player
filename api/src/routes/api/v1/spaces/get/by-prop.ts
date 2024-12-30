@@ -99,7 +99,7 @@ export class GetSpacesByPropHandler extends RouteHandler {
             .then("pagination")
             .build();
         
-        const spaces = await SpaceModel.aggregate<CleanMongoSpace>(pipeline).exec();
+        const spaces = await SpaceModel.executeDocumentAggregation(pipeline);
 
         if (spaces.length === 0) {
             res.status(404)

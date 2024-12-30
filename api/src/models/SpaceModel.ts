@@ -2,7 +2,7 @@ import { Model, PipelineStage, Schema, Types, model } from 'mongoose';
 import { CleanMongoSpace, ZodMongoSpaceShape } from 'shared';
 import { zodValidateWithErrors } from '@ptolemy2002/regex-utils';
 
-type SpaceBase =
+export type MongoDocumentSpace =
     // Here we're manually defining the _id field an ObjectId
     // instance, as that's what mongoose has in the object
     // itself. However, whenever we respond to the client, we
@@ -17,12 +17,16 @@ type SpaceBase =
     }
 ;
 
-type SpaceMethods = {
+export type SpaceInstanceMethods = {
     toClientJSON(): CleanMongoSpace
 };
 
-type SpaceModel = Model<SpaceBase, {}, SpaceMethods>;
-const SpaceSchema = new Schema<SpaceBase, {}, SpaceMethods>({
+export type SpaceStaticMethods = {
+    executeDocumentAggregation(pipeline: PipelineStage[]): Promise<CleanMongoSpace[]>
+};
+
+type SpaceModel = Model<MongoDocumentSpace, {}, SpaceInstanceMethods>;
+const SpaceSchema = new Schema<MongoDocumentSpace, {}, SpaceInstanceMethods>({
     name: {
         type: String,
         required: true,
@@ -88,5 +92,11 @@ SpaceSchema.searchIndex({
     }
 });
 
-const SpaceModel = model('spaces', SpaceSchema);
+export type SpaceModelWithStatics = Model<MongoDocumentSpace, {}, SpaceInstanceMethods> & SpaceStaticMethods;
+
+const SpaceModel = model<MongoDocumentSpace, SpaceModelWithStatics>('spaces', SpaceSchema);
+SpaceModel.executeDocumentAggregation = function(pipeline: PipelineStage[]) {
+    return SpaceModel.aggregate<CleanMongoSpace>(pipeline).exec();
+}
+
 export default SpaceModel;

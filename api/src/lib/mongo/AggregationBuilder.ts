@@ -1,4 +1,4 @@
-import { MaybeTransformer } from "@ptolemy2002/ts-utils";
+import { MaybeTransformer, Override } from "@ptolemy2002/ts-utils";
 import { PipelineStage } from "mongoose";
 import isCallable from "is-callable";
 
@@ -12,8 +12,36 @@ export type StageGeneration<StageType extends string> = {
     stages: PipelineStage[]
 };
 
-export default class AggregationBuilder<StageType extends string> {
+export default class AggregationBuilder<StageType extends string, Options={}> {
+    options: Partial<Options> = {};
     protected pipeline: StageGeneration<StageType>[] = [];
+
+    constructor(
+        options: Partial<Options> = {},
+    ) {
+        this.setOptions(options);
+    }
+
+    setOptions(options?: Partial<Options>) {
+        this.options = { ...this.options, ...(options ?? {}) };
+        return this;
+    }
+
+    requireOptions<K extends keyof Options>(
+        keys: K[], customMessage?: string
+    ) {
+        const missingKeys = keys.filter(key => this.options[key] === undefined);
+        if (missingKeys.length > 0) {
+            const message = `Missing required options: ${missingKeys.join(", ")}`;
+            if (customMessage) {
+                throw new Error(`${message}. ${customMessage}`);
+            } else {
+                throw new Error(message);
+            }
+        }
+
+        return this.options as Override<Options, { [key in K]: NonNullable<Options[key]> }>;
+    }
 
     generateStage(stage: StageType): StageGeneration<StageType> {
         return {

@@ -1,5 +1,5 @@
 import { transformRegex } from '@ptolemy2002/regex-utils';
-import { ValueOf, ValuesIntersection } from '@ptolemy2002/ts-utils';
+import { ValuesIntersection } from '@ptolemy2002/ts-utils';
 import AggregationBuilder, {
     StageGeneration,
 } from 'lib/mongo/AggregationBuilder';
@@ -53,16 +53,7 @@ export type SpaceAggregationOptions = {
 
 export type AllSpaceAggregationOptions = ValuesIntersection<SpaceAggregationOptions>;
 
-export default class SpaceAggregationBuilder extends AggregationBuilder<SpaceAggregationStageType> {
-    options: Partial<AllSpaceAggregationOptions>;
-
-    constructor(
-        options: Partial<AllSpaceAggregationOptions> = {},
-    ) {
-        super();
-        this.options = options;
-    }
-
+export default class SpaceAggregationBuilder extends AggregationBuilder<SpaceAggregationStageType, AllSpaceAggregationOptions> {
     hasKnownAs(): boolean {
         let hasKnownAs = false;
         this.pipeline.forEach((stage) => {
@@ -73,11 +64,6 @@ export default class SpaceAggregationBuilder extends AggregationBuilder<SpaceAgg
             }
         });
         return hasKnownAs;
-    }
-
-    setOptions(options?: Partial<AllSpaceAggregationOptions>) {
-        this.options = { ...this.options, ...(options ?? {}) };
-        return this;
     }
 
     thenSort(options?: Partial<SpaceAggregationOptions['sort']>) {
@@ -177,19 +163,10 @@ export default class SpaceAggregationBuilder extends AggregationBuilder<SpaceAgg
                     caseSensitive,
                     accentSensitive,
                     matchWhole,
-                } = this.options;
-
-                if (queryString === undefined) {
-                    throw new TypeError(
-                        'A queryString is required for match stage.',
-                    );
-                }
-
-                if (queryProp === undefined) {
-                    throw new TypeError(
-                        'A queryProp is required for match stage.',
-                    );
-                }
+                } = this.requireOptions(
+                    ['queryProp', 'queryString', 'caseSensitive', 'accentSensitive', 'matchWhole'],
+                    'queryProp, queryString, caseSensitive, accentSensitive, and matchWhole are required for match stage.',
+                );
 
                 if (queryProp === 'known-as' && !this.hasKnownAs()) {
                     throw new TypeError(
@@ -260,12 +237,10 @@ export default class SpaceAggregationBuilder extends AggregationBuilder<SpaceAgg
             }
 
             case 'unwind-list-prop': {
-                const { listProp } = this.options;
-                if (!listProp) {
-                    throw new TypeError(
-                        'listProp is required for unwind-list-prop stage.',
+                const { listProp } =
+                    this.requireOptions(
+                        ['listProp'], 'listProp is required for unwind-list-prop stage.'
                     );
-                }
 
                 const interpretedProp = interpretSpaceQueryProp(listProp);
                 if (interpretedProp === 'known-as' && !this.hasKnownAs()) {
@@ -285,12 +260,10 @@ export default class SpaceAggregationBuilder extends AggregationBuilder<SpaceAgg
             }
 
             case 'group-list-prop': {
-                const { listProp } = this.options;
-                if (!listProp) {
-                    throw new TypeError(
-                        'listProp is required for group-list-prop stage.',
-                    );
-                }
+                const { listProp } = this.requireOptions(
+                    ['listProp'],
+                    'listProp is required for group-list-prop stage.',
+                );
 
                 const interpretedProp = interpretSpaceQueryProp(listProp);
                 if (interpretedProp === 'known-as' && !this.hasKnownAs()) {

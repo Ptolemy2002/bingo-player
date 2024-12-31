@@ -1,7 +1,8 @@
 import { swaggerRegistry } from "src/Swagger";
 import { z } from "zod";
-import { ZodErrorCodeSchema } from "./ErrorCode";
+import { ErrorCode, ZodErrorCodeSchema } from "./ErrorCode";
 import { ZodErrorMessageSchema } from "./ErrorMessage";
+import { Override } from "@ptolemy2002/ts-utils";
 
 export const ZodErrorResponseBaseSchema = swaggerRegistry.register(
     "ErrorResponseBase",
@@ -86,7 +87,7 @@ export const ZodErrorResponse404Schema = swaggerRegistry.register(
 export type ErrorResponseBase = z.infer<typeof ZodErrorResponseBaseSchema>;
 
 export type ErrorResponse = z.infer<typeof ZodErrorResponseSchema>;
-export type ErrorResponseWithCode<EC extends string> = Omit<ErrorResponse, "code"> & { code: EC };
+export type ErrorResponseWithCode<EC extends ErrorCode> = Override<ErrorResponse, { code: EC }>;
 
 export type ErrorResponse501 = z.infer<typeof ZodErrorResponse501Schema>;
 export type ErrorResponse400 = z.infer<typeof ZodErrorResponse400Schema>;

@@ -1,8 +1,9 @@
 import { transformRegex } from '@ptolemy2002/regex-utils';
 import { ValuesIntersection } from '@ptolemy2002/ts-utils';
-import AggregationBuilder, {
+import {
+    AggregationBuilder,
     StageGeneration,
-} from 'lib/mongo/AggregationBuilder';
+} from '@ptolemy2002/mongoose-utils';
 import { SpaceQueryProp, SortOrder, interpretSpaceQueryProp, interpretSortOrder } from 'shared';
 
 export type SpaceAggregationStageType =

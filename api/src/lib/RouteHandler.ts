@@ -12,6 +12,7 @@ export type GeneratedResonse<SuccessResponse extends SuccessResponseBase> = {
 export type RouteHandlerRequest = {
     params: unknown;
     query: unknown;
+    body: unknown;
 };
 
 export default class RouteHandler<SuccessResponse extends SuccessResponseBase> {
@@ -102,7 +103,10 @@ export default class RouteHandler<SuccessResponse extends SuccessResponseBase> {
     }
 
     async generateResponse(req: RouteHandlerRequest): Promise<GeneratedResonse<SuccessResponse>> {
-        throw new Error('generateResponse Method not implemented.');
+        return {
+            status: 501,
+            response: this.buildNotImplementedResponse()
+        };
     }
 
     async handle(req: RouteHandlerRequest, res: Response) {

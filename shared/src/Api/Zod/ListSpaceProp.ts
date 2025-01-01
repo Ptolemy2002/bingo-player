@@ -5,18 +5,18 @@ import { ZodErrorResponseSchema } from "./ErrorResponse";
 import { zodSuccessResponseSchema } from "./SuccessResponse";
 import { ZodLimitQueryParamSchema, ZodLimitShorthandQueryParamSchema, ZodOffsetQueryParamSchema, ZodOffsetShorthandQueryParamSchema, ZodSortByQueryParamSchema, ZodSortByShorthandQueryParamSchema, ZodSortOrderQueryParamSchema, ZodSortOrderShorthandQueryParamSchema } from "./QueryParams";
 
-export const ZodListPropParamsSchema = swaggerRegistry.register(
-    "ListPropParams",
+export const ZodListSpacePropParamsSchema = swaggerRegistry.register(
+    "ListSpacePropParams",
     z.object({
         prop: ZodSpaceQueryPropSchema
     }).openapi({
         description: "Parameters for listing all values of a property."
     })
 );
-export const ZodListPropParamsShape = ZodListPropParamsSchema.shape;
+export const ZodListSpacePropParamsShape = ZodListSpacePropParamsSchema.shape;
 
-export const ZodListPropQueryParamsSchema = swaggerRegistry.register(
-    "ListPropQueryParams",
+export const ZodListSpacePropQueryParamsSchema = swaggerRegistry.register(
+    "ListSpacePropQueryParams",
     z.object({
         limit: ZodLimitQueryParamSchema,
         l: ZodLimitShorthandQueryParamSchema,
@@ -36,8 +36,8 @@ export const ZodListPropQueryParamsSchema = swaggerRegistry.register(
     })
 );
 
-export const ZodListProp200ResponseBodySchema = swaggerRegistry.register(
-    "ListProp200ResponseBody",
+export const ZodListSpaceProp200ResponseBodySchema = swaggerRegistry.register(
+    "ListSpaceProp200ResponseBody",
     zodSuccessResponseSchema(
             z.object({
             values: z.array(z.union([z.string(), z.null()])).openapi({
@@ -49,16 +49,16 @@ export const ZodListProp200ResponseBodySchema = swaggerRegistry.register(
     )   
 );
 
-export const ZodListPropResponseBodySchema = swaggerRegistry.register(
-    "ListPropResponseBody",
+export const ZodListSpacePropResponseBodySchema = swaggerRegistry.register(
+    "ListSpacePropResponseBody",
     z.union([
-        ZodListProp200ResponseBodySchema,
+        ZodListSpaceProp200ResponseBodySchema,
         ZodErrorResponseSchema
     ])
 );
 
-export type ListPropParams = z.input<typeof ZodListPropParamsSchema>;
-export type ListPropQueryParams = z.input<typeof ZodListPropQueryParamsSchema>;
+export type ListSpacePropParams = z.input<typeof ZodListSpacePropParamsSchema>;
+export type ListSpacePropQueryParams = z.input<typeof ZodListSpacePropQueryParamsSchema>;
 
-export type ListProp200ResponseBody = z.infer<typeof ZodListProp200ResponseBodySchema>;
-export type ListPropResponseBody = z.infer<typeof ZodListPropResponseBodySchema>;
+export type ListSpaceProp200ResponseBody = z.infer<typeof ZodListSpaceProp200ResponseBodySchema>;
+export type ListSpacePropResponseBody = z.infer<typeof ZodListSpacePropResponseBodySchema>;

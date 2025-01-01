@@ -3,15 +3,15 @@ import { Request, Response, Router } from 'express';
 import RouteHandler from 'lib/RouteHandler';
 import SpaceModel from 'models/SpaceModel';
 import {
-    ZodListPropByPropParamsSchema,
-    ZodListPropByPropQueryParamsSchema,
-    ListPropByProp200ResponseBody,
+    ZodListSpacePropByPropParamsSchema,
+    ZodListSpacePropByPropQueryParamsSchema,
+    ListSpacePropByProp200ResponseBody,
 } from 'shared';
 import SpaceAggregationBuilder from '../utils/SpaceAggregationBuilder';
 
 const router = Router();
 
-export class ListPropByPropHandler extends RouteHandler {
+export class ListSpacePropByPropHandler extends RouteHandler {
     /*
         #swagger.start
         #swagger.tags = ['Spaces', 'List', 'Query']
@@ -71,7 +71,7 @@ export class ListPropByPropHandler extends RouteHandler {
 
         #swagger.responses[200] = {
             schema: {
-                $ref: "#/components/schemas/ListPropByProp200ResponseBody"
+                $ref: "#/components/schemas/ListSpacePropByProp200ResponseBody"
             }
         }
         #swagger.end
@@ -85,7 +85,7 @@ export class ListPropByPropHandler extends RouteHandler {
             success: paramsSuccess,
             error: paramsError,
             data: paramsData,
-        } = ZodListPropByPropParamsSchema.safeParse(req.params);
+        } = ZodListSpacePropByPropParamsSchema.safeParse(req.params);
 
         if (!paramsSuccess) {
             res.status(400).json(this.buildZodErrorResponse(paramsError, "BAD_URL"));
@@ -96,7 +96,7 @@ export class ListPropByPropHandler extends RouteHandler {
             success: querySuccess,
             error: queryError,
             data: queryData,
-        } = ZodListPropByPropQueryParamsSchema.safeParse(req.query);
+        } = ZodListSpacePropByPropQueryParamsSchema.safeParse(req.query);
 
         if (!querySuccess) {
             res.status(400).json(this.buildZodErrorResponse(queryError, "BAD_QUERY"));
@@ -134,7 +134,7 @@ export class ListPropByPropHandler extends RouteHandler {
 
         const propValues = values.map(({_id}) => _id);
         res.status(200).json(
-            this.buildSuccessResponse<ListPropByProp200ResponseBody>({values: propValues})
+            this.buildSuccessResponse<ListSpacePropByProp200ResponseBody>({values: propValues})
         );
     }
 }
@@ -142,7 +142,7 @@ export class ListPropByPropHandler extends RouteHandler {
 
 router.get('/get/by-prop/:queryProp/:query/list/:listProp', asyncErrorHandler(async (req, res) => {
     // #swagger.ignore = true
-    const handler = new ListPropByPropHandler();
+    const handler = new ListSpacePropByPropHandler();
     return await handler.handle(req, res);
 }));
 

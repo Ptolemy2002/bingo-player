@@ -3,9 +3,9 @@ import { Request, Response, Router } from 'express';
 import RouteHandler from 'lib/RouteHandler';
 import SpaceModel from 'models/SpaceModel';
 import {
-    ListProp200ResponseBody,
-    ZodListPropParamsSchema,
-    ZodListPropQueryParamsSchema,
+    ListSpaceProp200ResponseBody,
+    ZodListSpacePropParamsSchema,
+    ZodListSpacePropQueryParamsSchema,
 } from 'shared';
 import SpaceAggregationBuilder from '../utils/SpaceAggregationBuilder';
 
@@ -44,7 +44,7 @@ export class ListAllSpacePropValuesHandler extends RouteHandler {
 
         #swagger.responses[200] = {
             schema: {
-                $ref: "#/components/schemas/ListProp200ResponseBody"
+                $ref: "#/components/schemas/ListSpaceProp200ResponseBody"
             }
         }
         #swagger.end
@@ -58,7 +58,7 @@ export class ListAllSpacePropValuesHandler extends RouteHandler {
             success: paramsSuccess,
             error: paramsError,
             data: paramsData,
-        } = ZodListPropParamsSchema.safeParse(req.params);
+        } = ZodListSpacePropParamsSchema.safeParse(req.params);
 
         if (!paramsSuccess) {
             res.status(400).json(this.buildZodErrorResponse(paramsError, "BAD_URL"));
@@ -69,7 +69,7 @@ export class ListAllSpacePropValuesHandler extends RouteHandler {
             success: querySuccess,
             error: queryError,
             data: queryData,
-        } = ZodListPropQueryParamsSchema.safeParse(req.query);
+        } = ZodListSpacePropQueryParamsSchema.safeParse(req.query);
 
         if (!querySuccess) {
             res.status(400).json(this.buildZodErrorResponse(queryError, "BAD_QUERY"));
@@ -101,7 +101,7 @@ export class ListAllSpacePropValuesHandler extends RouteHandler {
 
         const propValues = values.map(({_id}) => _id);
         res.status(200).json(
-            this.buildSuccessResponse<ListProp200ResponseBody>({values: propValues})
+            this.buildSuccessResponse<ListSpaceProp200ResponseBody>({values: propValues})
         );
     }
 }

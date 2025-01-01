@@ -378,12 +378,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ListProp200ResponseBody"
+                  "$ref": "#/components/schemas/ListSpaceProp200ResponseBody"
                 }
               },
               "application/xml": {
                 "schema": {
-                  "$ref": "#/components/schemas/ListProp200ResponseBody"
+                  "$ref": "#/components/schemas/ListSpaceProp200ResponseBody"
                 }
               }
             }
@@ -820,12 +820,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ListPropByProp200ResponseBody"
+                  "$ref": "#/components/schemas/ListSpacePropByProp200ResponseBody"
                 }
               },
               "application/xml": {
                 "schema": {
-                  "$ref": "#/components/schemas/ListPropByProp200ResponseBody"
+                  "$ref": "#/components/schemas/ListSpacePropByProp200ResponseBody"
                 }
               }
             }
@@ -948,6 +948,104 @@
               "application/xml": {
                 "schema": {
                   "$ref": "#/components/schemas/SearchSpaces200ResponseBody"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse400"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse400"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No matching spaces found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse404"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse404"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "501": {
+            "description": "Not implemented.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse501"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse501"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/spaces/search/{query}/count": {
+      "get": {
+        "tags": [
+          "Spaces",
+          "Count",
+          "Search"
+        ],
+        "description": "Use the Atlas Search index to search for spaces based on the provided query string. and return the count of the results.",
+        "parameters": [
+          {
+            "name": "query",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The search query."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SearchSpacesCount200ResponseBody"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/SearchSpacesCount200ResponseBody"
                 }
               }
             }
@@ -2002,7 +2100,7 @@
         ],
         "description": "The MongoDB representation of a space with an associated relevance score."
       },
-      "SearchParams": {
+      "SearchSpacesParams": {
         "type": "object",
         "properties": {
           "query": {
@@ -2140,7 +2238,7 @@
             "$ref": "#/components/schemas/soDescDefault"
           }
         },
-        "description": "Query parameters for searching all spaces."
+        "description": "Query parameters for searching spaces."
       },
       "CountSpaces200ResponseBody": {
         "allOf": [
@@ -2167,6 +2265,50 @@
         "anyOf": [
           {
             "$ref": "#/components/schemas/CountSpaces200ResponseBody"
+          },
+          {
+            "$ref": "#/components/schemas/ErrorResponse"
+          }
+        ]
+      },
+      "SearchSpacesCountParams": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "The search query."
+          }
+        },
+        "required": [
+          "query"
+        ],
+        "description": "The URL parameters for searching spaces."
+      },
+      "SearchSpacesCount200ResponseBody": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "count": {
+                "type": "number",
+                "minimum": 0,
+                "description": "The number of spaces that match the query."
+              }
+            },
+            "required": [
+              "count"
+            ]
+          },
+          {
+            "$ref": "#/components/schemas/SuccessResponseBase"
+          }
+        ],
+        "description": "The response from counting spaces."
+      },
+      "SearchSpacesCountResponseBody": {
+        "anyOf": [
+          {
+            "$ref": "#/components/schemas/SearchSpacesCount200ResponseBody"
           },
           {
             "$ref": "#/components/schemas/ErrorResponse"
@@ -2243,7 +2385,7 @@
           }
         }
       },
-      "ListPropParams": {
+      "ListSpacePropParams": {
         "type": "object",
         "properties": {
           "prop": {
@@ -2255,7 +2397,7 @@
         ],
         "description": "Parameters for listing all values of a property."
       },
-      "ListPropQueryParams": {
+      "ListSpacePropQueryParams": {
         "type": "object",
         "properties": {
           "limit": {
@@ -2279,7 +2421,7 @@
         },
         "description": "Query parameters for listing all values under a property."
       },
-      "ListProp200ResponseBody": {
+      "ListSpaceProp200ResponseBody": {
         "allOf": [
           {
             "type": "object",
@@ -2312,17 +2454,17 @@
           }
         ]
       },
-      "ListPropResponseBody": {
+      "ListSpacePropResponseBody": {
         "anyOf": [
           {
-            "$ref": "#/components/schemas/ListProp200ResponseBody"
+            "$ref": "#/components/schemas/ListSpaceProp200ResponseBody"
           },
           {
             "$ref": "#/components/schemas/ErrorResponse"
           }
         ]
       },
-      "ListPropByPropParams": {
+      "ListSpacePropByPropParams": {
         "type": "object",
         "properties": {
           "listProp": {
@@ -2342,7 +2484,7 @@
         ],
         "description": "URL Parameters for listing all values of a property for a subset of spaces."
       },
-      "ListPropByProp200ResponseBody": {
+      "ListSpacePropByProp200ResponseBody": {
         "allOf": [
           {
             "type": "object",
@@ -2375,10 +2517,10 @@
           }
         ]
       },
-      "ListPropByPropResponseBody": {
+      "ListSpacePropByPropResponseBody": {
         "anyOf": [
           {
-            "$ref": "#/components/schemas/ListProp200ResponseBody"
+            "$ref": "#/components/schemas/ListSpaceProp200ResponseBody"
           },
           {
             "$ref": "#/components/schemas/ErrorResponse"

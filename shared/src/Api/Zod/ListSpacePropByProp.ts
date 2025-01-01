@@ -1,10 +1,10 @@
 import { swaggerRegistry } from 'src/Swagger';
 import {
-    ZodListProp200ResponseBodySchema,
-    ZodListPropParamsSchema,
-    ZodListPropQueryParamsSchema,
-    ZodListPropResponseBodySchema,
-} from './ListProp';
+    ZodListSpaceProp200ResponseBodySchema,
+    ZodListSpacePropParamsSchema,
+    ZodListSpacePropQueryParamsSchema,
+    ZodListSpacePropResponseBodySchema,
+} from './ListSpaceProp';
 import { z } from 'zod';
 import {
     ZodCaseSensitiveQueryParamSchema,
@@ -16,18 +16,18 @@ import {
 } from './QueryParams';
 import { ZodGetSpacesByPropParamsSchema } from './GetSpacesByProp';
 
-export const ZodListPropByPropParamsSchema = swaggerRegistry.register(
-    'ListPropByPropParams',
-    ZodListPropParamsSchema.omit({ prop: true })
+export const ZodListSpacePropByPropParamsSchema = swaggerRegistry.register(
+    'ListSpacePropByPropParams',
+    ZodListSpacePropParamsSchema.omit({ prop: true })
         .merge(
             z.object({
-                listProp: ZodListPropParamsSchema.shape.prop,
+                listProp: ZodListSpacePropParamsSchema.shape.prop,
             })
         )
         .merge(ZodGetSpacesByPropParamsSchema.omit({ prop: true }))
         .merge(
             z.object({
-                queryProp: ZodListPropParamsSchema.shape.prop,
+                queryProp: ZodListSpacePropParamsSchema.shape.prop,
             })
         )
         .openapi({
@@ -35,10 +35,10 @@ export const ZodListPropByPropParamsSchema = swaggerRegistry.register(
         })
 );
 
-export const ZodListPropByPropQueryParamsSchema = swaggerRegistry.register(
-    'ListPropByPropParams',
+export const ZodListSpacePropByPropQueryParamsSchema = swaggerRegistry.register(
+    'ListSpacePropByPropParams',
     z.intersection(
-        ZodListPropQueryParamsSchema,
+        ZodListSpacePropQueryParamsSchema,
         z.object({
             caseSensitive: ZodCaseSensitiveQueryParamSchema,
             cs: ZodCaseSensitiveShorthandQueryParamSchema,
@@ -62,23 +62,23 @@ export const ZodListPropByPropQueryParamsSchema = swaggerRegistry.register(
     })
 );
 
-export const ZodListPropByProp200ResponseBodySchema = swaggerRegistry.register(
-    'ListPropByProp200ResponseBody',
-    ZodListProp200ResponseBodySchema,
+export const ZodListSpacePropByProp200ResponseBodySchema = swaggerRegistry.register(
+    'ListSpacePropByProp200ResponseBody',
+    ZodListSpaceProp200ResponseBodySchema,
 );
-export const ZodListPropByPropResponseBodySchema = swaggerRegistry.register(
-    'ListPropByPropResponseBody',
-    ZodListPropResponseBodySchema,
+export const ZodListSpacePropByPropResponseBodySchema = swaggerRegistry.register(
+    'ListSpacePropByPropResponseBody',
+    ZodListSpacePropResponseBodySchema,
 );
 
-export type ListPropByPropParams = z.infer<typeof ZodListPropByPropParamsSchema>;
-export type ListPropByPropQueryParams = z.infer<
-    typeof ZodListPropByPropQueryParamsSchema
+export type ListSpacePropByPropParams = z.infer<typeof ZodListSpacePropByPropParamsSchema>;
+export type ListSpacePropByPropQueryParams = z.infer<
+    typeof ZodListSpacePropByPropQueryParamsSchema
 >;
 
-export type ListPropByProp200ResponseBody = z.infer<
-    typeof ZodListPropByProp200ResponseBodySchema
+export type ListSpacePropByProp200ResponseBody = z.infer<
+    typeof ZodListSpacePropByProp200ResponseBodySchema
 >;
-export type ListPropByPropResponseBody = z.infer<
-    typeof ZodListPropByPropResponseBodySchema
+export type ListSpacePropByPropResponseBody = z.infer<
+    typeof ZodListSpacePropByPropResponseBodySchema
 >;

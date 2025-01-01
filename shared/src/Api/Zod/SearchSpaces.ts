@@ -36,8 +36,8 @@ export const ZodMongoSpaceWithScoreSchema = swaggerRegistry.register(
     })
 );
 
-export const ZodSearchParamsSchema = swaggerRegistry.register(
-    "SearchParams",
+export const ZodSearchSpacesParamsSchema = swaggerRegistry.register(
+    "SearchSpacesParams",
     z.object({
         query: z.string().openapi({
             description: "The search query."
@@ -91,7 +91,7 @@ export const ZodSearchSpacesQueryParamsSchema = swaggerRegistry.register(
         if (data.so !== undefined) data.sortOrder = data.so;
         return data;
     }).openapi({
-        description: "Query parameters for searching all spaces."
+        description: "Query parameters for searching spaces."
     })
 );
 
@@ -100,4 +100,6 @@ export type MongoSpaceWithScore = z.infer<typeof ZodMongoSpaceWithScoreSchema>;
 
 export type SearchSpaces200ResponseBody = z.infer<typeof ZodSearchSpaces200ResponseBodySchema>;
 export type SearchSpacesResponseBody = z.infer<typeof ZodSearchSpacesResponseBodySchema>;
+
+export type SearchSpacesParams = z.input<typeof ZodSearchSpacesParamsSchema>;
 export type SearchSpacesQueryParams = z.input<typeof ZodSearchSpacesQueryParamsSchema>;

@@ -2,7 +2,7 @@ import { asyncErrorHandler } from "@ptolemy2002/express-utils";
 import { Request, Response, Router } from "express";
 import RouteHandler from "lib/RouteHandler";
 import SpaceModel from "models/SpaceModel";
-import { SearchSpaces200ResponseBody, ZodSearchParamsSchema, ZodSearchSpacesQueryParamsSchema } from "shared";
+import { SearchSpaces200ResponseBody, ZodSearchSpacesParamsSchema, ZodSearchSpacesQueryParamsSchema } from "shared";
 import SpaceAggregationBuilder from "../utils/SpaceAggregationBuilder";
 
 const router = Router();
@@ -55,7 +55,7 @@ export class SearchSpacesHandler extends RouteHandler {
             return;
         }
 
-        const {success: paramsSuccess, error: paramsError, data: paramsData} = ZodSearchParamsSchema.safeParse(req.params);
+        const {success: paramsSuccess, error: paramsError, data: paramsData} = ZodSearchSpacesParamsSchema.safeParse(req.params);
 
         if (!paramsSuccess) {
             res.status(400).json(this.buildZodErrorResponse(paramsError, "BAD_URL"));

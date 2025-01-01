@@ -7,12 +7,13 @@ export * from "./GetSpaces";
 export * from "./GetSpacesByProp";
 
 export * from "./SearchSpaces";
+export * from "./SearchSpacesCount";
 
 export * from "./CountSpaces";
 export * from "./CountSpacesByProp";
 
-export * from "./ListProp";
-export * from "./ListPropByProp";
+export * from "./ListSpaceProp";
+export * from "./ListSpacePropByProp";
 
 export * from "./QueryParams";
 export * from "./SortOrder";

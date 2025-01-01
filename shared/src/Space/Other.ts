@@ -12,3 +12,9 @@ export const SpaceQueryPropEnum = [
     "tag",
     "example"
 ] as const;
+
+export const SpaceQueryPropWithScoreEnum = [
+    ...SpaceQueryPropEnum,
+    "score",
+    "_score"
+] as const;

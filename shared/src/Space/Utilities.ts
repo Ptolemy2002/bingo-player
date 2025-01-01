@@ -1,4 +1,5 @@
-import { CleanMongoSpace, SpaceQueryProp, ZodSpaceSchema, ZodMongoSpaceSchema, Space, CleanSpace, MongoSpace, SpaceQueryPropNonId} from "./Zod";
+import { MongoSpaceWithScore } from "src/Api";
+import { CleanMongoSpace, SpaceQueryProp, ZodSpaceSchema, ZodMongoSpaceSchema, Space, CleanSpace, MongoSpace, SpaceQueryPropNonId, SpaceQueryPropWithScore, SpaceQueryPropNonIdWithScore} from "./Zod";
 
 export function interpretSpaceQueryProp(prop: SpaceQueryProp): (keyof CleanMongoSpace) | "known-as" {
     if (prop === "id") prop = "_id";
@@ -12,6 +13,23 @@ export function interpretSpaceQueryPropNonId(prop: SpaceQueryPropNonId): (Exclud
     if (prop === "tag") prop = "tags";
     if (prop === "alias") prop = "aliases";
     if (prop === "example") prop = "examples";
+    return prop;
+}
+
+export function interpretSpaceQueryPropWithScore(prop: SpaceQueryPropWithScore): (keyof MongoSpaceWithScore) | "known-as" {
+    if (prop === "id") prop = "_id";
+    if (prop === "tag") prop = "tags";
+    if (prop === "alias") prop = "aliases";
+    if (prop === "example") prop = "examples";
+    if (prop === "score") prop = "_score";
+    return prop;
+}
+
+export function interpretSpaceQueryPropWithScoreNonId(prop: SpaceQueryPropNonIdWithScore): (Exclude<keyof MongoSpaceWithScore, "id" | "_id">) | "known-as" {
+    if (prop === "tag") prop = "tags";
+    if (prop === "alias") prop = "aliases";
+    if (prop === "example") prop = "examples";
+    if (prop === "score") prop = "_score";
     return prop;
 }
 

@@ -4,11 +4,13 @@ import {
     AggregationBuilder,
     StageGeneration,
 } from '@ptolemy2002/mongoose-utils';
-import { SpaceQueryProp, SortOrder, interpretSpaceQueryProp, interpretSortOrder } from 'shared';
+import { SpaceQueryProp, SortOrder, interpretSortOrder, SpaceQueryPropWithScore, interpretSpaceQueryPropWithScore } from 'shared';
+import SpaceModel from 'models/SpaceModel';
 
 export type SpaceAggregationStageType =
     | 'add-known-as'
     | 'sort'
+    | 'sort-desc-default'
     | 'skip'
     | 'limit'
     | 'pagination'
@@ -17,16 +19,17 @@ export type SpaceAggregationStageType =
     | 'unwind-all'
     | 'unwind-list-prop'
     | 'group-list-prop'
-    | 'count';
+    | 'count'
+    | 'search';
 
 export type SpaceAggregationOptions = {
     sort: {
-        sortBy: SpaceQueryProp;
+        sortBy: SpaceQueryPropWithScore;
         sortOrder: SortOrder;
     },
 
     match: {
-        queryProp: SpaceQueryProp;
+        queryProp: SpaceQueryPropWithScore;
         queryString: string;
         caseSensitive: boolean;
         accentSensitive: boolean;
@@ -34,7 +37,7 @@ export type SpaceAggregationOptions = {
     },
 
     list: {
-        listProp: SpaceQueryProp;
+        listProp: SpaceQueryPropWithScore;
     },
 
     skip: {
@@ -49,6 +52,10 @@ export type SpaceAggregationOptions = {
 
     count: {
         countFieldName: string;
+    },
+
+    search: {
+        searchQuery: string;
     }
 };
 
@@ -65,6 +72,16 @@ export default class SpaceAggregationBuilder extends AggregationBuilder<SpaceAgg
             }
         });
         return hasKnownAs;
+    }
+
+    hasScore(): boolean {
+        let hasScore = false;
+        this.pipeline.forEach((stage) => {
+            if (stage.type === 'search') {
+                hasScore = true;
+            }
+        });
+        return hasScore;
     }
 
     thenSort(options?: Partial<SpaceAggregationOptions['sort']>) {
@@ -99,6 +116,10 @@ export default class SpaceAggregationBuilder extends AggregationBuilder<SpaceAgg
         return this.setOptions(options).then('count');
     }
 
+    thenSearch(options?: Partial<SpaceAggregationOptions['search']>) {
+        return this.setOptions(options).then('search');
+    }
+
     generateStage(
         stage: SpaceAggregationStageType,
     ): StageGeneration<SpaceAggregationStageType> {
@@ -119,7 +140,7 @@ export default class SpaceAggregationBuilder extends AggregationBuilder<SpaceAgg
             }
 
             case 'sort': {
-                const sortBy = interpretSpaceQueryProp(
+                const sortBy = interpretSpaceQueryPropWithScore(
                     this.options.sortBy ?? '_id',
                 );
                 const sortOrder = interpretSortOrder(
@@ -143,6 +164,18 @@ export default class SpaceAggregationBuilder extends AggregationBuilder<SpaceAgg
                             $sort: sortObject,
                         },
                     ],
+                };
+            }
+
+            case 'sort-desc-default': {
+                const wasMissing = this.options.sortOrder === undefined;
+                if (wasMissing) this.options.sortOrder = 'desc';
+                const { stages } = this.generateStage('sort');
+                if (wasMissing) this.options.sortOrder = undefined;
+
+                return {
+                    type: 'sort-desc-default',
+                    stages
                 };
             }
 
@@ -175,7 +208,7 @@ export default class SpaceAggregationBuilder extends AggregationBuilder<SpaceAgg
                     );
                 }
 
-                const interpretedProp = interpretSpaceQueryProp(queryProp);
+                const interpretedProp = interpretSpaceQueryPropWithScore(queryProp);
                 const pattern = transformRegex(queryString, {
                     caseInsensitive: !caseSensitive,
                     accentInsensitive: !accentSensitive,
@@ -243,7 +276,7 @@ export default class SpaceAggregationBuilder extends AggregationBuilder<SpaceAgg
                         ['listProp'], 'listProp is required for unwind-list-prop stage.'
                     );
 
-                const interpretedProp = interpretSpaceQueryProp(listProp);
+                const interpretedProp = interpretSpaceQueryPropWithScore(listProp);
                 if (interpretedProp === 'known-as' && !this.hasKnownAs()) {
                     throw new TypeError(
                         'Cannot unwind known-as without adding it first.',
@@ -266,7 +299,7 @@ export default class SpaceAggregationBuilder extends AggregationBuilder<SpaceAgg
                     'listProp is required for group-list-prop stage.',
                 );
 
-                const interpretedProp = interpretSpaceQueryProp(listProp);
+                const interpretedProp = interpretSpaceQueryPropWithScore(listProp);
                 if (interpretedProp === 'known-as' && !this.hasKnownAs()) {
                     throw new TypeError(
                         'Cannot group by known-as without adding it first.',
@@ -314,6 +347,50 @@ export default class SpaceAggregationBuilder extends AggregationBuilder<SpaceAgg
                     ],
                 };
             }
+
+            case 'search': {
+                const { searchQuery } = this.requireOptions(
+                    ['searchQuery'],
+                    'searchQuery is required for search stage.'
+                );
+
+                if (searchQuery === "_score" && !this.hasScore()) {
+                    throw new TypeError(
+                        'Cannot sort by score without adding it first.'
+                    );
+                }
+
+                const includeMap = SpaceModel.getPaths().reduce((acc, path) => {
+                    acc[path] = 1;
+                    return acc;
+                }, {} as Record<string, 1>);
+
+                return {
+                    type: 'search',
+                    stages: [
+                        {
+                            $search: {
+                                index: 'default_spaces',
+                                text: {
+                                    query: searchQuery,
+                                    path: {
+                                        wildcard: '*',
+                                    }
+                                },
+                            },
+                        },
+                        {
+                            $project: {
+                                ...includeMap,
+                                _score: {
+                                    $meta: 'searchScore',
+                                },
+                            }
+                        }
+                    ],
+                };
+            }
+
         }
     }
 }

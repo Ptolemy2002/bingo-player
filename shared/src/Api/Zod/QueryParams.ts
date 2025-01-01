@@ -2,7 +2,7 @@ import { z } from "zod";
 import { swaggerRegistry } from "src/Swagger";
 import { ZodCoercedBoolean } from "@ptolemy2002/regex-utils";
 import { ZodSortOrderSchema } from "./SortOrder";
-import { ZodSpaceQueryPropSchema } from "src/Space";
+import { ZodSpaceQueryPropSchema, ZodSpaceQueryPropWithScoreSchema } from "src/Space";
 
 export const ZodLimitQueryParamSchema = swaggerRegistry.registerParameter(
     "limit",
@@ -167,6 +167,34 @@ export const ZodSortOrderShorthandQueryParamSchema = swaggerRegistry.registerPar
     })
 );
 
+export const ZodSortOrderDescDefaultQueryParamSchema = swaggerRegistry.registerParameter(
+    "sortOrderDescDefault",
+    ZodSortOrderSchema
+        .optional()
+        .default("desc")
+        .openapi({
+            description: "[Query Parameter] The order to sort the field by. Descending by default.",
+            default: "desc",
+            param: {
+                name: "sortOrder",
+                in: "query"
+            }
+        })
+);
+
+export const ZodSortOrderDescDefaultShorthandQueryParamSchema = swaggerRegistry.registerParameter(
+    "soDescDefault",
+    ZodSortOrderDescDefaultQueryParamSchema
+    .openapi({
+        description: "[Query Parameter] Shorthand for sortOrder.",
+        default: "desc",
+        param: {
+            name: "so",
+            in: "query"
+        }
+    })
+);
+
 export const ZodSortByQueryParamSchema = swaggerRegistry.registerParameter(
     "sortBy",
     ZodSpaceQueryPropSchema
@@ -186,6 +214,34 @@ export const ZodSortByShorthandQueryParamSchema = swaggerRegistry.registerParame
     ZodSortByQueryParamSchema
     .openapi({
         description: "[Query Parameter] Shorthand for sortBy.",
+        default: "id",
+        param: {
+            name: "sb",
+            in: "query"
+        }
+    })
+);
+
+export const ZodSortByWithScoreQueryParamSchema = swaggerRegistry.registerParameter(
+    "sortByWithScore",
+    ZodSpaceQueryPropWithScoreSchema
+        .optional()
+        .openapi({
+            description: "[Query Parameter] The field to sort by. 'id' if not provided.",
+            default: "score",
+            param: {
+                name: "sortBy",
+                in: "query"
+            }
+        })
+);
+
+export const ZodSortByWithScoreShorthandQueryParamSchema = swaggerRegistry.registerParameter(
+    "sbWithScore",
+    ZodSortByWithScoreQueryParamSchema
+    .openapi({
+        description: "[Query Parameter] Shorthand for sortBy.",
+        default: "score",
         param: {
             name: "sb",
             in: "query"

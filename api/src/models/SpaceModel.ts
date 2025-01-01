@@ -25,6 +25,7 @@ export type SpaceModel = Model<MongoDocumentSpace, {}, SpaceInstanceMethods>;
 
 export interface SpaceModelWithStatics extends SpaceModel {
     executeDocumentAggregation(pipeline: PipelineStage[]): Promise<CleanMongoSpace[]>
+    getPaths(): string[]
 }
 
 const SpaceSchema = new Schema<MongoDocumentSpace, SpaceModel, SpaceInstanceMethods>({
@@ -85,6 +86,10 @@ SpaceSchema.method("toClientJSON", function() {
 
 SpaceSchema.static("executeDocumentAggregation", function(pipeline: PipelineStage[]) {
     return this.aggregate<CleanMongoSpace>(pipeline).exec();
+});
+
+SpaceSchema.static("getPaths", function() {
+    return Object.keys(this.schema.paths);
 });
 
 // Define the search index for the spaces collection

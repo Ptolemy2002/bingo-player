@@ -892,6 +892,128 @@
           }
         }
       }
+    },
+    "/api/v1/spaces/search/{query}": {
+      "get": {
+        "tags": [
+          "Spaces",
+          "Get",
+          "Search"
+        ],
+        "description": "Use the Atlas Search index to search for spaces based on the provided query string.",
+        "parameters": [
+          {
+            "name": "query",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The search query."
+          },
+          {
+            "$ref": "#/components/parameters/limit"
+          },
+          {
+            "$ref": "#/components/parameters/l"
+          },
+          {
+            "$ref": "#/components/parameters/offset"
+          },
+          {
+            "$ref": "#/components/parameters/o"
+          },
+          {
+            "$ref": "#/components/parameters/sortByWithScore"
+          },
+          {
+            "$ref": "#/components/parameters/sbWithScore"
+          },
+          {
+            "$ref": "#/components/parameters/sortOrderDescDefault"
+          },
+          {
+            "$ref": "#/components/parameters/soDescDefault"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SearchSpaces200ResponseBody"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/SearchSpaces200ResponseBody"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse400"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse400"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No matching spaces found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse404"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse404"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "501": {
+            "description": "Not implemented.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse501"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse501"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -992,6 +1114,22 @@
         "name": "so",
         "in": "query"
       },
+      "sortOrderDescDefault": {
+        "schema": {
+          "$ref": "#/components/schemas/sortOrderDescDefault"
+        },
+        "required": false,
+        "name": "sortOrder",
+        "in": "query"
+      },
+      "soDescDefault": {
+        "schema": {
+          "$ref": "#/components/schemas/soDescDefault"
+        },
+        "required": false,
+        "name": "so",
+        "in": "query"
+      },
       "sortBy": {
         "schema": {
           "$ref": "#/components/schemas/sortBy"
@@ -1003,6 +1141,22 @@
       "sb": {
         "schema": {
           "$ref": "#/components/schemas/sb"
+        },
+        "required": false,
+        "name": "sb",
+        "in": "query"
+      },
+      "sortByWithScore": {
+        "schema": {
+          "$ref": "#/components/schemas/sortByWithScore"
+        },
+        "required": false,
+        "name": "sortBy",
+        "in": "query"
+      },
+      "sbWithScore": {
+        "schema": {
+          "$ref": "#/components/schemas/sbWithScore"
         },
         "required": false,
         "name": "sb",
@@ -1175,7 +1329,44 @@
           "alias",
           "tag",
           "example"
-        ]
+        ],
+        "description": "A property of a space that can be queried, excluding id."
+      },
+      "SpaceQueryPropWithScore": {
+        "type": "string",
+        "enum": [
+          "id",
+          "name",
+          "description",
+          "examples",
+          "aliases",
+          "tags",
+          "_id",
+          "known-as",
+          "alias",
+          "tag",
+          "example",
+          "score",
+          "_score"
+        ],
+        "description": "A property of a space that can be queried, including the score."
+      },
+      "SpaceQueryPropNonIdWithScore": {
+        "type": "string",
+        "enum": [
+          "name",
+          "description",
+          "examples",
+          "aliases",
+          "tags",
+          "known-as",
+          "alias",
+          "tag",
+          "example",
+          "score",
+          "_score"
+        ],
+        "description": "A property of a space that can be queried, excluding id, including the score."
       },
       "ErrorCode": {
         "type": "string",
@@ -1775,6 +1966,181 @@
             "$ref": "#/components/schemas/ErrorResponse"
           }
         ]
+      },
+      "ScoreSpecification": {
+        "type": "object",
+        "properties": {
+          "_score": {
+            "type": "number",
+            "description": "The relevance score of the space."
+          }
+        },
+        "required": [
+          "_score"
+        ],
+        "description": "A specification for a relevance score."
+      },
+      "SpaceWithScore": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Space"
+          },
+          {
+            "$ref": "#/components/schemas/ScoreSpecification"
+          }
+        ],
+        "description": "A space with an associated relevance score."
+      },
+      "MongoSpaceWithScore": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/MongoSpace"
+          },
+          {
+            "$ref": "#/components/schemas/ScoreSpecification"
+          }
+        ],
+        "description": "The MongoDB representation of a space with an associated relevance score."
+      },
+      "SearchParams": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "The search query."
+          }
+        },
+        "required": [
+          "query"
+        ],
+        "description": "The URL parameters for searching spaces."
+      },
+      "SearchSpaces200ResponseBody": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "spaces": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/MongoSpace"
+                },
+                "description": "The spaces that match the query."
+              }
+            },
+            "required": [
+              "spaces"
+            ],
+            "description": "The response from searching spaces."
+          },
+          {
+            "$ref": "#/components/schemas/SuccessResponseBase"
+          }
+        ]
+      },
+      "SearchSpacesResponseBody": {
+        "anyOf": [
+          {
+            "$ref": "#/components/schemas/SearchSpaces200ResponseBody"
+          },
+          {
+            "$ref": "#/components/schemas/ErrorResponse"
+          }
+        ]
+      },
+      "sortByWithScore": {
+        "type": "string",
+        "enum": [
+          "id",
+          "name",
+          "description",
+          "examples",
+          "aliases",
+          "tags",
+          "_id",
+          "known-as",
+          "alias",
+          "tag",
+          "example",
+          "score",
+          "_score"
+        ],
+        "default": "score",
+        "description": "[Query Parameter] The field to sort by. 'id' if not provided."
+      },
+      "sbWithScore": {
+        "type": "string",
+        "enum": [
+          "id",
+          "name",
+          "description",
+          "examples",
+          "aliases",
+          "tags",
+          "_id",
+          "known-as",
+          "alias",
+          "tag",
+          "example",
+          "score",
+          "_score"
+        ],
+        "default": "score",
+        "description": "[Query Parameter] Shorthand for sortBy."
+      },
+      "sortOrderDescDefault": {
+        "type": "string",
+        "enum": [
+          "asc",
+          "ascending",
+          "desc",
+          "descending"
+        ],
+        "default": "desc",
+        "description": "[Query Parameter] The order to sort the field by. Descending by default.",
+        "example": "asc"
+      },
+      "soDescDefault": {
+        "type": "string",
+        "enum": [
+          "asc",
+          "ascending",
+          "desc",
+          "descending"
+        ],
+        "default": "desc",
+        "description": "[Query Parameter] Shorthand for sortOrder.",
+        "example": "asc"
+      },
+      "SearchSpacesQueryParams": {
+        "type": "object",
+        "properties": {
+          "limit": {
+            "$ref": "#/components/schemas/limit"
+          },
+          "l": {
+            "$ref": "#/components/schemas/l"
+          },
+          "offset": {
+            "$ref": "#/components/schemas/offset"
+          },
+          "o": {
+            "$ref": "#/components/schemas/o"
+          },
+          "sortBy": {
+            "$ref": "#/components/schemas/sortByWithScore"
+          },
+          "sb": {
+            "$ref": "#/components/schemas/sbWithScore"
+          },
+          "sortOrder": {
+            "$ref": "#/components/schemas/sortOrderDescDefault"
+          },
+          "so": {
+            "$ref": "#/components/schemas/soDescDefault"
+          }
+        },
+        "description": "Query parameters for searching all spaces."
       },
       "CountSpaces200ResponseBody": {
         "allOf": [

@@ -1,6 +1,6 @@
 import { swaggerRegistry } from "src/Swagger";
 import { z } from "zod";
-import { ZodMongoSpaceSchema } from "src/Space";
+import { ZodCleanMongoSpaceSchema } from "src/Space";
 import { ZodErrorResponseSchema } from "./ErrorResponse";
 import { zodSuccessResponseSchema } from "./SuccessResponse";
 import { ZodLimitQueryParamSchema, ZodLimitShorthandQueryParamSchema, ZodOffsetQueryParamSchema, ZodOffsetShorthandQueryParamSchema, ZodSortByQueryParamSchema, ZodSortByShorthandQueryParamSchema, ZodSortOrderQueryParamSchema, ZodSortOrderShorthandQueryParamSchema } from "./QueryParams";
@@ -9,7 +9,7 @@ export const ZodGetSpaces200ResponseBodySchema = swaggerRegistry.register(
     "GetSpaces200ResponseBody",
     zodSuccessResponseSchema(
         z.object({
-            spaces: z.array(ZodMongoSpaceSchema).openapi({
+            spaces: z.array(ZodCleanMongoSpaceSchema).openapi({
                 description: "The spaces that match the query."
             })
         }).openapi({

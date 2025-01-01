@@ -1,18 +1,17 @@
-import { Router, Request, Response } from 'express';
+import { Router } from 'express';
 import {
-    CleanMongoSpace,
     ZodGetSpacesByPropParamsSchema,
     ZodGetSpacesByPropQueryParamsSchema,
     GetSpacesByProp200ResponseBody
 } from 'shared';
 import SpaceModel from 'models/SpaceModel';
-import RouteHandler from 'lib/RouteHandler';
+import RouteHandler, { RouteHandlerRequest } from 'lib/RouteHandler';
 import SpaceAggregationBuilder from '../utils/SpaceAggregationBuilder';
 import { asyncErrorHandler } from '@ptolemy2002/express-utils';
 
 const router = Router();
 
-export class GetSpacesByPropHandler extends RouteHandler {
+export class GetSpacesByPropHandler extends RouteHandler<GetSpacesByProp200ResponseBody> {
     /*
         #swagger.start
         #swagger.tags = ['Spaces', 'Get', 'Query']
@@ -74,21 +73,23 @@ export class GetSpacesByPropHandler extends RouteHandler {
         super(1, '/#/Spaces/get_api_v1_spaces_get_by_prop__prop___query_');
     }
 
-    async handle(req: Request, res: Response) {
+    async generateResponse(req: RouteHandlerRequest) {
         const { success: paramsSuccess, error: paramsError, data: params } = ZodGetSpacesByPropParamsSchema.safeParse(req.params);
 
         if (!paramsSuccess) {
-            res.status(400)
-                .json(this.buildZodErrorResponse(paramsError, "BAD_URL"));
-            return;
+            return {
+                status: 400,
+                response: this.buildZodErrorResponse(paramsError, "BAD_URL")
+            };
         }
 
         const { prop: queryProp, query: queryString } = params;
         const { success: querySuccess, error: queryError, data: queryData } = ZodGetSpacesByPropQueryParamsSchema.safeParse(req.query);
         if (!querySuccess) {
-            res.status(400)
-                .json(this.buildZodErrorResponse(queryError, "BAD_QUERY"));
-            return;
+            return {
+                status: 400,
+                response: this.buildZodErrorResponse(queryError, "BAD_QUERY")
+            };
         }
 
         const pipeline = new SpaceAggregationBuilder(queryData)
@@ -102,13 +103,18 @@ export class GetSpacesByPropHandler extends RouteHandler {
         const spaces = await SpaceModel.executeDocumentAggregation(pipeline);
 
         if (spaces.length === 0) {
-            res.status(404)
-                .json(this.buildNotFoundResponse("No matching spaces found."));
-            return;
+            return {
+                status: 404,
+                response: this.buildNotFoundResponse("No matching spaces found.")
+            };
         }
 
-        res.status(200)
-            .json(this.buildSuccessResponse<GetSpacesByProp200ResponseBody>({ spaces }));
+        return {
+            status: 200,
+            response: this.buildSuccessResponse({
+                spaces
+            })
+        };
     }
 }
 

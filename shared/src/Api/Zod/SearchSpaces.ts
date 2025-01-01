@@ -1,6 +1,6 @@
 import { swaggerRegistry } from "src/Swagger";
 import { z } from "zod";
-import { ZodMongoSpaceSchema, ZodSpaceSchema } from "src/Space";
+import { ZodCleanMongoSpaceSchema, ZodCleanSpaceSchema, ZodMongoSpaceSchema, ZodSpaceSchema } from "src/Space";
 import { ZodErrorResponseSchema } from "./ErrorResponse";
 import { zodSuccessResponseSchema } from "./SuccessResponse";
 import { ZodLimitQueryParamSchema, ZodLimitShorthandQueryParamSchema, ZodOffsetQueryParamSchema, ZodOffsetShorthandQueryParamSchema, ZodSortByWithScoreQueryParamSchema, ZodSortByWithScoreShorthandQueryParamSchema, ZodSortOrderDescDefaultQueryParamSchema, ZodSortOrderDescDefaultShorthandQueryParamSchema } from "./QueryParams";
@@ -26,6 +26,16 @@ export const ZodSpaceWithScoreSchema = swaggerRegistry.register(
     })
 );
 
+export const ZodCleanSpaceWithScoreSchema = swaggerRegistry.register(
+    "CleanSpaceWithScore",
+    z.intersection(
+        ZodCleanSpaceSchema,
+        ZodScoreSpecificationSchema
+    ).openapi({
+        description: "CleanSpaceWithScore, but with some fields optional and provided sensible defaults."
+    })
+);
+
 export const ZodMongoSpaceWithScoreSchema = swaggerRegistry.register(
     "MongoSpaceWithScore",
     z.intersection(
@@ -33,6 +43,16 @@ export const ZodMongoSpaceWithScoreSchema = swaggerRegistry.register(
         ZodScoreSpecificationSchema
     ).openapi({
         description: "The MongoDB representation of a space with an associated relevance score."
+    })
+);
+
+export const ZodCleanMongoSpaceWithScoreSchema = swaggerRegistry.register(
+    "CleanMongoSpaceWithScore",
+    z.intersection(
+        ZodCleanMongoSpaceSchema,
+        ZodScoreSpecificationSchema
+    ).openapi({
+        description: "CleanMongoSpaceWithScore, but with some fields optional and provided sensible defaults."
     })
 );
 
@@ -52,7 +72,7 @@ export const ZodSearchSpaces200ResponseBodySchema = swaggerRegistry.register(
     zodSuccessResponseSchema(
         z.object({
             spaces: z.array(
-                ZodMongoSpaceSchema
+                ZodCleanMongoSpaceSchema
             ).openapi({
                 description: "The spaces that match the query."
             })
@@ -96,7 +116,12 @@ export const ZodSearchSpacesQueryParamsSchema = swaggerRegistry.register(
 );
 
 export type SpaceWithScore = z.infer<typeof ZodSpaceWithScoreSchema>;
+export type CleanSpaceWithScore = z.infer<typeof ZodCleanSpaceWithScoreSchema>;
+
 export type MongoSpaceWithScore = z.infer<typeof ZodMongoSpaceWithScoreSchema>;
+export type CleanMongoSpaceWithScore = z.infer<typeof ZodCleanMongoSpaceWithScoreSchema>;
+
+export type ScoreSpecification = z.infer<typeof ZodScoreSpecificationSchema>;
 
 export type SearchSpaces200ResponseBody = z.infer<typeof ZodSearchSpaces200ResponseBodySchema>;
 export type SearchSpacesResponseBody = z.infer<typeof ZodSearchSpacesResponseBodySchema>;

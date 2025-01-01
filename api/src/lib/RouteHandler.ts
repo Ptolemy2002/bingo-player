@@ -2,9 +2,19 @@ import getEnv, { EnvType } from 'env';
 import { ErrorCode, ErrorResponse, ErrorResponse400, ErrorResponse404, ErrorResponse501, ErrorResponseWithCode, SuccessResponseBase } from 'shared';
 import { ZodError } from 'zod';
 import { interpretZodError } from '@ptolemy2002/regex-utils';
-import { Request, Response } from 'express';
+import { Response } from 'express';
 
-export default class RouteHandler {
+export type GeneratedResonse<SuccessResponse extends SuccessResponseBase> = {
+    status: number;
+    response: ErrorResponse | SuccessResponse;
+};
+
+export type RouteHandlerRequest = {
+    params: unknown;
+    query: unknown;
+};
+
+export default class RouteHandler<SuccessResponse extends SuccessResponseBase> {
     protected _docsEndpoint: string;
     protected _docsVersion: number;
     protected _env: EnvType;
@@ -49,12 +59,12 @@ export default class RouteHandler {
         return this.help;
     }
 
-    protected buildSuccessResponse<T extends SuccessResponseBase>(data: Omit<T, "ok" | "help">): T {
+    protected buildSuccessResponse(data: Omit<SuccessResponse, "ok" | "help">): SuccessResponse {
         return {
             ...data,
             ok: true,
             help: this.help
-        } as T;
+        } as SuccessResponse;
     }
 
     protected buildErrorResponse<EC extends ErrorCode = "UNKNOWN">(
@@ -91,7 +101,12 @@ export default class RouteHandler {
         return this.buildErrorResponse('NOT_IMPLEMENTED', message);
     }
 
-    async handle(req: Request, res: Response) {
-        throw new Error('Handler Method not implemented.');
+    async generateResponse(req: RouteHandlerRequest): Promise<GeneratedResonse<SuccessResponse>> {
+        throw new Error('generateResponse Method not implemented.');
+    }
+
+    async handle(req: RouteHandlerRequest, res: Response) {
+        const { status, response } = await this.generateResponse(req);
+        res.status(status).json(response);
     }
 }

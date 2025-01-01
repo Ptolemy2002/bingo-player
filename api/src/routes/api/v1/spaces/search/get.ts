@@ -1,13 +1,13 @@
 import { asyncErrorHandler } from "@ptolemy2002/express-utils";
-import { Request, Response, Router } from "express";
-import RouteHandler from "lib/RouteHandler";
+import { Router } from "express";
+import RouteHandler, { RouteHandlerRequest } from "lib/RouteHandler";
 import SpaceModel from "models/SpaceModel";
 import { SearchSpaces200ResponseBody, ZodSearchSpacesParamsSchema, ZodSearchSpacesQueryParamsSchema } from "shared";
 import SpaceAggregationBuilder from "../utils/SpaceAggregationBuilder";
 
 const router = Router();
 
-export class SearchSpacesHandler extends RouteHandler {
+export class SearchSpacesHandler extends RouteHandler<SearchSpaces200ResponseBody> {
     /*
         #swagger.start
         #swagger.tags = ['Spaces', 'Get', 'Search']
@@ -47,19 +47,23 @@ export class SearchSpacesHandler extends RouteHandler {
         super(1, '/#/Spaces/get_api_v1_spaces_search__query_');
     }
 
-    async handle(req: Request, res: Response) {
+    async generateResponse(req: RouteHandlerRequest) {
         const {success: querySuccess, error: queryError, data: queryData} = ZodSearchSpacesQueryParamsSchema.safeParse(req.query);
 
         if (!querySuccess) {
-            res.status(400).json(this.buildZodErrorResponse(queryError, "BAD_QUERY"));
-            return;
+            return {
+                status: 400,
+                response: this.buildZodErrorResponse(queryError, "BAD_QUERY")
+            };
         }
 
         const {success: paramsSuccess, error: paramsError, data: paramsData} = ZodSearchSpacesParamsSchema.safeParse(req.params);
 
         if (!paramsSuccess) {
-            res.status(400).json(this.buildZodErrorResponse(paramsError, "BAD_URL"));
-            return;
+            return {
+                status: 400,
+                response: this.buildZodErrorResponse(paramsError, "BAD_URL")
+            };
         }
 
         const {query} = paramsData;
@@ -76,14 +80,18 @@ export class SearchSpacesHandler extends RouteHandler {
         const spaces = await SpaceModel.executeDocumentAggregation(pipeline);
 
         if (spaces.length === 0) {
-            res.status(404)
-                .json(this.buildNotFoundResponse("No matching spaces found."));
-            return;
+            return {
+                status: 404,
+                response: this.buildNotFoundResponse("No matching spaces found.")
+            };
         }
 
-        res.status(200).json(
-            this.buildSuccessResponse<SearchSpaces200ResponseBody>({spaces})
-        );
+        return {
+            status: 200,
+            response: this.buildSuccessResponse({
+                spaces
+            })
+        };
     }
 }
 

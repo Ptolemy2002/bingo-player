@@ -1,5 +1,5 @@
 import { asyncErrorHandler } from "@ptolemy2002/express-utils";
-import { Request, Response, Router } from "express";
+import { Router } from "express";
 import { CountSpaces200ResponseBody } from "shared";
 import RouteHandler from "lib/RouteHandler";
 import SpaceAggregationBuilder from "../utils/SpaceAggregationBuilder";
@@ -7,7 +7,7 @@ import SpaceModel from "models/SpaceModel";
 
 export const router = Router();
 
-export class CountAllSpacesHandler extends RouteHandler {
+export class CountAllSpacesHandler extends RouteHandler<CountSpaces200ResponseBody> {
     /*
         #swagger.start
         #swagger.tags = ['Spaces', 'Count']
@@ -27,7 +27,7 @@ export class CountAllSpacesHandler extends RouteHandler {
         super(1, '/#/Spaces/get_api_v1_spaces_count_all');
     }
 
-    async handle(_: Request, res: Response) {
+    async generateResponse() {
         const pipeline = new SpaceAggregationBuilder({
             countFieldName: "count"
         })
@@ -37,11 +37,16 @@ export class CountAllSpacesHandler extends RouteHandler {
         const count = (await SpaceModel.aggregate<{count: number}>(pipeline))[0]?.count ?? 0;
 
         if (count === 0) {
-            res.status(404).json(this.buildNotFoundResponse("No spaces found."));
-            return;
+            return {
+                status: 404,
+                response: this.buildNotFoundResponse("No spaces found.")
+            };
         }
 
-        res.status(200).json(this.buildSuccessResponse<CountSpaces200ResponseBody>({ count }));
+        return {
+            status: 200,
+            response: this.buildSuccessResponse({ count })
+        };
     }
 }
 

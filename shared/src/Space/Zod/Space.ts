@@ -1,8 +1,8 @@
 import { swaggerRegistry } from "src/Swagger";
 import { z } from "zod";
 
-export const ZodSpaceSchema = swaggerRegistry.register(
-    "Space",
+export const ZodCleanSpaceSchema = swaggerRegistry.register(
+    "CleanSpace",
     z.object({
         id: z.string()
             .openapi({
@@ -18,7 +18,6 @@ export const ZodSpaceSchema = swaggerRegistry.register(
             }),
         description: z.string()
             .nullable()
-            .default(null)
             .openapi({
                 description: "The description of the space.",
                 example: "A space for my things."
@@ -27,7 +26,7 @@ export const ZodSpaceSchema = swaggerRegistry.register(
             z.string()
             .trim()
             .min(1, {message: "examples must be at least 1 non-whitespace character long"})
-        ).default([])
+        )
         .openapi({
             description: "Examples of the space.",
             example: ["Example 1", "Example 2"]
@@ -36,7 +35,6 @@ export const ZodSpaceSchema = swaggerRegistry.register(
             z.string()
             .trim()
             .min(1, {message: "aliases must be at least 1 non-whitespace character long"}))
-            .default([])
             .openapi({
                 description: "Aliases for the space.",
                 example: ["Alias 1", "Alias 2"]
@@ -46,7 +44,7 @@ export const ZodSpaceSchema = swaggerRegistry.register(
                 message: "Invalid tag"
             })
             .toLowerCase()
-        ).default([])
+        )
         .openapi({
             description: "Tags for the space.",
             example: ["tag1", "tag2"]
@@ -55,7 +53,21 @@ export const ZodSpaceSchema = swaggerRegistry.register(
         description: "A space for a Bingo Board."
     })
 );
+export const ZodCleanSpaceShape = ZodCleanSpaceSchema.shape;
+
+export const ZodSpaceSchema = swaggerRegistry.register(
+    "Space",
+    ZodCleanSpaceSchema.merge(z.object({
+        description: ZodCleanSpaceShape.description.nullable().default(null),
+        examples: ZodCleanSpaceShape.examples.default([]),
+        aliases: ZodCleanSpaceShape.aliases.default([]),
+        tags: ZodCleanSpaceShape.tags.default([])
+    })).openapi({
+        description: "CleanSpace, but with some fields optional and provided sensible defaults."
+    })
+);
 export const ZodSpaceShape = ZodSpaceSchema.shape;
 
-export type CleanSpace = z.infer<typeof ZodSpaceSchema>;
+
+export type CleanSpace = z.infer<typeof ZodCleanSpaceSchema>;
 export type Space = z.input<typeof ZodSpaceSchema>;

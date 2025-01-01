@@ -1262,6 +1262,75 @@
       }
     },
     "schemas": {
+      "CleanSpace": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The ID of the space.",
+            "example": "abc123"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The name of the space.",
+            "example": "My Space"
+          },
+          "description": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "The description of the space.",
+            "example": "A space for my things."
+          },
+          "examples": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "description": "Examples of the space.",
+            "example": [
+              "Example 1",
+              "Example 2"
+            ]
+          },
+          "aliases": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "description": "Aliases for the space.",
+            "example": [
+              "Alias 1",
+              "Alias 2"
+            ]
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[a-zA-Z0-9_-]+$"
+            },
+            "description": "Tags for the space.",
+            "example": [
+              "tag1",
+              "tag2"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "description",
+          "examples",
+          "aliases",
+          "tags"
+        ],
+        "description": "A space for a Bingo Board."
+      },
       "Space": {
         "type": "object",
         "properties": {
@@ -1328,7 +1397,76 @@
           "id",
           "name"
         ],
-        "description": "A space for a Bingo Board."
+        "description": "CleanSpace, but with some fields optional and provided sensible defaults."
+      },
+      "CleanMongoSpace": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The name of the space.",
+            "example": "My Space"
+          },
+          "description": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "The description of the space.",
+            "example": "A space for my things."
+          },
+          "examples": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "description": "Examples of the space.",
+            "example": [
+              "Example 1",
+              "Example 2"
+            ]
+          },
+          "aliases": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "description": "Aliases for the space.",
+            "example": [
+              "Alias 1",
+              "Alias 2"
+            ]
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[a-zA-Z0-9_-]+$"
+            },
+            "description": "Tags for the space.",
+            "example": [
+              "tag1",
+              "tag2"
+            ]
+          },
+          "_id": {
+            "type": "string",
+            "description": "The ID of the space.",
+            "example": "abc123"
+          }
+        },
+        "required": [
+          "name",
+          "description",
+          "examples",
+          "aliases",
+          "tags",
+          "_id"
+        ],
+        "description": "The MongoDB representation of a Space."
       },
       "MongoSpace": {
         "type": "object",
@@ -1396,7 +1534,7 @@
           "name",
           "_id"
         ],
-        "description": "The MongoDB representation of a Space."
+        "description": "CleanMongoSpace, but with some fields optional and provided sensible defaults."
       },
       "SpaceQueryProp": {
         "type": "string",
@@ -1726,7 +1864,7 @@
               "spaces": {
                 "type": "array",
                 "items": {
-                  "$ref": "#/components/schemas/MongoSpace"
+                  "$ref": "#/components/schemas/CleanMongoSpace"
                 },
                 "description": "The spaces that match the query."
               }
@@ -2040,7 +2178,7 @@
               "spaces": {
                 "type": "array",
                 "items": {
-                  "$ref": "#/components/schemas/MongoSpace"
+                  "$ref": "#/components/schemas/CleanMongoSpace"
                 },
                 "description": "The spaces that match the query."
               }
@@ -2089,6 +2227,17 @@
         ],
         "description": "A space with an associated relevance score."
       },
+      "CleanSpaceWithScore": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/CleanSpace"
+          },
+          {
+            "$ref": "#/components/schemas/ScoreSpecification"
+          }
+        ],
+        "description": "CleanSpaceWithScore, but with some fields optional and provided sensible defaults."
+      },
       "MongoSpaceWithScore": {
         "allOf": [
           {
@@ -2099,6 +2248,17 @@
           }
         ],
         "description": "The MongoDB representation of a space with an associated relevance score."
+      },
+      "CleanMongoSpaceWithScore": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/CleanMongoSpace"
+          },
+          {
+            "$ref": "#/components/schemas/ScoreSpecification"
+          }
+        ],
+        "description": "CleanMongoSpaceWithScore, but with some fields optional and provided sensible defaults."
       },
       "SearchSpacesParams": {
         "type": "object",
@@ -2121,7 +2281,7 @@
               "spaces": {
                 "type": "array",
                 "items": {
-                  "$ref": "#/components/schemas/MongoSpace"
+                  "$ref": "#/components/schemas/CleanMongoSpace"
                 },
                 "description": "The spaces that match the query."
               }

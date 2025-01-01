@@ -1,14 +1,13 @@
-import { Request, Response, Router } from 'express';
+import { Router } from 'express';
 import { asyncErrorHandler } from '@ptolemy2002/express-utils';
-import RouteHandler from 'lib/RouteHandler';
+import RouteHandler, { RouteHandlerRequest } from 'lib/RouteHandler';
 import { ZodCountSpacesByPropParamsSchema, ZodCountSpacesByPropQueryParamsSchema,CountSpacesByProp200ResponseBody } from 'shared';
 import SpaceAggregationBuilder from '../utils/SpaceAggregationBuilder';
 import SpaceModel from 'models/SpaceModel';
-import { register } from 'module';
 
 const router = Router();
 
-export class CountSpacesByPropHandler extends RouteHandler {
+export class CountSpacesByPropHandler extends RouteHandler<CountSpacesByProp200ResponseBody> {
     /*
         #swagger.start
         #swagger.tags = ['Spaces', 'Count', 'Query']
@@ -68,20 +67,24 @@ export class CountSpacesByPropHandler extends RouteHandler {
         super(1, '/#/Spaces/get_api_v1_spaces_count_by_prop__prop___query_');
     }
 
-    async handle(req: Request, res: Response) {
+    async generateResponse(req: RouteHandlerRequest) {
         const { success: paramsSuccess, error: paramsError, data: params } = ZodCountSpacesByPropParamsSchema.safeParse(req.params);
 
         if (!paramsSuccess) {
-            res.status(400).json(this.buildZodErrorResponse(paramsError));
-            return;
+            return {
+                status: 400,
+                response: this.buildZodErrorResponse(paramsError, "BAD_URL")
+            };
         }
 
         const { prop: queryProp, query: queryString } = params;
         const { success: querySuccess, error: queryError, data: queryData } = ZodCountSpacesByPropQueryParamsSchema.safeParse(req.query);
 
         if (!querySuccess) {
-            res.status(400).json(this.buildZodErrorResponse(queryError));
-            return;
+            return {
+                status: 400,
+                response: this.buildZodErrorResponse(queryError, "BAD_QUERY")
+            };
         }
 
         const pipeline = new SpaceAggregationBuilder(queryData)
@@ -96,11 +99,18 @@ export class CountSpacesByPropHandler extends RouteHandler {
         const count = (await SpaceModel.aggregate<{ count: number }>(pipeline))[0]?.count ?? 0;
         
         if (count === 0) {
-            res.status(404).json(this.buildNotFoundResponse("No spaces found."));
-            return;
+            return {
+                status: 404,
+                response: this.buildNotFoundResponse("No spaces found.")
+            };
         }
 
-        res.status(200).json(this.buildSuccessResponse<CountSpacesByProp200ResponseBody>({ count }));
+        return {
+            status: 200,
+            response: this.buildSuccessResponse({
+                count
+            })
+        };
     }
 }
 

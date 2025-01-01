@@ -1,13 +1,13 @@
 import { asyncErrorHandler } from "@ptolemy2002/express-utils";
-import { Request, Response, Router } from "express";
-import RouteHandler from "lib/RouteHandler";
+import { Router } from "express";
+import RouteHandler, { RouteHandlerRequest } from "lib/RouteHandler";
 import SpaceModel from "models/SpaceModel";
 import { GetSpaces200ResponseBody, ZodGetSpacesQueryParamsSchema } from "shared";
 import SpaceAggregationBuilder from "../utils/SpaceAggregationBuilder";
 
 const router = Router();
 
-export class GetAllSpacesHandler extends RouteHandler {
+export class GetAllSpacesHandler extends RouteHandler<GetSpaces200ResponseBody> {
     /*
         #swagger.start
         #swagger.tags = ['Spaces', 'Get']
@@ -40,12 +40,14 @@ export class GetAllSpacesHandler extends RouteHandler {
         super(1, '/#/Spaces/get_api_v1_spaces_get_all');
     }
 
-    async handle(req: Request, res: Response) {
+    async generateResponse(req: RouteHandlerRequest) {
         const {success, error, data: query} = ZodGetSpacesQueryParamsSchema.safeParse(req.query);
 
         if (!success) {
-            res.status(400).json(this.buildZodErrorResponse(error, "BAD_QUERY"));
-            return;
+            return {
+                status: 400,
+                response: this.buildZodErrorResponse(error, "BAD_QUERY")
+            };
         }
 
         const pipeline = new SpaceAggregationBuilder(query)
@@ -58,14 +60,18 @@ export class GetAllSpacesHandler extends RouteHandler {
         const spaces = await SpaceModel.executeDocumentAggregation(pipeline);
 
         if (spaces.length === 0) {
-            res.status(404)
-                .json(this.buildNotFoundResponse("No matching spaces found."));
-            return;
+            return {
+                status: 404,
+                response: this.buildNotFoundResponse("No matching spaces found.")
+            };
         }
 
-        res.status(200).json(
-            this.buildSuccessResponse<GetSpaces200ResponseBody>({spaces})
-        );
+        return {
+            status: 200,
+            response: this.buildSuccessResponse({
+                spaces
+            })
+        };
     }
 }
 

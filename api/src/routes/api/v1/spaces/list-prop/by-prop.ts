@@ -1,6 +1,6 @@
 import { asyncErrorHandler } from '@ptolemy2002/express-utils';
-import { Request, Response, Router } from 'express';
-import RouteHandler from 'lib/RouteHandler';
+import { Router } from 'express';
+import RouteHandler, { RouteHandlerRequest } from 'lib/RouteHandler';
 import SpaceModel from 'models/SpaceModel';
 import {
     ZodListSpacePropByPropParamsSchema,
@@ -11,7 +11,7 @@ import SpaceAggregationBuilder from '../utils/SpaceAggregationBuilder';
 
 const router = Router();
 
-export class ListSpacePropByPropHandler extends RouteHandler {
+export class ListSpacePropByPropHandler extends RouteHandler<ListSpacePropByProp200ResponseBody> {
     /*
         #swagger.start
         #swagger.tags = ['Spaces', 'List', 'Query']
@@ -80,7 +80,7 @@ export class ListSpacePropByPropHandler extends RouteHandler {
         super(1, '/#/Spaces/get_api_v1_spaces_get_all_list__prop_');
     }
 
-    async handle(req: Request, res: Response) {
+    async generateResponse(req: RouteHandlerRequest) {
         const {
             success: paramsSuccess,
             error: paramsError,
@@ -88,8 +88,10 @@ export class ListSpacePropByPropHandler extends RouteHandler {
         } = ZodListSpacePropByPropParamsSchema.safeParse(req.params);
 
         if (!paramsSuccess) {
-            res.status(400).json(this.buildZodErrorResponse(paramsError, "BAD_URL"));
-            return;
+            return {
+                status: 400,
+                response: this.buildZodErrorResponse(paramsError, "BAD_URL")
+            };
         }
 
         const {
@@ -99,8 +101,10 @@ export class ListSpacePropByPropHandler extends RouteHandler {
         } = ZodListSpacePropByPropQueryParamsSchema.safeParse(req.query);
 
         if (!querySuccess) {
-            res.status(400).json(this.buildZodErrorResponse(queryError, "BAD_QUERY"));
-            return;
+            return {
+                status: 400,
+                response: this.buildZodErrorResponse(queryError, "BAD_QUERY")
+            };
         }
 
         const { queryProp, query: queryString, listProp } = paramsData;
@@ -127,15 +131,19 @@ export class ListSpacePropByPropHandler extends RouteHandler {
         const values = await SpaceModel.aggregate<{_id: string}>(pipeline).exec();
 
         if (values.length === 0) {
-            res.status(404)
-                .json(this.buildNotFoundResponse("No matching spaces found."));
-            return;
+            return {
+                status: 404,
+                response: this.buildNotFoundResponse("No matching spaces found.")
+            };
         }
 
         const propValues = values.map(({_id}) => _id);
-        res.status(200).json(
-            this.buildSuccessResponse<ListSpacePropByProp200ResponseBody>({values: propValues})
-        );
+        return {
+            status: 200,
+            response: this.buildSuccessResponse({
+                values: propValues
+            })
+        };
     }
 }
 

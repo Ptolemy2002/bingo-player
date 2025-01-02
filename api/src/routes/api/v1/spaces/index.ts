@@ -8,10 +8,12 @@ import listSpacePropValuesByPropRouter from "./list-prop/by-prop";
 import searchSpacesRouter from "./search/get";
 import searchSpacesCountRouter from "./search/count";
 import searchSpacesListPropRouter from "./search/list-prop";
+import getSpaceByExactIDRouter from "./get/by-exact-id";
 
 const router = Router();
 
 router.use("/", getAllSpacesRouter);
+router.use("/", getSpaceByExactIDRouter);
 router.use("/", countAllSpacesRouter);
 router.use("/", listAllSpacePropValuesRouter);
 // Don't include the option to delete all spaces, as that would be a bad idea in production.

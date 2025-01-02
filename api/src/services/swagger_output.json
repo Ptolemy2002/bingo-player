@@ -249,6 +249,103 @@
         }
       }
     },
+    "/api/v1/spaces/get/by-id/{id}": {
+      "get": {
+        "tags": [
+          "Spaces",
+          "Get"
+        ],
+        "description": "  Get the space with the exact given ID.  ",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ID of the space to get."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetSpacesByExactID200ResponseBody"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetSpacesByExactID200ResponseBody"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse400"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse400"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No matching spaces found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse404"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse404"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "501": {
+            "description": "Not implemented.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse501"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse501"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/spaces/count/all": {
       "get": {
         "tags": [
@@ -2350,6 +2447,55 @@
             "$ref": "#/components/schemas/ErrorResponse"
           }
         ]
+      },
+      "GetSpaceByExactID200ResponseBody": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "space": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/CleanMongoSpace"
+                  },
+                  {
+                    "description": "The space that matches the query."
+                  }
+                ]
+              }
+            },
+            "required": [
+              "space"
+            ],
+            "description": "The response from getting spaces."
+          },
+          {
+            "$ref": "#/components/schemas/SuccessResponseBase"
+          }
+        ]
+      },
+      "GetSpacesByExactIDResponseBody": {
+        "anyOf": [
+          {
+            "$ref": "#/components/schemas/GetSpaceByExactID200ResponseBody"
+          },
+          {
+            "$ref": "#/components/schemas/ErrorResponse"
+          }
+        ]
+      },
+      "GetSpaceByExactIDParams": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The ID of the space to get."
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "description": "The ID of the space to get."
       },
       "ScoreSpecification": {
         "type": "object",

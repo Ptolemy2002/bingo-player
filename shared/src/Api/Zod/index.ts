@@ -6,6 +6,8 @@ export * from "./SuccessResponse";
 export * from "./GetSpaces";
 export * from "./GetSpacesByProp";
 
+export * from "./GetSpaceByExactID";
+
 export * from "./SearchSpaces";
 export * from "./SearchSpacesCount";
 export * from "./SearchSpacesListProp";

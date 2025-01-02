@@ -5,7 +5,7 @@ import RouteHandler from "lib/RouteHandler";
 import SpaceAggregationBuilder from "../utils/SpaceAggregationBuilder";
 import SpaceModel from "models/SpaceModel";
 
-export const router = Router();
+const router = Router();
 
 export class CountAllSpacesHandler extends RouteHandler<CountSpaces200ResponseBody> {
     /*

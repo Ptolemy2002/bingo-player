@@ -1,3 +1,4 @@
+import { Types } from "mongoose";
 import { swaggerRegistry } from "src/Swagger";
 import { z } from "zod";
 
@@ -5,6 +6,7 @@ export const ZodCleanSpaceSchema = swaggerRegistry.register(
     "CleanSpace",
     z.object({
         id: z.string()
+            .refine((id) => Types.ObjectId.isValid(id), { message: "Invalid ID" })
             .openapi({
                 description: "The ID of the space.",
                 example: "abc123"

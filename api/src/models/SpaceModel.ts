@@ -102,5 +102,23 @@ SpaceSchema.searchIndex({
     }
 });
 
+SpaceSchema.pre('save', async function(next) {
+    // See if the name is unique
+    const existingNames = await SpaceModel.distinct("name");
+
+    let name = this.get("name");
+
+    // Find the first available name
+    let i = 1;
+    while(existingNames.includes(name)) {
+        name = `${this.get("name")} (${i})`;
+        i++;
+    }
+
+    this.set("name", name);
+    next();
+});
+
 const SpaceModel = model<MongoDocumentSpace, SpaceModelWithStatics>('spaces', SpaceSchema);
+
 export default SpaceModel;

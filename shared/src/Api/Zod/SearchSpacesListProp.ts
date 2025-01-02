@@ -3,7 +3,7 @@ import { swaggerRegistry } from "src/Swagger";
 import { z } from "zod";
 import { ZodErrorResponseSchema } from "./ErrorResponse";
 import { zodSuccessResponseSchema } from "./SuccessResponse";
-import { ZodLimitQueryParamSchema, ZodLimitShorthandQueryParamSchema, ZodOffsetQueryParamSchema, ZodOffsetShorthandQueryParamSchema, ZodSortByWithScoreQueryParamSchema, ZodSortByWithScoreShorthandQueryParamSchema, ZodSortOrderDescDefaultQueryParamSchema, ZodSortOrderDescDefaultShorthandQueryParamSchema } from "./QueryParams";
+import { ZodLimitQueryParamSchema, ZodLimitShorthandQueryParamSchema, ZodOffsetQueryParamSchema, ZodOffsetShorthandQueryParamSchema, ZodSearchListPropSortByQueryParamSchema, ZodSearchListPropSortByShorthandQueryParamSchema, ZodSortOrderDescDefaultQueryParamSchema, ZodSortOrderDescDefaultShorthandQueryParamSchema } from "./QueryParams";
 
 export const ZodSearchSpacesListPropParamsSchema = swaggerRegistry.register(
     "SearchSpacesListPropParams",
@@ -58,10 +58,15 @@ export const ZodSearchSpacesListPropQueryParamsSchema = swaggerRegistry.register
         o: ZodOffsetShorthandQueryParamSchema,
 
         sortOrder: ZodSortOrderDescDefaultQueryParamSchema,
-        so: ZodSortOrderDescDefaultShorthandQueryParamSchema
+        so: ZodSortOrderDescDefaultShorthandQueryParamSchema,
+
+        sortBy: ZodSearchListPropSortByQueryParamSchema,
+        sb: ZodSearchListPropSortByShorthandQueryParamSchema
     }).transform((data) => {
         if (data.l !== undefined) data.limit = data.l;
         if (data.o !== undefined) data.offset = data.o;
+        if (data.so !== undefined) data.sortOrder = data.so;
+        if (data.sb !== undefined) data.sortBy = data.sb;
         return data;
     }).openapi({
         description: "Query parameters for searching spaces."

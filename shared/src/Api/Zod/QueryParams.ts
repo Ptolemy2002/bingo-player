@@ -248,3 +248,30 @@ export const ZodSortByWithScoreShorthandQueryParamSchema = swaggerRegistry.regis
         }
     })
 );
+
+export const ZodSearchListPropSortByQueryParamSchema = swaggerRegistry.registerParameter(
+    "sortBySearchListProp",
+    z
+        .enum(["_score", "score", "value"])
+        .optional()
+        .default("_score")
+        .openapi({
+            description: "The field to sort by.",
+            param: {
+                name: "sortBy",
+                in: "query"
+            }
+        })
+);
+
+export const ZodSearchListPropSortByShorthandQueryParamSchema = swaggerRegistry.registerParameter(
+    "sbSearchListProp",
+    ZodSearchListPropSortByQueryParamSchema
+    .openapi({
+        description: "[Query Parameter] Shorthand for searchListPropSortBy.",
+        param: {
+            name: "sb",
+            in: "query"
+        }
+    })
+);

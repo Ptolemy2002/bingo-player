@@ -1158,6 +1158,12 @@
           },
           {
             "$ref": "#/components/parameters/soDescDefault"
+          },
+          {
+            "$ref": "#/components/parameters/sortBySearchListProp"
+          },
+          {
+            "$ref": "#/components/parameters/sbSearchListProp"
           }
         ],
         "responses": {
@@ -1381,6 +1387,22 @@
       "sbWithScore": {
         "schema": {
           "$ref": "#/components/schemas/sbWithScore"
+        },
+        "required": false,
+        "name": "sb",
+        "in": "query"
+      },
+      "sortBySearchListProp": {
+        "schema": {
+          "$ref": "#/components/schemas/sortBySearchListProp"
+        },
+        "required": false,
+        "name": "sortBy",
+        "in": "query"
+      },
+      "sbSearchListProp": {
+        "schema": {
+          "$ref": "#/components/schemas/sbSearchListProp"
         },
         "required": false,
         "name": "sb",
@@ -2675,6 +2697,26 @@
           }
         ]
       },
+      "sortBySearchListProp": {
+        "type": "string",
+        "enum": [
+          "_score",
+          "score",
+          "value"
+        ],
+        "default": "_score",
+        "description": "The field to sort by."
+      },
+      "sbSearchListProp": {
+        "type": "string",
+        "enum": [
+          "_score",
+          "score",
+          "value"
+        ],
+        "default": "_score",
+        "description": "[Query Parameter] Shorthand for searchListPropSortBy."
+      },
       "SearchSpacesListPropQueryParams": {
         "type": "object",
         "properties": {
@@ -2695,6 +2737,12 @@
           },
           "so": {
             "$ref": "#/components/schemas/soDescDefault"
+          },
+          "sortBy": {
+            "$ref": "#/components/schemas/sortBySearchListProp"
+          },
+          "sb": {
+            "$ref": "#/components/schemas/sbSearchListProp"
           }
         },
         "description": "Query parameters for searching spaces."

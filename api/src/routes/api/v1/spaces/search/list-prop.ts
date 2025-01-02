@@ -44,7 +44,10 @@ export class SearchSpacesListPropHandler extends RouteHandler<SearchSpacesListPr
             "#/components/parameters/o",
 
             "#/components/parameters/sortOrderDescDefault",
-            "#/components/parameters/soDescDefault"
+            "#/components/parameters/soDescDefault",
+
+            "#/components/parameters/sortBySearchListProp",
+            "#/components/parameters/sbSearchListProp"
         ]
 
         #swagger.responses[200] = {
@@ -70,7 +73,7 @@ export class SearchSpacesListPropHandler extends RouteHandler<SearchSpacesListPr
 
         const { query, prop } = paramsData;
 
-        const { success: querySuccess, error: queryError, data: queryData } = ZodSearchSpacesListPropQueryParamsSchema.safeParse(req.query);
+        const { success: querySuccess, error: queryError, data: _queryData } = ZodSearchSpacesListPropQueryParamsSchema.safeParse(req.query);
 
         if (!querySuccess) {
             return {
@@ -78,6 +81,8 @@ export class SearchSpacesListPropHandler extends RouteHandler<SearchSpacesListPr
                 response: this.buildZodErrorResponse(queryError, "BAD_QUERY")
             };
         }
+
+        const { sortBy, ...queryData } = _queryData;
 
         const pipeline = new SpaceAggregationBuilder(queryData)
             .thenSearch({
@@ -105,7 +110,9 @@ export class SearchSpacesListPropHandler extends RouteHandler<SearchSpacesListPr
                 }
             })
             .thenSort({
-                sortBy: "_score"
+                // If sorting by value, sort by _id, as that's the field
+                // where the value is stored.
+                sortBy: sortBy === "value" ? "_id" : sortBy
             })
             .then("pagination")
             .then("cleanup")

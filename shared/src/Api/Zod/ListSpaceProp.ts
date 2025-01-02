@@ -39,7 +39,7 @@ export const ZodListSpacePropQueryParamsSchema = swaggerRegistry.register(
 export const ZodListSpaceProp200ResponseBodySchema = swaggerRegistry.register(
     "ListSpaceProp200ResponseBody",
     zodSuccessResponseSchema(
-            z.object({
+        z.object({
             values: z.array(z.union([z.string(), z.null()])).openapi({
                 description: "The values of the property."
             })

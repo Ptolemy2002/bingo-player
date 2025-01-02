@@ -1112,6 +1112,132 @@
           }
         }
       }
+    },
+    "/api/v1/spaces/search/{query}/list/{prop}": {
+      "get": {
+        "tags": [
+          "Spaces",
+          "List",
+          "Search"
+        ],
+        "description": "  Use the Atlas Search index to get all values for a given space query prop that appear in the spaces that match  the given query. The values are returned as an array of objects, each containing a value and a relevance score  for the document containing that value with the highest relevance. The value is a string, but may be null.  ",
+        "parameters": [
+          {
+            "name": "query",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The search query."
+          },
+          {
+            "name": "prop",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/SpaceQueryProp"
+            },
+            "description": "The space query prop to list.",
+            "type": "string"
+          },
+          {
+            "$ref": "#/components/parameters/limit"
+          },
+          {
+            "$ref": "#/components/parameters/l"
+          },
+          {
+            "$ref": "#/components/parameters/offset"
+          },
+          {
+            "$ref": "#/components/parameters/o"
+          },
+          {
+            "$ref": "#/components/parameters/sortOrderDescDefault"
+          },
+          {
+            "$ref": "#/components/parameters/soDescDefault"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SearchSpacesListProp200ResponseBody"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/SearchSpacesListProp200ResponseBody"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse400"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse400"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No matching spaces found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse404"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse404"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "501": {
+            "description": "Not implemented.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse501"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse501"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -2474,6 +2600,104 @@
             "$ref": "#/components/schemas/ErrorResponse"
           }
         ]
+      },
+      "SearchSpacesListPropParams": {
+        "type": "object",
+        "properties": {
+          "prop": {
+            "$ref": "#/components/schemas/SpaceQueryProp"
+          },
+          "query": {
+            "type": "string",
+            "description": "The query to search for."
+          }
+        },
+        "required": [
+          "prop",
+          "query"
+        ],
+        "description": "Parameters for listing all values of a property."
+      },
+      "SearchSpacesListProp200ResponseBody": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "values": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "description": "The value of the property."
+                    },
+                    "_score": {
+                      "type": "number",
+                      "description": "The relevance score of the value."
+                    }
+                  },
+                  "required": [
+                    "value",
+                    "_score"
+                  ]
+                },
+                "description": "The values found and their relevance scores."
+              }
+            },
+            "required": [
+              "values"
+            ],
+            "description": "List of values found"
+          },
+          {
+            "$ref": "#/components/schemas/SuccessResponseBase"
+          }
+        ]
+      },
+      "SearchSpacesListPropResponseBody": {
+        "anyOf": [
+          {
+            "$ref": "#/components/schemas/SearchSpacesListProp200ResponseBody"
+          },
+          {
+            "$ref": "#/components/schemas/ErrorResponse"
+          }
+        ]
+      },
+      "SearchSpacesListPropQueryParams": {
+        "type": "object",
+        "properties": {
+          "limit": {
+            "$ref": "#/components/schemas/limit"
+          },
+          "l": {
+            "$ref": "#/components/schemas/l"
+          },
+          "offset": {
+            "$ref": "#/components/schemas/offset"
+          },
+          "o": {
+            "$ref": "#/components/schemas/o"
+          },
+          "sortOrder": {
+            "$ref": "#/components/schemas/sortOrderDescDefault"
+          },
+          "so": {
+            "$ref": "#/components/schemas/soDescDefault"
+          }
+        },
+        "description": "Query parameters for searching spaces."
       },
       "CountSpacesByProp200ResponseBody": {
         "allOf": [

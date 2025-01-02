@@ -8,6 +8,7 @@ export * from "./GetSpacesByProp";
 
 export * from "./SearchSpaces";
 export * from "./SearchSpacesCount";
+export * from "./SearchSpacesListProp";
 
 export * from "./CountSpaces";
 export * from "./CountSpacesByProp";

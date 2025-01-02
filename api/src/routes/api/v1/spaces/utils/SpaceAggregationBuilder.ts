@@ -311,7 +311,7 @@ export default class SpaceAggregationBuilder extends AggregationBuilder<SpaceAgg
                     stages: [
                         {
                             $group: {
-                                _id: `$${interpretedProp}`,
+                                _id: `$${interpretedProp}`
                             },
                         },
                     ],

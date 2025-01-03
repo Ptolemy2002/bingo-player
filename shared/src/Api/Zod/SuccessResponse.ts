@@ -1,5 +1,6 @@
 import { swaggerRegistry } from "src/Swagger";
 import { z } from "zod";
+import { ZodHelpLinkSchema } from "./HelpLink";
 
 export const ZodSuccessResponseBaseSchema = swaggerRegistry.register(
     "SuccessResponseBase",
@@ -8,10 +9,7 @@ export const ZodSuccessResponseBaseSchema = swaggerRegistry.register(
             description: "Whether the operation was successful.",
             example: true
         }),
-        help: z.string().optional().openapi({
-            description: "A URL to the docs page that may help the user understand the response.",
-            example: "https://example.com/docs"
-        })
+        help: ZodHelpLinkSchema
     }).openapi({
         description: "A successful response from the server."
     })

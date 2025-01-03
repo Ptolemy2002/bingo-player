@@ -3,6 +3,7 @@ import { z } from "zod";
 import { ErrorCode, ZodErrorCodeSchema } from "./ErrorCode";
 import { ZodErrorMessageSchema } from "./ErrorMessage";
 import { Override } from "@ptolemy2002/ts-utils";
+import { ZodHelpLinkSchema } from "./HelpLink";
 
 export const ZodErrorResponseBaseSchema = swaggerRegistry.register(
     "ErrorResponseBase",
@@ -11,10 +12,7 @@ export const ZodErrorResponseBaseSchema = swaggerRegistry.register(
             description: "Whether the operation was successful.",
             example: false
         }),
-        help: z.string().url().optional().openapi({
-            description: "A URL to the docs page that may help the user resolve the error.",
-            example: "https://example.com/docs"
-        })
+        help: ZodHelpLinkSchema
     }).openapi({
         description: "An error response from the server."
     })

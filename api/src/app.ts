@@ -12,12 +12,13 @@ import { HttpError } from 'http-errors';
 import swaggerUi from 'swagger-ui-express';
 import swaggerFile from 'services/swagger_output.json';
 import mongoose from 'mongoose';
+import z from 'zod';
 
 import getEnv from 'env';
 const env = getEnv();
 
 import indexRouter from 'routes/index';
-import { ZodErrorCodeSchema } from 'shared';
+import { ZodErrorCodeSchema, ZodHelpLinkSchema } from 'shared';
 
 const app = express();
 
@@ -63,12 +64,19 @@ app.use(function(err: HttpError, req: Request, res: Response, next: NextFunction
     let code = err.code ?? "UNKNOWN";
     const { success: codeSuccess } = ZodErrorCodeSchema.safeParse(code);
 
+    let help = err.help ?? getEnv().getDocsURL(1);
+    const { success: helpSuccess } = ZodHelpLinkSchema.safeParse(help);
+
     if (!codeSuccess) {
         code = "UNKNOWN";
     }
 
+    if (!helpSuccess) {
+        help = getEnv().getDocsURL(1);
+    }
+
     res.status(err.status ?? 500);
-    res.json({ ok: false, code, message: err.message });
+    res.json({ ok: false, code, message: err.message, help });
 });
 
 export default app;

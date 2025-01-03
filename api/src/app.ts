@@ -12,7 +12,6 @@ import { HttpError } from 'http-errors';
 import swaggerUi from 'swagger-ui-express';
 import swaggerFile from 'services/swagger_output.json';
 import mongoose from 'mongoose';
-import z from 'zod';
 
 import getEnv from 'env';
 const env = getEnv();

@@ -255,7 +255,7 @@
           "Spaces",
           "Get"
         ],
-        "description": "  Get the space with the exact given ID.  ",
+        "description": "Get the space with the exact given ID.",
         "parameters": [
           {
             "name": "id",
@@ -273,12 +273,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetSpacesByExactID200ResponseBody"
+                  "$ref": "#/components/schemas/GetSpaceByExactID200ResponseBody"
                 }
               },
               "application/xml": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetSpacesByExactID200ResponseBody"
+                  "$ref": "#/components/schemas/GetSpaceByExactID200ResponseBody"
                 }
               }
             }
@@ -2096,7 +2096,9 @@
           "asc",
           "ascending",
           "desc",
-          "descending"
+          "descending",
+          "random",
+          "rand"
         ],
         "description": "The order to sort by.",
         "example": "asc"
@@ -2206,7 +2208,9 @@
           "asc",
           "ascending",
           "desc",
-          "descending"
+          "descending",
+          "random",
+          "rand"
         ],
         "default": "asc",
         "description": "[Query Parameter] The order to sort the field by. Ascending if not provided.",
@@ -2218,7 +2222,9 @@
           "asc",
           "ascending",
           "desc",
-          "descending"
+          "descending",
+          "random",
+          "rand"
         ],
         "default": "asc",
         "description": "[Query Parameter] Shorthand for sortOrder.",
@@ -2646,7 +2652,9 @@
           "asc",
           "ascending",
           "desc",
-          "descending"
+          "descending",
+          "random",
+          "rand"
         ],
         "default": "desc",
         "description": "[Query Parameter] The order to sort the field by. Descending by default.",
@@ -2658,7 +2666,9 @@
           "asc",
           "ascending",
           "desc",
-          "descending"
+          "descending",
+          "random",
+          "rand"
         ],
         "default": "desc",
         "description": "[Query Parameter] Shorthand for sortOrder.",

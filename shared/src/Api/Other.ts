@@ -13,5 +13,7 @@ export const SortOrderEnum = [
     "asc",
     "ascending",
     "desc",
-    "descending"
+    "descending",
+    "random",
+    "rand"
 ] as const;

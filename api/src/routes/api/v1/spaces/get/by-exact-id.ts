@@ -23,7 +23,7 @@ export class GetSpaceByExactIDHandler extends RouteHandler<GetSpaceByExactID200R
 
         #swagger.responses[200] = {
             schema: {
-                $ref: "#/components/schemas/GetSpacesByExactID200ResponseBody"
+                $ref: "#/components/schemas/GetSpaceByExactID200ResponseBody"
             }
         }
 

@@ -6,6 +6,7 @@ import {
 } from '@ptolemy2002/mongoose-utils';
 import { SpaceQueryProp, SortOrder, interpretSortOrder, SpaceQueryPropWithScore, interpretSpaceQueryPropWithScore } from 'shared';
 import SpaceModel from 'models/SpaceModel';
+import { off } from 'process';
 
 export type SpaceAggregationStageType =
     | 'add-known-as'
@@ -24,6 +25,8 @@ export type SpaceAggregationStageType =
 
 export type SpaceAggregationOptions = {
     sort: {
+        limit: number;
+        offset: number;
         sortBy: SpaceQueryPropWithScore;
         sortOrder: SortOrder;
     },
@@ -154,16 +157,30 @@ export default class SpaceAggregationBuilder extends AggregationBuilder<SpaceAgg
                     );
                 }
 
-                sortObject[sortBy] = sortOrder;
-                if (sortBy !== '_id') sortObject._id = sortOrder;
+                const stages = [];
+
+                if (sortOrder === 'random') {
+                    // The sample stage randomly selects the specified number of documents from its input.
+                    const {
+                        limit,
+                        offset=0
+                    } = this.requireOptions(["limit"], "limit is required for random sort.");
+                    stages.push({
+                        // Add the offset so that, if it's applied later, the remaining documents will still be the
+                        // correct amount.
+                        $sample: { size: limit + offset }
+                    });
+                } else {
+                    sortObject[sortBy] = sortOrder;
+                    if (sortBy !== '_id') sortObject._id = sortOrder;
+                    stages.push({
+                        $sort: sortObject,
+                    });
+                }
 
                 return {
                     type: 'sort',
-                    stages: [
-                        {
-                            $sort: sortObject,
-                        },
-                    ],
+                    stages
                 };
             }
 

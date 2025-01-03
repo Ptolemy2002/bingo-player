@@ -68,7 +68,7 @@ export class SearchSpacesHandler extends RouteHandler<SearchSpaces200ResponseBod
 
         const {query} = paramsData;
 
-        const pipeline = new SpaceAggregationBuilder(queryData)
+        const pipeline = new SpaceAggregationBuilder(queryData, this.help)
             .thenSearch({
                 searchQuery: query,
             })

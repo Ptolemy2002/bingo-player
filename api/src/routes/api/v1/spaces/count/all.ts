@@ -30,7 +30,7 @@ export class CountAllSpacesHandler extends RouteHandler<CountSpaces200ResponseBo
     async generateResponse() {
         const pipeline = new SpaceAggregationBuilder({
             countFieldName: "count"
-        })
+        }, this.help)
         .then("count")
         .build();
 

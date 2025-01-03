@@ -92,7 +92,7 @@ export class GetSpacesByPropHandler extends RouteHandler<GetSpacesByProp200Respo
             };
         }
 
-        const pipeline = new SpaceAggregationBuilder(queryData)
+        const pipeline = new SpaceAggregationBuilder(queryData, this.help)
             .then("add-known-as")
             .thenMatch({ queryProp, queryString })
             .then("sort")

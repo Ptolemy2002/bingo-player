@@ -109,7 +109,7 @@ export class ListSpacePropByPropHandler extends RouteHandler<ListSpacePropByProp
 
         const { queryProp, query: queryString, listProp } = paramsData;
 
-        const pipeline = new SpaceAggregationBuilder(queryData)
+        const pipeline = new SpaceAggregationBuilder(queryData, this.help)
             .then("add-known-as")
             .thenMatch({
                 queryProp,

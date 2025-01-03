@@ -81,7 +81,7 @@ export class ListAllSpacePropValuesHandler extends RouteHandler<ListSpaceProp200
         }
 
         const { prop: listProp } = paramsData;
-        const pipeline = new SpaceAggregationBuilder(queryData)
+        const pipeline = new SpaceAggregationBuilder(queryData, this.help)
             .then("add-known-as")
             .thenUnwindListProp({
                 listProp

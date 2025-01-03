@@ -50,7 +50,7 @@ export class GetAllSpacesHandler extends RouteHandler<GetSpaces200ResponseBody> 
             };
         }
 
-        const pipeline = new SpaceAggregationBuilder(query)
+        const pipeline = new SpaceAggregationBuilder(query, this.help)
             .then("add-known-as")
             .then("sort")
             .then("cleanup")

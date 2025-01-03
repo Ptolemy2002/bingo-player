@@ -7,6 +7,7 @@ import {
 import { SpaceQueryProp, SortOrder, interpretSortOrder, SpaceQueryPropWithScore, interpretSpaceQueryPropWithScore } from 'shared';
 import SpaceModel from 'models/SpaceModel';
 import { off } from 'process';
+import RouteError from 'lib/RouteError';
 
 export type SpaceAggregationStageType =
     | 'add-known-as'
@@ -65,6 +66,13 @@ export type SpaceAggregationOptions = {
 export type AllSpaceAggregationOptions = ValuesIntersection<SpaceAggregationOptions>;
 
 export default class SpaceAggregationBuilder extends AggregationBuilder<SpaceAggregationStageType, AllSpaceAggregationOptions> {
+    help?: string;
+
+    constructor(options?: Partial<AllSpaceAggregationOptions>, help?: string) {
+        super(options);
+        this.help = help;
+    }
+
     hasKnownAs(): boolean {
         let hasKnownAs = false;
         this.pipeline.forEach((stage) => {
@@ -164,7 +172,10 @@ export default class SpaceAggregationBuilder extends AggregationBuilder<SpaceAgg
                     const {
                         limit,
                         offset=0
-                    } = this.requireOptions(["limit"], "limit is required for random sort.");
+                    } = this.requireOptions(
+                        ["limit"], "limit is required for random sort.",
+                        (m) => new RouteError(m, 400, "BAD_INPUT")
+                    );
                     stages.push({
                         // Add the offset so that, if it's applied later, the remaining documents will still be the
                         // correct amount.
@@ -217,6 +228,7 @@ export default class SpaceAggregationBuilder extends AggregationBuilder<SpaceAgg
                 } = this.requireOptions(
                     ['queryProp', 'queryString', 'caseSensitive', 'accentSensitive', 'matchWhole'],
                     'queryProp, queryString, caseSensitive, accentSensitive, and matchWhole are required for match stage.',
+                    (m) => new RouteError(m, 400, "BAD_INPUT")
                 );
 
                 if (queryProp === 'known-as' && !this.hasKnownAs()) {
@@ -290,7 +302,8 @@ export default class SpaceAggregationBuilder extends AggregationBuilder<SpaceAgg
             case 'unwind-list-prop': {
                 const { listProp } =
                     this.requireOptions(
-                        ['listProp'], 'listProp is required for unwind-list-prop stage.'
+                        ['listProp'], 'listProp is required for unwind-list-prop stage.',
+                        (m) => new RouteError(m, 400, "BAD_INPUT")
                     );
 
                 const interpretedProp = interpretSpaceQueryPropWithScore(listProp);
@@ -314,6 +327,7 @@ export default class SpaceAggregationBuilder extends AggregationBuilder<SpaceAgg
                 const { listProp } = this.requireOptions(
                     ['listProp'],
                     'listProp is required for group-list-prop stage.',
+                    (m) => new RouteError(m, 400, "BAD_INPUT")
                 );
 
                 const interpretedProp = interpretSpaceQueryPropWithScore(listProp);
@@ -368,7 +382,8 @@ export default class SpaceAggregationBuilder extends AggregationBuilder<SpaceAgg
             case 'search': {
                 const { searchQuery } = this.requireOptions(
                     ['searchQuery'],
-                    'searchQuery is required for search stage.'
+                    'searchQuery is required for search stage.',
+                    (m) => new RouteError(m, 400, "BAD_INPUT")
                 );
 
                 if (searchQuery === "_score" && !this.hasScore()) {

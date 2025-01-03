@@ -87,7 +87,7 @@ export class CountSpacesByPropHandler extends RouteHandler<CountSpacesByProp200R
             };
         }
 
-        const pipeline = new SpaceAggregationBuilder(queryData)
+        const pipeline = new SpaceAggregationBuilder(queryData, this.help)
             .then("add-known-as")
             .thenMatch({
                 queryProp,

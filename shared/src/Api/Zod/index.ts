@@ -20,5 +20,7 @@ export * from "./CountSpacesByProp";
 export * from "./ListSpaceProp";
 export * from "./ListSpacePropByProp";
 
+export * from "./NewSpace";
+
 export * from "./QueryParams";
 export * from "./SortOrder";

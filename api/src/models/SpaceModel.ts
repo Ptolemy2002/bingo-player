@@ -65,7 +65,6 @@ const SpaceSchema = new Schema<MongoDocumentSpace, SpaceModel, SpaceInstanceMeth
         type: [
             {
                 type: String,
-                match: /^[a-zA-Z0-9_-]+$/,
                 lowercase: true,
                 trim: true
             }

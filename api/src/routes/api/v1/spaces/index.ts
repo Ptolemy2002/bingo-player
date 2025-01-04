@@ -9,6 +9,7 @@ import searchSpacesRouter from "./search/get";
 import searchSpacesCountRouter from "./search/count";
 import searchSpacesListPropRouter from "./search/list-prop";
 import getSpaceByExactIDRouter from "./get/by-exact-id";
+import newSpaceRouter from "./new";
 
 const router = Router();
 
@@ -25,6 +26,8 @@ router.use("/", listSpacePropValuesByPropRouter);
 router.use("/", searchSpacesRouter);
 router.use("/", searchSpacesCountRouter);
 router.use("/", searchSpacesListPropRouter);
+
+router.use("/", newSpaceRouter);
 
 const spacesRouter = router;
 export default spacesRouter;

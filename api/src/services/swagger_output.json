@@ -1359,6 +1359,107 @@
           }
         }
       }
+    },
+    "/api/v1/spaces/new": {
+      "post": {
+        "tags": [
+          "Spaces",
+          "New"
+        ],
+        "description": "Create a new space in the database.",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NewSpace200ResponseBody"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/NewSpace200ResponseBody"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse400"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse400"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No matching spaces found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse404"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse404"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "501": {
+            "description": "Not implemented.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse501"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse501"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewSpaceRequestBody"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/NewSpaceRequestBody"
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -3121,6 +3222,91 @@
         "anyOf": [
           {
             "$ref": "#/components/schemas/ListSpaceProp200ResponseBody"
+          },
+          {
+            "$ref": "#/components/schemas/ErrorResponse"
+          }
+        ]
+      },
+      "NewSpaceRequestBody": {
+        "type": "object",
+        "properties": {
+          "space": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "$ref": "#/components/schemas/SpaceName"
+              },
+              "description": {
+                "$ref": "#/components/schemas/SpaceDescription"
+              },
+              "examples": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/SpaceExample"
+                },
+                "default": []
+              },
+              "aliases": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/SpaceName"
+                },
+                "default": [],
+                "description": "Aliases for the space.",
+                "example": [
+                  "Alias 1",
+                  "Alias 2"
+                ]
+              },
+              "tags": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/SpaceTag"
+                },
+                "default": []
+              }
+            },
+            "required": [
+              "name"
+            ]
+          }
+        },
+        "required": [
+          "space"
+        ],
+        "description": "The request body for creating a new space"
+      },
+      "NewSpace200ResponseBody": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "space": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/CleanMongoSpace"
+                  },
+                  {
+                    "description": "The newly created space."
+                  }
+                ]
+              }
+            },
+            "required": [
+              "space"
+            ]
+          },
+          {
+            "$ref": "#/components/schemas/SuccessResponseBase"
+          }
+        ],
+        "description": "The response from creating a new space."
+      },
+      "NewSpaceResponseBody": {
+        "anyOf": [
+          {
+            "$ref": "#/components/schemas/NewSpace200ResponseBody"
           },
           {
             "$ref": "#/components/schemas/ErrorResponse"

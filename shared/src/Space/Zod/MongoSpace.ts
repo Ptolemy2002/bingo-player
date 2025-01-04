@@ -14,7 +14,7 @@ export const ZodCleanMongoSpaceSchema = swaggerRegistry.register(
         description: "The MongoDB representation of a Space."
     })
 );
-export const ZodCleanMongoSpaceShape = ZodCleanMongoSpaceSchema._def.shape;
+export const ZodCleanMongoSpaceShape = ZodCleanMongoSpaceSchema._def.shape();
 
 export const ZodMongoSpaceSchema = swaggerRegistry.register(
     "MongoSpace",
@@ -24,7 +24,7 @@ export const ZodMongoSpaceSchema = swaggerRegistry.register(
         description: "CleanMongoSpace, but with some fields optional and provided sensible defaults."
     })
 );
-export const ZodMongoSpaceShape = ZodMongoSpaceSchema._def.shape;
+export const ZodMongoSpaceShape = ZodMongoSpaceSchema._def.shape();
 
 export type CleanMongoSpace = z.infer<typeof ZodCleanMongoSpaceSchema>;
 export type MongoSpace = z.input<typeof ZodMongoSpaceSchema>;

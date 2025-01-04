@@ -38,6 +38,7 @@ export type SpaceAggregationOptions = {
         caseSensitive: boolean;
         accentSensitive: boolean;
         matchWhole: boolean;
+        invert: boolean;
     },
 
     list: {
@@ -225,8 +226,9 @@ export default class SpaceAggregationBuilder extends AggregationBuilder<SpaceAgg
                     caseSensitive,
                     accentSensitive,
                     matchWhole,
+                    invert,
                 } = this.requireOptions(
-                    ['queryProp', 'queryString', 'caseSensitive', 'accentSensitive', 'matchWhole'],
+                    ['queryProp', 'queryString', 'caseSensitive', 'accentSensitive', 'matchWhole', 'invert'],
                     'queryProp, queryString, caseSensitive, accentSensitive, and matchWhole are required for match stage.',
                     (m) => new RouteError(m, 400, "BAD_INPUT")
                 );
@@ -249,7 +251,7 @@ export default class SpaceAggregationBuilder extends AggregationBuilder<SpaceAgg
                     stages: [
                         {
                             $match: {
-                                [interpretedProp]: pattern,
+                                [interpretedProp]: invert ? { $not: pattern } : pattern,
                             },
                         },
                     ],

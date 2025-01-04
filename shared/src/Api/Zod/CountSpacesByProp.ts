@@ -2,7 +2,7 @@ import { swaggerRegistry } from "src/Swagger";
 import { ZodGetSpacesByPropParamsSchema, ZodGetSpacesByPropQueryParamsSchema } from "./GetSpacesByProp";
 import { ZodCountSpacesResponseBodySchema, ZodCountSpaces200ResponseBodySchema } from "./CountSpaces";
 import { z } from "zod";
-import { ZodCaseSensitiveQueryParamSchema, ZodCaseSensitiveShorthandQueryParamSchema, ZodAccentSensitiveQueryParamSchema, ZodAccentSensitiveShorthandQueryParamSchema, ZodMatchWholeQueryParamSchema, ZodMatchWholeShorthandQueryParamSchema } from "./QueryParams";
+import { ZodCaseSensitiveQueryParamSchema, ZodCaseSensitiveShorthandQueryParamSchema, ZodAccentSensitiveQueryParamSchema, ZodAccentSensitiveShorthandQueryParamSchema, ZodMatchWholeQueryParamSchema, ZodMatchWholeShorthandQueryParamSchema, ZodInvertQueryParamSchema, ZodInvertShorthandQueryParamSchema } from "./QueryParams";
 
 // For now, counting is a very similar operation to getting, so we can reuse schemas.
 export const ZodCountSpacesByProp200ResponseBodySchema = swaggerRegistry.register("CountSpacesByProp200ResponseBody", ZodCountSpaces200ResponseBodySchema);
@@ -19,11 +19,15 @@ export const ZodCountSpacesByPropQueryParamsSchema = swaggerRegistry.register(
 
         matchWhole: ZodMatchWholeQueryParamSchema,
         mw: ZodMatchWholeShorthandQueryParamSchema,
+
+        invert: ZodInvertQueryParamSchema,
+        i: ZodInvertShorthandQueryParamSchema
     })
     .transform((data) => {
         if (data.cs) data.caseSensitive = data.cs;
         if (data.as) data.accentSensitive = data.as;
         if (data.mw) data.matchWhole = data.mw;
+        if (data.i) data.invert = data.i;
         return data;
     })
 );

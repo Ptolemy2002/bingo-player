@@ -66,7 +66,10 @@ export class ListSpacePropByPropHandler extends RouteHandler<ListSpacePropByProp
             "#/components/parameters/mw",
 
             "#/components/parameters/sortOrder",
-            "#/components/parameters/so"
+            "#/components/parameters/so",
+
+            "#/components/parameters/invert",
+            "#/components/parameters/i"
         ]
 
         #swagger.responses[200] = {

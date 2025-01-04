@@ -275,3 +275,30 @@ export const ZodSearchListPropSortByShorthandQueryParamSchema = swaggerRegistry.
         }
     })
 );
+
+export const ZodInvertQueryParamSchema = swaggerRegistry.registerParameter(
+    "invert",
+    ZodCoercedBoolean
+        .optional()
+        .openapi({
+            description: "[Query Parameter] Whether to invert the match. False if not provided.",
+            default: "f",
+            param: {
+                name: "invert",
+                in: "query"
+            }
+        })
+);
+
+export const ZodInvertShorthandQueryParamSchema = swaggerRegistry.registerParameter(
+    "i",
+    ZodInvertQueryParamSchema
+    .openapi({
+        description: "[Query Parameter] Shorthand for invert.",
+        default: "f",
+        param: {
+            name: "i",
+            in: "query"
+        }
+    })
+);

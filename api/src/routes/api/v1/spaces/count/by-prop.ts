@@ -53,7 +53,10 @@ export class CountSpacesByPropHandler extends RouteHandler<CountSpacesByProp200R
             "#/components/parameters/as",
 
             "#/components/parameters/matchWhole",
-            "#/components/parameters/mw"
+            "#/components/parameters/mw",
+
+            "#/components/parameters/invert",
+            "#/components/parameters/i"
         ]
 
         #swagger.responses[200] = {

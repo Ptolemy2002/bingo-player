@@ -1,28 +1,20 @@
-import { Types } from "mongoose";
 import { z } from "zod";
 import { ZodCleanSpaceSchema, ZodCleanSpaceShape, ZodSpaceSchema } from "./Space";
 import { swaggerRegistry } from "src/Swagger";
+import { ZodSpaceIDSchema } from "./SpaceID";
 
 const Zod_id = z.object({
-    _id: z.string()
-        .refine((id) => Types.ObjectId.isValid(id), { message: "Invalid _id" })
-        .openapi({
-            description: "The ID of the space.",
-            example: "abc123"
-        })
+    _id: ZodSpaceIDSchema
 });
 
 export const ZodCleanMongoSpaceSchema = swaggerRegistry.register(
     "CleanMongoSpace",
     ZodCleanSpaceSchema.omit({ id: true })
-    .merge(Zod_id)
-    .refine(data => Types.ObjectId.isValid(data._id), {
-        message: "Invalid _id"
-    }).openapi({
+    .merge(Zod_id).openapi({
         description: "The MongoDB representation of a Space."
     })
 );
-export const ZodCleanMongoSpaceShape = ZodCleanMongoSpaceSchema._def.schema.shape;
+export const ZodCleanMongoSpaceShape = ZodCleanMongoSpaceSchema._def.shape;
 
 export const ZodMongoSpaceSchema = swaggerRegistry.register(
     "MongoSpace",

@@ -11,6 +11,8 @@ import {
     ZodAccentSensitiveShorthandQueryParamSchema,
     ZodCaseSensitiveQueryParamSchema,
     ZodCaseSensitiveShorthandQueryParamSchema,
+    ZodInvertQueryParamSchema,
+    ZodInvertShorthandQueryParamSchema,
     ZodMatchWholeQueryParamSchema,
     ZodMatchWholeShorthandQueryParamSchema,
 } from './QueryParams';
@@ -40,11 +42,15 @@ export const ZodGetSpacesByPropQueryParamsSchema = swaggerRegistry.register(
 
                 matchWhole: ZodMatchWholeQueryParamSchema,
                 mw: ZodMatchWholeShorthandQueryParamSchema,
+
+                invert: ZodInvertQueryParamSchema,
+                i: ZodInvertShorthandQueryParamSchema
             })
             .transform((data) => {
                 if (data.cs) data.caseSensitive = data.cs;
                 if (data.as) data.accentSensitive = data.as;
                 if (data.mw) data.matchWhole = data.mw;
+                if (data.i) data.invert = data.i;
                 return data;
             }),
     )

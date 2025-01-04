@@ -58,7 +58,10 @@ export class GetSpacesByPropHandler extends RouteHandler<GetSpacesByProp200Respo
             "#/components/parameters/sb",
 
             "#/components/parameters/sortOrder",
-            "#/components/parameters/so"
+            "#/components/parameters/so",
+
+            "#/components/parameters/invert",
+            "#/components/parameters/i"
         ]
 
         #swagger.responses[200] = {

@@ -617,6 +617,12 @@
           },
           {
             "$ref": "#/components/parameters/so"
+          },
+          {
+            "$ref": "#/components/parameters/invert"
+          },
+          {
+            "$ref": "#/components/parameters/i"
           }
         ],
         "responses": {
@@ -755,6 +761,12 @@
           },
           {
             "$ref": "#/components/parameters/mw"
+          },
+          {
+            "$ref": "#/components/parameters/invert"
+          },
+          {
+            "$ref": "#/components/parameters/i"
           }
         ],
         "responses": {
@@ -909,6 +921,12 @@
           },
           {
             "$ref": "#/components/parameters/so"
+          },
+          {
+            "$ref": "#/components/parameters/invert"
+          },
+          {
+            "$ref": "#/components/parameters/i"
           }
         ],
         "responses": {
@@ -1504,48 +1522,78 @@
         "required": false,
         "name": "sb",
         "in": "query"
+      },
+      "invert": {
+        "schema": {
+          "$ref": "#/components/schemas/invert"
+        },
+        "required": false,
+        "name": "invert",
+        "in": "query"
+      },
+      "i": {
+        "schema": {
+          "$ref": "#/components/schemas/i"
+        },
+        "required": false,
+        "name": "i",
+        "in": "query"
       }
     },
     "schemas": {
+      "SpaceID": {
+        "type": "string",
+        "description": "The ID of a space.",
+        "example": "abc123"
+      },
+      "SpaceName": {
+        "type": "string",
+        "minLength": 1,
+        "description": "The name of a space.",
+        "example": "My Space"
+      },
+      "SpaceDescription": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "A description of a space.",
+        "example": "This is a space for a Bingo Board."
+      },
+      "SpaceExample": {
+        "type": "string",
+        "minLength": 1,
+        "description": "An example of what could be considered applicable to a space.",
+        "example": "Example 1"
+      },
+      "SpaceTag": {
+        "type": "string",
+        "pattern": "^(in\\:)?[a-zA-Z0-9_-]+$",
+        "description": "A tag for a space.",
+        "example": "tag-1 or in:collection-1"
+      },
       "CleanSpace": {
         "type": "object",
         "properties": {
           "id": {
-            "type": "string",
-            "description": "The ID of the space.",
-            "example": "abc123"
+            "$ref": "#/components/schemas/SpaceID"
           },
           "name": {
-            "type": "string",
-            "minLength": 1,
-            "description": "The name of the space.",
-            "example": "My Space"
+            "$ref": "#/components/schemas/SpaceName"
           },
           "description": {
-            "type": [
-              "string",
-              "null"
-            ],
-            "description": "The description of the space.",
-            "example": "A space for my things."
+            "$ref": "#/components/schemas/SpaceDescription"
           },
           "examples": {
             "type": "array",
             "items": {
-              "type": "string",
-              "minLength": 1
-            },
-            "description": "Examples of the space.",
-            "example": [
-              "Example 1",
-              "Example 2"
-            ]
+              "$ref": "#/components/schemas/SpaceExample"
+            }
           },
           "aliases": {
             "type": "array",
             "items": {
-              "type": "string",
-              "minLength": 1
+              "$ref": "#/components/schemas/SpaceName"
             },
             "description": "Aliases for the space.",
             "example": [
@@ -1556,14 +1604,8 @@
           "tags": {
             "type": "array",
             "items": {
-              "type": "string",
-              "pattern": "^[a-zA-Z0-9_-]+$"
-            },
-            "description": "Tags for the space.",
-            "example": [
-              "tag1",
-              "tag2"
-            ]
+              "$ref": "#/components/schemas/SpaceTag"
+            }
           }
         },
         "required": [
@@ -1580,42 +1622,25 @@
         "type": "object",
         "properties": {
           "id": {
-            "type": "string",
-            "description": "The ID of the space.",
-            "example": "abc123"
+            "$ref": "#/components/schemas/SpaceID"
           },
           "name": {
-            "type": "string",
-            "minLength": 1,
-            "description": "The name of the space.",
-            "example": "My Space"
+            "$ref": "#/components/schemas/SpaceName"
           },
           "description": {
-            "type": [
-              "string",
-              "null"
-            ],
-            "description": "The description of the space.",
-            "example": "A space for my things."
+            "$ref": "#/components/schemas/SpaceDescription"
           },
           "examples": {
             "type": "array",
             "items": {
-              "type": "string",
-              "minLength": 1
+              "$ref": "#/components/schemas/SpaceExample"
             },
-            "default": [],
-            "description": "Examples of the space.",
-            "example": [
-              "Example 1",
-              "Example 2"
-            ]
+            "default": []
           },
           "aliases": {
             "type": "array",
             "items": {
-              "type": "string",
-              "minLength": 1
+              "$ref": "#/components/schemas/SpaceName"
             },
             "default": [],
             "description": "Aliases for the space.",
@@ -1627,15 +1652,9 @@
           "tags": {
             "type": "array",
             "items": {
-              "type": "string",
-              "pattern": "^[a-zA-Z0-9_-]+$"
+              "$ref": "#/components/schemas/SpaceTag"
             },
-            "default": [],
-            "description": "Tags for the space.",
-            "example": [
-              "tag1",
-              "tag2"
-            ]
+            "default": []
           }
         },
         "required": [
@@ -1648,36 +1667,21 @@
         "type": "object",
         "properties": {
           "name": {
-            "type": "string",
-            "minLength": 1,
-            "description": "The name of the space.",
-            "example": "My Space"
+            "$ref": "#/components/schemas/SpaceName"
           },
           "description": {
-            "type": [
-              "string",
-              "null"
-            ],
-            "description": "The description of the space.",
-            "example": "A space for my things."
+            "$ref": "#/components/schemas/SpaceDescription"
           },
           "examples": {
             "type": "array",
             "items": {
-              "type": "string",
-              "minLength": 1
-            },
-            "description": "Examples of the space.",
-            "example": [
-              "Example 1",
-              "Example 2"
-            ]
+              "$ref": "#/components/schemas/SpaceExample"
+            }
           },
           "aliases": {
             "type": "array",
             "items": {
-              "type": "string",
-              "minLength": 1
+              "$ref": "#/components/schemas/SpaceName"
             },
             "description": "Aliases for the space.",
             "example": [
@@ -1688,19 +1692,11 @@
           "tags": {
             "type": "array",
             "items": {
-              "type": "string",
-              "pattern": "^[a-zA-Z0-9_-]+$"
-            },
-            "description": "Tags for the space.",
-            "example": [
-              "tag1",
-              "tag2"
-            ]
+              "$ref": "#/components/schemas/SpaceTag"
+            }
           },
           "_id": {
-            "type": "string",
-            "description": "The ID of the space.",
-            "example": "abc123"
+            "$ref": "#/components/schemas/SpaceID"
           }
         },
         "required": [
@@ -1717,37 +1713,22 @@
         "type": "object",
         "properties": {
           "name": {
-            "type": "string",
-            "minLength": 1,
-            "description": "The name of the space.",
-            "example": "My Space"
+            "$ref": "#/components/schemas/SpaceName"
           },
           "description": {
-            "type": [
-              "string",
-              "null"
-            ],
-            "description": "The description of the space.",
-            "example": "A space for my things."
+            "$ref": "#/components/schemas/SpaceDescription"
           },
           "examples": {
             "type": "array",
             "items": {
-              "type": "string",
-              "minLength": 1
+              "$ref": "#/components/schemas/SpaceExample"
             },
-            "default": [],
-            "description": "Examples of the space.",
-            "example": [
-              "Example 1",
-              "Example 2"
-            ]
+            "default": []
           },
           "aliases": {
             "type": "array",
             "items": {
-              "type": "string",
-              "minLength": 1
+              "$ref": "#/components/schemas/SpaceName"
             },
             "default": [],
             "description": "Aliases for the space.",
@@ -1759,20 +1740,12 @@
           "tags": {
             "type": "array",
             "items": {
-              "type": "string",
-              "pattern": "^[a-zA-Z0-9_-]+$"
+              "$ref": "#/components/schemas/SpaceTag"
             },
-            "default": [],
-            "description": "Tags for the space.",
-            "example": [
-              "tag1",
-              "tag2"
-            ]
+            "default": []
           },
           "_id": {
-            "type": "string",
-            "description": "The ID of the space.",
-            "example": "abc123"
+            "$ref": "#/components/schemas/SpaceID"
           }
         },
         "required": [
@@ -1881,6 +1854,12 @@
         "description": "A message describing an error.",
         "example": "Internal server error."
       },
+      "HelpLink": {
+        "type": "string",
+        "format": "uri",
+        "description": "A URL to the docs page that may help the user resolve the error or understand the response.",
+        "example": "https://example.com/docs"
+      },
       "ErrorResponseBase": {
         "type": "object",
         "properties": {
@@ -1893,10 +1872,7 @@
             "example": false
           },
           "help": {
-            "type": "string",
-            "format": "uri",
-            "description": "A URL to the docs page that may help the user resolve the error.",
-            "example": "https://example.com/docs"
+            "$ref": "#/components/schemas/HelpLink"
           }
         },
         "required": [
@@ -1916,10 +1892,7 @@
             "example": false
           },
           "help": {
-            "type": "string",
-            "format": "uri",
-            "description": "A URL to the docs page that may help the user resolve the error.",
-            "example": "https://example.com/docs"
+            "$ref": "#/components/schemas/HelpLink"
           },
           "code": {
             "allOf": [
@@ -1954,10 +1927,7 @@
             "example": false
           },
           "help": {
-            "type": "string",
-            "format": "uri",
-            "description": "A URL to the docs page that may help the user resolve the error.",
-            "example": "https://example.com/docs"
+            "$ref": "#/components/schemas/HelpLink"
           },
           "code": {
             "type": "string",
@@ -1995,10 +1965,7 @@
             "example": false
           },
           "help": {
-            "type": "string",
-            "format": "uri",
-            "description": "A URL to the docs page that may help the user resolve the error.",
-            "example": "https://example.com/docs"
+            "$ref": "#/components/schemas/HelpLink"
           },
           "code": {
             "type": "string",
@@ -2039,10 +2006,7 @@
             "example": false
           },
           "help": {
-            "type": "string",
-            "format": "uri",
-            "description": "A URL to the docs page that may help the user resolve the error.",
-            "example": "https://example.com/docs"
+            "$ref": "#/components/schemas/HelpLink"
           },
           "code": {
             "type": "string",
@@ -2080,9 +2044,7 @@
             "example": true
           },
           "help": {
-            "type": "string",
-            "description": "A URL to the docs page that may help the user understand the response.",
-            "example": "https://example.com/docs"
+            "$ref": "#/components/schemas/HelpLink"
           }
         },
         "required": [
@@ -2390,6 +2352,44 @@
         "default": "f",
         "description": "[Query Parameter] Shorthand for matchWhole."
       },
+      "invert": {
+        "type": "string",
+        "enum": [
+          "true",
+          "false",
+          "t",
+          "f",
+          "yes",
+          "no",
+          "y",
+          "n",
+          "1",
+          "0",
+          "on",
+          "off"
+        ],
+        "default": "f",
+        "description": "[Query Parameter] Whether to invert the match. False if not provided."
+      },
+      "i": {
+        "type": "string",
+        "enum": [
+          "true",
+          "false",
+          "t",
+          "f",
+          "yes",
+          "no",
+          "y",
+          "n",
+          "1",
+          "0",
+          "on",
+          "off"
+        ],
+        "default": "f",
+        "description": "[Query Parameter] Shorthand for invert."
+      },
       "GetSpacesByPropQueryParams": {
         "allOf": [
           {
@@ -2415,6 +2415,12 @@
               },
               "mw": {
                 "$ref": "#/components/schemas/mw"
+              },
+              "invert": {
+                "$ref": "#/components/schemas/invert"
+              },
+              "i": {
+                "$ref": "#/components/schemas/i"
               }
             }
           }
@@ -2970,6 +2976,12 @@
           },
           "mw": {
             "$ref": "#/components/schemas/mw"
+          },
+          "invert": {
+            "$ref": "#/components/schemas/invert"
+          },
+          "i": {
+            "$ref": "#/components/schemas/i"
           }
         }
       },

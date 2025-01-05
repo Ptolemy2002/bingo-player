@@ -65,9 +65,9 @@ export function toSpace(space: MongoSpace | Space): CleanSpace {
     const {_id, examples, aliases, tags, ...rest} = space as MongoSpace;
     return cleanSpace({
         id: _id,
-        examples: examples ? new Set(examples) : new Set(),
-        aliases: aliases ? new Set(aliases) : new Set(),
-        tags: tags ? new Set(tags) : new Set(),
+        examples: examples && new Set(examples),
+        aliases: aliases && new Set(aliases),
+        tags: tags && new Set(tags),
         ...rest
     });
 }
@@ -83,9 +83,9 @@ export function toMongoSpace(space: MongoSpace | Space): CleanMongoSpace {
     const {id, examples, aliases, tags, ...rest} = space as Space;
     return cleanMongoSpace({
         _id: id,
-        examples: examples ? [...examples] : [],
-        aliases: aliases ? [...aliases] : [],
-        tags: tags ? [...tags] : [],
+        examples: examples && [...examples],
+        aliases: aliases && [...aliases],
+        tags: tags && [...tags],
         ...rest
     });
 }

@@ -62,9 +62,12 @@ export function toSpace(space: MongoSpace | Space): CleanSpace {
 
     // Zod doesn't do type guards, so we need to tell
     // TypeScript that the space is a MongoSpace.
-    const {_id, ...rest} = space as MongoSpace;
+    const {_id, examples, aliases, tags, ...rest} = space as MongoSpace;
     return cleanSpace({
         id: _id,
+        examples: examples ? new Set(examples) : new Set(),
+        aliases: aliases ? new Set(aliases) : new Set(),
+        tags: tags ? new Set(tags) : new Set(),
         ...rest
     });
 }
@@ -77,9 +80,12 @@ export function toMongoSpace(space: MongoSpace | Space): CleanMongoSpace {
 
     // Zod doesn't do type guards, so we need to tell
     // TypeScript that the space is a Space.
-    const {id, ...rest} = space as Space;
+    const {id, examples, aliases, tags, ...rest} = space as Space;
     return cleanMongoSpace({
         _id: id,
+        examples: examples ? [...examples] : [],
+        aliases: aliases ? [...aliases] : [],
+        tags: tags ? [...tags] : [],
         ...rest
     });
 }

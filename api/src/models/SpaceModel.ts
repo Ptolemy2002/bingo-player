@@ -1,6 +1,7 @@
 import { Model, PipelineStage, Schema, Types, model } from 'mongoose';
 import { CleanMongoSpace, ZodMongoSpaceShape } from 'shared';
 import { zodValidateWithErrors } from '@ptolemy2002/regex-utils';
+import { refineNoAliasMatchingName } from 'shared';
 
 export type MongoDocumentSpace =
     // Here we're manually defining the _id field an ObjectId
@@ -58,8 +59,8 @@ const SpaceSchema = new Schema<MongoDocumentSpace, SpaceModel, SpaceInstanceMeth
                 trim: true
             }
         ],
-        default: [],
-        validate: zodValidateWithErrors(ZodMongoSpaceShape.aliases)
+        default: []
+        // We're going to validate this in a custom validator that has access to greater context
     },
     tags: {
         type: [
@@ -73,6 +74,14 @@ const SpaceSchema = new Schema<MongoDocumentSpace, SpaceModel, SpaceInstanceMeth
         validate: zodValidateWithErrors(ZodMongoSpaceShape.tags)
     }
 });
+
+SpaceSchema.path("aliases").validate(function(aliases: string[]) {
+    return (
+        zodValidateWithErrors(ZodMongoSpaceShape.aliases)(aliases)
+            &&
+        refineNoAliasMatchingName(this.name, aliases)
+    );
+}, "The aliases must be unique and not include the name of the space.");
 
 SpaceSchema.method("toClientJSON", function() {
     const {_id, ...space} = this.toJSON();

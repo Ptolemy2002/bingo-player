@@ -19,14 +19,16 @@ export type MongoDocumentSpace =
 ;
 
 export type SpaceInstanceMethods = {
-    toClientJSON(): CleanMongoSpace
+    toClientJSON(): CleanMongoSpace;
+    makeNameUnique(): Promise<void>;
+    removeUnsetFields(): void;
 };
 
 export type SpaceModel = Model<MongoDocumentSpace, {}, SpaceInstanceMethods>;
 
 export interface SpaceModelWithStatics extends SpaceModel {
-    executeDocumentAggregation(pipeline: PipelineStage[]): Promise<CleanMongoSpace[]>
-    getPaths(): string[]
+    executeDocumentAggregation(pipeline: PipelineStage[]): Promise<CleanMongoSpace[]>;
+    getPaths(): string[];
 }
 
 const SpaceSchema = new Schema<MongoDocumentSpace, SpaceModel, SpaceInstanceMethods>({
@@ -92,6 +94,29 @@ SpaceSchema.method("toClientJSON", function() {
     };
 });
 
+SpaceSchema.method("makeNameUnique", async function() {
+    // See if the name is unique
+    const existingNames = await SpaceModel.distinct("name");
+
+    let name = this.get("name");
+
+    // Find the first available name
+    let i = 1;
+    while(existingNames.includes(name)) {
+        name = `${this.get("name")} (${i})`;
+        i++;
+    }
+
+    this.set("name", name);
+});
+
+SpaceSchema.method("removeUnsetFields", function() {
+    // Remove nulls from lists that should not have nullable items
+    this.set("examples", this.get("examples").filter(x => x !== null));
+    this.set("tags", this.get("tags").filter(x => x !== null));
+    this.set("aliases", this.get("aliases").filter(x => x !== null));
+});
+
 SpaceSchema.static("executeDocumentAggregation", function(pipeline: PipelineStage[]) {
     return this.aggregate<CleanMongoSpace>(pipeline).exec();
 });
@@ -110,20 +135,9 @@ SpaceSchema.searchIndex({
     }
 });
 
-SpaceSchema.pre('save', async function(next) {
-    // See if the name is unique
-    const existingNames = await SpaceModel.distinct("name");
-
-    let name = this.get("name");
-
-    // Find the first available name
-    let i = 1;
-    while(existingNames.includes(name)) {
-        name = `${this.get("name")} (${i})`;
-        i++;
-    }
-
-    this.set("name", name);
+SpaceSchema.pre('validate', async function(next) {
+    await this.makeNameUnique();
+    this.removeUnsetFields();
     next();
 });
 

@@ -13,13 +13,45 @@ export const ZodCleanSpaceSchema = swaggerRegistry.register(
         id: ZodSpaceIDSchema,
         name: ZodSpaceNameSchema,
         description: ZodSpaceDescriptionSchema,
-        examples: z.set(ZodSpaceExampleSchema),
+
+        // The set type is not officially supported by zod-to-openapi, so we have to manually define the OpenAPI schemas
+        // as arrays.
+        examples: z.set(ZodSpaceExampleSchema)
+            .openapi({
+                type: "array",
+                items: {
+                    $ref: "#/components/schemas/SpaceExample"
+                },
+                description: (
+                    "Examples for what could be considered applicable to the space."
+                    + " NOTE: Internally, this is a set, but it is represented as an array here"
+                    + " for compatibility reasons."
+                )
+            }),
         aliases: z.set(ZodSpaceNameSchema)
             .openapi({
-                description: "Aliases for the space.",
-                example: new Set(["Alias 1", "Alias 2"])
+                type: "array",
+                items: {
+                    $ref: "#/components/schemas/SpaceName"
+                },
+                description: (
+                    "Aliases for the space."
+                    + " NOTE: Internally, this is a set, but it is represented as an array here"
+                    + " for compatibility reasons."
+                )
             }),
         tags: z.set(ZodSpaceTagSchema)
+            .openapi({
+                type: "array",
+                items: {
+                    $ref: "#/components/schemas/SpaceTag"
+                },
+                description: (
+                    "Tags for the space."
+                    + " NOTE: Internally, this is a set, but it is represented as an array here"
+                    + " for compatibility reasons."
+                )
+            })
     })
     .refine(({ name, aliases }) => refineNoAliasMatchingName(name, aliases), {
         message: "No alias should match the name.",

@@ -1687,23 +1687,21 @@
           },
           "examples": {
             "type": "array",
+            "description": "Examples for what could be considered applicable to the space. NOTE: Internally, this is a set, but it is represented as an array here for compatibility reasons.",
             "items": {
               "$ref": "#/components/schemas/SpaceExample"
             }
           },
           "aliases": {
             "type": "array",
+            "description": "Aliases for the space. NOTE: Internally, this is a set, but it is represented as an array here for compatibility reasons.",
             "items": {
               "$ref": "#/components/schemas/SpaceName"
-            },
-            "description": "Aliases for the space.",
-            "example": [
-              "Alias 1",
-              "Alias 2"
-            ]
+            }
           },
           "tags": {
             "type": "array",
+            "description": "Tags for the space. NOTE: Internally, this is a set, but it is represented as an array here for compatibility reasons.",
             "items": {
               "$ref": "#/components/schemas/SpaceTag"
             }
@@ -1733,29 +1731,24 @@
           },
           "examples": {
             "type": "array",
+            "description": "Examples for what could be considered applicable to the space. NOTE: Internally, this is a set, but it is represented as an array here for compatibility reasons.",
             "items": {
               "$ref": "#/components/schemas/SpaceExample"
-            },
-            "default": []
+            }
           },
           "aliases": {
             "type": "array",
+            "description": "Aliases for the space. NOTE: Internally, this is a set, but it is represented as an array here for compatibility reasons.",
             "items": {
               "$ref": "#/components/schemas/SpaceName"
-            },
-            "default": [],
-            "description": "Aliases for the space.",
-            "example": [
-              "Alias 1",
-              "Alias 2"
-            ]
+            }
           },
           "tags": {
             "type": "array",
+            "description": "Tags for the space. NOTE: Internally, this is a set, but it is represented as an array here for compatibility reasons.",
             "items": {
               "$ref": "#/components/schemas/SpaceTag"
-            },
-            "default": []
+            }
           }
         },
         "required": [

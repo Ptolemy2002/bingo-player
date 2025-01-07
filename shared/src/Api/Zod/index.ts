@@ -23,6 +23,10 @@ export * from "./ListSpacePropByProp";
 export * from "./NewSpace";
 
 export * from "./UpdateSpaceByID";
+export * from "./UpdateSpaceByName";
+
+export * from "./DeleteSpaceByID";
+export * from "./DeleteSpaceByName";
 
 export * from "./QueryParams";
 export * from "./SortOrder";

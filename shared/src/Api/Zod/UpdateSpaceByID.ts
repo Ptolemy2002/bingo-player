@@ -133,7 +133,9 @@ export const ZodUpdateSpaceByIDResponseBodySchema = swaggerRegistry.register(
     z.union([
         ZodUpdateSpaceByID200ResponseBodySchema,
         ZodErrorResponseSchema
-    ])
+    ]).openapi({
+        description: "The response from updating a space by ID."
+    })
 );
 
 export type UpdateSpaceByID200ResponseBody = z.infer<typeof ZodUpdateSpaceByID200ResponseBodySchema>;

@@ -11,6 +11,9 @@ import searchSpacesListPropRouter from "./search/list-prop";
 import getSpaceByExactIDRouter from "./get/by-exact-id";
 import newSpaceRouter from "./new";
 import updateSpaceByIDRouter from "./update/by-id";
+import updateSpaceByNameRouter from "./update/by-name";
+import deleteSpaceByIDRouter from "./delete/by-id";
+import deleteSpaceByNameRouter from "./delete/by-name";
 
 const router = Router();
 
@@ -29,7 +32,12 @@ router.use("/", searchSpacesCountRouter);
 router.use("/", searchSpacesListPropRouter);
 
 router.use("/", newSpaceRouter);
+
 router.use("/", updateSpaceByIDRouter);
+router.use("/", updateSpaceByNameRouter);
+
+router.use("/", deleteSpaceByIDRouter);
+router.use("/", deleteSpaceByNameRouter);
 
 const spacesRouter = router;
 export default spacesRouter;

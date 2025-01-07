@@ -6,7 +6,8 @@ export const ErrorCodeEnum = [
     "BAD_BODY",
     "INTERNAL",
     "NOT_FOUND",
-    "NOT_IMPLEMENTED"
+    "NOT_IMPLEMENTED",
+    "VALIDATION"
 ] as const;
 
 export const SortOrderEnum = [

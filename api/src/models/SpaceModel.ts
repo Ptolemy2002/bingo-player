@@ -31,18 +31,17 @@ export interface SpaceModelWithStatics extends SpaceModel {
     getPaths(): string[];
 }
 
+// Validation is done in custom validators, as they access more context.
 const SpaceSchema = new Schema<MongoDocumentSpace, SpaceModel, SpaceInstanceMethods>({
     name: {
         type: String,
         required: true,
         unique: true,
-        trim: true,
-        validate: zodValidateWithErrors(ZodMongoSpaceShape.name)
+        trim: true
     },
     description: {
         type: String,
         default: null,
-        validate: zodValidateWithErrors(ZodMongoSpaceShape.description)
     },
     examples: {
         type: [
@@ -51,8 +50,7 @@ const SpaceSchema = new Schema<MongoDocumentSpace, SpaceModel, SpaceInstanceMeth
                 trim: true
             }
         ],
-        default: [],
-        validate: zodValidateWithErrors(ZodMongoSpaceShape.examples)
+        default: []
     },
     aliases: {
         type: [
@@ -62,7 +60,6 @@ const SpaceSchema = new Schema<MongoDocumentSpace, SpaceModel, SpaceInstanceMeth
             }
         ],
         default: []
-        // We're going to validate this in a custom validator that has access to greater context
     },
     tags: {
         type: [
@@ -72,18 +69,20 @@ const SpaceSchema = new Schema<MongoDocumentSpace, SpaceModel, SpaceInstanceMeth
                 trim: true
             }
         ],
-        default: [],
-        validate: zodValidateWithErrors(ZodMongoSpaceShape.tags)
+        default: []
     }
 });
 
+SpaceSchema.path("name").validate(zodValidateWithErrors(ZodMongoSpaceShape.name, true));
+SpaceSchema.path("description").validate(zodValidateWithErrors(ZodMongoSpaceShape.description, true));
+SpaceSchema.path("examples").validate(zodValidateWithErrors(ZodMongoSpaceShape.examples, true));
+
 SpaceSchema.path("aliases").validate(function(aliases: string[]) {
-    return (
-        zodValidateWithErrors(ZodMongoSpaceShape.aliases)(aliases)
-            &&
-        refineNoAliasMatchingName(this.name, aliases)
-    );
+    zodValidateWithErrors(ZodMongoSpaceShape.aliases, true)(aliases);
+    return refineNoAliasMatchingName(this.name, aliases);
 }, "The aliases must be unique and not include the name of the space.");
+
+SpaceSchema.path("tags").validate(zodValidateWithErrors(ZodMongoSpaceShape.tags, true));
 
 SpaceSchema.method("toClientJSON", function() {
     const {_id, ...space} = this.toJSON();
@@ -98,12 +97,13 @@ SpaceSchema.method("makeNameUnique", async function() {
     // See if the name is unique
     const existingNames = await SpaceModel.distinct("name");
 
-    let name = this.get("name");
+    let name = this.get("name").replace(/\([0-9]+\)$/, "").trim();
+    const originalName = name;
 
     // Find the first available name
     let i = 1;
     while(existingNames.includes(name)) {
-        name = `${this.get("name")} (${i})`;
+        name = `${originalName} (${i})`;
         i++;
     }
 
@@ -136,8 +136,8 @@ SpaceSchema.searchIndex({
 });
 
 SpaceSchema.pre('validate', async function(next) {
-    await this.makeNameUnique();
     this.removeUnsetFields();
+    await this.save({ validateBeforeSave: false });
     next();
 });
 

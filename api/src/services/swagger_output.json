@@ -1460,6 +1460,118 @@
           }
         }
       }
+    },
+    "/api/v1/spaces/update/by-id/{id}": {
+      "post": {
+        "tags": [
+          "Spaces",
+          "Update"
+        ],
+        "description": "Update an existing space in the database.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ID of the space to update."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateSpaceByID200ResponseBody"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateSpaceByID200ResponseBody"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse400"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse400"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No matching spaces found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse404"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse404"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "501": {
+            "description": "Not implemented.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse501"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse501"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSpaceByIDRequestBody"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSpaceByIDRequestBody"
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -1926,7 +2038,8 @@
           "BAD_BODY",
           "INTERNAL",
           "NOT_FOUND",
-          "NOT_IMPLEMENTED"
+          "NOT_IMPLEMENTED",
+          "VALIDATION"
         ],
         "description": "An error code that may be returned by the server."
       },
@@ -3300,6 +3413,138 @@
         "anyOf": [
           {
             "$ref": "#/components/schemas/NewSpace200ResponseBody"
+          },
+          {
+            "$ref": "#/components/schemas/ErrorResponse"
+          }
+        ]
+      },
+      "UpdateSpaceByIDParams": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/SpaceID"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "description": "The parameters for updating a space."
+      },
+      "UpdateSpaceByIDRequestBody": {
+        "type": "object",
+        "properties": {
+          "difference": {
+            "type": "object",
+            "properties": {
+              "$set": {
+                "type": "object",
+                "additionalProperties": {},
+                "description": "The fields to set. Each key is a path to a field.",
+                "example": {
+                  "name": "New Name",
+                  "tags": [
+                    "new-tag"
+                  ]
+                }
+              },
+              "$unset": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "string",
+                  "enum": [
+                    ""
+                  ]
+                },
+                "description": "The fields to unset. Each key is a path to a field. Cannot be a direct path, must be nested from a list field.",
+                "example": {
+                  "aliases.0": ""
+                }
+              },
+              "$push": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "object",
+                  "properties": {
+                    "$each": {
+                      "type": "array",
+                      "items": {}
+                    }
+                  },
+                  "required": [
+                    "$each"
+                  ]
+                },
+                "description": "The values to push to a list field. Each key is a path to a field. Must be a direct path to a list field.",
+                "example": {
+                  "tags": {
+                    "$each": [
+                      "new-tag"
+                    ]
+                  }
+                }
+              },
+              "$pullAll": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "object",
+                  "properties": {
+                    "$in": {
+                      "type": "array",
+                      "items": {}
+                    }
+                  },
+                  "required": [
+                    "$in"
+                  ]
+                },
+                "description": "The values to pull from a list field. Each key is a path to a field. Must be a direct path to a list field.",
+                "example": {
+                  "tags": {
+                    "$in": [
+                      "old-tag"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "required": [
+          "difference"
+        ],
+        "description": "The request body for updating a space"
+      },
+      "UpdateSpaceByID200ResponseBody": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "space": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/CleanMongoSpace"
+                  },
+                  {
+                    "description": "The updated space."
+                  }
+                ]
+              }
+            },
+            "required": [
+              "space"
+            ]
+          },
+          {
+            "$ref": "#/components/schemas/SuccessResponseBase"
+          }
+        ],
+        "description": "The response from updating a space."
+      },
+      "UpdateSpaceByIDResponseBody": {
+        "anyOf": [
+          {
+            "$ref": "#/components/schemas/UpdateSpaceByID200ResponseBody"
           },
           {
             "$ref": "#/components/schemas/ErrorResponse"

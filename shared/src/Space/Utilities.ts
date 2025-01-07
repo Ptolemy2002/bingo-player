@@ -1,5 +1,5 @@
 import { MongoSpaceWithScore } from "src/Api";
-import { CleanMongoSpace, SpaceQueryProp, ZodSpaceSchema, ZodMongoSpaceSchema, Space, CleanSpace, MongoSpace, SpaceQueryPropNonId, SpaceQueryPropWithScore, SpaceQueryPropNonIdWithScore} from "./Zod";
+import { CleanMongoSpace, SpaceQueryProp, ZodSpaceSchema, ZodMongoSpaceSchema, CleanSpace, MongoSpace, SpaceQueryPropNonId, SpaceQueryPropWithScore, SpaceQueryPropNonIdWithScore, Space} from "./Zod";
 
 export function interpretSpaceQueryProp(prop: SpaceQueryProp): (keyof CleanMongoSpace) | "known-as" {
     if (prop === "id") prop = "_id";
@@ -88,4 +88,55 @@ export function toMongoSpace(space: MongoSpace | Space): CleanMongoSpace {
         tags: tags && [...tags],
         ...rest
     });
+}
+
+// 0 indicates the key can have a number as one of its key values
+export const MongoSpaceChildPathLookup: Readonly<Record<keyof MongoSpace, (0 | string)[]>> = {
+    _id: [],
+    name: [],
+    description: [],
+    examples: [0],
+    aliases: [0],
+    tags: [0]
+} as const;
+
+export function parseSpacePath(
+    path: string,
+    allowed?: {
+        key: keyof MongoSpace,
+        allowDirect?: boolean,
+        allowNested?: boolean
+    }[]
+): boolean {
+    if (!allowed) allowed = Object.keys(MongoSpaceChildPathLookup).map(key => ({key: key as keyof MongoSpace}));
+
+    const pattern = `^(${
+        allowed.map(({key}) => key).join("|")
+    })(\.([^\.]+))?`;
+    const regex = new RegExp(pattern);
+
+    const match = path.match(regex);
+    if (!match) return false;
+
+    const [, key,, value] = match;
+    const {
+        allowDirect: allowedDirect = true,
+        allowNested: allowedNested = true
+    } = allowed.find(({key: k}) => k === key)!;
+
+    if (value === undefined) return true;
+
+    const lookup = MongoSpaceChildPathLookup[key as keyof MongoSpace];
+    if (lookup === undefined) return false;
+
+    if (allowedNested && lookup.includes(0)) {
+        try {
+            parseInt(value);
+            return true;
+        } catch {
+            return allowedDirect && lookup.includes(value);
+        }
+    }
+
+    return allowedDirect && lookup.includes(value);
 }

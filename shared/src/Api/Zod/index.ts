@@ -22,5 +22,7 @@ export * from "./ListSpacePropByProp";
 
 export * from "./NewSpace";
 
+export * from "./UpdateSpaceByID";
+
 export * from "./QueryParams";
 export * from "./SortOrder";

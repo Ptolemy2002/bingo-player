@@ -1,6 +1,6 @@
 import { asyncErrorHandler } from "@ptolemy2002/express-utils";
 import { Router } from "express";
-import RouteHandler, { GeneratedResonse, RouteHandlerRequest } from "lib/RouteHandler";
+import RouteHandler, { RouteHandlerRequest } from "lib/RouteHandler";
 import SpaceModel from "models/SpaceModel";
 import { NewSpace200ResponseBody, ZodNewSpaceRequestBodySchema } from "shared";
 
@@ -44,6 +44,7 @@ export class NewSpaceHandler extends RouteHandler<NewSpace200ResponseBody> {
 
         // Create a new space
         const space = await SpaceModel.create(body.space);
+        await space.makeNameUnique();
 
         return {
             status: 200,

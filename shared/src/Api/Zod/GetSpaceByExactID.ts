@@ -1,6 +1,6 @@
 import { swaggerRegistry } from "src/Swagger";
 import { z } from "zod";
-import { ZodCleanMongoSpaceSchema } from "src/Space";
+import { ZodCleanMongoSpaceSchema, ZodSpaceIDSchema } from "src/Space";
 import { ZodErrorResponseSchema } from "./ErrorResponse";
 import { zodSuccessResponseSchema } from "./SuccessResponse";
 import { Types } from "mongoose";
@@ -29,8 +29,7 @@ export const ZodGetSpacesByExactIDResponseBodySchema = swaggerRegistry.register(
 export const ZodGetSpaceByExactIDParamsSchema = swaggerRegistry.register(
     "GetSpaceByExactIDParams",
     z.object({
-        id: z.string()
-            .refine((id) => Types.ObjectId.isValid(id), { message: "Invalid ID" })
+        id: ZodSpaceIDSchema
             .openapi({
                 description: "The ID of the space to get."
             })

@@ -5,7 +5,7 @@ import SpaceModel from "models/SpaceModel";
 import { GetSpaces200ResponseBody, ZodGetSpacesQueryParamsSchema } from "shared";
 import SpaceAggregationBuilder from "../utils/SpaceAggregationBuilder";
 
-export const router = Router();
+const router = Router();
 
 export class GetAllSpacesHandler extends RouteHandler<GetSpaces200ResponseBody> {
     /*

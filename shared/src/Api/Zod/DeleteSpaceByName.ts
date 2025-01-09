@@ -3,14 +3,14 @@ import { z } from "zod";
 import { ZodErrorResponseSchema } from "./ErrorResponse";
 import { ZodDeleteSpaceByID200ResponseBodySchema } from "./DeleteSpaceByID";
 
-export const ZodDeleteSpaceByNameParamsSchema = swaggerRegistry.register(
-    "DeleteSpaceByNameParams",
+export const ZodDeleteSpaceByNameURLParamsSchema = swaggerRegistry.register(
+    "DeleteSpaceByNameURLParams",
     z.object({
         name: z.string().openapi({
             description: "The name of the space to delete."
         })
     }).openapi({
-        description: "Parameters for deleting a space by name."
+        description: "URL Parameters for deleting a space by name."
     })
 );
 
@@ -27,6 +27,6 @@ export const ZodDeleteSpaceByNameResponseBodySchema = swaggerRegistry.register(
     ])
 );
 
-export type DeleteSpaceByNameParams = z.input<typeof ZodDeleteSpaceByNameParamsSchema>;
+export type DeleteSpaceByNameURLParams = z.input<typeof ZodDeleteSpaceByNameURLParamsSchema>;
 export type DeleteSpaceByName200ResponseBody = z.infer<typeof ZodDeleteSpaceByName200ResponseBodySchema>;
 export type DeleteSpaceByNameResponseBody = z.infer<typeof ZodDeleteSpaceByNameResponseBodySchema>;

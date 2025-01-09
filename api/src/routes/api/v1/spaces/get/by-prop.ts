@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import {
-    ZodGetSpacesByPropParamsSchema,
+    ZodGetSpacesByPropURLParamsSchema,
     ZodGetSpacesByPropQueryParamsSchema,
     GetSpacesByProp200ResponseBody
 } from 'shared';
@@ -77,7 +77,7 @@ export class GetSpacesByPropHandler extends RouteHandler<GetSpacesByProp200Respo
     }
 
     async generateResponse(req: RouteHandlerRequest) {
-        const { success: paramsSuccess, error: paramsError, data: params } = ZodGetSpacesByPropParamsSchema.safeParse(req.params);
+        const { success: paramsSuccess, error: paramsError, data: params } = ZodGetSpacesByPropURLParamsSchema.safeParse(req.params);
 
         if (!paramsSuccess) {
             return {

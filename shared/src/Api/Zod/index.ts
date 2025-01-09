@@ -28,5 +28,8 @@ export * from "./UpdateSpaceByName";
 export * from "./DeleteSpaceByID";
 export * from "./DeleteSpaceByName";
 
+export * from "./DuplicateSpaceByID";
+export * from "./DuplicateSpaceByName";
+
 export * from "./QueryParams";
 export * from "./SortOrder";

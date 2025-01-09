@@ -4,12 +4,12 @@ import { ZodErrorResponseSchema } from "./ErrorResponse";
 import { z } from "zod";
 import { ZodUpdateSpaceByID200ResponseBodySchema, ZodUpdateSpaceByIDRequestBodySchema } from "./UpdateSpaceByID";
 
-export const ZodUpdateSpaceByNameParamsSchema = swaggerRegistry.register(
-    "UpdateSpaceByNameParams",
+export const ZodUpdateSpaceByNameURLParamsSchema = swaggerRegistry.register(
+    "UpdateSpaceByNameURLParams",
     z.object({
         name: z.string()
     }).openapi({
-        description: "The parameters for updating a space."
+        description: "The URL parameters for updating a space."
     })
 );
 
@@ -39,4 +39,4 @@ export type UpdateSpaceByNameResponseBody = z.infer<typeof ZodUpdateSpaceByNameE
 export type UpdateSpaceByNameRequestBodyInput = z.input<typeof ZodUpdateSpaceByNameRequestBodySchema>;
 export type UpdateSpaceByNameRequestBodyOutput = z.output<typeof ZodUpdateSpaceByNameRequestBodySchema>;
 
-export type UpdateSpaceByNameParams = z.infer<typeof ZodUpdateSpaceByNameParamsSchema>;
+export type UpdateSpaceByNameURLParams = z.infer<typeof ZodUpdateSpaceByNameURLParamsSchema>;

@@ -4,12 +4,12 @@ import { ZodErrorResponseSchema } from "./ErrorResponse";
 import { z } from "zod";
 import { parseSpacePath, ZodCleanMongoSpaceSchema, ZodSpaceIDSchema } from "src/Space";
 
-export const ZodUpdateSpaceByIDParamsSchema = swaggerRegistry.register(
-    "UpdateSpaceByIDParams",
+export const ZodUpdateSpaceByIDURLParamsSchema = swaggerRegistry.register(
+    "UpdateSpaceByIDURLParams",
     z.object({
         id: ZodSpaceIDSchema
     }).openapi({
-        description: "The parameters for updating a space."
+        description: "The URL parameters for updating a space."
     })
 );
 
@@ -144,4 +144,4 @@ export type UpdateSpaceByIDResponseBody = z.infer<typeof ZodUpdateSpaceByIDRespo
 export type UpdateSpaceByIDRequestBodyInput = z.input<typeof ZodUpdateSpaceByIDRequestBodySchema>;
 export type UpdateSpaceByIDRequestBodyOutput = z.output<typeof ZodUpdateSpaceByIDRequestBodySchema>;
 
-export type UpdateSpaceByIDParams = z.infer<typeof ZodUpdateSpaceByIDParamsSchema>;
+export type UpdateSpaceByIDURLParams = z.infer<typeof ZodUpdateSpaceByIDURLParamsSchema>;

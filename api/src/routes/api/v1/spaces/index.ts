@@ -14,6 +14,8 @@ import updateSpaceByIDRouter from "./update/by-id";
 import updateSpaceByNameRouter from "./update/by-name";
 import deleteSpaceByIDRouter from "./delete/by-id";
 import deleteSpaceByNameRouter from "./delete/by-name";
+import duplicateSpaceByIDRouter from "./duplicate/by-id";
+import duplicateSpaceByNameRouter from "./duplicate/by-name";
 
 const router = Router();
 
@@ -38,6 +40,9 @@ router.use("/", updateSpaceByNameRouter);
 
 router.use("/", deleteSpaceByIDRouter);
 router.use("/", deleteSpaceByNameRouter);
+
+router.use("/", duplicateSpaceByIDRouter);
+router.use("/", duplicateSpaceByNameRouter);
 
 const spacesRouter = router;
 export default spacesRouter;

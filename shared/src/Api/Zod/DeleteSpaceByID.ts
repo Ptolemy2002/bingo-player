@@ -4,14 +4,14 @@ import { ZodErrorResponseSchema } from "./ErrorResponse";
 import { zodSuccessResponseSchema } from "./SuccessResponse";
 import { ZodSpaceIDSchema } from "src/Space";
 
-export const ZodDeleteSpaceByIDParamsSchema = swaggerRegistry.register(
-    "DeleteSpaceByIDParams",
+export const ZodDeleteSpaceByIDURLParamsSchema = swaggerRegistry.register(
+    "DeleteSpaceByIDURLParams",
     z.object({
         id: ZodSpaceIDSchema.openapi({
             description: "The ID of the space to delete."
         })
     }).openapi({
-        description: "Parameters for deleting a space by ID."
+        description: "URL Parameters for deleting a space by ID."
     })
 );
 
@@ -36,6 +36,6 @@ export const ZodDeleteSpaceByIDResponseBodySchema = swaggerRegistry.register(
     ])
 );
 
-export type DeleteSpaceByIDParams = z.input<typeof ZodDeleteSpaceByIDParamsSchema>;
+export type DeleteSpaceByIDURLParams = z.input<typeof ZodDeleteSpaceByIDURLParamsSchema>;
 export type DeleteSpaceByID200ResponseBody = z.infer<typeof ZodDeleteSpaceByID200ResponseBodySchema>;
 export type DeleteSpaceByIDResponseBody = z.infer<typeof ZodDeleteSpaceByIDResponseBodySchema>;

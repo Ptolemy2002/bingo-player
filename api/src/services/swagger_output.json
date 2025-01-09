@@ -1878,6 +1878,200 @@
           }
         }
       }
+    },
+    "/api/v1/spaces/duplicate/by-id/{id}": {
+      "post": {
+        "tags": [
+          "Spaces",
+          "Duplicate"
+        ],
+        "description": "Duplicate an existing space in the database.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ID of the space to duplicate."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DuplicateSpaceByID200ResponseBody"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/DuplicateSpaceByID200ResponseBody"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse400"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse400"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No matching spaces found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse404"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse404"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "501": {
+            "description": "Not implemented.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse501"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse501"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/spaces/duplicate/by-name/{name}": {
+      "post": {
+        "tags": [
+          "Spaces",
+          "Duplicate"
+        ],
+        "description": "Duplicate an existing space in the database.",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The name of the space to duplicate."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DuplicateSpaceByName200ResponseBody"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/DuplicateSpaceByName200ResponseBody"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse400"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse400"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No matching spaces found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse404"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse404"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "501": {
+            "description": "Not implemented.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse501"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse501"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -2735,7 +2929,7 @@
         },
         "description": "Query parameters for getting all spaces."
       },
-      "GetSpacesByPropParams": {
+      "GetSpacesByPropURLParams": {
         "type": "object",
         "properties": {
           "prop": {
@@ -2749,7 +2943,7 @@
           "prop",
           "query"
         ],
-        "description": "Parameters for getting spaces filtered by a property value."
+        "description": "URL Parameters for getting spaces filtered by a property value."
       },
       "caseSensitive": {
         "type": "string",
@@ -3009,18 +3203,24 @@
           }
         ]
       },
-      "GetSpaceByExactIDParams": {
+      "GetSpaceByExactIDURLParams": {
         "type": "object",
         "properties": {
           "id": {
-            "type": "string",
-            "description": "The ID of the space to get."
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SpaceID"
+              },
+              {
+                "description": "The ID of the space to get."
+              }
+            ]
           }
         },
         "required": [
           "id"
         ],
-        "description": "The ID of the space to get."
+        "description": "The URL parameters for getting a space by ID."
       },
       "ScoreSpecification": {
         "type": "object",
@@ -3079,7 +3279,7 @@
         ],
         "description": "CleanMongoSpaceWithScore, but with some fields optional and provided sensible defaults."
       },
-      "SearchSpacesParams": {
+      "SearchSpacesURLParams": {
         "type": "object",
         "properties": {
           "query": {
@@ -3254,7 +3454,7 @@
           }
         ]
       },
-      "SearchSpacesCountParams": {
+      "SearchSpacesCountURLParams": {
         "type": "object",
         "properties": {
           "query": {
@@ -3298,7 +3498,7 @@
           }
         ]
       },
-      "SearchSpacesListPropParams": {
+      "SearchSpacesListPropURLParams": {
         "type": "object",
         "properties": {
           "prop": {
@@ -3313,7 +3513,7 @@
           "prop",
           "query"
         ],
-        "description": "Parameters for listing all values of a property."
+        "description": "URL Parameters for listing all values of a property."
       },
       "SearchSpacesListProp200ResponseBody": {
         "allOf": [
@@ -3453,7 +3653,7 @@
           }
         ]
       },
-      "CountSpacesByPropParams": {
+      "CountSpacesByPropURLParams": {
         "type": "object",
         "properties": {
           "prop": {
@@ -3467,7 +3667,7 @@
           "prop",
           "query"
         ],
-        "description": "Parameters for getting spaces filtered by a property value."
+        "description": "URL Parameters for getting spaces filtered by a property value."
       },
       "CountSpacesByPropQueryParams": {
         "type": "object",
@@ -3498,7 +3698,7 @@
           }
         }
       },
-      "ListSpacePropParams": {
+      "ListSpacePropURLParams": {
         "type": "object",
         "properties": {
           "prop": {
@@ -3508,7 +3708,7 @@
         "required": [
           "prop"
         ],
-        "description": "Parameters for listing all values of a property."
+        "description": "URL Parameters for listing all values of a property."
       },
       "ListSpacePropQueryParams": {
         "type": "object",
@@ -3577,7 +3777,7 @@
           }
         ]
       },
-      "ListSpacePropByPropParams": {
+      "ListSpacePropByPropURLParams": {
         "type": "object",
         "properties": {
           "listProp": {
@@ -3725,7 +3925,7 @@
           }
         ]
       },
-      "UpdateSpaceByIDParams": {
+      "UpdateSpaceByIDURLParams": {
         "type": "object",
         "properties": {
           "id": {
@@ -3735,7 +3935,7 @@
         "required": [
           "id"
         ],
-        "description": "The parameters for updating a space."
+        "description": "The URL parameters for updating a space."
       },
       "UpdateSpaceByIDRequestBody": {
         "type": "object",
@@ -3858,7 +4058,7 @@
         ],
         "description": "The response from updating a space by ID."
       },
-      "UpdateSpaceByNameParams": {
+      "UpdateSpaceByNameURLParams": {
         "type": "object",
         "properties": {
           "name": {
@@ -3868,7 +4068,7 @@
         "required": [
           "name"
         ],
-        "description": "The parameters for updating a space."
+        "description": "The URL parameters for updating a space."
       },
       "UpdateSpaceByNameRequestBody": {
         "type": "object",
@@ -3991,7 +4191,7 @@
         ],
         "description": "The response for updating a space by name."
       },
-      "DeleteSpaceByIDParams": {
+      "DeleteSpaceByIDURLParams": {
         "type": "object",
         "properties": {
           "id": {
@@ -4008,7 +4208,7 @@
         "required": [
           "id"
         ],
-        "description": "Parameters for deleting a space by ID."
+        "description": "URL Parameters for deleting a space by ID."
       },
       "DeleteSpaceByID200ResponseBody": {
         "allOf": [
@@ -4043,7 +4243,7 @@
           }
         ]
       },
-      "DeleteSpaceByNameParams": {
+      "DeleteSpaceByNameURLParams": {
         "type": "object",
         "properties": {
           "name": {
@@ -4054,7 +4254,7 @@
         "required": [
           "name"
         ],
-        "description": "Parameters for deleting a space by name."
+        "description": "URL Parameters for deleting a space by name."
       },
       "DeleteSpaceByName200ResponseBody": {
         "allOf": [
@@ -4083,6 +4283,102 @@
         "anyOf": [
           {
             "$ref": "#/components/schemas/DeleteSpaceByName200ResponseBody"
+          },
+          {
+            "$ref": "#/components/schemas/ErrorResponse"
+          }
+        ]
+      },
+      "DuplicateSpaceByIDURLParams": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/SpaceID"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "description": "The URL parameters for duplicating a space."
+      },
+      "DuplicateSpaceByID200ResponseBody": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "space": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/CleanMongoSpace"
+                  },
+                  {
+                    "description": "The duplicated space."
+                  }
+                ]
+              }
+            },
+            "required": [
+              "space"
+            ],
+            "description": "The response from duplicating a space."
+          },
+          {
+            "$ref": "#/components/schemas/SuccessResponseBase"
+          }
+        ]
+      },
+      "DuplicateSpaceByIDResponseBody": {
+        "anyOf": [
+          {
+            "$ref": "#/components/schemas/DuplicateSpaceByID200ResponseBody"
+          },
+          {
+            "$ref": "#/components/schemas/ErrorResponse"
+          }
+        ]
+      },
+      "DuplicateSpaceByNameURLParams": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "description": "The URL parameters for duplicating a space."
+      },
+      "DuplicateSpaceByName200ResponseBody": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "space": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/CleanMongoSpace"
+                  },
+                  {
+                    "description": "The duplicated space."
+                  }
+                ]
+              }
+            },
+            "required": [
+              "space"
+            ],
+            "description": "The response from duplicating a space."
+          },
+          {
+            "$ref": "#/components/schemas/SuccessResponseBase"
+          }
+        ]
+      },
+      "DuplicateSpaceByNameResponseBody": {
+        "anyOf": [
+          {
+            "$ref": "#/components/schemas/DuplicateSpaceByName200ResponseBody"
           },
           {
             "$ref": "#/components/schemas/ErrorResponse"

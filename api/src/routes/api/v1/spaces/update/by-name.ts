@@ -1,7 +1,7 @@
 import { Router } from "express";
 import RouteHandler, { RouteHandlerRequest } from "lib/RouteHandler";
 import SpaceModel from "models/SpaceModel";
-import { UpdateSpaceByID200ResponseBody, UpdateSpaceByName200ResponseBody, ZodUpdateSpaceByIDParamsSchema, ZodUpdateSpaceByIDRequestBodySchema, ZodUpdateSpaceByNameParamsSchema, ZodUpdateSpaceByNameRequestBodySchema } from "shared";
+import { UpdateSpaceByID200ResponseBody, UpdateSpaceByName200ResponseBody, ZodUpdateSpaceByIDURLParamsSchema, ZodUpdateSpaceByIDRequestBodySchema, ZodUpdateSpaceByNameURLParamsSchema, ZodUpdateSpaceByNameRequestBodySchema } from "shared";
 import { asyncErrorHandler } from "@ptolemy2002/express-utils";
 import { Error } from "mongoose";
 
@@ -58,7 +58,7 @@ export class UpdateSpaceByNameHandler extends RouteHandler<UpdateSpaceByName200R
             success: paramsSuccess,
             error: paramsError,
             data: params
-        } = ZodUpdateSpaceByNameParamsSchema.safeParse(req.params);
+        } = ZodUpdateSpaceByNameURLParamsSchema.safeParse(req.params);
 
         if (!paramsSuccess) {
             return {

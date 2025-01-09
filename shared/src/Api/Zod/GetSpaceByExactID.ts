@@ -3,7 +3,6 @@ import { z } from "zod";
 import { ZodCleanMongoSpaceSchema, ZodSpaceIDSchema } from "src/Space";
 import { ZodErrorResponseSchema } from "./ErrorResponse";
 import { zodSuccessResponseSchema } from "./SuccessResponse";
-import { Types } from "mongoose";
 
 export const ZodGetSpaceByExactID200ResponseBodySchema = swaggerRegistry.register(
     "GetSpaceByExactID200ResponseBody",
@@ -26,19 +25,19 @@ export const ZodGetSpacesByExactIDResponseBodySchema = swaggerRegistry.register(
     ])
 );
 
-export const ZodGetSpaceByExactIDParamsSchema = swaggerRegistry.register(
-    "GetSpaceByExactIDParams",
+export const ZodGetSpaceByExactIDURLParamsSchema = swaggerRegistry.register(
+    "GetSpaceByExactIDURLParams",
     z.object({
         id: ZodSpaceIDSchema
             .openapi({
                 description: "The ID of the space to get."
             })
     }).openapi({
-        description: "The ID of the space to get."
+        description: "The URL parameters for getting a space by ID."
     })
 );
 
 export type GetSpaceByExactID200ResponseBody = z.infer<typeof ZodGetSpaceByExactID200ResponseBodySchema>;
 export type GetSpaceByExactIDResponseBody = z.infer<typeof ZodGetSpacesByExactIDResponseBodySchema>;
 
-export type GetSpaceByExactIDParams = z.infer<typeof ZodGetSpaceByExactIDParamsSchema>;
+export type GetSpaceByExactIDURLParams = z.infer<typeof ZodGetSpaceByExactIDURLParamsSchema>;

@@ -2,7 +2,7 @@ import { asyncErrorHandler } from "@ptolemy2002/express-utils";
 import { Router } from "express";
 import RouteHandler, { RouteHandlerRequest } from "lib/RouteHandler";
 import SpaceModel from "models/SpaceModel";
-import { DeleteSpaceByID200ResponseBody, ZodDeleteSpaceByIDParamsSchema } from "shared";
+import { DeleteSpaceByID200ResponseBody, ZodDeleteSpaceByIDURLParamsSchema } from "shared";
 
 const router = Router();
 
@@ -33,7 +33,7 @@ export class DeleteSpaceByIDHandler extends RouteHandler<DeleteSpaceByID200Respo
     }
 
     async generateResponse(req: RouteHandlerRequest) {
-        const { success: paramsSuccess, error: paramsError, data: params } = ZodDeleteSpaceByIDParamsSchema.safeParse(req.params);
+        const { success: paramsSuccess, error: paramsError, data: params } = ZodDeleteSpaceByIDURLParamsSchema.safeParse(req.params);
 
         if (!paramsSuccess) {
             return {

@@ -17,15 +17,15 @@ import {
     ZodMatchWholeShorthandQueryParamSchema,
 } from './QueryParams';
 
-export const ZodGetSpacesByPropParamsSchema = swaggerRegistry.register(
-    'GetSpacesByPropParams',
+export const ZodGetSpacesByPropURLParamsSchema = swaggerRegistry.register(
+    'GetSpacesByPropURLParams',
     z.object({
             prop: ZodSpaceQueryPropNonIdSchema,
             query: z.string(),
         })
         .openapi({
             description:
-                'Parameters for getting spaces filtered by a property value.',
+                'URL Parameters for getting spaces filtered by a property value.',
         }),
 );
 
@@ -76,8 +76,8 @@ export type GetSpacesByPropResponseBody = z.infer<
     typeof ZodGetSpacesByPropResponseBodySchema
 >;
 
-export type GetSpacesByPropParams = z.infer<
-    typeof ZodGetSpacesByPropParamsSchema
+export type GetSpacesByPropURLParams = z.infer<
+    typeof ZodGetSpacesByPropURLParamsSchema
 >;
 export type GetSpacesByPropQueryParamsInput = z.input<
     typeof ZodGetSpacesByPropQueryParamsSchema

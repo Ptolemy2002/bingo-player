@@ -5,15 +5,15 @@ import { ZodErrorResponseSchema } from "./ErrorResponse";
 import { zodSuccessResponseSchema } from "./SuccessResponse";
 import { ZodLimitQueryParamSchema, ZodLimitShorthandQueryParamSchema, ZodOffsetQueryParamSchema, ZodOffsetShorthandQueryParamSchema, ZodSortByQueryParamSchema, ZodSortByShorthandQueryParamSchema, ZodSortOrderQueryParamSchema, ZodSortOrderShorthandQueryParamSchema } from "./QueryParams";
 
-export const ZodListSpacePropParamsSchema = swaggerRegistry.register(
-    "ListSpacePropParams",
+export const ZodListSpacePropURLParamsSchema = swaggerRegistry.register(
+    "ListSpacePropURLParams",
     z.object({
         prop: ZodSpaceQueryPropSchema
     }).openapi({
-        description: "Parameters for listing all values of a property."
+        description: "URL Parameters for listing all values of a property."
     })
 );
-export const ZodListSpacePropParamsShape = ZodListSpacePropParamsSchema.shape;
+export const ZodListSpacePropURLParamsShape = ZodListSpacePropURLParamsSchema.shape;
 
 export const ZodListSpacePropQueryParamsSchema = swaggerRegistry.register(
     "ListSpacePropQueryParams",
@@ -57,7 +57,7 @@ export const ZodListSpacePropResponseBodySchema = swaggerRegistry.register(
     ])
 );
 
-export type ListSpacePropParams = z.input<typeof ZodListSpacePropParamsSchema>;
+export type ListSpacePropURLParams = z.input<typeof ZodListSpacePropURLParamsSchema>;
 export type ListSpacePropQueryParams = z.input<typeof ZodListSpacePropQueryParamsSchema>;
 
 export type ListSpaceProp200ResponseBody = z.infer<typeof ZodListSpaceProp200ResponseBodySchema>;

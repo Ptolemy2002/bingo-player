@@ -4,7 +4,7 @@ import RouteHandler, { RouteHandlerRequest } from 'lib/RouteHandler';
 import SpaceModel from 'models/SpaceModel';
 import {
     ListSpaceProp200ResponseBody,
-    ZodListSpacePropParamsSchema,
+    ZodListSpacePropURLParamsSchema,
     ZodListSpacePropQueryParamsSchema,
 } from 'shared';
 import SpaceAggregationBuilder from '../utils/SpaceAggregationBuilder';
@@ -58,7 +58,7 @@ export class ListAllSpacePropValuesHandler extends RouteHandler<ListSpaceProp200
             success: paramsSuccess,
             error: paramsError,
             data: paramsData,
-        } = ZodListSpacePropParamsSchema.safeParse(req.params);
+        } = ZodListSpacePropURLParamsSchema.safeParse(req.params);
 
         if (!paramsSuccess) {
             return {

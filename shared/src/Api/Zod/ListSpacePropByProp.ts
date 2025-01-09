@@ -1,7 +1,7 @@
 import { swaggerRegistry } from 'src/Swagger';
 import {
     ZodListSpaceProp200ResponseBodySchema,
-    ZodListSpacePropParamsSchema,
+    ZodListSpacePropURLParamsSchema,
     ZodListSpacePropQueryParamsSchema,
     ZodListSpacePropResponseBodySchema,
 } from './ListSpaceProp';
@@ -16,20 +16,20 @@ import {
     ZodInvertQueryParamSchema,
     ZodInvertShorthandQueryParamSchema,
 } from './QueryParams';
-import { ZodGetSpacesByPropParamsSchema } from './GetSpacesByProp';
+import { ZodGetSpacesByPropURLParamsSchema } from './GetSpacesByProp';
 
-export const ZodListSpacePropByPropParamsSchema = swaggerRegistry.register(
-    'ListSpacePropByPropParams',
-    ZodListSpacePropParamsSchema.omit({ prop: true })
+export const ZodListSpacePropByPropURLParamsSchema = swaggerRegistry.register(
+    'ListSpacePropByPropURLParams',
+    ZodListSpacePropURLParamsSchema.omit({ prop: true })
         .merge(
             z.object({
-                listProp: ZodListSpacePropParamsSchema.shape.prop,
+                listProp: ZodListSpacePropURLParamsSchema.shape.prop,
             })
         )
-        .merge(ZodGetSpacesByPropParamsSchema.omit({ prop: true }))
+        .merge(ZodGetSpacesByPropURLParamsSchema.omit({ prop: true }))
         .merge(
             z.object({
-                queryProp: ZodListSpacePropParamsSchema.shape.prop,
+                queryProp: ZodListSpacePropURLParamsSchema.shape.prop,
             })
         )
         .openapi({
@@ -38,7 +38,7 @@ export const ZodListSpacePropByPropParamsSchema = swaggerRegistry.register(
 );
 
 export const ZodListSpacePropByPropQueryParamsSchema = swaggerRegistry.register(
-    'ListSpacePropByPropParams',
+    'ListSpacePropByPropURLParams',
     z.intersection(
         ZodListSpacePropQueryParamsSchema,
         z.object({
@@ -77,7 +77,7 @@ export const ZodListSpacePropByPropResponseBodySchema = swaggerRegistry.register
     ZodListSpacePropResponseBodySchema,
 );
 
-export type ListSpacePropByPropParams = z.infer<typeof ZodListSpacePropByPropParamsSchema>;
+export type ListSpacePropByPropURLParams = z.infer<typeof ZodListSpacePropByPropURLParamsSchema>;
 export type ListSpacePropByPropQueryParams = z.infer<
     typeof ZodListSpacePropByPropQueryParamsSchema
 >;

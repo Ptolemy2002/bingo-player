@@ -2,7 +2,7 @@ import { asyncErrorHandler } from "@ptolemy2002/express-utils";
 import { Router } from "express";
 import RouteHandler, { GeneratedResonse, RouteHandlerRequest } from "lib/RouteHandler";
 import SpaceModel from "models/SpaceModel";
-import { GetSpaceByExactID200ResponseBody, ZodGetSpaceByExactIDParamsSchema } from "shared";
+import { GetSpaceByExactID200ResponseBody, ZodGetSpaceByExactIDURLParamsSchema } from "shared";
 
 const router = Router();
 
@@ -38,7 +38,7 @@ export class GetSpaceByExactIDHandler extends RouteHandler<GetSpaceByExactID200R
             success: paramsSuccess,
             error: paramsError,
             data: params
-        } = ZodGetSpaceByExactIDParamsSchema.safeParse(req.params);
+        } = ZodGetSpaceByExactIDURLParamsSchema.safeParse(req.params);
 
         if (!paramsSuccess) {
             return {

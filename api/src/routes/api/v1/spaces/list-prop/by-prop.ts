@@ -3,7 +3,7 @@ import { Router } from 'express';
 import RouteHandler, { RouteHandlerRequest } from 'lib/RouteHandler';
 import SpaceModel from 'models/SpaceModel';
 import {
-    ZodListSpacePropByPropParamsSchema,
+    ZodListSpacePropByPropURLParamsSchema,
     ZodListSpacePropByPropQueryParamsSchema,
     ListSpacePropByProp200ResponseBody,
 } from 'shared';
@@ -88,7 +88,7 @@ export class ListSpacePropByPropHandler extends RouteHandler<ListSpacePropByProp
             success: paramsSuccess,
             error: paramsError,
             data: paramsData,
-        } = ZodListSpacePropByPropParamsSchema.safeParse(req.params);
+        } = ZodListSpacePropByPropURLParamsSchema.safeParse(req.params);
 
         if (!paramsSuccess) {
             return {

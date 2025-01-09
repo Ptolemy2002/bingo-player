@@ -1,7 +1,7 @@
 import { Router } from "express";
 import RouteHandler, { RouteHandlerRequest } from "lib/RouteHandler";
 import SpaceModel from "models/SpaceModel";
-import { UpdateSpaceByID200ResponseBody, ZodUpdateSpaceByIDParamsSchema, ZodUpdateSpaceByIDRequestBodySchema } from "shared";
+import { UpdateSpaceByID200ResponseBody, ZodUpdateSpaceByIDURLParamsSchema, ZodUpdateSpaceByIDRequestBodySchema } from "shared";
 import { asyncErrorHandler } from "@ptolemy2002/express-utils";
 import { Error } from "mongoose";
 
@@ -58,7 +58,7 @@ export class UpdateSpaceByIDHandler extends RouteHandler<UpdateSpaceByID200Respo
             success: paramsSuccess,
             error: paramsError,
             data: params
-        } = ZodUpdateSpaceByIDParamsSchema.safeParse(req.params);
+        } = ZodUpdateSpaceByIDURLParamsSchema.safeParse(req.params);
 
         if (!paramsSuccess) {
             return {

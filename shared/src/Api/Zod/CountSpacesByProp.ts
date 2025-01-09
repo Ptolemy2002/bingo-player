@@ -1,5 +1,5 @@
 import { swaggerRegistry } from "src/Swagger";
-import { ZodGetSpacesByPropParamsSchema, ZodGetSpacesByPropQueryParamsSchema } from "./GetSpacesByProp";
+import { ZodGetSpacesByPropURLParamsSchema, ZodGetSpacesByPropQueryParamsSchema } from "./GetSpacesByProp";
 import { ZodCountSpacesResponseBodySchema, ZodCountSpaces200ResponseBodySchema } from "./CountSpaces";
 import { z } from "zod";
 import { ZodCaseSensitiveQueryParamSchema, ZodCaseSensitiveShorthandQueryParamSchema, ZodAccentSensitiveQueryParamSchema, ZodAccentSensitiveShorthandQueryParamSchema, ZodMatchWholeQueryParamSchema, ZodMatchWholeShorthandQueryParamSchema, ZodInvertQueryParamSchema, ZodInvertShorthandQueryParamSchema } from "./QueryParams";
@@ -7,7 +7,7 @@ import { ZodCaseSensitiveQueryParamSchema, ZodCaseSensitiveShorthandQueryParamSc
 // For now, counting is a very similar operation to getting, so we can reuse schemas.
 export const ZodCountSpacesByProp200ResponseBodySchema = swaggerRegistry.register("CountSpacesByProp200ResponseBody", ZodCountSpaces200ResponseBodySchema);
 export const ZodCountSpacesByPropResponseBodySchema = swaggerRegistry.register("CountSpacesByPropResponseBody", ZodCountSpacesResponseBodySchema);
-export const ZodCountSpacesByPropParamsSchema = swaggerRegistry.register("CountSpacesByPropParams", ZodGetSpacesByPropParamsSchema);
+export const ZodCountSpacesByPropURLParamsSchema = swaggerRegistry.register("CountSpacesByPropURLParams", ZodGetSpacesByPropURLParamsSchema);
 export const ZodCountSpacesByPropQueryParamsSchema = swaggerRegistry.register(
     "CountSpacesByPropQueryParams",
     z.object({
@@ -32,7 +32,7 @@ export const ZodCountSpacesByPropQueryParamsSchema = swaggerRegistry.register(
     })
 );
 
-export type CountSpacesByPropParams = z.infer<typeof ZodCountSpacesByPropParamsSchema>;
+export type CountSpacesByPropURLParams = z.infer<typeof ZodCountSpacesByPropURLParamsSchema>;
 export type CountSpacesByProp200ResponseBody = z.infer<typeof ZodCountSpacesByProp200ResponseBodySchema>;
 export type CountSpacesByPropResponseBody = z.infer<typeof ZodCountSpacesByPropResponseBodySchema>;
 export type CountSpacesByPropQueryParamsInput = z.input<typeof ZodCountSpacesByPropQueryParamsSchema>;

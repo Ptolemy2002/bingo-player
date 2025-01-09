@@ -1,6 +1,6 @@
 import axios, { AxiosInstance, CreateAxiosDefaults } from "axios";
 import { TypedAxios, RouteDef } from "typed-axios-instance";
-import { GetSpaceByExactIDResponseBody, GetSpacesByPropQueryParamsInput, GetSpacesByPropResponseBody } from "shared";
+import { GetSpaceByExactIDResponseBody, GetSpaceByExactIDURLParams, GetSpacesByPropQueryParamsInput, GetSpacesByPropResponseBody, GetSpacesByPropURLParams } from "shared";
 import getEnv from "src/Env";
 
 export let Api: AxiosInstance | null = null;
@@ -10,14 +10,14 @@ export let Api: AxiosInstance | null = null;
 type RouteDefArray<T extends RouteDef[]> = T;
 export type ApiRoutes = RouteDefArray<[
     {
-        route: `/spaces/get/by-id/${string}`,
+        route: `/spaces/get/by-id/${GetSpaceByExactIDURLParams["id"]}`,
         method: "GET",
 
         jsonResponse: GetSpaceByExactIDResponseBody
     },
 
     {
-        route: `/spaces/get/by-prop/${string}/${string}`,
+        route: `/spaces/get/by-prop/${GetSpacesByPropURLParams["prop"]}/${GetSpacesByPropURLParams["query"]}`,
         method: "GET",
 
         queryParams: GetSpacesByPropQueryParamsInput,

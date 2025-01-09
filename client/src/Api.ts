@@ -5,8 +5,9 @@ import getEnv from "src/Env";
 
 export let Api: AxiosInstance | null = null;
 
+// This is just a wrapper to ensure that ApiRoutes is an array of RouteDefs.
+// TypeScript will error if it is not.
 type RouteDefArray<T extends RouteDef[]> = T;
-
 export type ApiRoutes = RouteDefArray<[
     {
         route: `/spaces/get/by-id/${string}`,

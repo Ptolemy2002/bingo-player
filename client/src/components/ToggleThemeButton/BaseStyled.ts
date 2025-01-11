@@ -7,17 +7,17 @@ export default Object.assign(
         ({theme, ...props}) => ({
             $backgroundColor:
                 props.$backgroundColor
-                ?? theme.toggleThemeButtonBackgroundColor
+                ?? theme.toggleThemeButton?.backgroundColor
                 ?? "transparent",
             $activeBackgroundColor:
                 props.$activeBackgroundColor
-                ?? theme.toggleThemeButtonActiveBackgroundColor
-                ?? theme.toggleThemeButtonBackgroundColor
+                ?? theme.toggleThemeButton?.activeBackgroundColor
+                ?? theme.toggleThemeButton?.backgroundColor
                 ?? "transparent",
             $hoverBackgroundColor:
                 props.$hoverBackgroundColor
-                ?? theme.toggleThemeButtonHoverBackgroundColor
-                ?? theme.toggleThemeButtonBackgroundColor
+                ?? theme.toggleThemeButton?.hoverBackgroundColor
+                ?? theme.toggleThemeButton?.backgroundColor
                 ?? "transparent",
             $css: props.$css ?? null
         })

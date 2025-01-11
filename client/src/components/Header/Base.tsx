@@ -1,10 +1,14 @@
 import { Navbar, Nav, NavbarToggle, NavbarCollapse } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import { HeaderProps } from "./Types";
-import MenuIcon from "src/components/icons/MenuIcon";
+import DefaultMenuIcon from "src/components/icons/MenuIcon";
 import ToggleThemeButton from "src/components/ToggleThemeButton";
 
-export default function HeaderBase({title, className}: HeaderProps["functional"]) {
+export default function HeaderBase({
+    title,
+    className,
+    MenuIcon = DefaultMenuIcon
+}: HeaderProps["functional"]) {
     return (
         <Navbar
             as="header"

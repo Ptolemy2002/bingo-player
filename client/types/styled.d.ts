@@ -2,6 +2,8 @@ import "styled-components";
 import { RequiredCSSProperties } from "@ptolemy2002/react-styled-component-utils";
 
 declare module "styled-components" {
+    export type AlertVariant = "primary" | "secondary" | "success" | "danger" | "warning" | "info" | "light" | "dark";
+
     export interface DefaultTheme {
         backgroundColor: RequiredCSSProperties["backgroundColor"],
         textColor: RequiredCSSProperties["color"],
@@ -10,14 +12,37 @@ declare module "styled-components" {
         borderColor: RequiredCSSProperties["borderColor"],
         borderWidth: RequiredCSSProperties["borderWidth"],
 
-        toggleThemeButtonBackgroundColor?: RequiredCSSProperties["backgroundColor"],
-        toggleThemeButtonActiveBackgroundColor?: RequiredCSSProperties["backgroundColor"],
-        toggleThemeButtonHoverBackgroundColor?: RequiredCSSProperties["backgroundColor"],
+        toggleThemeButton?: {
+            backgroundColor?: RequiredCSSProperties["backgroundColor"],
+            activeBackgroundColor?: RequiredCSSProperties["backgroundColor"],
+            hoverBackgroundColor?: RequiredCSSProperties["backgroundColor"]
+        },
+        
+        icons?: {
+            sun?: {
+                color?: RequiredCSSProperties["fill"],
+            },
+            
+            moon?: {
+                color?: RequiredCSSProperties["fill"],
+            }
+        },
 
-        sunIconColor?: RequiredCSSProperties["fill"],
-        moonIconColor?: RequiredCSSProperties["fill"],
+        currentThemeTooltip?: {
+            backgroundColor?: RequiredCSSProperties["backgroundColor"],
+            textColor?: RequiredCSSProperties["color"]
+        },
 
-        currentThemeTooltipBackgroundColor?: RequiredCSSProperties["backgroundColor"],
-        currentThemeTooltipTextColor?: RequiredCSSProperties["color"]
+        alert?: Partial<
+            Record<
+                AlertVariant,
+                Partial<{
+                    backgroundColor: RequiredCSSProperties["backgroundColor"],
+                    textColor: RequiredCSSProperties["color"],
+                    borderColor: RequiredCSSProperties["borderColor"],
+                    linkColor: RequiredCSSProperties["color"]
+                }>
+            >
+        >,
     }
 }

@@ -3,12 +3,20 @@ import { createBrowserRouter } from 'react-router-dom';
 import NotFoundPage from 'src/pages/NotFoundPage';
 import Header from 'src/components/Header';
 import Footer from 'src/components/Footer';
+import HomePage from './pages/HomePage';
+import { SuspenseBoundary } from '@ptolemy2002/react-suspense';
+import LoadingPage from './pages/LoadingPage';
 
 export function PageLayout() {
     return <>
         <Header title="Bingo Player" />
         <main>
-            <Outlet />
+            <SuspenseBoundary
+                fallback={<LoadingPage />}
+                init={() => new Promise((resolve) => setTimeout(resolve, 5000))}
+            >
+                <Outlet />
+            </SuspenseBoundary>
         </main>
         <Footer>
             Ptolemy Henson
@@ -24,9 +32,7 @@ export const router = createBrowserRouter([{
     children: [
         {
             path: "/",
-            element: <div>
-                Welcome to Bingo Player!
-            </div>
+            element: <HomePage />
         },
 
         // The reason we don't use errorElement here is because we want to render the NotFoundPage

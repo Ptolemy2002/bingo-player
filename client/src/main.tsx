@@ -1,7 +1,7 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import App from 'src/App.tsx';
-import { createGlobalStyle } from 'styled-components';
+import { AlertVariant, createGlobalStyle, css } from 'styled-components';
 import { NamedThemeProvider } from 'src/NamedTheme.tsx';
 import { ErrorBoundary } from 'react-error-boundary';
 import { EnvProvider } from 'src/Env';
@@ -55,6 +55,24 @@ export const GlobalStyle = createGlobalStyle`
         margin: 0;
         width: 100%;
     }
+
+    // Override Bootstrap Alert styles where applicable
+    ${({ theme }) => {
+        if (!theme.alert) return null;
+
+        return Object.entries(theme.alert).map(([variant, styles]) => {
+            variant = variant as AlertVariant;
+
+            return css`
+                .alert-${variant} {
+                    ${styles.backgroundColor && `--bs-alert-bg: ${styles.backgroundColor};`}
+                    ${styles.textColor && `--bs-alert-color: ${styles.textColor};`}
+                    ${(styles.borderColor) && `--bs-alert-border-color: ${styles.borderColor};`}
+                    ${(styles.linkColor ?? styles.textColor) && `--bs-alert-link-color: ${styles.linkColor ?? styles.textColor};`}
+                }  
+            `;
+        });
+    }}
 `;
 
 createRoot(document.getElementById('root')!).render(

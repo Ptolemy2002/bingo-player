@@ -7,11 +7,11 @@ export default Object.assign(
         ({theme, ...props}) => ({
             $backgroundColor:
                 props.$backgroundColor
-                ?? theme.currentThemeTooltipBackgroundColor
+                ?? theme.currentThemeTooltip?.backgroundColor
                 ?? theme.backgroundColor,
             $textColor:
                 props.$textColor
-                ?? theme.currentThemeTooltipTextColor
+                ?? theme.currentThemeTooltip?.textColor
                 ?? theme.textColor,
             $css: props.$css ?? null,
 

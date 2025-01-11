@@ -27,8 +27,10 @@ export const NamedThemes: NamedTheme[] = [
             borderColor: "black",
             borderWidth: "2px",
 
-            currentThemeTooltipBackgroundColor: "black",
-            currentThemeTooltipTextColor: "white",
+            currentThemeTooltip: {
+                backgroundColor: "black",
+                textColor: "white"
+            }
         }
     },
     
@@ -42,8 +44,18 @@ export const NamedThemes: NamedTheme[] = [
             borderColor: "white",
             borderWidth: "2px",
 
-            currentThemeTooltipBackgroundColor: "white",
-            currentThemeTooltipTextColor: "black"
+            currentThemeTooltip: {
+                backgroundColor: "white",
+                textColor: "black"
+            },
+
+            alert: {
+                info: {
+                    backgroundColor: "#3cd2f3",
+                    textColor: "black",
+                    borderColor: "transparent"
+                }
+            }
         }
     }
 ];

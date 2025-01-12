@@ -44,5 +44,10 @@ declare module "styled-components" {
                 }>
             >
         >,
+
+        media?: {
+            grayscale?: number,
+            opacity?: number
+        }
     }
 }

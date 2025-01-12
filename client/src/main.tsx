@@ -33,6 +33,7 @@ export const GlobalStyle = createGlobalStyle`
         display: flex;
         flex-direction: column;
 
+        overflow-y: auto;
         overflow-anchor: none; // Fixes a few React bugs
 
         color: ${({ theme }) => theme.textColor};
@@ -54,6 +55,13 @@ export const GlobalStyle = createGlobalStyle`
     footer {
         margin: 0;
         width: 100%;
+    }
+
+    img, video {
+        filter: grayscale(
+            ${({ theme }) => theme.media?.grayscale ?? 0})
+            opacity(${({ theme }) => theme.media?.opacity ?? "100%"})
+        ;
     }
 
     // Override Bootstrap Alert styles where applicable
@@ -78,7 +86,7 @@ export const GlobalStyle = createGlobalStyle`
 createRoot(document.getElementById('root')!).render(
     <StrictMode>
         <CacheProvider>
-            <NamedThemeProvider initial="dark">
+            <NamedThemeProvider>
                 <GlobalStyle />
 
                 <ErrorBoundary fallback={<p id="fatal-error">Fatal Error</p>}>

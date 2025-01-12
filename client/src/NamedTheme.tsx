@@ -1,24 +1,34 @@
-import { ComponentProps, createContext, ReactNode, useCallback, useContext, useState } from "react";
+import { ComponentProps, createContext, ReactNode, useCallback, useContext } from "react";
+import { usePersistentState } from "@ptolemy2002/react-utils";
 import { MaybeTransformer } from "@ptolemy2002/ts-utils";
 import { ThemeProvider, useTheme } from "styled-components";
 import isCallable from "is-callable";
 import { DefaultTheme } from "styled-components";
 import { wrapNumber } from "@ptolemy2002/js-math-utils";
-import SunIcon from "./components/icons/SunIcon";
-import MoonIcon from "./components/icons/MoonIcon";
+import SunIcon from "src/components/icons/SunIcon";
+import MoonIcon from "src/components/icons/MoonIcon";
 
 export type ThemeProviderProps = ComponentProps<typeof ThemeProvider>;
 
-export type NamedTheme = {
-    id: string,
+export type NamedThemeReservedIds = "detect";
+
+export type NamedTheme= {
+    id: string;
     displayName: string;
     icon: ReactNode;
     value: ThemeProviderProps["theme"];
+    onSwitch?: (byIndex: boolean) => void;
 };
 
+export function createNamedTheme<T extends string>(
+    id: T extends NamedThemeReservedIds ? never : T,
+    theme: Omit<NamedTheme, "id">
+): NamedTheme & {id: T} {
+    return {id, ...theme};
+}
+
 export const NamedThemes: NamedTheme[] = [
-    {
-        id: "light",
+    createNamedTheme("light", {
         displayName: "Light",
         icon: <SunIcon />,
         value: {
@@ -32,10 +42,9 @@ export const NamedThemes: NamedTheme[] = [
                 textColor: "white"
             }
         }
-    },
+    }),
     
-    {
-        id: "dark",
+    createNamedTheme("dark", {
         displayName: "Dark",
         icon: <MoonIcon />,
         value: {
@@ -55,9 +64,14 @@ export const NamedThemes: NamedTheme[] = [
                     textColor: "black",
                     borderColor: "transparent"
                 }
+            },
+
+            media: {
+                grayscale: 1,
+                opacity: 0.5
             }
         }
-    }
+    })
 ];
 
 export type SetNamedThemeCallback = (theme: MaybeTransformer<string | number, [string]>) => void;
@@ -85,6 +99,8 @@ export function verifyTheme(theme: string | number) {
             throw new Error(`Theme with index ${theme} not found`);
         }
         return NamedThemes[theme].id;
+    } else if (theme === "detect") {
+        return window.matchMedia?.("(prefers-color-scheme: dark)").matches ? "dark" : "light";
     } else if (!findThemeById(theme)) {
         throw new Error(`Theme ${theme} not found`);
     }
@@ -92,14 +108,20 @@ export function verifyTheme(theme: string | number) {
     return theme;
 }
 
-export type NamedThemeProviderProps = Omit<ThemeProviderProps, "theme"> & {initial: string | number};
-export function NamedThemeProvider({initial=0, ...props}: NamedThemeProviderProps) {
-    const [currentTheme, _setCurrentTheme] = useState<string>(() => verifyTheme(initial));
+export type NamedThemeProviderProps = Omit<ThemeProviderProps, "theme"> & {initial?: string | number};
+export function NamedThemeProvider({initial="detect", ...props}: NamedThemeProviderProps) {
+    const [currentTheme, _setCurrentTheme] = usePersistentState<string>(
+        "theme", verifyTheme(initial)
+    );
 
     const setTheme = useCallback<SetNamedThemeCallback>((theme) => {
         _setCurrentTheme((prev) => {
             const next = isCallable(theme) ? theme(prev) : theme;
-            return verifyTheme(next);
+
+            const nextTheme = findThemeById(verifyTheme(next))!;
+            nextTheme.onSwitch?.(typeof next === "number");
+            
+            return nextTheme.id;
         });
     }, [_setCurrentTheme]);
 
@@ -108,14 +130,14 @@ export function NamedThemeProvider({initial=0, ...props}: NamedThemeProviderProp
             const index = findThemeIndexById(prev);
             return NamedThemes[wrapNumber(index + 1, 0, NamedThemes.length)]!.id;
         });
-    }, []);
+    }, [_setCurrentTheme]);
 
     const prevTheme = useCallback(() => {
         _setCurrentTheme((prev) => {
             const index = findThemeIndexById(prev);
             return NamedThemes[wrapNumber(index - 1, 0, NamedThemes.length)]!.id;
         });
-    }, []);
+    }, [_setCurrentTheme]);
 
     return (
         <NamedThemeSetterContext.Provider value={{setTheme, nextTheme, prevTheme}}>

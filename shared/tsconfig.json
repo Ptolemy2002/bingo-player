@@ -1,8 +1,9 @@
 {
   "compilerOptions": {
     "baseUrl": ".",
-    "module": "commonjs",
+    "module": "ES6",
     "target": "es2019",
+    "moduleResolution": "node",
     "declaration": true,
     "outDir": "./dist",
     "skipLibCheck": true,

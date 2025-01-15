@@ -13,28 +13,22 @@
         "directory": "shared"
     },
     "scripts": {
-        "prepare": "npx ts-patch install -s",
         "build": "bash ./scripts/build.sh",
-        "_build": "tsc --project ./tsconfig.json",
+        "_build": "tsc --project ./tsconfig.json && tsc-alias",
+        "preinstall": "npx only-allow pnpm",
         "postinstall": "npx typesync",
         "uninstall": "bash ./scripts/uninstall.sh",
         "reinstall": "bash ./scripts/reinstall.sh"
     },
     "devDependencies": {
         "@asteasolutions/zod-to-openapi": "^7.3.0",
-        "@ptolemy2002/regex-utils": "^2.2.0",
-        "@ptolemy2002/ts-utils": "^2.1.0",
         "mongoose": "^8.9.2",
-        "ts-patch": "^3.3.0",
+        "tsc-alias": "^1.8.10",
         "tsconfig-paths": "^4.2.0",
-        "typescript-transform-paths": "^3.5.3",
-        "zod": "^3.24.1"
+        "typescript-transform-paths": "^3.5.3"
     },
     "peerDependencies": {
         "@asteasolutions/zod-to-openapi": "^7.3.0",
-        "@ptolemy2002/regex-utils": "^2.2.0",
-        "@ptolemy2002/ts-utils": "^2.1.0",
-        "mongoose": "^8.9.2",
-        "zod": "^3.24.1"
+        "mongoose": "^8.9.2"
     }
 }

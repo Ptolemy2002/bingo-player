@@ -32,6 +32,10 @@ export default function HeaderBase({
                     <LinkContainer to="/">
                         <Nav.Link>Home</Nav.Link>
                     </LinkContainer>
+
+                    <LinkContainer to="/space-gallery">
+                        <Nav.Link>Space Gallery</Nav.Link>
+                    </LinkContainer>
                 </ul>
 
                 <ul className="navbar-nav ms-auto mb-2 mb-lg-0">

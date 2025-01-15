@@ -5,7 +5,7 @@ if [ ! -d "../shared/dist" ]; then
     currentDir=$(pwd)
 
     cd ../shared
-    npm run build
+    pnpm build
 
     # Return to the current directory
     echo "Returning to the original directory: $currentDir"
@@ -13,5 +13,5 @@ if [ ! -d "../shared/dist" ]; then
 fi
 
 echo "Linking shared dependencies"
-npm link ../shared
+npm link ../shared --save
 echo "Finished linking shared dependencies"

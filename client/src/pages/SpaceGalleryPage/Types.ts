@@ -1,9 +1,11 @@
 import { GetSpacesByPropURLParams } from "shared";
 import { SetSearchParamAction } from "@ptolemy2002/react-search-param-state";
+import { StyledComponentPropsWithCSS } from "@ptolemy2002/react-styled-component-utils";
+import { ComponentType } from "react";
 
 export type SpaceGallerySearchParams = {
     // q = query
-    q: string | null;
+    q: string;
     // cat = category
     cat: GetSpacesByPropURLParams["prop"] | "general";
     // cs = case sensitive
@@ -28,3 +30,13 @@ export type UseSpaceGallerySearchParamResult = Readonly<SpaceGallerySearchParams
         K extends `set${infer R}` ? Uncapitalize<R> : never
     >) => void;
 }>;
+
+export type SpaceGalleryPageProps = StyledComponentPropsWithCSS<{
+    className?: string;
+    SearchBar?: ComponentType<SpaceGallerySearchBarProps["functional"]>;
+}, {}>;
+
+export type SpaceGallerySearchBarProps = StyledComponentPropsWithCSS<{
+    placeholder?: string;
+    className?: string;
+}, {}>;

@@ -6,7 +6,8 @@
     "start": "bash ./scripts/build.sh && tsx ./bin/www.ts",
     "dev": "bash ./scripts/build.sh && tsx watch ./bin/www.ts --exclude swagger_output.json",
     "build": "npm run swagger-autogen",
-    "postinstall": "npx typesync && npm run link-shared",
+    "preinstall": "npx only-allow pnpm",
+    "postinstall": "npx typesync",
     "link-shared": "bash ./scripts/link-shared.sh",
     "uninstall": "bash ./scripts/uninstall.sh",
     "reinstall": "bash ./scripts/reinstall.sh",
@@ -21,8 +22,6 @@
     "@ptolemy2002/express-utils": "^2.1.1",
     "@ptolemy2002/js-utils": "^3.2.0",
     "@ptolemy2002/mongoose-utils": "^1.0.0",
-    "@ptolemy2002/regex-utils": "^2.2.0",
-    "@ptolemy2002/ts-utils": "^2.1.0",
     "@types/is-callable": "^1.1.2",
     "app-module-path": "^2.2.0",
     "cookie-parser": "~1.4.4",
@@ -36,9 +35,9 @@
     "mongoose": "^8.9.2",
     "morgan": "~1.9.1",
     "ms": "^2.1.3",
+    "shared": "file:../shared",
     "swagger-autogen": "^2.23.7",
-    "swagger-ui-express": "^5.0.1",
-    "zod": "^3.23.8"
+    "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
     "@types/app-module-path": "~2.2.2",
@@ -53,7 +52,6 @@
     "@types/swagger-ui-express": "~4.1.7",
     "http": "^0.0.1-security",
     "nodemon": "^3.1.7",
-    "ts-node": "^10.9.2",
     "typescript": "^5.6.3"
   }
 }

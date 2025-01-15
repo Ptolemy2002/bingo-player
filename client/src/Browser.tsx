@@ -5,7 +5,8 @@ import Header from 'src/components/Header';
 import Footer from 'src/components/Footer';
 import HomePage from './pages/HomePage';
 import { SuspenseBoundary } from '@ptolemy2002/react-suspense';
-import LoadingPage from './pages/LoadingPage';
+import LoadingPage from 'src/pages/LoadingPage';
+import SpaceGalleryPage from 'src/pages/SpaceGalleryPage';
 
 export function PageLayout() {
     return <>
@@ -33,6 +34,11 @@ export const router = createBrowserRouter([{
         {
             path: "/",
             element: <HomePage />
+        },
+
+        {
+            path: "/space-gallery",
+            element: <SpaceGalleryPage />
         },
 
         // The reason we don't use errorElement here is because we want to render the NotFoundPage

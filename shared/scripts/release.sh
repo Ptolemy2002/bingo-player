@@ -19,5 +19,5 @@ read otp
 bash scripts/build.sh
 
 echo "Publishing the package"
-npm publish --access public --otp $otp
+pnpm publish --access public --otp $otp
 echo "Finished publishing the package"

@@ -1,4 +1,4 @@
 #! /usr/bin/bash
 echo "Building the project"
-npm run build
+pnpm build
 echo "Finished building the project"

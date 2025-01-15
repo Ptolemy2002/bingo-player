@@ -1,11 +1,16 @@
 import useSearchParamState, { ConvertFunctions, SetSearchParamAction, SetSearchParamFunction } from "@ptolemy2002/react-search-param-state";
+import { SpaceGallerySearchParams, UseSpaceGallerySearchParamResult } from "./Types";
 import { useCallback } from "react";
 import { ZodGetSpacesByPropURLParamsSchema } from "shared";
-import { SpaceGallerySearchParams, UseSpaceGallerySearchParamResult } from "./Types";
 import { ZodCoercedBoolean } from "@ptolemy2002/regex-utils";
 import z from "zod";
 
 export const converts: ConvertFunctions<SpaceGallerySearchParams> = {
+    q: {
+        fromURL: (value) => value?.trim() ?? "",
+        toURL: (value) => value.trim()
+    },
+    
     cat: (value) => {
         if (value === "general") return "general";
 
@@ -38,6 +43,7 @@ export const converts: ConvertFunctions<SpaceGallerySearchParams> = {
 };
 
 export const defaultValues: Partial<SpaceGallerySearchParams> = {
+    q: "",
     cat: "general",
     cs: false,
     mw: false,
@@ -54,7 +60,7 @@ function useSearchParamSetter<K extends keyof SpaceGallerySearchParams>(key: K, 
     );
 }
 
-export default function useAppSearchParamState(): UseSpaceGallerySearchParamResult {
+export default function useSpaceGallerySearchParamState(): UseSpaceGallerySearchParamResult {
     const [{
         q, cat, cs,
         mw, as, i,

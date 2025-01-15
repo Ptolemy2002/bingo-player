@@ -1,0 +1,7 @@
+{
+	"dependencies": {
+		"@ptolemy2002/regex-utils": "^2.3.0",
+		"@ptolemy2002/ts-utils": "^2.3.0",
+		"zod": "^3.24.1"
+	}
+}

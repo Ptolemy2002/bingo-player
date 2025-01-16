@@ -97,4 +97,4 @@ createRoot(document.getElementById('root')!).render(
             </NamedThemeProvider>
         </CacheProvider>
     </StrictMode>,
-)
+);

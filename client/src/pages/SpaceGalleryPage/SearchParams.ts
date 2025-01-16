@@ -3,7 +3,7 @@ import { SpaceGallerySearchParams, UseSpaceGallerySearchParamResult } from "./Ty
 import { useCallback } from "react";
 import { ZodGetSpacesByPropURLParamsSchema } from "shared";
 import { ZodCoercedBoolean } from "@ptolemy2002/regex-utils";
-import z from "zod";
+import { z } from "zod";
 
 export const converts: ConvertFunctions<SpaceGallerySearchParams> = {
     q: {

@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { swaggerRegistry } from "src/Swagger";
-import { ZodCoercedBoolean } from "@ptolemy2002/regex-utils";
+import { ZodCoercedBoolean } from "src/Utilities";
 import { ZodSortOrderSchema } from "./SortOrder";
 import { ZodSpaceQueryPropSchema, ZodSpaceQueryPropWithScoreSchema } from "src/Space";
 

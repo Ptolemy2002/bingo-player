@@ -1,18 +1,12 @@
 import styled from "styled-components";
 import { CurrentThemeTooltipProps } from "./Types";
 import Base from "./CurrentThemeTooltip";
+import { evaluateTooltipStyles } from "src/lib/Styles";
 
 export default Object.assign(
     styled(Base).attrs<CurrentThemeTooltipProps["style"]>(
         ({theme, ...props}) => ({
-            $backgroundColor:
-                props.$backgroundColor
-                ?? theme.currentThemeTooltip?.backgroundColor
-                ?? theme.backgroundColor,
-            $textColor:
-                props.$textColor
-                ?? theme.currentThemeTooltip?.textColor
-                ?? theme.textColor,
+            ...evaluateTooltipStyles(theme, props, "currentTheme"),
             $css: props.$css ?? null,
 
             // Static variant since we're doing our own coloring
@@ -21,15 +15,7 @@ export default Object.assign(
     )`
         --rt-color-white: ${({$backgroundColor}) => $backgroundColor};
         --rt-color-dark: ${({$textColor}) => $textColor};
-
-        border-style: none;
-
-        // Prevent taking up full width when the navbar is collapsed
-        width: fit-content;
-
-        // Remove padding for alignment purposes
-        padding: 0;
-
+        
         ${({$css}) => $css}
     `,
     {

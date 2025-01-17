@@ -6,10 +6,7 @@ import { ZodCoercedBoolean } from "@ptolemy2002/regex-utils";
 import { z } from "zod";
 
 export const converts: ConvertFunctions<SpaceGallerySearchParams> = {
-    q: {
-        fromURL: (value) => value?.trim() ?? "",
-        toURL: (value) => value.trim()
-    },
+    q: (value) => value?? "",
     
     cat: (value) => {
         if (value === "general") return "general";

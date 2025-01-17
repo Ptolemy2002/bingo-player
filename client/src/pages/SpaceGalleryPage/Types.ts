@@ -1,7 +1,12 @@
 import { GetSpacesByPropURLParams } from "shared";
 import { SetSearchParamAction } from "@ptolemy2002/react-search-param-state";
-import { StyledComponentPropsWithCSS } from "@ptolemy2002/react-styled-component-utils";
+import { RequiredCSSProperties, StyledComponentPropsWithCSS } from "@ptolemy2002/react-styled-component-utils";
 import { ComponentType } from "react";
+import { MagnifyingGlassIconProps } from "src/components/icons/MagnifyingGlassIcon";
+import { GearIconProps } from "src/components/icons/GearIcon";
+import { ButtonStyles } from "styled-components";
+import { Override } from "@ptolemy2002/ts-utils";
+import { ButtonProps, FormProps } from "react-bootstrap";
 
 export type SpaceGallerySearchParams = {
     // q = query
@@ -36,7 +41,28 @@ export type SpaceGalleryPageProps = StyledComponentPropsWithCSS<{
     SearchBar?: ComponentType<SpaceGallerySearchBarProps["functional"]>;
 }, {}>;
 
-export type SpaceGallerySearchBarProps = StyledComponentPropsWithCSS<{
+export type SpaceGallerySearchBarProps = StyledComponentPropsWithCSS<Override<FormProps, {
     placeholder?: string;
     className?: string;
-}, {}>;
+    SearchSettingsButton?: ComponentType<SpaceGallerySearchSettingsButtonProps["functional"]>; 
+    SearchSubmitButton?: ComponentType<SpaceGallerySearchSubmitButtonProps["functional"]>;
+}>, {
+    gap: RequiredCSSProperties["gap"];
+}>;
+
+export type SpaceGallerySearchSettingsButtonProps = StyledComponentPropsWithCSS<
+    Override<ButtonProps, {
+        className?: string;
+        tooltipId?: string;
+        GearIcon?: ComponentType<GearIconProps>;
+    }>,
+    ButtonStyles
+>;
+
+export type SpaceGallerySearchSubmitButtonProps = StyledComponentPropsWithCSS<
+    Override<ButtonProps, {
+        className?: string;
+        MagnifyingGlassIcon?: ComponentType<MagnifyingGlassIconProps>;
+    }>,
+    ButtonStyles
+>;

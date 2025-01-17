@@ -37,9 +37,18 @@ export const NamedThemes: NamedTheme[] = [
             borderColor: "black",
             borderWidth: "2px",
 
-            currentThemeTooltip: {
-                backgroundColor: "black",
-                textColor: "white"
+            tooltips: {
+                currentTheme: {
+                    backgroundColor: "black",
+                    textColor: "white"
+                }
+            },
+
+            icons: {
+                gear: {
+                    outerColor: "black",
+                    innerColor: "white"
+                }
             }
         }
     }),
@@ -53,9 +62,11 @@ export const NamedThemes: NamedTheme[] = [
             borderColor: "white",
             borderWidth: "2px",
 
-            currentThemeTooltip: {
-                backgroundColor: "white",
-                textColor: "black"
+            tooltips: {
+                currentTheme: {
+                    backgroundColor: "white",
+                    textColor: "black"
+                }
             },
 
             alert: {
@@ -69,6 +80,13 @@ export const NamedThemes: NamedTheme[] = [
             media: {
                 grayscale: 1,
                 opacity: 0.5
+            },
+
+            icons: {
+                gear: {
+                    outerColor: "white",
+                    innerColor: "black"
+                }
             }
         }
     })

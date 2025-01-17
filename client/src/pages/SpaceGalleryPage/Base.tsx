@@ -1,5 +1,5 @@
 import { SuspenseBoundary } from "@ptolemy2002/react-suspense";
-import DefaultSearchBar from "./SearchBarBase";
+import DefaultSearchBar from "./SearchBarStyled";
 import { SpaceGalleryPageProps } from "./Types";
 
 export default function SpaceGalleryPageBase({

@@ -1,12 +1,12 @@
 import styled from "styled-components";
-import { CurrentThemeTooltipProps } from "./Types";
-import Base from "./CurrentThemeTooltip";
+import { SearchSettingsTooltipProps } from "./Types";
+import Base from "./SearchSettingsTooltip";
 import { evaluateTooltipStyles } from "src/lib/Styles";
 
 export default Object.assign(
-    styled(Base).attrs<CurrentThemeTooltipProps["style"]>(
+    styled(Base).attrs<SearchSettingsTooltipProps["style"]>(
         ({theme, ...props}) => ({
-            ...evaluateTooltipStyles(theme, props, "currentTheme"),
+            ...evaluateTooltipStyles(theme, props, "spaceGallerySearchSettings"),
             $css: props.$css ?? null,
 
             // Static variant since we're doing our own coloring
@@ -20,6 +20,6 @@ export default Object.assign(
         ${({$css}) => $css}
     `,
     {
-        displayName: "styled(CurrentThemeTooltip)"
+        displayName: "styled(SearchSettingsTooltip)"
     }
 );

@@ -6,6 +6,8 @@ import SpaceGallerySearchSetingsButtonBase from "./SearchSettingsButtonBase";
 import SpaceGallerySearchSettingsButtonStyled from "./SearchSettingsButtonStyled";
 import SpaceGallerySearchSubmitButtonBase from "./SearchSubmitButtonBase";
 import SpaceGallerySearchSubmitButtonStyled from "./SearchSubmitButtonStyled";
+import SpaceGallerySearchSettingsTooltipBase from "./SearchSettingsTooltip";
+import SpaceGallerySearchSettingsTooltipStyled from "./SearchSettingsTooltipStyled";
 
 export const UnstyledSpaceGalleryPage = Object.assign(Base, {
     SearchBar: SpaceGallerySearchBarBase
@@ -23,8 +25,18 @@ export const SpaceGallerySearchBar = Object.assign(SpaceGallerySearchBarStyled, 
     SearchSubmitButton: SpaceGallerySearchSubmitButtonStyled
 });
 
-export const UnstyledSpaceGallerySearchSettingsButton = SpaceGallerySearchSetingsButtonBase;
-export const SpaceGallerySearchSettingsButton = SpaceGallerySearchSettingsButtonStyled;
+export const UnstyledSpaceGallerySearchSettingsButton = Object.assign(SpaceGallerySearchSetingsButtonBase, {
+    Tooltip: SpaceGallerySearchSettingsTooltipBase
+});
+export const SpaceGallerySearchSettingsButton = Object.assign(SpaceGallerySearchSettingsButtonStyled, {
+    Tooltip: SpaceGallerySearchSettingsTooltipStyled
+});
+
+export const UnstyledSpaceGallerySearchSubmitButton = SpaceGallerySearchSubmitButtonBase;
+export const SpaceGallerySearchSubmitButton = SpaceGallerySearchSubmitButtonStyled;
+
+export const UnstyledSpaceGallerySearchSettingsTooltip = SpaceGallerySearchSettingsTooltipBase;
+export const SpaceGallerySearchSettingsTooltip = SpaceGallerySearchSettingsTooltipStyled;
 
 export * from "./Types";
 export * from "./SearchParams";

@@ -26,10 +26,11 @@ declare module "styled-components" {
         disabledBackgroundColor: RequiredCSSProperties["backgroundColor"],
     }>;
 
-    export type TooltipVariant = "currentTheme";
+    export type TooltipVariant = "currentTheme" | "spaceGallerySearchSettings";
     export type TooltipStyles = Partial<{
         backgroundColor: RequiredCSSProperties["backgroundColor"],
-        textColor: RequiredCSSProperties["color"]
+        textColor: RequiredCSSProperties["color"],
+        opacity: RequiredCSSProperties["opacity"]
     }>;
 
     export interface DefaultTheme {
@@ -40,9 +41,15 @@ declare module "styled-components" {
         borderColor: RequiredCSSProperties["borderColor"],
         borderWidth: RequiredCSSProperties["borderWidth"],
 
-        buttons?: Partial<Record<ButtonVariant, ButtonStyles>>,
-        tooltips?: Partial<Record<TooltipVariant, TooltipStyles>>,
-        alert?: Partial<Record<AlertVariant, AlertStyles>>,
+        buttons?: Partial<Record<ButtonVariant, ButtonStyles>> & {
+            default?: ButtonStyles
+        },
+        tooltips?: Partial<Record<TooltipVariant, TooltipStyles>> & {
+            default?: TooltipStyles
+        },
+        alert?: Partial<Record<AlertVariant, AlertStyles>> & {
+            default?: AlertStyles
+        },
         
         icons?: {
             sun?: {

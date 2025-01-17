@@ -38,9 +38,10 @@ export const NamedThemes: NamedTheme[] = [
             borderWidth: "2px",
 
             tooltips: {
-                currentTheme: {
+                default: {
                     backgroundColor: "black",
-                    textColor: "white"
+                    textColor: "white",
+                    opacity: "100%"
                 }
             },
 
@@ -63,9 +64,10 @@ export const NamedThemes: NamedTheme[] = [
             borderWidth: "2px",
 
             tooltips: {
-                currentTheme: {
+                default: {
                     backgroundColor: "white",
-                    textColor: "black"
+                    textColor: "black",
+                    opacity: "100%"
                 }
             },
 

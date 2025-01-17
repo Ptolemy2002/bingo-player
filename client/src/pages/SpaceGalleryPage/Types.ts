@@ -1,12 +1,13 @@
 import { GetSpacesByPropURLParams } from "shared";
 import { SetSearchParamAction } from "@ptolemy2002/react-search-param-state";
 import { RequiredCSSProperties, StyledComponentPropsWithCSS } from "@ptolemy2002/react-styled-component-utils";
-import { ComponentType } from "react";
+import { ComponentType, ComponentProps } from "react";
 import { MagnifyingGlassIconProps } from "src/components/icons/MagnifyingGlassIcon";
 import { GearIconProps } from "src/components/icons/GearIcon";
-import { ButtonStyles } from "styled-components";
+import { ButtonStyles, TooltipStyles } from "styled-components";
 import { Override } from "@ptolemy2002/ts-utils";
 import { ButtonProps, FormProps } from "react-bootstrap";
+import { Tooltip } from "react-tooltip";
 
 export type SpaceGallerySearchParams = {
     // q = query
@@ -55,6 +56,7 @@ export type SpaceGallerySearchSettingsButtonProps = StyledComponentPropsWithCSS<
         className?: string;
         tooltipId?: string;
         GearIcon?: ComponentType<GearIconProps>;
+        SearchSettingsTooltip?: ComponentType<SearchSettingsTooltipProps["functional"]>;
     }>,
     ButtonStyles
 >;
@@ -66,3 +68,7 @@ export type SpaceGallerySearchSubmitButtonProps = StyledComponentPropsWithCSS<
     }>,
     ButtonStyles
 >;
+
+export type SearchSettingsTooltipProps = StyledComponentPropsWithCSS<ComponentProps<typeof Tooltip> & {
+    className?: string;
+}, TooltipStyles>;

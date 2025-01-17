@@ -23,8 +23,10 @@ export default function SpaceGallerySearchBarBase({
                 onChange={(e) => setQ(e.target.value)}
             />
 
-            <SearchSubmitButton />
-            <SearchSettingsButton />
+            <div className="buttons">
+                <SearchSubmitButton />
+                <SearchSettingsButton />
+            </div>
         </Form>
     )
 }

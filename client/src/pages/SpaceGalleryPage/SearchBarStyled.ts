@@ -1,6 +1,7 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { SpaceGallerySearchBarProps } from "./Types";
 import Base from "./SearchBarBase";
+import { bsBreakpointMax } from "@ptolemy2002/react-styled-component-utils";
 
 export default Object.assign(
     styled(Base).attrs<SpaceGallerySearchBarProps["style"]>(
@@ -11,7 +12,21 @@ export default Object.assign(
     )`
         display: flex;
         flex-direction: row;
+
         gap: ${({$gap}) => $gap};
+
+        > .buttons {
+            display: flex;
+            flex-direction: row;
+        }
+
+        ${bsBreakpointMax("md", css`
+            flex-direction: column;
+
+            > .buttons {
+                width: 100%;
+            }
+        `)}
 
         > .input {
             flex-grow: 1

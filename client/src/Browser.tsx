@@ -14,7 +14,6 @@ export function PageLayout() {
         <main>
             <SuspenseBoundary
                 fallback={<LoadingPage />}
-                init={() => new Promise((resolve) => setTimeout(resolve, 5000))}
             >
                 <Outlet />
             </SuspenseBoundary>

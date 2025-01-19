@@ -1,4 +1,4 @@
-import { GetSpacesByPropURLParams } from "shared";
+import { GetSpacesByPropURLParams, SearchSpacesQueryParams } from "shared";
 import { SetSearchParamAction } from "@ptolemy2002/react-search-param-state";
 import { RequiredCSSProperties, StyledComponentPropsWithCSS } from "@ptolemy2002/react-styled-component-utils";
 import { ComponentType, ComponentProps } from "react";
@@ -27,6 +27,11 @@ export type SpaceGallerySearchParams = {
     ps: number;
     // p = page
     p: number;
+
+    // so = sort order
+    so: Exclude<SearchSpacesQueryParams["sortOrder"], undefined>;
+    // sb = sort by
+    sb: Exclude<SearchSpacesQueryParams["sortBy"], undefined>;
 };
 
 export type UseSpaceGallerySearchParamResult = Readonly<SpaceGallerySearchParams & {
@@ -71,4 +76,8 @@ export type SpaceGallerySearchSubmitButtonProps = StyledComponentPropsWithCSS<
 
 export type SearchSettingsTooltipProps = StyledComponentPropsWithCSS<ComponentProps<typeof Tooltip> & {
     className?: string;
-}, TooltipStyles>;
+}, TooltipStyles & {
+    minWidth?: RequiredCSSProperties["width"];
+    lgLabelWidth?: RequiredCSSProperties["width"];
+    mdLabelWidth?: RequiredCSSProperties["width"];
+}>;

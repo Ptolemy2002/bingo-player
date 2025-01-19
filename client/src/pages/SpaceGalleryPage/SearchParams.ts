@@ -1,7 +1,7 @@
 import useSearchParamState, { ConvertFunctions, SetSearchParamAction, SetSearchParamFunction } from "@ptolemy2002/react-search-param-state";
 import { SpaceGallerySearchParams, UseSpaceGallerySearchParamResult } from "./Types";
 import { useCallback } from "react";
-import { ZodGetSpacesByPropURLParamsSchema } from "shared";
+import { ZodGetSpacesByPropURLParamsSchema, ZodSearchSpacesQueryParamsSchema } from "shared";
 import { ZodCoercedBoolean } from "@ptolemy2002/regex-utils";
 import { z } from "zod";
 
@@ -37,6 +37,18 @@ export const converts: ConvertFunctions<SpaceGallerySearchParams> = {
 
     ps: (value) => z.number().int().positive().catch(10).parse(value),
     p: (value) => z.number().int().positive().catch(1).parse(value),
+
+    so: (value) => {
+        const { success, data } = ZodSearchSpacesQueryParamsSchema.safeParse({sortOrder: value});
+        const result = success ? data.sortOrder : "asc";
+        return result ?? "asc";
+    },
+
+    sb: (value) => {
+        const { success, data } = ZodSearchSpacesQueryParamsSchema.safeParse({sortBy: value});
+        const result = success ? data.sortBy : "name";
+        return result ?? "name";
+    }
 };
 
 export const defaultValues: Partial<SpaceGallerySearchParams> = {
@@ -47,7 +59,9 @@ export const defaultValues: Partial<SpaceGallerySearchParams> = {
     as: false,
     i: false,
     ps: 10,
-    p: 1
+    p: 1,
+    so: "asc",
+    sb: "name"
 };
 
 function useSearchParamSetter<K extends keyof SpaceGallerySearchParams>(key: K, set: SetSearchParamFunction<SpaceGallerySearchParams>) {
@@ -61,7 +75,8 @@ export default function useSpaceGallerySearchParamState(): UseSpaceGallerySearch
     const [{
         q, cat, cs,
         mw, as, i,
-        ps, p
+        ps, p,
+        so, sb
     }, setSearchParams] = useSearchParamState(defaultValues, converts);
 
     // Because the hooks will still be called in the same order,
@@ -74,6 +89,8 @@ export default function useSpaceGallerySearchParamState(): UseSpaceGallerySearch
         as, setAs: useSearchParamSetter("as", setSearchParams),
         i, setI: useSearchParamSetter("i", setSearchParams),
         ps, setPs: useSearchParamSetter("ps", setSearchParams),
-        p, setP: useSearchParamSetter("p", setSearchParams)
+        p, setP: useSearchParamSetter("p", setSearchParams),
+        so, setSo: useSearchParamSetter("so", setSearchParams),
+        sb, setSb: useSearchParamSetter("sb", setSearchParams)
     };
 }

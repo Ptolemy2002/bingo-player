@@ -62,6 +62,7 @@ export const SpaceGallerySearchResults = Object.assign(SpaceGallerySearchResults
     Provider: SpaceGallerySearchProvider
 });
 
+export * from "./Controllers";
 export * from "./Context";
 export * from "./Types";
 export * from "./SearchParams";

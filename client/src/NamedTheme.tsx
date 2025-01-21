@@ -120,7 +120,7 @@ export function verifyTheme(theme: string | number) {
         }
         return NamedThemes[theme].id;
     } else if (theme === "detect") {
-        return window.matchMedia?.("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+        return "detect";
     } else if (!findThemeById(theme)) {
         throw new Error(`Theme ${theme} not found`);
     }
@@ -128,25 +128,41 @@ export function verifyTheme(theme: string | number) {
     return theme;
 }
 
+export function interpretTheme(theme: string | number) {
+    if (theme === "detect") {
+        return window.matchMedia?.("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    }
+
+    return verifyTheme(theme);
+}
+
 export type NamedThemeProviderProps = Omit<ThemeProviderProps, "theme"> & {initial?: string | number};
 export function NamedThemeProvider({initial="detect", ...props}: NamedThemeProviderProps) {
-    const [currentTheme, _setCurrentTheme] = usePersistentState<string>(
+    const [_currentTheme, _setCurrentTheme] = usePersistentState<string>(
         "theme", verifyTheme(initial)
     );
+
+    const currentTheme = interpretTheme(_currentTheme);
 
     const setTheme = useCallback<SetNamedThemeCallback>((theme) => {
         _setCurrentTheme((prev) => {
             const next = isCallable(theme) ? theme(prev) : theme;
+            if (next === prev) return prev;
 
-            const nextTheme = findThemeById(verifyTheme(next))!;
-            nextTheme.onSwitch?.(typeof next === "number");
-            
-            return nextTheme.id;
+            if (next === "detect") {
+                return "detect";
+            } else {
+                const nextTheme = findThemeById(verifyTheme(next))!;
+                nextTheme.onSwitch?.(typeof next === "number");
+                
+                return nextTheme.id;
+            }
         });
     }, [_setCurrentTheme]);
 
     const nextTheme = useCallback(() => {
         _setCurrentTheme((prev) => {
+            prev = interpretTheme(prev);
             const index = findThemeIndexById(prev);
             return NamedThemes[wrapNumber(index + 1, 0, NamedThemes.length)]!.id;
         });
@@ -154,6 +170,7 @@ export function NamedThemeProvider({initial="detect", ...props}: NamedThemeProvi
 
     const prevTheme = useCallback(() => {
         _setCurrentTheme((prev) => {
+            prev = interpretTheme(prev);
             const index = findThemeIndexById(prev);
             return NamedThemes[wrapNumber(index - 1, 0, NamedThemes.length)]!.id;
         });

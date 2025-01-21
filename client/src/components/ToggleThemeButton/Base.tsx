@@ -2,6 +2,7 @@ import { Button } from "react-bootstrap";
 import { useNamedTheme } from "src/NamedTheme";
 import { ToggleThemeButtonProps } from "./Types";
 import DefaultCurrentThemeTooltip from "./CurrentThemeTooltipStyled";
+import clsx from "clsx";
 
 export default function ToggleThemeButtonBase({
     className,
@@ -14,7 +15,7 @@ export default function ToggleThemeButtonBase({
         <CurrentThemeTooltip id={tooltipId} />
 
         <Button
-            className={className}
+            className={clsx("toggle-theme-button", className)}
             onClick={() => nextTheme()}
             data-tooltip-id={tooltipId}
         >

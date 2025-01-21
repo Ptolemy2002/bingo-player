@@ -1,6 +1,7 @@
 import { Button } from "react-bootstrap";
 import { SpaceGallerySearchSubmitButtonProps } from "./Types";
 import DefaultMagnifyingGlassIcon from "src/components/icons/MagnifyingGlassIcon";
+import clsx from "clsx";
 
 export default function SpaceGallerySearchSubmitButtonBase({
     className,
@@ -9,7 +10,7 @@ export default function SpaceGallerySearchSubmitButtonBase({
 }: SpaceGallerySearchSubmitButtonProps["functional"]) {
     return <>
         <Button
-            className={className}
+            className={clsx("space-gallery-search-submit-button", className)}
             {...props}
         >
             <MagnifyingGlassIcon />

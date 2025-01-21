@@ -2,6 +2,7 @@ import { Tooltip } from "react-tooltip";
 import { useBreakpointQuery } from "@ptolemy2002/react-bs-media-queries";
 import { CurrentThemeTooltipProps } from "./Types";
 import { NamedThemes, useNamedTheme } from "src/NamedTheme";
+import clsx from "clsx";
 
 export default function CurrentThemeTooltipBase({
     id="toggle-theme-tooltip",
@@ -18,10 +19,11 @@ export default function CurrentThemeTooltipBase({
             delayHide={100}
             clickable
             {...props}
-            className={className}
+            className={clsx("current-theme-tooltip", className)}
         >
             Current theme: {" "}
             <select value={themeId} onChange={(e) => setTheme(e.target.value)}>
+                <option value="detect">Auto</option>
                 {NamedThemes.map(({id, displayName}) => (
                     <option
                         key={id}

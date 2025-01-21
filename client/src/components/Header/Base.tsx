@@ -3,6 +3,7 @@ import { LinkContainer } from "react-router-bootstrap";
 import { HeaderProps } from "./Types";
 import DefaultMenuIcon from "src/components/icons/MenuIcon";
 import ToggleThemeButton from "src/components/ToggleThemeButton";
+import clsx from "clsx";
 
 export default function HeaderBase({
     title,
@@ -13,7 +14,7 @@ export default function HeaderBase({
         <Navbar
             as="header"
             expand="lg"
-            className={className}
+            className={clsx("header", className)}
         >
             <LinkContainer to="/">
                 <Navbar.Brand>{title}</Navbar.Brand>

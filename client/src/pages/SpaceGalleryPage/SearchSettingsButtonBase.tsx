@@ -3,6 +3,7 @@ import { SpaceGallerySearchSettingsButtonProps } from "./Types";
 import DefaultGearIcon from "src/components/icons/GearIcon";
 import DefaultSearchSettingsTooltip from "./SearchSettingsTooltipStyled";
 import { useState } from "react";
+import clsx from "clsx";
 
 export default function SpaceGallerySearchSettingsButtonBase({
     className,
@@ -23,7 +24,7 @@ export default function SpaceGallerySearchSettingsButtonBase({
         />
         
         <Button
-            className={className}
+            className={clsx("space-gallery-search-settings-button", className)}
             {...props}
             data-tooltip-id={tooltipId}
             onClick={() => setOpen((v) => !v)}

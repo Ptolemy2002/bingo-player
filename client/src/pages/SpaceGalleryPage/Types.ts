@@ -45,6 +45,7 @@ export type UseSpaceGallerySearchParamResult = Readonly<SpaceGallerySearchParams
 export type SpaceGalleryPageProps = StyledComponentPropsWithCSS<{
     className?: string;
     SearchBar?: ComponentType<SpaceGallerySearchBarProps["functional"]>;
+    SearchResults?: ComponentType<SpaceGallerySearchResultsProps["functional"]>;
 }, {}>;
 
 export type SpaceGallerySearchBarProps = StyledComponentPropsWithCSS<Override<FormProps, {
@@ -81,3 +82,7 @@ export type SearchSettingsTooltipProps = StyledComponentPropsWithCSS<ComponentPr
     lgLabelWidth?: RequiredCSSProperties["width"];
     mdLabelWidth?: RequiredCSSProperties["width"];
 }>;
+
+export type SpaceGallerySearchResultsProps = StyledComponentPropsWithCSS<{
+    className?: string;
+}, {}>;

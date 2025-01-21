@@ -29,6 +29,7 @@
     "@ptolemy2002/js-utils": "^3.1.0",
     "@ptolemy2002/react-bs-media-queries": "^1.0.5",
     "@ptolemy2002/react-mongo-data": "^2.3.0",
+    "@ptolemy2002/react-mount-effects": "^2.0.0",
     "@ptolemy2002/react-proxy-context": "^2.2.0",
     "@ptolemy2002/react-search-param-state": "^3.0.2",
     "@ptolemy2002/react-styled-component-utils": "^1.0.0",

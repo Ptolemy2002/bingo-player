@@ -3,6 +3,7 @@ import DefaultSearchBar from "./SearchBarStyled";
 import DefaultSearchResults from "./SearchResultsStyled";
 import { SpaceGalleryPageProps } from "./Types";
 import useSpaceGallerySearchParamState from "./SearchParams";
+import { SpaceGallerySearchProvider } from "./Context";
 
 export default function SpaceGalleryPageBase({
     className,
@@ -13,11 +14,13 @@ export default function SpaceGalleryPageBase({
 
     return (
         <div id="space-gallery-page" className={className}>
-            <h1>Space Gallery</h1> 
-            <SuspenseBoundary fallback={<p>Loading...</p>} renderDeps={[q]}>
-                <SearchBar />
-                <SearchResults />
-            </SuspenseBoundary>
+            <h1>Space Gallery</h1>
+            <SpaceGallerySearchProvider value={{ hasPressed: false, results: [] }}>
+                <SuspenseBoundary fallback={<p>Loading...</p>} renderDeps={[q]}>
+                    <SearchBar />
+                    <SearchResults />
+                </SuspenseBoundary>
+            </SpaceGallerySearchProvider>
         </div>
     );
 }

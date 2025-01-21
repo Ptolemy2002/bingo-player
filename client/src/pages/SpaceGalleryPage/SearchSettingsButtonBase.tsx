@@ -15,13 +15,18 @@ export default function SpaceGallerySearchSettingsButtonBase({
     const [open, setOpen] = useState(false);
 
     return <>
-        <SearchSettingsTooltip
-            id={tooltipId}
-            // Use this tooltip in a controlled fashion
-            // to allow the button to toggle its
-            // visibility
-            isOpen={open}
-        />
+        {
+            // If you remove this conditional rendering, the tooltip
+            // will cover other elements on the page even when hidden,
+            // preventing them from being interacted with
+            open && <SearchSettingsTooltip
+                id={tooltipId}
+                // Use this tooltip in a controlled fashion
+                // to allow the button to toggle its
+                // visibility
+                isOpen={open}
+            />
+        }
         
         <Button
             className={clsx("space-gallery-search-settings-button", className)}

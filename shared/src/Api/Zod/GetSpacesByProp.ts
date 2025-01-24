@@ -47,10 +47,10 @@ export const ZodGetSpacesByPropQueryParamsSchema = swaggerRegistry.register(
                 i: ZodInvertShorthandQueryParamSchema
             })
             .transform((data) => {
-                if (data.cs) data.caseSensitive = data.cs;
-                if (data.as) data.accentSensitive = data.as;
-                if (data.mw) data.matchWhole = data.mw;
-                if (data.i) data.invert = data.i;
+                if (data.cs !== undefined) data.caseSensitive = data.cs;
+                if (data.as !== undefined) data.accentSensitive = data.as;
+                if (data.mw !== undefined) data.matchWhole = data.mw;
+                if (data.i !== undefined) data.invert = data.i;
                 return data;
             }),
     )

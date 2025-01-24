@@ -1,4 +1,4 @@
-import { Outlet } from 'react-router';
+import { Outlet, useLocation } from 'react-router';
 import { createBrowserRouter } from 'react-router-dom';
 import NotFoundPage from 'src/pages/NotFoundPage';
 import Header from 'src/components/Header';
@@ -7,16 +7,22 @@ import HomePage from './pages/HomePage';
 import { SuspenseBoundary } from '@ptolemy2002/react-suspense';
 import LoadingPage from 'src/pages/LoadingPage';
 import SpaceGalleryPage from 'src/pages/SpaceGalleryPage';
+import { ErrorBoundary } from 'react-error-boundary';
+import ErrorPage from './pages/ErrorPage';
 
 export function PageLayout() {
+    const location = useLocation();
+
     return <>
         <Header title="Bingo Player" />
         <main>
-            <SuspenseBoundary
-                fallback={<LoadingPage />}
-            >
-                <Outlet />
-            </SuspenseBoundary>
+            <ErrorBoundary FallbackComponent={ErrorPage} key={location.pathname}>
+                <SuspenseBoundary
+                    fallback={<LoadingPage />}
+                >
+                    <Outlet />
+                </SuspenseBoundary>
+            </ErrorBoundary>
         </main>
         <Footer>
             Ptolemy Henson

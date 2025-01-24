@@ -4,6 +4,7 @@ import { MongoSpace } from "shared";
 export type SpaceGallerySearchContextValue = {
     hasPressed: boolean;
     results: MongoSpace[];
+    totalCount: number;
 };
 
 export const SpaceGallerySearchContext = createProxyContext<SpaceGallerySearchContextValue>(

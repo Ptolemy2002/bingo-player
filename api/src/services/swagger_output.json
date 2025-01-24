@@ -2767,7 +2767,9 @@
           "desc",
           "descending",
           "random",
-          "rand"
+          "rand",
+          "1",
+          "-1"
         ],
         "description": "The order to sort by.",
         "example": "asc"
@@ -2879,7 +2881,9 @@
           "desc",
           "descending",
           "random",
-          "rand"
+          "rand",
+          "1",
+          "-1"
         ],
         "default": "asc",
         "description": "[Query Parameter] The order to sort the field by. Ascending if not provided.",
@@ -2893,7 +2897,9 @@
           "desc",
           "descending",
           "random",
-          "rand"
+          "rand",
+          "1",
+          "-1"
         ],
         "default": "asc",
         "description": "[Query Parameter] Shorthand for sortOrder.",
@@ -3373,7 +3379,9 @@
           "desc",
           "descending",
           "random",
-          "rand"
+          "rand",
+          "1",
+          "-1"
         ],
         "default": "desc",
         "description": "[Query Parameter] The order to sort the field by. Descending by default.",
@@ -3387,7 +3395,9 @@
           "desc",
           "descending",
           "random",
-          "rand"
+          "rand",
+          "1",
+          "-1"
         ],
         "default": "desc",
         "description": "[Query Parameter] Shorthand for sortOrder.",

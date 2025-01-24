@@ -1,6 +1,6 @@
 import axios, { AxiosInstance, CreateAxiosDefaults } from "axios";
 import { TypedAxios, RouteDef } from "typed-axios-instance";
-import { GetSpaceByExactIDResponseBody, GetSpaceByExactIDURLParams, GetSpacesByPropQueryParamsInput, GetSpacesByPropResponseBody, GetSpacesByPropURLParams } from "shared";
+import { GetSpaceByExactIDResponseBody, GetSpaceByExactIDURLParams, GetSpacesByPropQueryParamsInput, GetSpacesByPropResponseBody, GetSpacesByPropURLParams, GetSpacesQueryParams, GetSpacesResponseBody } from "shared";
 import getEnv from "src/Env";
 
 export let Api: AxiosInstance | null = null;
@@ -22,6 +22,14 @@ export type ApiRoutes = RouteDefArray<[
 
         queryParams: GetSpacesByPropQueryParamsInput,
         jsonResponse: GetSpacesByPropResponseBody
+    },
+
+    {
+        route: "/spaces/get/all",
+        method: "GET",
+
+        queryParams: GetSpacesQueryParams,
+        jsonResponse: GetSpacesResponseBody
     }
 ]>;
 
@@ -34,7 +42,7 @@ export default function getApi(options: CreateAxiosDefaults={}, createNew=false)
     Api = axios.create({
         withCredentials: true,
         ...options,
-        baseURL: env.isProd ? env.prodApiUrl! : env.devApiUrl
+        baseURL: env.apiURL + "/api/v1"
     });
 
     return Api;

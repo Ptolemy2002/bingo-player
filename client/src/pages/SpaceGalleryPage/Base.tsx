@@ -15,7 +15,7 @@ export default function SpaceGalleryPageBase({
     return (
         <div id="space-gallery-page" className={className}>
             <h1>Space Gallery</h1>
-            <SpaceGallerySearchProvider value={{ hasPressed: false, results: [] }}>
+            <SpaceGallerySearchProvider value={{ hasPressed: false, results: [], totalCount: 0 }}>
                 <SuspenseBoundary fallback={<p>Loading...</p>} renderDeps={[q]}>
                     <SearchBar />
                     <SearchResults />

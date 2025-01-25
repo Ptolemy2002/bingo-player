@@ -66,8 +66,12 @@ export const defaultValues: Partial<SpaceGallerySearchParams> = {
 
 function useSearchParamSetter<K extends keyof SpaceGallerySearchParams>(key: K, set: SetSearchParamFunction<SpaceGallerySearchParams>) {
     return useCallback(
-        (value: SetSearchParamAction<SpaceGallerySearchParams, K>) => 
-            setTimeout(() => set({[key]: value}), 0),
+        (value: SetSearchParamAction<SpaceGallerySearchParams, K>) =>
+            // Wrapping in setTimeout to prevent React from complaining about
+            // updating the state of one component while rendering another.
+            setTimeout(() => {
+                set({[key]: value})
+            }, 0),
         [key, set]
     );
 }

@@ -8,6 +8,10 @@ export function calcPagination(
         p = totalPages;
     }
 
+    if (p < 1) {
+        p = 1;
+    }
+
     const offset = Math.max((p - 1) * ps, 0);
     const limit = Math.min(ps, totalCount - offset);
     return {

@@ -1,4 +1,4 @@
-import { useMountEffect } from "@ptolemy2002/react-mount-effects";
+import { useDelayedEffect, useMountEffect } from "@ptolemy2002/react-mount-effects";
 import { useSpaceGallerySearchContext } from "./Context";
 import useSpaceGallerySearchParamState from "./SearchParams";
 import { useCallback, MouseEventHandler } from "react";
@@ -118,6 +118,15 @@ export function useSpaceGallerySearchSubmitButtonController(
         }
         onClick?.(e);
     }, [q, _try, suspend, runSearch, onClick, runGetAll]);
+
+    useDelayedEffect(() => {
+        // Perform a new search when the page number changes
+        if (q.length !== 0) {
+            _try(() => suspend(() => runSearch(false)));
+        } else {
+            _try(() => suspend(() => runGetAll(false)));
+        }
+    }, [p], 1);
 
     return {
         runSearch,

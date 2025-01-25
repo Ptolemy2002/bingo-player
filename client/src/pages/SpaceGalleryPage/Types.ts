@@ -55,6 +55,7 @@ export type SpaceGallerySearchBarProps = StyledComponentPropsWithCSS<Override<Fo
     className?: string;
     SearchSettingsButton?: ComponentType<SpaceGallerySearchSettingsButtonProps["functional"]>; 
     SearchSubmitButton?: ComponentType<SpaceGallerySearchSubmitButtonProps["functional"]>;
+    PageChangeButton?: ComponentType<SpaceGalleryPageChangeButtonProps["functional"]>;
 }>, {
     gap: RequiredCSSProperties["gap"];
 }>;
@@ -88,3 +89,8 @@ export type SearchSettingsTooltipProps = StyledComponentPropsWithCSS<ComponentPr
 export type SpaceGallerySearchResultsProps = StyledComponentPropsWithCSS<{
     className?: string;
 }, {}>;
+
+export type SpaceGalleryPageChangeButtonProps = StyledComponentPropsWithCSS<Override<ButtonProps, {
+    className?: string;
+    type: "next" | "prev";
+}>, ButtonStyles>;

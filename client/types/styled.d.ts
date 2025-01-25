@@ -10,7 +10,7 @@ declare module "styled-components" {
         linkColor: RequiredCSSProperties["color"]
     }>;
 
-    export type ButtonVariant = "searchSettings" | "searchSubmit" | "toggleTheme";
+    export type ButtonVariant = "searchSettings" | "searchSubmit" | "toggleTheme" | "pageChange";
     export type ButtonStyles = Partial<{
         borderStyle: RequiredCSSProperties["borderStyle"],
         borderWidth: RequiredCSSProperties["borderWidth"],

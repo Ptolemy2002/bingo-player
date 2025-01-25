@@ -8,6 +8,7 @@ import { ButtonStyles, TooltipStyles } from "styled-components";
 import { Override } from "@ptolemy2002/ts-utils";
 import { ButtonProps, FormProps } from "react-bootstrap";
 import { Tooltip } from "react-tooltip";
+import { ErrorAlertProps } from "src/components/ErrorAlert";
 
 export type SpaceGallerySearchParams = {
     // q = query
@@ -46,6 +47,7 @@ export type SpaceGalleryPageProps = StyledComponentPropsWithCSS<{
     className?: string;
     SearchBar?: ComponentType<SpaceGallerySearchBarProps["functional"]>;
     SearchResults?: ComponentType<SpaceGallerySearchResultsProps["functional"]>;
+    ErrorAlert?: ComponentType<ErrorAlertProps>;
 }, {}>;
 
 export type SpaceGallerySearchBarProps = StyledComponentPropsWithCSS<Override<FormProps, {

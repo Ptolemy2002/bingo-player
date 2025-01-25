@@ -5,19 +5,22 @@ import { useCallback, MouseEventHandler } from "react";
 import useManualErrorHandling from "@ptolemy2002/react-manual-error-handling";
 import getApi from "src/Api";
 import { useSuspenseController } from "@ptolemy2002/react-suspense";
+import { calcPagination } from "./Other";
 
 export function useSpaceGallerySearchSubmitButtonController(
     onClick?: MouseEventHandler<HTMLButtonElement>
 ) {
     const {
         q,
-        cat, as, cs, mw, sb, so, i
+        cat, as, cs, mw, sb, so, i,
+        p, setP,
+        ps
     } = useSpaceGallerySearchParamState();
     const [search] = useSpaceGallerySearchContext();
     const { _try } = useManualErrorHandling();
     const [{ suspend }] = useSuspenseController();
 
-    const runSearch = useCallback(async () => {
+    const runSearch = useCallback(async (resetP=true) => {
         const api = getApi();
         search.hasPressed = true;
         if (cat === "general") {
@@ -25,40 +28,73 @@ export function useSpaceGallerySearchSubmitButtonController(
         } else if (sb === "score" || sb === "_score") {
             throw new Error("Not implemented yet");
         } else {
-            const { data } = await api.get(`/spaces/get/by-prop/${cat}/${q}`, {
+            const { data: countData } = await api.get(`/spaces/count/by-prop/${cat}/${q}`, {
+                params: {
+                    as: as ? "y" : "n",
+                    cs: cs ? "y" : "n",
+                    mw: mw ? "y" : "n",
+                    i: i ? "y" : "n"
+                }
+            });
+
+            if (countData.ok) {
+                search.totalCount = countData.count;
+            } else {
+                return;
+            }
+
+            const { offset, limit } = calcPagination(p, ps, search.totalCount);
+
+            const { data: spacesData } = await api.get(`/spaces/get/by-prop/${cat}/${q}`, {
                 params: {
                     as: as ? "y" : "n",
                     cs: cs ? "y" : "n",
                     mw: mw ? "y" : "n",
                     i: i ? "y" : "n",
-                    sb, so
+                    o: offset,
+                    l: limit,
+                    sb, so,
                 }
             });
 
-            if (data.ok) {
-                search.results = data.spaces;
+            if (resetP) setP(1);
+            if (spacesData.ok) {
+                search.results = spacesData.spaces;
             }
         }
-    }, [search, q, cat, as, cs, mw, sb, so, i]);
+    }, [search, q, cat, as, cs, mw, sb, so, i, p, ps, setP]);
 
-    const runGetAll = useCallback(async () => {
+    const runGetAll = useCallback(async (resetP=true) => {
         const api = getApi();
         search.hasPressed = true;
+
+        const { data: countData } = await api.get("/spaces/count/all");
+
+        if (countData.ok) {
+            search.totalCount = countData.count;
+        } else {
+            return;
+        }
         
         // Since there is no "score" when getting all spaces, we need to
         // convert it to a supported operation before sending the request
         const _sb = sb === "score" || sb === "_score" ? "name" : sb;
 
-        const { data } = await api.get("/spaces/get/all", {
+        const { offset, limit } = calcPagination(p, ps, search.totalCount);
+
+        const { data: spacesData } = await api.get("/spaces/get/all", {
             params: {
-                sb: _sb, so
+                sb: _sb, so,
+                o: offset,
+                l: limit
             }
         });
 
-        if (data.ok) {
-            search.results = data.spaces;
+        if (resetP) setP(1);
+        if (spacesData.ok) {
+            search.results = spacesData.spaces;
         }
-    }, [search, sb, so]);
+    }, [search, sb, so, p, ps, setP]);
 
     useMountEffect(() => {
         // Slightly delay this so that we can make sure dependent
@@ -67,9 +103,9 @@ export function useSpaceGallerySearchSubmitButtonController(
         setTimeout(() => {
             if (q.length !== 0 && !search.hasPressed) {
                 // Perform search if there is initially a query
-                _try(() => suspend(runSearch));
+                _try(() => suspend(() => runSearch(false)));
             } else {
-                _try(() => suspend(runGetAll));
+                _try(() => suspend(() => runGetAll(false)));
             }
         }, 0);
     });

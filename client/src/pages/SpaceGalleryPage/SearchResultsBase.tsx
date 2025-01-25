@@ -2,11 +2,20 @@ import { SpaceGallerySearchResultsProps } from "./Types";
 import { ReactNode } from "react";
 import clsx from "clsx";
 import { useSpaceGallerySearchContext } from "./Context";
+import useSpaceGallerySearchParamState from "./SearchParams";
+import { calcPagination } from "./Other";
 
 export default function SpaceSearchResultsBase({
     className,
 }: SpaceGallerySearchResultsProps["functional"]) {
+    const { p, ps } = useSpaceGallerySearchParamState();
     const [search] = useSpaceGallerySearchContext(["hasPressed", "results"]);
+
+    const {
+        limit, currentPage, totalPages,
+        totalCount,
+        first, last
+    } = calcPagination(p, ps, search.totalCount);
 
     let element: ReactNode;
     if (!search.hasPressed) {
@@ -19,7 +28,15 @@ export default function SpaceSearchResultsBase({
         </p>;
     } else {
         element = <div className={clsx("space-gallery-search-results", className)}>
-            <p>Found {search.results.length} results</p>
+            <p>Found {totalCount} results. Showing page {currentPage} of {totalPages} ({first} - {last}) ({limit} items)</p>
+
+            <ul>
+                {search.results.map((space) => (
+                    <li key={space._id}>
+                        {space.name}
+                    </li>
+                ))}
+            </ul>
         </div>;
     }
 

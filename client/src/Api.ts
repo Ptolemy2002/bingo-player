@@ -1,6 +1,6 @@
 import axios, { AxiosInstance, CreateAxiosDefaults } from "axios";
 import { TypedAxios, RouteDef } from "typed-axios-instance";
-import { GetSpaceByExactIDResponseBody, GetSpaceByExactIDURLParams, GetSpacesByPropQueryParamsInput, GetSpacesByPropResponseBody, GetSpacesByPropURLParams, GetSpacesQueryParams, GetSpacesResponseBody } from "shared";
+import { CountSpacesByPropQueryParamsInput, CountSpacesByPropResponseBody, CountSpacesByPropURLParams, CountSpacesResponseBody, GetSpaceByExactIDResponseBody, GetSpaceByExactIDURLParams, GetSpacesByPropQueryParamsInput, GetSpacesByPropResponseBody, GetSpacesByPropURLParams, GetSpacesQueryParams, GetSpacesResponseBody } from "shared";
 import getEnv from "src/Env";
 import { setupCache, CacheOptions } from "axios-cache-interceptor";
 import { minutesToMilliseconds } from "date-fns";
@@ -27,11 +27,26 @@ export type ApiRoutes = RouteDefArray<[
     },
 
     {
+        route: `/spaces/count/by-prop/${CountSpacesByPropURLParams["prop"]}/${CountSpacesByPropURLParams["query"]}`,
+        method: "GET",
+
+        queryParams: CountSpacesByPropQueryParamsInput,
+        jsonResponse: CountSpacesByPropResponseBody
+    },
+
+    {
         route: "/spaces/get/all",
         method: "GET",
 
         queryParams: GetSpacesQueryParams,
         jsonResponse: GetSpacesResponseBody
+    },
+
+    {
+        route: "/spaces/count/all",
+        method: "GET",
+        queryParams: {},
+        jsonResponse: CountSpacesResponseBody
     }
 ]>;
 

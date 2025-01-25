@@ -35,8 +35,8 @@ export const converts: ConvertFunctions<SpaceGallerySearchParams> = {
         toURL: (value) => value ? "y" : "n"
     },
 
-    ps: (value) => z.number().int().positive().catch(10).parse(value),
-    p: (value) => z.number().int().positive().catch(1).parse(value),
+    ps: (value) => z.coerce.number().int().positive().catch(10).parse(value),
+    p: (value) => z.coerce.number().int().positive().catch(1).parse(value),
 
     so: (value) => {
         const { success, data } = ZodSearchSpacesQueryParamsSchema.safeParse({sortOrder: value});
@@ -66,7 +66,8 @@ export const defaultValues: Partial<SpaceGallerySearchParams> = {
 
 function useSearchParamSetter<K extends keyof SpaceGallerySearchParams>(key: K, set: SetSearchParamFunction<SpaceGallerySearchParams>) {
     return useCallback(
-        (value: SetSearchParamAction<SpaceGallerySearchParams, K>) => set({[key]: value}),
+        (value: SetSearchParamAction<SpaceGallerySearchParams, K>) => 
+            setTimeout(() => set({[key]: value}), 0),
         [key, set]
     );
 }

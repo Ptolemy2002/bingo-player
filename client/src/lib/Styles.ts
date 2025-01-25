@@ -1,5 +1,5 @@
 import { RequiredCSSProperties } from "@ptolemy2002/react-styled-component-utils";
-import { TooltipVariant } from "styled-components";
+import { css, TooltipVariant } from "styled-components";
 import { ButtonStyles, ButtonVariant, DefaultTheme, TooltipStyles } from "styled-components";
 
 export type ButtonStylesScoped = {
@@ -97,6 +97,24 @@ export function evaluateButtonStyles(
     }
 }
 
+export function buttonStyles(props: ButtonStylesScoped) {
+    return css`
+        --bs-btn-bg: ${props.$backgroundColor};
+        --bs-btn-hover-bg: ${props.$hoverBackgroundColor};
+        --bs-btn-active-bg: ${props.$activeBackgroundColor};
+        --bs-btn-border-color: ${props.$borderColor};
+        --bs-btn-disabled-bg: ${props.$disabledBackgroundColor};
+
+        border-style: ${props.$borderStyle};
+        border-width: ${props.$borderWidth};
+
+        --bs-btn-border-color: ${props.$borderColor};
+        --bs-btn-active-border-color: ${props.$activeBorderColor};
+        --bs-btn-hover-border-color: ${props.$hoverBorderColor};
+        --bs-btn-disabled-border-color: ${props.$disabledBorderColor};
+    `;
+}
+
 export function evaluateTooltipStyles(
     theme: DefaultTheme, props: TooltipStylesScoped,
     variant: TooltipVariant
@@ -118,4 +136,12 @@ export function evaluateTooltipStyles(
             ?? theme.tooltips?.default?.opacity
             ?? 0.9,
     }
+}
+
+export function tooltipStyles(props: TooltipStylesScoped) {
+    return css`
+        --rt-color-white: ${props.$backgroundColor};
+        --rt-color-dark: ${props.$textColor};
+        --rt-opacity: ${props.$opacity};
+    `;
 }

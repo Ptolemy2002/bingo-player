@@ -1,7 +1,7 @@
 import styled, { css } from "styled-components";
 import { SearchSettingsTooltipProps } from "./Types";
 import Base from "./SearchSettingsTooltip";
-import { evaluateTooltipStyles } from "src/lib/Styles";
+import { evaluateTooltipStyles, tooltipStyles } from "src/lib/Styles";
 import { bsBreakpointMax, bsBreakpointMin } from "@ptolemy2002/react-styled-component-utils";
 
 export default Object.assign(
@@ -17,9 +17,7 @@ export default Object.assign(
             variant: "light"
         })
     )`
-        --rt-color-white: ${({$backgroundColor}) => $backgroundColor};
-        --rt-color-dark: ${({$textColor}) => $textColor};
-        --rt-opacity: ${({$opacity}) => $opacity};
+        ${props => tooltipStyles(props)}
 
         width: auto;
         min-width: ${({$minWidth}) => $minWidth};

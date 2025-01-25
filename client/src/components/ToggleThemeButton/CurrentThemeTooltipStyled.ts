@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { CurrentThemeTooltipProps } from "./Types";
 import Base from "./CurrentThemeTooltip";
-import { evaluateTooltipStyles } from "src/lib/Styles";
+import { evaluateTooltipStyles, tooltipStyles } from "src/lib/Styles";
 
 export default Object.assign(
     styled(Base).attrs<CurrentThemeTooltipProps["style"]>(
@@ -13,10 +13,7 @@ export default Object.assign(
             variant: "light"
         })
     )`
-        --rt-color-white: ${({$backgroundColor}) => $backgroundColor};
-        --rt-color-dark: ${({$textColor}) => $textColor};
-        --rt-opacity: ${({$opacity}) => $opacity};
-        
+        ${props => tooltipStyles(props)}
         ${({$css}) => $css}
     `,
     {

@@ -58,7 +58,7 @@ export const defaultValues: Partial<SpaceGallerySearchParams> = {
     mw: false,
     as: false,
     i: false,
-    ps: 10,
+    ps: 12,
     p: 1,
     so: "asc",
     sb: "name"

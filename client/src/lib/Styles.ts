@@ -94,6 +94,36 @@ export function evaluateButtonStyles(
             ?? theme.buttons?.default?.backgroundColor
             ?? defaults.backgroundColor
             ?? "transparent",
+        
+        $textColor:
+            props.$textColor
+            ?? theme.buttons?.[variant]?.textColor
+            ?? theme.buttons?.default?.textColor
+            ?? theme.textColor,
+        $activeTextColor:
+            props.$activeTextColor
+            ?? theme.buttons?.[variant]?.activeTextColor
+            ?? theme.buttons?.default?.activeTextColor
+            ?? props.$textColor
+            ?? theme.buttons?.[variant]?.textColor
+            ?? theme.buttons?.default?.textColor
+            ?? theme.textColor,
+        $hoverTextColor:
+            props.$hoverTextColor
+            ?? theme.buttons?.[variant]?.hoverTextColor
+            ?? theme.buttons?.default?.hoverTextColor
+            ?? props.$textColor
+            ?? theme.buttons?.[variant]?.textColor
+            ?? theme.buttons?.default?.textColor
+            ?? theme.textColor,
+        $disabledTextColor:
+            props.$disabledTextColor
+            ?? theme.buttons?.[variant]?.disabledTextColor
+            ?? theme.buttons?.default?.disabledTextColor
+            ?? props.$textColor
+            ?? theme.buttons?.[variant]?.textColor
+            ?? theme.buttons?.default?.textColor
+            ?? theme.textColor,
     }
 }
 
@@ -112,6 +142,11 @@ export function buttonStyles(props: ButtonStylesScoped) {
         --bs-btn-active-border-color: ${props.$activeBorderColor};
         --bs-btn-hover-border-color: ${props.$hoverBorderColor};
         --bs-btn-disabled-border-color: ${props.$disabledBorderColor};
+
+        --bs-btn-color: ${props.$textColor};
+        --bs-btn-active-color: ${props.$activeTextColor};
+        --bs-btn-hover-color: ${props.$hoverTextColor};
+        --bs-btn-disabled-color: ${props.$disabledTextColor};
     `;
 }
 
@@ -143,5 +178,7 @@ export function tooltipStyles(props: TooltipStylesScoped) {
         --rt-color-white: ${props.$backgroundColor};
         --rt-color-dark: ${props.$textColor};
         --rt-opacity: ${props.$opacity};
+
+        z-index: 1070;
     `;
 }

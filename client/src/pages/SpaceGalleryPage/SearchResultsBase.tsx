@@ -4,9 +4,18 @@ import clsx from "clsx";
 import { useSpaceGallerySearchContext } from "./Context";
 import useSpaceGallerySearchParamState from "./SearchParams";
 import { calcPagination } from "./Other";
+import SpaceData from "src/data/SpaceData";
+import DefaultSpaceCard from "src/components/SpaceCard";
+import { Col, Row } from "react-bootstrap";
 
 export default function SpaceSearchResultsBase({
     className,
+    cardsPerRowXs=12,
+    cardsPerRowSm=12,
+    cardsPerRowMd=6,
+    cardsPerRowLg=4,
+    cardsPerRowXl=3,
+    SpaceCard=DefaultSpaceCard
 }: SpaceGallerySearchResultsProps["functional"]) {
     const { p, ps } = useSpaceGallerySearchParamState();
     const [search] = useSpaceGallerySearchContext(["hasPressed", "results"]);
@@ -30,13 +39,26 @@ export default function SpaceSearchResultsBase({
         element = <div className={clsx("space-gallery-search-results", className)}>
             <p>Found {totalCount} results. Showing page {currentPage} of {totalPages} ({first} - {last}) ({limit} items)</p>
 
-            <ul>
-                {search.results.map((space) => (
-                    <li key={space._id}>
-                        {space.name}
-                    </li>
-                ))}
-            </ul>
+            <div className="card-container">
+                <Row>
+                    {search.results.map((space) => (
+                        // Apply generic "col" class for CSS selection purposes
+                        <Col
+                            key={space._id}
+                            className="col"
+                            xs={cardsPerRowXs}
+                            sm={cardsPerRowSm}
+                            md={cardsPerRowMd}
+                            lg={cardsPerRowLg}
+                            xl={cardsPerRowXl}
+                        >
+                            <SpaceData.Provider value={space}>
+                                <SpaceCard />
+                            </SpaceData.Provider>
+                        </Col>
+                    ))}
+                </Row>
+            </div>
         </div>;
     }
 

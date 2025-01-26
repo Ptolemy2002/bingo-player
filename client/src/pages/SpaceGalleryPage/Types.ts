@@ -9,6 +9,7 @@ import { Override } from "@ptolemy2002/ts-utils";
 import { ButtonProps, FormProps } from "react-bootstrap";
 import { Tooltip } from "react-tooltip";
 import { ErrorAlertProps } from "src/components/ErrorAlert";
+import { SpaceCardProps } from "src/components/SpaceCard";
 
 export type SpaceGallerySearchParams = {
     // q = query
@@ -88,7 +89,16 @@ export type SearchSettingsTooltipProps = StyledComponentPropsWithCSS<ComponentPr
 
 export type SpaceGallerySearchResultsProps = StyledComponentPropsWithCSS<{
     className?: string;
-}, {}>;
+    SpaceCard?: ComponentType<SpaceCardProps["functional"]>;
+    cardsPerRowXs?: number;
+    cardsPerRowSm?: number;
+    cardsPerRowMd?: number;
+    cardsPerRowLg?: number;
+    cardsPerRowXl?: number;
+}, {
+    gutterX: RequiredCSSProperties["gap"];
+    gutterY: RequiredCSSProperties["gap"];
+}>;
 
 export type SpaceGalleryPageChangeButtonProps = StyledComponentPropsWithCSS<Override<ButtonProps, {
     className?: string;

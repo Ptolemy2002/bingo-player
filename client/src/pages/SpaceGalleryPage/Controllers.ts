@@ -25,9 +25,11 @@ export function useSpaceGallerySearchSubmitButtonController(
         search.hasPressed = true;
         if (cat === "general") {
             throw new Error("Not implemented yet");
-        } else if (sb === "score" || sb === "_score") {
-            throw new Error("Not implemented yet");
         } else {
+            // Since there is no "score" when getting in a non-general category, we need to
+            // convert it to a supported operation before sending the request
+            const _sb = sb === "score" || sb === "_score" ? "name" : sb;
+
             const { data: countData } = await api.get(`/spaces/count/by-prop/${cat}/${q}`, {
                 params: {
                     as: as ? "y" : "n",
@@ -53,7 +55,8 @@ export function useSpaceGallerySearchSubmitButtonController(
                     i: i ? "y" : "n",
                     o: offset,
                     l: limit,
-                    sb, so,
+                    sb: _sb,
+                    so,
                 }
             });
 
@@ -110,15 +113,8 @@ export function useSpaceGallerySearchSubmitButtonController(
         }, 0);
     });
 
-    const handleClick = useCallback<MouseEventHandler<HTMLButtonElement>>((e) => {
-        if (q.length !== 0) {
-            _try(() => suspend(runSearch));
-        } else {
-            _try(() => suspend(runGetAll));
-        }
-        onClick?.(e);
-    }, [q, _try, suspend, runSearch, onClick, runGetAll]);
-
+    // Because this is a delayed effect, it will not run on mount. Only
+    // when the page number changes
     useDelayedEffect(() => {
         // Perform a new search when the page number changes
         if (q.length !== 0) {
@@ -127,6 +123,15 @@ export function useSpaceGallerySearchSubmitButtonController(
             _try(() => suspend(() => runGetAll(false)));
         }
     }, [p], 1);
+
+    const handleClick = useCallback<MouseEventHandler<HTMLButtonElement>>((e) => {
+        if (q.length !== 0) {
+            _try(() => suspend(runSearch));
+        } else {
+            _try(() => suspend(runGetAll));
+        }
+        onClick?.(e);
+    }, [q, _try, suspend, runSearch, onClick, runGetAll]);
 
     return {
         runSearch,

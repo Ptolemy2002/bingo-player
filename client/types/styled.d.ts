@@ -24,6 +24,11 @@ declare module "styled-components" {
         activeBackgroundColor: RequiredCSSProperties["backgroundColor"],
         hoverBackgroundColor: RequiredCSSProperties["backgroundColor"],
         disabledBackgroundColor: RequiredCSSProperties["backgroundColor"],
+
+        textColor: RequiredCSSProperties["color"],
+        activeTextColor: RequiredCSSProperties["color"],
+        hoverTextColor: RequiredCSSProperties["color"],
+        disabledTextColor: RequiredCSSProperties["color"],
     }>;
 
     export type TooltipVariant = "currentTheme" | "spaceGallerySearchSettings";

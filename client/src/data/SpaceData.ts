@@ -38,7 +38,7 @@ export default class SpaceData extends MongoData<
     );
 
     static useContext(
-        deps: Dependency<CompletedSpaceData>[] = SpaceData.defaultDependencies,
+        deps: Dependency<CompletedSpaceData>[] | null = SpaceData.defaultDependencies,
         onChangeProp?: OnChangePropCallback<CompletedSpaceData | null>,
         onChangeReinit?: OnChangeReinitCallback<CompletedSpaceData | null>
     ) {

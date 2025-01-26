@@ -64,6 +64,10 @@ export const GlobalStyle = createGlobalStyle`
         ;
     }
 
+    .md-p {
+        margin-bottom: .25rem;
+    }
+
     // Override Bootstrap Alert styles where applicable
     ${({ theme }) => {
         if (!theme.alert) return null;

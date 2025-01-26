@@ -269,35 +269,42 @@ export function evaluateTagBadgeStyles(
     tag: string,
     defaults: Partial<TagBadgeStyles> = {}
 ) {
+    const isCollection = tag.startsWith("in:");
+
     return {
         $showBorder:
             props.$showBorder
             ?? theme.tagBadges?.[tag]?.showBorder
-            ?? theme.tagBadges?.default?.showBorder
+            ?? (isCollection ? theme.tagBadges?._collectionDefault?.showBorder : null)
+            ?? theme.tagBadges?._default?.showBorder
             ?? defaults.showBorder
             ?? true,
         $backgroundColor:
             props.$backgroundColor
             ?? theme.tagBadges?.[tag]?.backgroundColor
-            ?? theme.tagBadges?.default?.backgroundColor
+            ?? (isCollection ? theme.tagBadges?._collectionDefault?.backgroundColor : null)
+            ?? theme.tagBadges?._default?.backgroundColor
             ?? defaults.backgroundColor
             ?? theme.backgroundColor,
         $textColor:
             props.$textColor
             ?? theme.tagBadges?.[tag]?.textColor
-            ?? theme.tagBadges?.default?.textColor
+            ?? (isCollection ? theme.tagBadges?._collectionDefault?.textColor : null)
+            ?? theme.tagBadges?._default?.textColor
             ?? defaults.textColor
             ?? theme.textColor,
         $borderColor:
             props.$borderColor
             ?? theme.tagBadges?.[tag]?.borderColor
-            ?? theme.tagBadges?.default?.borderColor
+            ?? (isCollection ? theme.tagBadges?._collectionDefault?.borderColor : null)
+            ?? theme.tagBadges?._default?.borderColor
             ?? defaults.borderColor
             ?? theme.borderColor,
         $borderWidth:
             props.$borderWidth
             ?? theme.tagBadges?.[tag]?.borderWidth
-            ?? theme.tagBadges?.default?.borderWidth
+            ?? (isCollection ? theme.tagBadges?._collectionDefault?.borderWidth : null)
+            ?? theme.tagBadges?._default?.borderWidth
             ?? defaults.borderWidth
             ?? theme.borderWidth,
     }

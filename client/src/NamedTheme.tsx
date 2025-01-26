@@ -38,10 +38,16 @@ export const NamedThemes: NamedTheme[] = [
             borderWidth: "2px",
 
             tagBadges: {
-                default: {
+                _default: {
                     showBorder: false,
                     backgroundColor: "#007bff",
                     textColor: "white"
+                },
+
+                _collectionDefault: {
+                    showBorder: true,
+                    backgroundColor: "transparent",
+                    textColor: "black"
                 },
 
                 "basically-free": {
@@ -96,9 +102,15 @@ export const NamedThemes: NamedTheme[] = [
             borderWidth: "2px",
 
             tagBadges: {
-                default: {
+                _default: {
                     showBorder: false,
                     backgroundColor: "#007bff",
+                    textColor: "white"
+                },
+
+                _collectionDefault: {
+                    showBorder: true,
+                    backgroundColor: "transparent",
                     textColor: "white"
                 },
 

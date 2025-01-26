@@ -37,6 +37,38 @@ export const NamedThemes: NamedTheme[] = [
             borderColor: "black",
             borderWidth: "2px",
 
+            tagBadges: {
+                default: {
+                    showBorder: false,
+                    backgroundColor: "#007bff",
+                    textColor: "white"
+                },
+
+                "basically-free": {
+                    backgroundColor: "white",
+                    textColor: "black"
+                },
+
+                common: {
+                    backgroundColor: "#aaaaaa"
+                },
+
+                uncommon: {
+                    backgroundColor: "#ffff55",
+                    textColor: "black"
+                },
+
+                rare: {
+                    backgroundColor: "#55ffff",
+                    textColor: "black"
+                },
+
+                legendary: {
+                    backgroundColor: "#ff55ff",
+                    textColor: "black"
+                }
+            },
+
             tooltips: {
                 default: {
                     backgroundColor: "black",
@@ -62,6 +94,39 @@ export const NamedThemes: NamedTheme[] = [
             textColor: "white",
             borderColor: "white",
             borderWidth: "2px",
+
+            tagBadges: {
+                default: {
+                    showBorder: false,
+                    backgroundColor: "#007bff",
+                    textColor: "white"
+                },
+
+                "basically-free": {
+                    backgroundColor: "white",
+                    textColor: "black"
+                },
+
+                common: {
+                    backgroundColor: "#aaaaaa"
+                },
+
+                uncommon: {
+                    backgroundColor: "#ffff55",
+                    textColor: "black",
+                    borderColor: "black"
+                },
+
+                rare: {
+                    backgroundColor: "#55ffff",
+                    textColor: "black"
+                },
+
+                legendary: {
+                    backgroundColor: "#ff55ff",
+                    textColor: "black"
+                }
+            },
 
             tooltips: {
                 default: {

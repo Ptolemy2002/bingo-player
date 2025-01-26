@@ -10,6 +10,9 @@ export const ZodSpaceTagSchema = swaggerRegistry.register(
             message: "Invalid tag"
         })
         .toLowerCase()
+        .refine((tag) => tag !== "default", {
+            message: 'Tag "default" is reserved due to limitations on how the style system works.'
+        })
         .openapi({
             description: "A tag for a space.",
             example: "tag-1 or in:collection-1"

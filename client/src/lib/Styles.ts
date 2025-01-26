@@ -1,5 +1,4 @@
-import { RequiredCSSProperties } from "@ptolemy2002/react-styled-component-utils";
-import { CardVariant, css, TooltipVariant } from "styled-components";
+import { CardVariant, css, TagBadgeStyles, TooltipVariant } from "styled-components";
 import { ButtonStyles, ButtonVariant, DefaultTheme, TooltipStyles, CardStyles } from "styled-components";
 
 export type Scoped<T extends Record<string, unknown>> = {
@@ -9,11 +8,7 @@ export type Scoped<T extends Record<string, unknown>> = {
 export function evaluateButtonStyles(
     theme: DefaultTheme, props: Scoped<ButtonStyles>,
     variant: ButtonVariant,
-    defaults: Partial<{
-        borderStyle: RequiredCSSProperties["borderStyle"],
-        backgroundColor: RequiredCSSProperties["backgroundColor"],
-        textColor: RequiredCSSProperties["color"],
-    }> = {}
+    defaults: Partial<ButtonStyles> = {}
 ): Required<Scoped<ButtonStyles>> {
     return {
         $borderStyle: 
@@ -26,12 +21,14 @@ export function evaluateButtonStyles(
             props.$borderWidth
             ?? theme.buttons?.[variant]?.borderWidth
             ?? theme.buttons?.default?.borderWidth
+            ?? defaults.borderWidth
             ?? theme.borderWidth,
 
         $borderColor:
             props.$borderColor
             ?? theme.buttons?.[variant]?.borderColor
             ?? theme.buttons?.default?.borderColor
+            ?? defaults.borderColor
             ?? theme.borderColor,
         $activeBorderColor:
             props.$activeBorderColor
@@ -40,6 +37,7 @@ export function evaluateButtonStyles(
             ?? props.$borderColor
             ?? theme.buttons?.[variant]?.borderColor
             ?? theme.buttons?.default?.borderColor
+            ?? defaults.borderColor
             ?? theme.borderColor,
         $hoverBorderColor:
             props.$hoverBorderColor
@@ -48,6 +46,7 @@ export function evaluateButtonStyles(
             ?? props.$borderColor
             ?? theme.buttons?.[variant]?.borderColor
             ?? theme.buttons?.default?.borderColor
+            ?? defaults.borderColor
             ?? theme.borderColor,
         $disabledBorderColor:
             props.$disabledBorderColor
@@ -56,6 +55,7 @@ export function evaluateButtonStyles(
             ?? props.$borderColor
             ?? theme.buttons?.[variant]?.borderColor
             ?? theme.buttons?.default?.borderColor
+            ?? defaults.borderColor
             ?? theme.borderColor,
 
         
@@ -154,23 +154,27 @@ export function buttonStyles(props: Scoped<ButtonStyles>) {
 
 export function evaluateTooltipStyles(
     theme: DefaultTheme, props: Scoped<TooltipStyles>,
-    variant: TooltipVariant
+    variant: TooltipVariant,
+    defaults: Partial<TooltipStyles> = {}
 ): Required<Scoped<TooltipStyles>> {
     return {
         $backgroundColor:
             props.$backgroundColor
             ?? theme.tooltips?.[variant]?.backgroundColor
             ?? theme.tooltips?.default?.backgroundColor
+            ?? defaults.backgroundColor
             ?? theme.backgroundColor,
         $textColor:
             props.$textColor
             ?? theme.tooltips?.[variant]?.textColor
             ?? theme.tooltips?.default?.textColor
+            ?? defaults.textColor
             ?? theme.textColor,
         $opacity:
             props.$opacity
             ?? theme.tooltips?.[variant]?.opacity
             ?? theme.tooltips?.default?.opacity
+            ?? defaults.opacity
             ?? 0.9,
     }
 }
@@ -189,23 +193,20 @@ export function tooltipStyles(props: Scoped<TooltipStyles>) {
 export function evaluateCardStyles(
     theme: DefaultTheme, props: Scoped<CardStyles>,
     variant: CardVariant,
-    defaults: Partial<{
-        borderStyle: RequiredCSSProperties["borderStyle"],
-        borderRadius: RequiredCSSProperties["borderRadius"],
-        color: RequiredCSSProperties["color"],
-        backgroundColor: RequiredCSSProperties["backgroundColor"],
-    }> = {}
+    defaults: Partial<CardStyles> = {}
 ): Required<Scoped<CardStyles>> {
     return {
         $titleColor:
             props.$titleColor
             ?? theme.cards?.[variant]?.titleColor
             ?? theme.cards?.default?.titleColor
+            ?? defaults.titleColor
             ?? theme.textColor,
         $subtitleColor:
             props.$subtitleColor
             ?? theme.cards?.[variant]?.subtitleColor
             ?? theme.cards?.default?.subtitleColor
+            ?? defaults.subtitleColor
             ?? theme.textColor,
         
         $borderStyle:
@@ -218,11 +219,13 @@ export function evaluateCardStyles(
             props.$borderColor
             ?? theme.cards?.[variant]?.borderColor
             ?? theme.cards?.default?.borderColor
+            ?? defaults.borderColor
             ?? theme.borderColor,
         $borderWidth:
             props.$borderWidth
             ?? theme.cards?.[variant]?.borderWidth
             ?? theme.cards?.default?.borderWidth
+            ?? defaults.borderWidth
             ?? theme.borderWidth,
         $borderRadius:
             props.$borderRadius
@@ -235,6 +238,7 @@ export function evaluateCardStyles(
             props.$color
             ?? theme.cards?.[variant]?.color
             ?? theme.cards?.default?.color
+            ?? defaults.color
             ?? theme.textColor,
         $backgroundColor:
             props.$backgroundColor
@@ -257,5 +261,54 @@ export function cardStyles(props: Scoped<CardStyles>) {
 
         --bs-card-color: ${props.$color};
         --bs-card-bg: ${props.$backgroundColor};
+    `;
+}
+
+export function evaluateTagBadgeStyles(
+    theme: DefaultTheme, props: Scoped<TagBadgeStyles>,
+    tag: string,
+    defaults: Partial<TagBadgeStyles> = {}
+) {
+    return {
+        $showBorder:
+            props.$showBorder
+            ?? theme.tagBadges?.[tag]?.showBorder
+            ?? theme.tagBadges?.default?.showBorder
+            ?? defaults.showBorder
+            ?? true,
+        $backgroundColor:
+            props.$backgroundColor
+            ?? theme.tagBadges?.[tag]?.backgroundColor
+            ?? theme.tagBadges?.default?.backgroundColor
+            ?? defaults.backgroundColor
+            ?? theme.backgroundColor,
+        $textColor:
+            props.$textColor
+            ?? theme.tagBadges?.[tag]?.textColor
+            ?? theme.tagBadges?.default?.textColor
+            ?? defaults.textColor
+            ?? theme.textColor,
+        $borderColor:
+            props.$borderColor
+            ?? theme.tagBadges?.[tag]?.borderColor
+            ?? theme.tagBadges?.default?.borderColor
+            ?? defaults.borderColor
+            ?? theme.borderColor,
+        $borderWidth:
+            props.$borderWidth
+            ?? theme.tagBadges?.[tag]?.borderWidth
+            ?? theme.tagBadges?.default?.borderWidth
+            ?? defaults.borderWidth
+            ?? theme.borderWidth,
+    }
+}
+
+export function tagBadgeStyles(props: Scoped<TagBadgeStyles>) {
+    return css`
+        --bs-badge-color: ${props.$textColor};
+        border-style: ${props.$showBorder ? "solid" : "none"};
+        background-color: ${props.$backgroundColor};
+        border-color: ${props.$borderColor};
+        border-width: ${props.$borderWidth};
     `;
 }

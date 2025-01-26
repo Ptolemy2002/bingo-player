@@ -52,6 +52,15 @@ declare module "styled-components" {
         backgroundColor: RequiredCSSProperties["backgroundColor"]
     }>;
 
+    export type TagBadgeStyles = Partial<{
+        backgroundColor: RequiredCSSProperties["backgroundColor"],
+        textColor: RequiredCSSProperties["color"],
+
+        showBorder?: boolean,
+        borderColor: RequiredCSSProperties["borderColor"],
+        borderWidth: RequiredCSSProperties["borderWidth"]
+    }>;
+
     export interface DefaultTheme {
         backgroundColor: RequiredCSSProperties["backgroundColor"],
         textColor: RequiredCSSProperties["color"],
@@ -72,6 +81,7 @@ declare module "styled-components" {
         cards?: Partial<Record<CardVariant, CardStyles>> & {
             default?: CardStyles
         },
+        tagBadges?: Record<string, TagBadgeStyles>,
         
         icons?: {
             sun?: {

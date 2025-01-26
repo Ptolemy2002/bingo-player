@@ -1,14 +1,15 @@
 import { Tooltip } from "react-tooltip";
 import { SearchSettingsTooltipProps, SpaceGallerySearchParams } from "./Types";
 import useSpaceGallerySearchParamState from "./SearchParams";
-import { Form } from "react-bootstrap";
-import { useCallback } from "react";
+import { Button, Form } from "react-bootstrap";
+import { useCallback, useRef } from "react";
 import { interpretSortOrder } from "shared";
 import { Spacer } from "@ptolemy2002/react-utils";
 
 export default function SpaceGallerySearchSettingsTooltipBase({
     id="search-settings-tooltip",
     className,
+    hide,
     ...props
 }: SearchSettingsTooltipProps["functional"]) {
     const {
@@ -18,8 +19,10 @@ export default function SpaceGallerySearchSettingsTooltipBase({
         cs, setCs,
         mw, setMw,
         as, setAs,
-        i, setI
+        i, setI,
+        ps, setPs
     } = useSpaceGallerySearchParamState();
+    const pageSizeRef = useRef<HTMLInputElement | null>(null);
 
     const onSortOrderChange = useCallback((e: React.ChangeEvent<HTMLSelectElement>) => {
         const value = e.target.value as SpaceGallerySearchParams["so"];
@@ -68,6 +71,14 @@ export default function SpaceGallerySearchSettingsTooltipBase({
         const value = e.target.checked;
         setI(value);
     }, [setI]);
+
+    const onPageSizeChange = useCallback(() => {
+        const value = parseInt(pageSizeRef.current?.value ?? "");
+        if (isNaN(value) || value < 1) return;
+
+        setPs(value);
+        hide();
+    }, [setPs, hide]);
 
     const interpretedSo = interpretSortOrder(so);
     return (
@@ -134,6 +145,14 @@ export default function SpaceGallerySearchSettingsTooltipBase({
                 <div className="input-container">
                     <Form.Label htmlFor="invert">Invert Search</Form.Label>
                     <Form.Check type="checkbox" name="invert" checked={i} onChange={onInvertChange} />
+                </div>
+
+                <Spacer />
+
+                <div className="input-container">
+                    <Form.Label htmlFor="page-size">Items Per Page</Form.Label>
+                    <Form.Control type="number" name="page-size" defaultValue={ps} ref={pageSizeRef} />
+                    <Button className="page-size-apply-button" onClick={onPageSizeChange}>Apply</Button>
                 </div>
         </Tooltip>
     )

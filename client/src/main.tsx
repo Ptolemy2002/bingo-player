@@ -70,9 +70,9 @@ export const GlobalStyle = createGlobalStyle`
 
     // Override Bootstrap Alert styles where applicable
     ${({ theme }) => {
-        if (!theme.alert) return null;
+        if (!theme.alerts) return null;
 
-        return Object.entries(theme.alert).map(([variant, styles]) => {
+        return Object.entries(theme.alerts).map(([variant, styles]) => {
             variant = variant as AlertVariant;
 
             return css`

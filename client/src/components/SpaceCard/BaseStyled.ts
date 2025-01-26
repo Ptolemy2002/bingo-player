@@ -1,13 +1,17 @@
 import styled from "styled-components";
 import { SpaceCardProps } from "./Types";
 import Base from "./Base";
+import { cardStyles, evaluateCardStyles } from "src/lib/Styles";
 
 export default Object.assign(
     styled(Base).attrs<SpaceCardProps["style"]>(
-        (props) => ({
+        ({theme, ...props}) => ({
+            ...evaluateCardStyles(theme, props, "space"),
             $css: props.$css ?? null
         })
     )`
+        ${(props) => cardStyles(props)}
+
         > .card-body {
             display: flex;
             flex-direction: column;

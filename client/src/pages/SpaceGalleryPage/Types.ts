@@ -10,6 +10,7 @@ import { ButtonProps, FormProps } from "react-bootstrap";
 import { Tooltip } from "react-tooltip";
 import { ErrorAlertProps } from "src/components/ErrorAlert";
 import { SpaceCardProps } from "src/components/SpaceCard";
+import { Scoped } from "src/lib/Styles";
 
 export type SpaceGallerySearchParams = {
     // q = query
@@ -81,10 +82,14 @@ export type SpaceGallerySearchSubmitButtonProps = StyledComponentPropsWithCSS<
 
 export type SearchSettingsTooltipProps = StyledComponentPropsWithCSS<ComponentProps<typeof Tooltip> & {
     className?: string;
+    hide: () => void;
 }, TooltipStyles & {
     minWidth?: RequiredCSSProperties["width"];
     lgLabelWidth?: RequiredCSSProperties["width"];
     mdLabelWidth?: RequiredCSSProperties["width"];
+    pageSizeApplyButton?: Scoped<ButtonStyles> & {
+        marginLeft?: RequiredCSSProperties["margin"];
+    }
 }>;
 
 export type SpaceGallerySearchResultsProps = StyledComponentPropsWithCSS<{

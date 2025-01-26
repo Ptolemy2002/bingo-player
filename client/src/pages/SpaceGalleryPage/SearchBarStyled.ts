@@ -15,6 +15,12 @@ export default Object.assign(
 
         gap: ${({$gap}) => $gap};
 
+        // Stick to the top of the page
+        // when scrolling down
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+
         > .buttons {
             display: flex;
             flex-direction: row;

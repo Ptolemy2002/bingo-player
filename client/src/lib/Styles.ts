@@ -1,22 +1,20 @@
 import { RequiredCSSProperties } from "@ptolemy2002/react-styled-component-utils";
-import { css, TooltipVariant } from "styled-components";
-import { ButtonStyles, ButtonVariant, DefaultTheme, TooltipStyles } from "styled-components";
+import { CardVariant, css, TooltipVariant } from "styled-components";
+import { ButtonStyles, ButtonVariant, DefaultTheme, TooltipStyles, CardStyles } from "styled-components";
 
-export type ButtonStylesScoped = {
-    [K in keyof ButtonStyles as `$${K}`]: ButtonStyles[K]
-};
-export type TooltipStylesScoped = {
-    [K in keyof TooltipStyles as `$${K}`]: TooltipStyles[K]
+export type Scoped<T extends Record<string, unknown>> = {
+    [K in keyof T as `$${Extract<K, string>}`]: T[K]
 };
 
 export function evaluateButtonStyles(
-    theme: DefaultTheme, props: ButtonStylesScoped,
+    theme: DefaultTheme, props: Scoped<ButtonStyles>,
     variant: ButtonVariant,
     defaults: Partial<{
         borderStyle: RequiredCSSProperties["borderStyle"],
         backgroundColor: RequiredCSSProperties["backgroundColor"],
+        textColor: RequiredCSSProperties["color"],
     }> = {}
-): Required<ButtonStylesScoped> {
+): Required<Scoped<ButtonStyles>> {
     return {
         $borderStyle: 
             props.$borderStyle
@@ -99,6 +97,7 @@ export function evaluateButtonStyles(
             props.$textColor
             ?? theme.buttons?.[variant]?.textColor
             ?? theme.buttons?.default?.textColor
+            ?? defaults.textColor
             ?? theme.textColor,
         $activeTextColor:
             props.$activeTextColor
@@ -107,6 +106,7 @@ export function evaluateButtonStyles(
             ?? props.$textColor
             ?? theme.buttons?.[variant]?.textColor
             ?? theme.buttons?.default?.textColor
+            ?? defaults.textColor
             ?? theme.textColor,
         $hoverTextColor:
             props.$hoverTextColor
@@ -115,6 +115,7 @@ export function evaluateButtonStyles(
             ?? props.$textColor
             ?? theme.buttons?.[variant]?.textColor
             ?? theme.buttons?.default?.textColor
+            ?? defaults.textColor
             ?? theme.textColor,
         $disabledTextColor:
             props.$disabledTextColor
@@ -123,11 +124,12 @@ export function evaluateButtonStyles(
             ?? props.$textColor
             ?? theme.buttons?.[variant]?.textColor
             ?? theme.buttons?.default?.textColor
+            ?? defaults.textColor
             ?? theme.textColor,
     }
 }
 
-export function buttonStyles(props: ButtonStylesScoped) {
+export function buttonStyles(props: Scoped<ButtonStyles>) {
     return css`
         --bs-btn-bg: ${props.$backgroundColor};
         --bs-btn-hover-bg: ${props.$hoverBackgroundColor};
@@ -151,9 +153,9 @@ export function buttonStyles(props: ButtonStylesScoped) {
 }
 
 export function evaluateTooltipStyles(
-    theme: DefaultTheme, props: TooltipStylesScoped,
+    theme: DefaultTheme, props: Scoped<TooltipStyles>,
     variant: TooltipVariant
-): Required<TooltipStylesScoped> {
+): Required<Scoped<TooltipStyles>> {
     return {
         $backgroundColor:
             props.$backgroundColor
@@ -173,12 +175,87 @@ export function evaluateTooltipStyles(
     }
 }
 
-export function tooltipStyles(props: TooltipStylesScoped) {
+export function tooltipStyles(props: Scoped<TooltipStyles>) {
     return css`
         --rt-color-white: ${props.$backgroundColor};
         --rt-color-dark: ${props.$textColor};
         --rt-opacity: ${props.$opacity};
 
+        // Ensure this tooltip is always on top
         z-index: 1070;
+    `;
+}
+
+export function evaluateCardStyles(
+    theme: DefaultTheme, props: Scoped<CardStyles>,
+    variant: CardVariant,
+    defaults: Partial<{
+        borderStyle: RequiredCSSProperties["borderStyle"],
+        borderRadius: RequiredCSSProperties["borderRadius"],
+        color: RequiredCSSProperties["color"],
+        backgroundColor: RequiredCSSProperties["backgroundColor"],
+    }> = {}
+): Required<Scoped<CardStyles>> {
+    return {
+        $titleColor:
+            props.$titleColor
+            ?? theme.cards?.[variant]?.titleColor
+            ?? theme.cards?.default?.titleColor
+            ?? theme.textColor,
+        $subtitleColor:
+            props.$subtitleColor
+            ?? theme.cards?.[variant]?.subtitleColor
+            ?? theme.cards?.default?.subtitleColor
+            ?? theme.textColor,
+        
+        $borderStyle:
+            props.$borderStyle
+            ?? theme.cards?.[variant]?.borderStyle
+            ?? theme.cards?.default?.borderStyle
+            ?? defaults.borderStyle
+            ?? "solid",
+        $borderColor:
+            props.$borderColor
+            ?? theme.cards?.[variant]?.borderColor
+            ?? theme.cards?.default?.borderColor
+            ?? theme.borderColor,
+        $borderWidth:
+            props.$borderWidth
+            ?? theme.cards?.[variant]?.borderWidth
+            ?? theme.cards?.default?.borderWidth
+            ?? theme.borderWidth,
+        $borderRadius:
+            props.$borderRadius
+            ?? theme.cards?.[variant]?.borderRadius
+            ?? theme.cards?.default?.borderRadius
+            ?? defaults.borderRadius
+            ?? "0.375rem",
+
+        $color:
+            props.$color
+            ?? theme.cards?.[variant]?.color
+            ?? theme.cards?.default?.color
+            ?? theme.textColor,
+        $backgroundColor:
+            props.$backgroundColor
+            ?? theme.cards?.[variant]?.backgroundColor
+            ?? theme.cards?.default?.backgroundColor
+            ?? defaults.backgroundColor
+            ?? "transparent"
+    }
+}
+
+export function cardStyles(props: Scoped<CardStyles>) {
+    return css`
+        --bs-card-title-color: ${props.$titleColor};
+        --bs-card-subtitle-color: ${props.$subtitleColor};
+
+        border-style: ${props.$borderStyle};
+        --bs-card-border-color: ${props.$borderColor};
+        --bs-card-border-width: ${props.$borderWidth};
+        --bs-card-border-radius: ${props.$borderRadius};
+
+        --bs-card-color: ${props.$color};
+        --bs-card-bg: ${props.$backgroundColor};
     `;
 }

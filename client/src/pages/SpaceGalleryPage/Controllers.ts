@@ -122,7 +122,7 @@ export function useSpaceGallerySearchSubmitButtonController(
         } else {
             _try(() => suspend(() => runGetAll(false)));
         }
-    }, [p], 1);
+    }, [p, ps], 1);
 
     const handleClick = useCallback<MouseEventHandler<HTMLButtonElement>>((e) => {
         if (q.length !== 0) {

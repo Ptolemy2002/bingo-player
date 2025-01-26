@@ -6,7 +6,7 @@ import SpaceGallerySearchSettingsButtonBase from "./SearchSettingsButtonBase";
 import SpaceGallerySearchSettingsButtonStyled from "./SearchSettingsButtonStyled";
 import SpaceGallerySearchSubmitButtonBase from "./SearchSubmitButtonBase";
 import SpaceGallerySearchSubmitButtonStyled from "./SearchSubmitButtonStyled";
-import SpaceGallerySearchSettingsTooltipBase from "./SearchSettingsTooltip";
+import SpaceGallerySearchSettingsTooltipBase from "./SearchSettingsTooltipBase";
 import SpaceGallerySearchSettingsTooltipStyled from "./SearchSettingsTooltipStyled";
 import SpaceGallerySearchResultsBase from "./SearchResultsBase";
 import SpaceGallerySearchResultsStyled from "./SearchResultsStyled";

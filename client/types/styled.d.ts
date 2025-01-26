@@ -10,7 +10,7 @@ declare module "styled-components" {
         linkColor: RequiredCSSProperties["color"]
     }>;
 
-    export type ButtonVariant = "searchSettings" | "searchSubmit" | "toggleTheme" | "pageChange";
+    export type ButtonVariant = "searchSettings" | "searchSubmit" | "toggleTheme" | "pageChange" | "pageSizeApply";
     export type ButtonStyles = Partial<{
         borderStyle: RequiredCSSProperties["borderStyle"],
         borderWidth: RequiredCSSProperties["borderWidth"],
@@ -38,6 +38,20 @@ declare module "styled-components" {
         opacity: RequiredCSSProperties["opacity"]
     }>;
 
+    export type CardVariant = "space";
+    export type CardStyles = Partial<{
+        titleColor: RequiredCSSProperties["color"],
+        subtitleColor: RequiredCSSProperties["color"],
+        
+        borderStyle: RequiredCSSProperties["borderStyle"],
+        borderColor: RequiredCSSProperties["borderColor"],
+        borderWidth: RequiredCSSProperties["borderWidth"],
+        borderRadius: RequiredCSSProperties["borderRadius"],
+
+        color: RequiredCSSProperties["color"],
+        backgroundColor: RequiredCSSProperties["backgroundColor"]
+    }>;
+
     export interface DefaultTheme {
         backgroundColor: RequiredCSSProperties["backgroundColor"],
         textColor: RequiredCSSProperties["color"],
@@ -52,8 +66,11 @@ declare module "styled-components" {
         tooltips?: Partial<Record<TooltipVariant, TooltipStyles>> & {
             default?: TooltipStyles
         },
-        alert?: Partial<Record<AlertVariant, AlertStyles>> & {
+        alerts?: Partial<Record<AlertVariant, AlertStyles>> & {
             default?: AlertStyles
+        },
+        cards?: Partial<Record<CardVariant, CardStyles>> & {
+            default?: CardStyles
         },
         
         icons?: {

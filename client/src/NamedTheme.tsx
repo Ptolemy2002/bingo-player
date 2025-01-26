@@ -71,10 +71,16 @@ export const NamedThemes: NamedTheme[] = [
                 }
             },
 
-            alert: {
+            alerts: {
                 info: {
                     backgroundColor: "#3cd2f3",
                     textColor: "black",
+                    borderColor: "transparent"
+                },
+
+                danger: {
+                    backgroundColor: "#c52231",
+                    textColor: "#e7e7e7",
                     borderColor: "transparent"
                 }
             },

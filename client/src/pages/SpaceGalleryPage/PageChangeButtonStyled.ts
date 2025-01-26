@@ -6,7 +6,9 @@ import { buttonStyles, evaluateButtonStyles } from "src/lib/Styles";
 export default Object.assign(
     styled(Base).attrs<SpaceGalleryPageChangeButtonProps["style"]>(
         ({theme, ...props}) => ({
-            ...evaluateButtonStyles(theme, props, "pageChange"),
+            ...evaluateButtonStyles(theme, props, "pageChange", {
+                backgroundColor: theme.backgroundColor
+            }),
             $css: props.$css ?? null
         })
     )`

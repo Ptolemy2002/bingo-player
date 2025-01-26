@@ -25,6 +25,7 @@ export default function SpaceGallerySearchSettingsButtonBase({
                 // to allow the button to toggle its
                 // visibility
                 isOpen={open}
+                hide={() => setOpen(false)}
             />
         }
         

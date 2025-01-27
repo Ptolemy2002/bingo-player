@@ -8,8 +8,7 @@ import TagBadge from "../TagBadge";
 import { Spacer } from "@ptolemy2002/react-utils";
 
 export default function SpaceCardBase({ className, ...props}: SpaceCardProps["functional"]) {
-    const [space] = SpaceData.useContext(); 
-    if (space === null) throw new Error("No space found to render in the SpaceCard");
+    const [space] = SpaceData.useContextNonNullable();
 
     const aliasesText =
             space.aliases.size > 0 ?

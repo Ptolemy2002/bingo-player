@@ -1,4 +1,4 @@
-import { Model, PipelineStage, Schema, Types, model } from 'mongoose';
+import { HydratedDocumentFromSchema, Model, PipelineStage, Schema, Types, model } from 'mongoose';
 import { CleanMongoSpace, ZodMongoSpaceShape } from 'shared';
 import { zodValidateWithErrors } from '@ptolemy2002/regex-utils';
 import { refineNoAliasMatchingName } from 'shared';
@@ -29,6 +29,10 @@ export type SpaceModel = Model<MongoDocumentSpace, {}, SpaceInstanceMethods>;
 export interface SpaceModelWithStatics extends SpaceModel {
     executeDocumentAggregation(pipeline: PipelineStage[]): Promise<CleanMongoSpace[]>;
     getPaths(): string[];
+    getUniqueName(name: string): Promise<string>;
+    createWithUniqueName(name: string, space: Omit<CleanMongoSpace, "_id" | "name">): Promise<
+        HydratedDocumentFromSchema<typeof SpaceSchema>
+    >;
 }
 
 // Validation is done in custom validators, as they access more context.
@@ -93,12 +97,10 @@ SpaceSchema.method("toClientJSON", function() {
     };
 });
 
-SpaceSchema.method("makeNameUnique", async function() {
+SpaceSchema.static("getUniqueName", async function(name: string) {
     // See if the name is unique
     const existingNames = await SpaceModel.distinct("name");
-
-    let name = this.get("name").replace(/\([0-9]+\)$/, "").trim();
-    const originalName = name;
+    const originalName = name.replace(/\([0-9]+\)$/, "").trim()
 
     // Find the first available name
     let i = 1;
@@ -107,6 +109,21 @@ SpaceSchema.method("makeNameUnique", async function() {
         i++;
     }
 
+    return name;
+});
+
+SpaceSchema.static("createWithUniqueName", async function(
+    name: string, space: Omit<CleanMongoSpace, "name" | "_id">
+) {
+    const uniqueName = await SpaceModel.getUniqueName(name);
+    return SpaceModel.create({
+        ...space,
+        name: uniqueName
+    });
+});
+
+SpaceSchema.method("makeNameUnique", async function() {
+    const name = await SpaceModel.getUniqueName(this.get("name"));
     this.set("name", name);
 });
 

@@ -58,16 +58,15 @@ export default class SpaceData extends MongoData<
         onChangeProp?: OnChangePropCallback<CompletedSpaceData | null>,
         onChangeReinit?: OnChangeReinitCallback<CompletedSpaceData | null>
     ) {
-        // This is registered as a hook to be used in a class component.
-        // However, that's not what we're doing here, so we disable the rule.
-        // eslint-disable-next-line react-hooks/rules-of-hooks
-        const result = SpaceData.useContext(deps, onChangeProp, onChangeReinit);
-
-        if (result === null) throw new Error("Expected SpaceData to be provided, but it was not.");
-        return result as Override<typeof result, {
-            data: Exclude<typeof result["data"], null>;
-            0: Exclude<typeof result[0], null>;
-        }>;
+        return MongoData._useContextNonNullable<
+            CleanSpace, CleanMongoSpace, SpaceRequests, CompletedSpaceData
+        >(
+            SpaceData.Context,
+            SpaceData as unknown as new () => CompletedSpaceData,
+            deps,
+            onChangeProp,
+            onChangeReinit
+        )
     }
 
     // We use this create method instead of a constructor to allow for

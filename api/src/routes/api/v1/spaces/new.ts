@@ -43,8 +43,7 @@ export class NewSpaceHandler extends RouteHandler<NewSpace200ResponseBody> {
         }
 
         // Create a new space
-        const space = await SpaceModel.create(body.space);
-        await space.makeNameUnique();
+        const space = await SpaceModel.createWithUniqueName(body.space.name, body.space);
 
         return {
             status: 200,

@@ -40,6 +40,6 @@ export default Object.assign(
         ${({$css}) => $css}
     `,
     {
-        displayName: 'MenuIcon'
+        displayName: 'SunIcon'
     }
 );

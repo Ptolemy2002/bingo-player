@@ -8,9 +8,8 @@ import TagBadge from "../TagBadge";
 import { Spacer } from "@ptolemy2002/react-utils";
 
 export default function SpaceCardBase({ className, ...props}: SpaceCardProps["functional"]) {
-    // Re-render on every change
-    const [_space] = SpaceData.useContext(); 
-    const space = _space!;
+    const [space] = SpaceData.useContext(); 
+    if (space === null) throw new Error("No space found to render in the SpaceCard");
 
     const aliasesText =
             space.aliases.size > 0 ?
@@ -43,7 +42,8 @@ export default function SpaceCardBase({ className, ...props}: SpaceCardProps["fu
                                 <MarkdownRenderer
                                     baseHLevel={4}
                                     components={{
-                                        p: ({ className, ...props }) => <p className={clsx(className, "md-p")} {...omitNode(props)} />
+                                        p: ({ className, ...props }) =>
+                                            <p className={clsx(className, "md-p")} {...omitNode(props)} />
                                     }}
                                 >
                                     {space.description}

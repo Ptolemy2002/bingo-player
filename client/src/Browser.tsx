@@ -8,7 +8,7 @@ import { SuspenseBoundary } from '@ptolemy2002/react-suspense';
 import LoadingPage from 'src/pages/LoadingPage';
 import SpaceGalleryPage from 'src/pages/SpaceGalleryPage';
 import { ErrorBoundary } from 'react-error-boundary';
-import ErrorPage from './pages/ErrorPage';
+import ErrorPage from 'src/pages/ErrorPage';
 
 export function PageLayout() {
     const location = useLocation();

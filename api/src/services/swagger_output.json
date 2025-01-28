@@ -2222,7 +2222,14 @@
       },
       "sortBySearchListProp": {
         "schema": {
-          "$ref": "#/components/schemas/sortBySearchListProp"
+          "allOf": [
+            {
+              "$ref": "#/components/schemas/sortBySearchListProp"
+            },
+            {
+              "default": "_score"
+            }
+          ]
         },
         "required": false,
         "name": "sortBy",
@@ -3106,7 +3113,46 @@
       "GetSpacesByPropQueryParams": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/GetSpacesQueryParams"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GetSpacesQueryParams"
+              },
+              {
+                "properties": {
+                  "limit": {
+                    "$ref": "#/components/schemas/limit"
+                  },
+                  "l": {
+                    "$ref": "#/components/schemas/l"
+                  },
+                  "offset": {
+                    "$ref": "#/components/schemas/offset"
+                  },
+                  "o": {
+                    "$ref": "#/components/schemas/o"
+                  },
+                  "sortBy": {
+                    "allOf": [
+                      {
+                        "$ref": "#/components/schemas/sortBy"
+                      },
+                      {
+                        "default": "name"
+                      }
+                    ]
+                  },
+                  "sb": {
+                    "$ref": "#/components/schemas/sb"
+                  },
+                  "sortOrder": {
+                    "$ref": "#/components/schemas/sortOrder"
+                  },
+                  "so": {
+                    "$ref": "#/components/schemas/so"
+                  }
+                }
+              }
+            ]
           },
           {
             "type": "object",
@@ -3589,7 +3635,7 @@
           "score",
           "value"
         ],
-        "default": "_score",
+        "default": "score",
         "description": "The field to sort by."
       },
       "sbSearchListProp": {

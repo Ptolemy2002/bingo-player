@@ -6,7 +6,6 @@ import {
 } from '@ptolemy2002/mongoose-utils';
 import { SpaceQueryProp, SortOrder, interpretSortOrder, SpaceQueryPropWithScore, interpretSpaceQueryPropWithScore } from 'shared';
 import SpaceModel from 'models/SpaceModel';
-import { off } from 'process';
 import RouteError from 'lib/RouteError';
 
 export type SpaceAggregationStageType =

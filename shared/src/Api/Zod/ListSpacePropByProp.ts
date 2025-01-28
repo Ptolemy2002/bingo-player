@@ -42,16 +42,16 @@ export const ZodListSpacePropByPropQueryParamsSchema = swaggerRegistry.register(
     z.intersection(
         ZodListSpacePropQueryParamsSchema,
         z.object({
-            caseSensitive: ZodCaseSensitiveQueryParamSchema,
+            caseSensitive: ZodCaseSensitiveQueryParamSchema.default('n'),
             cs: ZodCaseSensitiveShorthandQueryParamSchema,
 
-            accentSensitive: ZodAccentSensitiveQueryParamSchema,
+            accentSensitive: ZodAccentSensitiveQueryParamSchema.default('n'),
             as: ZodAccentSensitiveShorthandQueryParamSchema,
 
-            matchWhole: ZodMatchWholeQueryParamSchema,
+            matchWhole: ZodMatchWholeQueryParamSchema.default('n'),
             mw: ZodMatchWholeShorthandQueryParamSchema,
 
-            invert: ZodInvertQueryParamSchema,
+            invert: ZodInvertQueryParamSchema.default('n'),
             i: ZodInvertShorthandQueryParamSchema
         })
         .transform((data) => {

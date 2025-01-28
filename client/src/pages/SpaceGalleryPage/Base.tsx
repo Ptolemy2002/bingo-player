@@ -7,13 +7,14 @@ import { SpaceGallerySearchProvider } from "./Context";
 import { ErrorBoundary } from "react-error-boundary";
 import DefaultErrorAlert from "src/components/ErrorAlert";
 import { Alert } from "react-bootstrap";
-import LoadingAlert from "src/components/LoadingAlert";
+import DefaultLoadingAlert from "src/components/LoadingAlert";
 
 export default function SpaceGalleryPageBase({
     className,
     SearchBar=DefaultSearchBar,
     SearchResults=DefaultSearchResults,
-    ErrorAlert=DefaultErrorAlert
+    ErrorAlert=DefaultErrorAlert,
+    LoadingAlert=DefaultLoadingAlert
 }: SpaceGalleryPageProps["functional"]) {
     const { q, setQ } = useSpaceGallerySearchParamState();
 

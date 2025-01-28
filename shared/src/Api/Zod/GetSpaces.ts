@@ -32,13 +32,13 @@ export const ZodGetSpacesQueryParamsSchema = swaggerRegistry.register(
         limit: ZodLimitQueryParamSchema,
         l: ZodLimitShorthandQueryParamSchema,
 
-        offset: ZodOffsetQueryParamSchema,
+        offset: ZodOffsetQueryParamSchema.default(0),
         o: ZodOffsetShorthandQueryParamSchema,
 
-        sortBy: ZodSortByQueryParamSchema,
+        sortBy: ZodSortByQueryParamSchema.default("name"),
         sb: ZodSortByShorthandQueryParamSchema,
 
-        sortOrder: ZodSortOrderQueryParamSchema,
+        sortOrder: ZodSortOrderQueryParamSchema.default("asc"),
         so: ZodSortOrderShorthandQueryParamSchema
     }).transform((data) => {
         if (data.l !== undefined) data.limit = data.l;

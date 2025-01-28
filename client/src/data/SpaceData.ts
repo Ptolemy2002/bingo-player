@@ -40,7 +40,8 @@ export default class SpaceData extends MongoData<
     static useContext(
         deps: Dependency<CompletedSpaceData>[] | null = SpaceData.defaultDependencies,
         onChangeProp?: OnChangePropCallback<CompletedSpaceData | null>,
-        onChangeReinit?: OnChangeReinitCallback<CompletedSpaceData | null>
+        onChangeReinit?: OnChangeReinitCallback<CompletedSpaceData | null>,
+        listenReinit = true
     ) {
         return MongoData._useContext<
             CleanSpace, CleanMongoSpace, SpaceRequests, CompletedSpaceData
@@ -49,14 +50,16 @@ export default class SpaceData extends MongoData<
             SpaceData as unknown as new () => CompletedSpaceData,
             deps,
             onChangeProp,
-            onChangeReinit
+            onChangeReinit,
+            listenReinit
         )
     }
 
     static useContextNonNullable(
         deps: Dependency<CompletedSpaceData>[] = SpaceData.defaultDependencies,
         onChangeProp?: OnChangePropCallback<CompletedSpaceData | null>,
-        onChangeReinit?: OnChangeReinitCallback<CompletedSpaceData | null>
+        onChangeReinit?: OnChangeReinitCallback<CompletedSpaceData | null>,
+        listenReinit = true
     ) {
         return MongoData._useContextNonNullable<
             CleanSpace, CleanMongoSpace, SpaceRequests, CompletedSpaceData
@@ -65,7 +68,8 @@ export default class SpaceData extends MongoData<
             SpaceData as unknown as new () => CompletedSpaceData,
             deps,
             onChangeProp,
-            onChangeReinit
+            onChangeReinit,
+            listenReinit
         )
     }
 
@@ -144,7 +148,7 @@ export default class SpaceData extends MongoData<
                                 limit: 1,
                                 caseSensitive: "t",
                                 accentSensitive: "t",
-                                matchWhole: "t",
+                                matchWhole: "t"
                             },
                             signal: ac.signal
                         }

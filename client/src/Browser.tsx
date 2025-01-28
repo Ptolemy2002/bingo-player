@@ -9,6 +9,7 @@ import LoadingPage from 'src/pages/LoadingPage';
 import SpaceGalleryPage from 'src/pages/SpaceGalleryPage';
 import { ErrorBoundary } from 'react-error-boundary';
 import ErrorPage from 'src/pages/ErrorPage';
+import SpaceDetailPage from './pages/SpaceDetailPage';
 
 export function PageLayout() {
     const location = useLocation();
@@ -44,6 +45,11 @@ export const router = createBrowserRouter([{
         {
             path: "/space-gallery",
             element: <SpaceGalleryPage />
+        },
+
+        {
+            path: "/space/:name",
+            element: <SpaceDetailPage />
         },
 
         // The reason we don't use errorElement here is because we want to render the NotFoundPage

@@ -10,7 +10,9 @@ declare module "axios" {
         stale?: boolean;
     }
 
-    export interface AxiosRequestConfig {
-        cache?: CacheRequestConfig["cache"];
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    export interface AxiosRequestConfig<D=any, R=any> {
+        id?: CacheRequestConfig<R, D>["id"];
+        cache?: CacheRequestConfig<R, D>["cache"];
     }
 }

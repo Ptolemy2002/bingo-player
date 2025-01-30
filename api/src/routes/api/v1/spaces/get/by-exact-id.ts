@@ -1,6 +1,6 @@
 import { asyncErrorHandler } from "@ptolemy2002/express-utils";
 import { Router } from "express";
-import RouteHandler, { GeneratedResonse, RouteHandlerRequest } from "lib/RouteHandler";
+import RouteHandler, { RouteHandlerRequest } from "lib/RouteHandler";
 import SpaceModel from "models/SpaceModel";
 import { GetSpaceByExactID200ResponseBody, ZodGetSpaceByExactIDURLParamsSchema } from "shared";
 

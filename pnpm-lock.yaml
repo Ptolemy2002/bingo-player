@@ -239,7 +239,7 @@ importers:
         version: 6.0.0
       shared:
         specifier: file:../shared
-        version: file:shared(@asteasolutions/zod-to-openapi@7.3.0(zod@3.24.1))(@ptolemy2002/ts-utils@2.5.0(is-callable@1.2.7))(mongoose@8.9.5)(zod@3.24.1)
+        version: link:../shared
       styled-components:
         specifier: ^6.1.13
         version: 6.1.14(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -2526,14 +2526,6 @@ packages:
 
   shallowequal@1.1.0:
     resolution: {integrity: sha512-y0m1JoUZSlPAjXVtPPW70aZWfIL/dSP7AFkRnniLCrK/8MDKog3TySTBmckD+RObVxH0v4Tox67+F14PdED2oQ==}
-
-  shared@file:shared:
-    resolution: {directory: shared, type: directory}
-    peerDependencies:
-      '@asteasolutions/zod-to-openapi': ^7.3.0
-      '@ptolemy2002/ts-utils': ^2.3.0
-      mongoose: ^8.9.2
-      zod: ^3.24.1
 
   shebang-command@2.0.0:
     resolution: {integrity: sha512-kHxr2zZpYtdmrN1qDjrrX/Z1rR1kG8Dx+gkpK1G4eXmvXswmcE1hTWBWYUzlraYw1/yZp6YuDY77YtvbN0dmDA==}
@@ -5346,13 +5338,6 @@ snapshots:
   shallow-equal@3.1.0: {}
 
   shallowequal@1.1.0: {}
-
-  shared@file:shared(@asteasolutions/zod-to-openapi@7.3.0(zod@3.24.1))(@ptolemy2002/ts-utils@2.5.0(is-callable@1.2.7))(mongoose@8.9.5)(zod@3.24.1):
-    dependencies:
-      '@asteasolutions/zod-to-openapi': 7.3.0(zod@3.24.1)
-      '@ptolemy2002/ts-utils': 2.5.0(is-callable@1.2.7)
-      mongoose: 8.9.5
-      zod: 3.24.1
 
   shebang-command@2.0.0:
     dependencies:

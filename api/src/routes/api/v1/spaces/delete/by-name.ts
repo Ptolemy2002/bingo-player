@@ -2,7 +2,7 @@ import { asyncErrorHandler } from "@ptolemy2002/express-utils";
 import { Router } from "express";
 import RouteHandler, { RouteHandlerRequest } from "lib/RouteHandler";
 import SpaceModel from "models/SpaceModel";
-import { DeleteSpaceByName200ResponseBody, ZodDeleteSpaceByIDURLParamsSchema, ZodDeleteSpaceByNameURLParamsSchema } from "shared";
+import { DeleteSpaceByName200ResponseBody, ZodDeleteSpaceByNameURLParamsSchema } from "shared";
 
 const router = Router();
 

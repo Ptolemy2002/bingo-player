@@ -36,4 +36,4 @@ export type CountSpacesByPropURLParams = z.infer<typeof ZodCountSpacesByPropURLP
 export type CountSpacesByProp200ResponseBody = z.infer<typeof ZodCountSpacesByProp200ResponseBodySchema>;
 export type CountSpacesByPropResponseBody = z.infer<typeof ZodCountSpacesByPropResponseBodySchema>;
 export type CountSpacesByPropQueryParamsInput = z.input<typeof ZodCountSpacesByPropQueryParamsSchema>;
-export type CountSpacesByPropQueryParamsOutput = z.infer<typeof ZodCountSpacesByPropQueryParamsSchema>;
+export type CountSpacesByPropQueryParamsOutput = z.output<typeof ZodCountSpacesByPropQueryParamsSchema>;

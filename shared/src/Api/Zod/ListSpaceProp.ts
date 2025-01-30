@@ -58,7 +58,9 @@ export const ZodListSpacePropResponseBodySchema = swaggerRegistry.register(
 );
 
 export type ListSpacePropURLParams = z.input<typeof ZodListSpacePropURLParamsSchema>;
-export type ListSpacePropQueryParams = z.input<typeof ZodListSpacePropQueryParamsSchema>;
+
+export type ListSpacePropQueryParamsInput = z.input<typeof ZodListSpacePropQueryParamsSchema>;
+export type ListSpacePropQueryParamsOutput = z.output<typeof ZodListSpacePropQueryParamsSchema>;
 
 export type ListSpaceProp200ResponseBody = z.infer<typeof ZodListSpaceProp200ResponseBodySchema>;
 export type ListSpacePropResponseBody = z.infer<typeof ZodListSpacePropResponseBodySchema>;

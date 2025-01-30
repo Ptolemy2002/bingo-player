@@ -1,7 +1,7 @@
 import { Router } from "express";
 import RouteHandler, { RouteHandlerRequest } from "lib/RouteHandler";
 import SpaceModel from "models/SpaceModel";
-import { UpdateSpaceByID200ResponseBody, UpdateSpaceByName200ResponseBody, ZodUpdateSpaceByIDURLParamsSchema, ZodUpdateSpaceByIDRequestBodySchema, ZodUpdateSpaceByNameURLParamsSchema, ZodUpdateSpaceByNameRequestBodySchema } from "shared";
+import { UpdateSpaceByName200ResponseBody, ZodUpdateSpaceByNameURLParamsSchema, ZodUpdateSpaceByNameRequestBodySchema } from "shared";
 import { asyncErrorHandler } from "@ptolemy2002/express-utils";
 import { Error } from "mongoose";
 

@@ -127,4 +127,5 @@ export type SearchSpaces200ResponseBody = z.infer<typeof ZodSearchSpaces200Respo
 export type SearchSpacesResponseBody = z.infer<typeof ZodSearchSpacesResponseBodySchema>;
 
 export type SearchSpacesURLParams = z.input<typeof ZodSearchSpacesURLParamsSchema>;
-export type SearchSpacesQueryParams = z.input<typeof ZodSearchSpacesQueryParamsSchema>;
+export type SearchSpacesQueryParamsInput = z.input<typeof ZodSearchSpacesQueryParamsSchema>;
+export type SearchSpacesQueryParamsOutput = z.output<typeof ZodSearchSpacesQueryParamsSchema>;

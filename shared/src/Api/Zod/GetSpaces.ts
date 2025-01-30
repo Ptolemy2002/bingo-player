@@ -53,4 +53,6 @@ export const ZodGetSpacesQueryParamsSchema = swaggerRegistry.register(
 
 export type GetSpaces200ResponseBody = z.infer<typeof ZodGetSpaces200ResponseBodySchema>;
 export type GetSpacesResponseBody = z.infer<typeof ZodGetSpacesResponseBodySchema>;
-export type GetSpacesQueryParams = z.input<typeof ZodGetSpacesQueryParamsSchema>;
+
+export type GetSpacesQueryParamsInput = z.input<typeof ZodGetSpacesQueryParamsSchema>;
+export type GetSpacesQueryParamsOutput = z.output<typeof ZodGetSpacesQueryParamsSchema>;

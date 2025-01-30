@@ -77,4 +77,6 @@ export type SearchSpacesListProp200ResponseBody = z.infer<typeof ZodSearchSpaces
 export type SearchSpacesListPropResponseBody = z.infer<typeof ZodSearchSpacesListPropResponseBodySchema>;
 
 export type SearchSpacesListPropURLParams = z.input<typeof ZodSearchSpacesListPropURLParamsSchema>;
-export type SearchSpacesListPropQueryParams = z.input<typeof ZodSearchSpacesListPropQueryParamsSchema>;
+
+export type SearchSpacesListPropQueryParamsInput = z.input<typeof ZodSearchSpacesListPropQueryParamsSchema>;
+export type SearchSpacesListPropQueryParamsOutput = z.output<typeof ZodSearchSpacesListPropQueryParamsSchema>;

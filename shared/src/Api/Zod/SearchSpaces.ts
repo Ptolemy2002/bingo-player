@@ -72,7 +72,7 @@ export const ZodSearchSpaces200ResponseBodySchema = swaggerRegistry.register(
     zodSuccessResponseSchema(
         z.object({
             spaces: z.array(
-                ZodCleanMongoSpaceSchema
+                ZodCleanMongoSpaceWithScoreSchema
             ).openapi({
                 description: "The spaces that match the query."
             })

@@ -89,7 +89,10 @@ export class SearchSpacesHandler extends RouteHandler<SearchSpaces200ResponseBod
         return {
             status: 200,
             response: this.buildSuccessResponse({
-                spaces
+                // We need to do a cast here, as executeDocumentAggregation does not
+                // include the "_score" field in its type, but it will always be
+                // there.
+                spaces: spaces as SearchSpaces200ResponseBody["spaces"]
             })
         };
     }

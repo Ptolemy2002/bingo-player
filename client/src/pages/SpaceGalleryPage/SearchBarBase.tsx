@@ -4,6 +4,7 @@ import { SpaceGallerySearchBarProps } from "./Types";
 import DefaultSearchSetingsButton from "./SearchSettingsButtonStyled";
 import DefaultSearchSubmitButton from "./SearchSubmitButtonStyled";
 import DefaultPageChangeButton from "./PageChangeButtonStyled";
+import { useSpaceGallerySearchFunctions } from "./Controllers";
 
 export default function SpaceGallerySearchBarBase({
     className,
@@ -14,6 +15,7 @@ export default function SpaceGallerySearchBarBase({
     ...props
 }: SpaceGallerySearchBarProps["functional"]) {
     const { q, setQ } = useSpaceGallerySearchParamState();
+    const { runSearch, runGetAll } = useSpaceGallerySearchFunctions();
 
     return (
         <Form className={className} {...props}>
@@ -21,8 +23,19 @@ export default function SpaceGallerySearchBarBase({
                 type="text"
                 className="input"
                 placeholder={placeholder}
-                value={q}
+                defaultValue={q}
                 onChange={(e) => setQ(e.target.value)}
+                onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                        // Prevent form submission
+                        e.preventDefault();
+                        if (q.length !== 0) {
+                            runSearch();
+                        } else {
+                            runGetAll();
+                        }
+                    }
+                }}
             />
 
             <div className="buttons">

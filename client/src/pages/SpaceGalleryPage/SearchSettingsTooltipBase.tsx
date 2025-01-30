@@ -47,10 +47,11 @@ export default function SpaceGallerySearchSettingsTooltipBase({
             setSb("name");
         } else if (value === "general") {
             setSb("score");
+            setSo("desc");
         }
 
         setCat(value);
-    }, [setCat, sb, setSb]);
+    }, [setCat, sb, setSb, setSo]);
 
     const onCaseSensitiveChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.checked;

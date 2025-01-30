@@ -3352,7 +3352,7 @@
               "spaces": {
                 "type": "array",
                 "items": {
-                  "$ref": "#/components/schemas/CleanMongoSpace"
+                  "$ref": "#/components/schemas/CleanMongoSpaceWithScore"
                 },
                 "description": "The spaces that match the query."
               }

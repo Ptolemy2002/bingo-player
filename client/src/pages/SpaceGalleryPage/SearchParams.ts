@@ -53,7 +53,7 @@ export const converts: ConvertFunctions<SpaceGallerySearchParams> = {
 
 export const defaultValues: Partial<SpaceGallerySearchParams> = {
     q: "",
-    cat: "general",
+    cat: "name",
     cs: false,
     mw: false,
     as: false,
@@ -61,7 +61,7 @@ export const defaultValues: Partial<SpaceGallerySearchParams> = {
     ps: 12,
     p: 1,
     so: "asc",
-    sb: "name"
+    sb: "score"
 };
 
 function useSearchParamSetter<K extends keyof SpaceGallerySearchParams>(key: K, set: SetSearchParamFunction<SpaceGallerySearchParams>) {

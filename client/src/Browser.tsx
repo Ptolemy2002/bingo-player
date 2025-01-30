@@ -34,6 +34,9 @@ export function PageLayout() {
 export const router = createBrowserRouter([{
     path: "/",
     element: <PageLayout />,
+    // Errors that are not 404 and are not caught by a lower-level ErrorBoundary
+    // will be caught by this, should they occur
+    errorElement: <p id="fatal-error">Fatal Error</p>,
     
     // These children will be rendered inside the Outlet in the PageLayout component
     children: [

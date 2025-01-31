@@ -18,7 +18,7 @@ const SVG = StaticSrcSVG('/icons/sun.svg');
 export default Object.assign(
     styled(SVG).attrs<SunIconProps>(
         ({theme, ...props}) => ({
-            $color: props.$color ?? theme.icons?.sun?.color ?? theme.textColor,
+            $color: props.$color ?? theme.icons?.sun?.color ?? "currentcolor",
             $width: props.$width ?? '24px',
             $height: props.$height ?? 'auto',
             $css: props.$css ?? null

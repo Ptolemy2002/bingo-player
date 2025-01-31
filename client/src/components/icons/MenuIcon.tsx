@@ -18,7 +18,7 @@ const SVG = StaticSrcSVG('/icons/menu.svg');
 export default Object.assign(
     styled(SVG).attrs<MenuIconProps>(
         (props) => ({
-            $color: props.$color ?? null,
+            $color: props.$color ?? "currentcolor",
             $width: props.$width ?? '24px',
             $height: props.$height ?? 'auto',
             $css: props.$css ?? null
@@ -28,12 +28,12 @@ export default Object.assign(
         height: ${({$height}) => $height};
 
         > path {
-            stroke: ${({$color, theme}) => $color ?? theme.textColor};
+            stroke: ${({$color}) => $color};
         }
 
         &.loader {
             > path {
-                fill: ${({$color, theme}) => $color ?? theme.textColor};
+                fill: ${({$color}) => $color};
             }
         }
 

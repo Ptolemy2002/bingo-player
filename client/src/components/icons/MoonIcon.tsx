@@ -18,7 +18,7 @@ const SVG = StaticSrcSVG('/icons/moon.svg');
 export default Object.assign(
     styled(SVG).attrs<MoonIconProps>(
         ({theme, ...props}) => ({
-            $color: props.$color ?? theme.icons?.moon?.color ?? theme.textColor,
+            $color: props.$color ?? theme.icons?.moon?.color ?? "currentcolor",
             $width: props.$width ?? '24px',
             $height: props.$height ?? 'auto',
             $css: props.$css ?? null

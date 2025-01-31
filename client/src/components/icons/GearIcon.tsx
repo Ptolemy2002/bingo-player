@@ -19,7 +19,7 @@ const SVG = StaticSrcSVG('/icons/gear.svg');
 export default Object.assign(
     styled(SVG).attrs<GearIconProps>(
         ({theme, ...props}) => ({
-            $outerColor: props.$outerColor ?? theme.icons?.gear?.outerColor ?? theme.textColor,
+            $outerColor: props.$outerColor ?? theme.icons?.gear?.outerColor ?? "currentcolor",
             $innerColor: props.$innerColor ?? theme.icons?.gear?.innerColor ?? theme.backgroundColor,
             $width: props.$width ?? '24px',
             $height: props.$height ?? 'auto',

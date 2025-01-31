@@ -18,7 +18,7 @@ const SVG = StaticSrcSVG('/icons/magnifying-glass.svg');
 export default Object.assign(
     styled(SVG).attrs<MagnifyingGlassIconProps>(
         ({theme, ...props}) => ({
-            $color: props.$color ?? theme.icons?.magnifyingGlass?.color ?? theme.textColor,
+            $color: props.$color ?? theme.icons?.magnifyingGlass?.color ?? "currentcolor",
             $width: props.$width ?? '24px',
             $height: props.$height ?? 'auto',
             $css: props.$css ?? null

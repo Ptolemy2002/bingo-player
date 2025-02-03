@@ -122,9 +122,9 @@ export function parseSpacePath(
     const {
         allowDirect: allowedDirect = true,
         allowNested: allowedNested = true
-    } = allowed.find(({key: k}) => k === key)!;
+    } = allowed.find(({key: k}) => k === key) ?? {};
 
-    if (value === undefined) return true;
+    if (value === undefined) return allowedDirect;
 
     const lookup = MongoSpaceChildPathLookup[key as keyof MongoSpace];
     if (lookup === undefined) return false;
@@ -134,9 +134,9 @@ export function parseSpacePath(
             parseInt(value);
             return true;
         } catch {
-            return allowedDirect && lookup.includes(value);
+            return lookup.includes(value);
         }
     }
 
-    return allowedDirect && lookup.includes(value);
+    return allowedNested && lookup.includes(value);
 }

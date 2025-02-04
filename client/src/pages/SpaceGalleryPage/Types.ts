@@ -1,5 +1,5 @@
-import { GetSpacesByPropURLParams, SearchSpacesQueryParams } from "shared";
-import { SetSearchParamAction } from "@ptolemy2002/react-search-param-state";
+import { GetSpacesByPropURLParams, SearchSpacesQueryParamsOutput } from "shared";
+import { SetSearchParamFunction } from "@ptolemy2002/react-search-param-state";
 import { RequiredCSSProperties, StyledComponentPropsWithCSS } from "@ptolemy2002/react-styled-component-utils";
 import { ComponentType, ComponentProps } from "react";
 import { MagnifyingGlassIconProps } from "src/components/icons/MagnifyingGlassIcon";
@@ -33,17 +33,14 @@ export type SpaceGallerySearchParams = {
     p: number;
 
     // so = sort order
-    so: Exclude<SearchSpacesQueryParams["sortOrder"], undefined>;
+    so: SearchSpacesQueryParamsOutput["sortOrder"];
     // sb = sort by
-    sb: Exclude<SearchSpacesQueryParams["sortBy"], undefined>;
+    sb: SearchSpacesQueryParamsOutput["sortBy"];
 };
 
 export type UseSpaceGallerySearchParamResult = Readonly<SpaceGallerySearchParams & {
     // Dynamically generate a setter for each property in SearchParams
-    [K in `set${Capitalize<string & keyof SpaceGallerySearchParams>}`]: (value: SetSearchParamAction<
-        SpaceGallerySearchParams,
-        K extends `set${infer R}` ? Uncapitalize<R> : never
-    >) => void;
+    [K in `set${Capitalize<string & keyof SpaceGallerySearchParams>}`]: SetSearchParamFunction<SpaceGallerySearchParams>;
 }>;
 
 export type SpaceGalleryPageProps = StyledComponentPropsWithCSS<{

@@ -33,7 +33,7 @@
     "@ptolemy2002/react-mongo-data": "^2.5.0",
     "@ptolemy2002/react-mount-effects": "^2.0.0",
     "@ptolemy2002/react-proxy-context": "^2.2.0",
-    "@ptolemy2002/react-search-param-state": "^3.2.0",
+    "@ptolemy2002/react-search-param-state": "^3.2.1",
     "@ptolemy2002/react-styled-component-utils": "^1.0.0",
     "@ptolemy2002/react-suspense": "^2.0.3",
     "@ptolemy2002/react-utils": "^3.4.0",

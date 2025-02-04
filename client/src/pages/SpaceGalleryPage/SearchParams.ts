@@ -1,4 +1,4 @@
-import useSearchParamState, { ConvertFunctions, SetSearchParamAction, SetSearchParamFunction } from "@ptolemy2002/react-search-param-state";
+import useSearchParamState, { ConvertFunctions, SetSearchParamFunction } from "@ptolemy2002/react-search-param-state";
 import { SpaceGallerySearchParams, UseSpaceGallerySearchParamResult } from "./Types";
 import { useCallback } from "react";
 import { ZodGetSpacesByPropURLParamsSchema, ZodSearchSpacesQueryParamsSchema } from "shared";
@@ -65,12 +65,12 @@ export const defaultValues: Partial<SpaceGallerySearchParams> = {
 };
 
 function useSearchParamSetter<K extends keyof SpaceGallerySearchParams>(key: K, set: SetSearchParamFunction<SpaceGallerySearchParams>) {
-    return useCallback(
-        (value: SetSearchParamAction<SpaceGallerySearchParams, K>) =>
+    return useCallback<SetSearchParamFunction<SpaceGallerySearchParams>>(
+        (value, options) =>
             // Wrapping in setTimeout to prevent React from complaining about
             // updating the state of one component while rendering another.
             setTimeout(() => {
-                set({[key]: value})
+                set({[key]: value}, options);
             }, 0),
         [key, set]
     );

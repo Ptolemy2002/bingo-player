@@ -154,8 +154,8 @@ importers:
         specifier: ^2.2.0
         version: 2.2.0(@ptolemy2002/react-force-rerender@2.0.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@ptolemy2002/react-hook-result@2.2.3(@ptolemy2002/js-utils@3.2.2)(@ptolemy2002/ts-utils@2.5.0(is-callable@1.2.7)))(@ptolemy2002/react-mount-effects@2.0.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@ptolemy2002/react-utils@3.4.0(clsx@2.1.1)(is-callable@1.2.7)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(is-callable@1.2.7)(nanoid@5.0.9)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@ptolemy2002/react-search-param-state':
-        specifier: ^3.2.0
-        version: 3.2.0(@ptolemy2002/js-utils@3.2.2)(@ptolemy2002/react-hook-result@2.2.3(@ptolemy2002/js-utils@3.2.2)(@ptolemy2002/ts-utils@2.5.0(is-callable@1.2.7)))(is-callable@1.2.7)(react-dom@18.3.1(react@18.3.1))(react-router-dom@6.28.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
+        specifier: ^3.2.1
+        version: 3.2.1(@ptolemy2002/js-utils@3.2.2)(@ptolemy2002/react-hook-result@2.2.3(@ptolemy2002/js-utils@3.2.2)(@ptolemy2002/ts-utils@2.5.0(is-callable@1.2.7)))(is-callable@1.2.7)(react-dom@18.3.1(react@18.3.1))(react-router-dom@6.28.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
       '@ptolemy2002/react-styled-component-utils':
         specifier: ^1.0.0
         version: 1.1.2(@ptolemy2002/bs-utils@1.0.0)(polished@4.3.1)(styled-components@6.1.14(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
@@ -775,8 +775,8 @@ packages:
       react: ^18.3.1
       react-dom: ^18.3.1
 
-  '@ptolemy2002/react-search-param-state@3.2.0':
-    resolution: {integrity: sha512-SD12tVgyz8i2Epbt1uiVtlYsSyYZwtalUiVKiGzXoNnL2jV546uhl5k43jnbA842ghnfPq15VPA6/SWIRecFLA==}
+  '@ptolemy2002/react-search-param-state@3.2.1':
+    resolution: {integrity: sha512-46cxRb8Tf/HhFuCQNTZmAKi74CUnfN9qHAO9ZMw3tFbmYSxvP5QyDbe8+G4kDlTO9hya6lUVIeyICvy2mMwMyg==}
     peerDependencies:
       '@ptolemy2002/js-utils': ^3.0.2
       '@ptolemy2002/react-hook-result': ^2.1.1
@@ -3234,7 +3234,7 @@ snapshots:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
 
-  '@ptolemy2002/react-search-param-state@3.2.0(@ptolemy2002/js-utils@3.2.2)(@ptolemy2002/react-hook-result@2.2.3(@ptolemy2002/js-utils@3.2.2)(@ptolemy2002/ts-utils@2.5.0(is-callable@1.2.7)))(is-callable@1.2.7)(react-dom@18.3.1(react@18.3.1))(react-router-dom@6.28.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)':
+  '@ptolemy2002/react-search-param-state@3.2.1(@ptolemy2002/js-utils@3.2.2)(@ptolemy2002/react-hook-result@2.2.3(@ptolemy2002/js-utils@3.2.2)(@ptolemy2002/ts-utils@2.5.0(is-callable@1.2.7)))(is-callable@1.2.7)(react-dom@18.3.1(react@18.3.1))(react-router-dom@6.28.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@ptolemy2002/js-utils': 3.2.2
       '@ptolemy2002/react-hook-result': 2.2.3(@ptolemy2002/js-utils@3.2.2)(@ptolemy2002/ts-utils@2.5.0(is-callable@1.2.7))

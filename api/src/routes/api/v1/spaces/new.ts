@@ -44,6 +44,7 @@ export class NewSpaceHandler extends RouteHandler<NewSpace200ResponseBody> {
 
         // Create a new space
         const space = await SpaceModel.createWithUniqueName(body.space.name, body.space);
+        space.removeUnsetFields();
 
         return {
             status: 200,

@@ -79,6 +79,7 @@ export class UpdateSpaceByNameHandler extends RouteHandler<UpdateSpaceByName200R
         const oldSpaceJSON = oldSpace.toClientJSON();
 
         const newSpace = (await SpaceModel.findOneAndUpdate({ name }, body.difference, { new: true }))!;
+        newSpace.removeUnsetFields();
 
         // Re-validate the space
         try {

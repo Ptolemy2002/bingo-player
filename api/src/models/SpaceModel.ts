@@ -152,12 +152,6 @@ SpaceSchema.searchIndex({
     }
 });
 
-SpaceSchema.pre('validate', async function(next) {
-    this.removeUnsetFields();
-    await this.save({ validateBeforeSave: false });
-    next();
-});
-
 const SpaceModel = model<MongoDocumentSpace, SpaceModelWithStatics>('spaces', SpaceSchema);
 
 export default SpaceModel;

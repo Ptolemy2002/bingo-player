@@ -100,7 +100,7 @@ SpaceSchema.method("toClientJSON", function() {
 SpaceSchema.static("getUniqueName", async function(name: string) {
     // See if the name is unique
     const existingNames = await SpaceModel.distinct("name");
-    const originalName = name.replace(/\([0-9]+\)$/, "").replace(/\s*$/, "");
+    const originalName = name.replace(/\s*\([0-9]+\)$/, "");
 
     // Find the first available name
     let i = 1;

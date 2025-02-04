@@ -154,8 +154,8 @@ importers:
         specifier: ^2.2.0
         version: 2.2.0(@ptolemy2002/react-force-rerender@2.0.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@ptolemy2002/react-hook-result@2.2.3(@ptolemy2002/js-utils@3.2.2)(@ptolemy2002/ts-utils@2.5.0(is-callable@1.2.7)))(@ptolemy2002/react-mount-effects@2.0.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@ptolemy2002/react-utils@3.4.0(clsx@2.1.1)(is-callable@1.2.7)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(is-callable@1.2.7)(nanoid@5.0.9)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@ptolemy2002/react-search-param-state':
-        specifier: ^3.0.2
-        version: 3.1.0(@ptolemy2002/js-utils@3.2.2)(@ptolemy2002/react-hook-result@2.2.3(@ptolemy2002/js-utils@3.2.2)(@ptolemy2002/ts-utils@2.5.0(is-callable@1.2.7)))(is-callable@1.2.7)(react-dom@18.3.1(react@18.3.1))(react-router-dom@6.28.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
+        specifier: ^3.2.0
+        version: 3.2.0(@ptolemy2002/js-utils@3.2.2)(@ptolemy2002/react-hook-result@2.2.3(@ptolemy2002/js-utils@3.2.2)(@ptolemy2002/ts-utils@2.5.0(is-callable@1.2.7)))(is-callable@1.2.7)(react-dom@18.3.1(react@18.3.1))(react-router-dom@6.28.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
       '@ptolemy2002/react-styled-component-utils':
         specifier: ^1.0.0
         version: 1.1.2(@ptolemy2002/bs-utils@1.0.0)(polished@4.3.1)(styled-components@6.1.14(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
@@ -239,7 +239,7 @@ importers:
         version: 6.0.0
       shared:
         specifier: file:../shared
-        version: link:../shared
+        version: file:shared(@asteasolutions/zod-to-openapi@7.3.0(zod@3.24.1))(@ptolemy2002/ts-utils@2.5.0(is-callable@1.2.7))(mongoose@8.9.5)(zod@3.24.1)
       styled-components:
         specifier: ^6.1.13
         version: 6.1.14(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -775,8 +775,8 @@ packages:
       react: ^18.3.1
       react-dom: ^18.3.1
 
-  '@ptolemy2002/react-search-param-state@3.1.0':
-    resolution: {integrity: sha512-y3eML0dSmPouuIO/yuZn/x/UgUdhwy8D/Zsz5C5Ipih6/bOV/wb32XZRqmDX0oxjBnsFr/WhaXTRzPmWsK4ikQ==}
+  '@ptolemy2002/react-search-param-state@3.2.0':
+    resolution: {integrity: sha512-SD12tVgyz8i2Epbt1uiVtlYsSyYZwtalUiVKiGzXoNnL2jV546uhl5k43jnbA842ghnfPq15VPA6/SWIRecFLA==}
     peerDependencies:
       '@ptolemy2002/js-utils': ^3.0.2
       '@ptolemy2002/react-hook-result': ^2.1.1
@@ -2527,6 +2527,14 @@ packages:
   shallowequal@1.1.0:
     resolution: {integrity: sha512-y0m1JoUZSlPAjXVtPPW70aZWfIL/dSP7AFkRnniLCrK/8MDKog3TySTBmckD+RObVxH0v4Tox67+F14PdED2oQ==}
 
+  shared@file:shared:
+    resolution: {directory: shared, type: directory}
+    peerDependencies:
+      '@asteasolutions/zod-to-openapi': ^7.3.0
+      '@ptolemy2002/ts-utils': ^2.3.0
+      mongoose: ^8.9.2
+      zod: ^3.24.1
+
   shebang-command@2.0.0:
     resolution: {integrity: sha512-kHxr2zZpYtdmrN1qDjrrX/Z1rR1kG8Dx+gkpK1G4eXmvXswmcE1hTWBWYUzlraYw1/yZp6YuDY77YtvbN0dmDA==}
     engines: {node: '>=8'}
@@ -3226,7 +3234,7 @@ snapshots:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
 
-  '@ptolemy2002/react-search-param-state@3.1.0(@ptolemy2002/js-utils@3.2.2)(@ptolemy2002/react-hook-result@2.2.3(@ptolemy2002/js-utils@3.2.2)(@ptolemy2002/ts-utils@2.5.0(is-callable@1.2.7)))(is-callable@1.2.7)(react-dom@18.3.1(react@18.3.1))(react-router-dom@6.28.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)':
+  '@ptolemy2002/react-search-param-state@3.2.0(@ptolemy2002/js-utils@3.2.2)(@ptolemy2002/react-hook-result@2.2.3(@ptolemy2002/js-utils@3.2.2)(@ptolemy2002/ts-utils@2.5.0(is-callable@1.2.7)))(is-callable@1.2.7)(react-dom@18.3.1(react@18.3.1))(react-router-dom@6.28.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@ptolemy2002/js-utils': 3.2.2
       '@ptolemy2002/react-hook-result': 2.2.3(@ptolemy2002/js-utils@3.2.2)(@ptolemy2002/ts-utils@2.5.0(is-callable@1.2.7))
@@ -5338,6 +5346,13 @@ snapshots:
   shallow-equal@3.1.0: {}
 
   shallowequal@1.1.0: {}
+
+  shared@file:shared(@asteasolutions/zod-to-openapi@7.3.0(zod@3.24.1))(@ptolemy2002/ts-utils@2.5.0(is-callable@1.2.7))(mongoose@8.9.5)(zod@3.24.1):
+    dependencies:
+      '@asteasolutions/zod-to-openapi': 7.3.0(zod@3.24.1)
+      '@ptolemy2002/ts-utils': 2.5.0(is-callable@1.2.7)
+      mongoose: 8.9.5
+      zod: 3.24.1
 
   shebang-command@2.0.0:
     dependencies:

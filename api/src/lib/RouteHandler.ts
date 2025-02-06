@@ -106,6 +106,12 @@ export default class RouteHandler<SuccessResponse extends SuccessResponseBase> {
         return this.buildErrorResponse('NOT_IMPLEMENTED', message);
     }
 
+    protected buildLocalsErrorResponse(
+        message: ErrorResponse["message"] = 'Did not receive expected data from previous middleware in res.locals.'
+    ): ErrorResponse {
+        return this.buildErrorResponse('INTERNAL', message);
+    }
+
     async generateResponse(
         req: RouteHandlerRequestData,
         res: RouteHandlerResponseData

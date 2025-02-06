@@ -71,20 +71,27 @@ export const GlobalStyle = createGlobalStyle`
     // Override Bootstrap Alert styles where applicable
     ${({ theme }) => {
         if (!theme.alerts) return null;
+        const defaultStyles = theme.alerts?.default;
 
         return Object.entries(theme.alerts).map(([variant, styles]) => {
             variant = variant as AlertVariant | 'default';
             if (variant === 'default') return null;
 
+            const backgroundColor = styles.backgroundColor ?? defaultStyles?.backgroundColor;
+            const textColor = styles.textColor ?? defaultStyles?.textColor;
+            const borderColor = styles.borderColor ?? defaultStyles?.borderColor;
+            const linkColor = 
+                styles.linkColor ?? styles.textColor 
+                ?? defaultStyles?.linkColor 
+                ?? defaultStyles?.textColor
+            ;
+
             return css`
                 .alert-${variant} {
-                    ${styles.backgroundColor && `--bs-alert-bg: ${styles.backgroundColor ?? theme.alerts?.default?.backgroundColor};`}
-                    ${styles.textColor && `--bs-alert-color: ${styles.textColor ?? theme.alerts?.default?.textColor};`}
-                    ${(styles.borderColor) && `--bs-alert-border-color: ${styles.borderColor ?? theme.alerts?.default?.borderColor};`}
-                    ${(styles.linkColor ?? styles.textColor) && `--bs-alert-link-color: ${
-                        styles.linkColor ?? styles.textColor ??
-                        theme.alerts?.default?.linkColor ?? theme.alerts?.default?.textColor
-                    };`}
+                    ${backgroundColor && `--bs-alert-bg: ${backgroundColor};`}
+                    ${textColor && `--bs-alert-color: ${textColor};`}
+                    ${borderColor && `--bs-alert-border-color: ${borderColor};`}
+                    ${linkColor && `--bs-alert-link-color: ${linkColor};`}
                 }  
             `;
         });

@@ -73,14 +73,18 @@ export const GlobalStyle = createGlobalStyle`
         if (!theme.alerts) return null;
 
         return Object.entries(theme.alerts).map(([variant, styles]) => {
-            variant = variant as AlertVariant;
+            variant = variant as AlertVariant | 'default';
+            if (variant === 'default') return null;
 
             return css`
                 .alert-${variant} {
-                    ${styles.backgroundColor && `--bs-alert-bg: ${styles.backgroundColor};`}
-                    ${styles.textColor && `--bs-alert-color: ${styles.textColor};`}
-                    ${(styles.borderColor) && `--bs-alert-border-color: ${styles.borderColor};`}
-                    ${(styles.linkColor ?? styles.textColor) && `--bs-alert-link-color: ${styles.linkColor ?? styles.textColor};`}
+                    ${styles.backgroundColor && `--bs-alert-bg: ${styles.backgroundColor ?? theme.alerts?.default?.backgroundColor};`}
+                    ${styles.textColor && `--bs-alert-color: ${styles.textColor ?? theme.alerts?.default?.textColor};`}
+                    ${(styles.borderColor) && `--bs-alert-border-color: ${styles.borderColor ?? theme.alerts?.default?.borderColor};`}
+                    ${(styles.linkColor ?? styles.textColor) && `--bs-alert-link-color: ${
+                        styles.linkColor ?? styles.textColor ??
+                        theme.alerts?.default?.linkColor ?? theme.alerts?.default?.textColor
+                    };`}
                 }  
             `;
         });

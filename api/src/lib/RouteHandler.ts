@@ -9,10 +9,14 @@ export type GeneratedResonse<SuccessResponse extends SuccessResponseBase> = {
     response: ErrorResponse | SuccessResponse;
 };
 
-export type RouteHandlerRequest = {
+export type RouteHandlerRequestData = {
     params: unknown;
     query: unknown;
     body: unknown;
+};
+
+export type RouteHandlerResponseData = {
+    locals: unknown;
 };
 
 export default class RouteHandler<SuccessResponse extends SuccessResponseBase> {
@@ -102,15 +106,18 @@ export default class RouteHandler<SuccessResponse extends SuccessResponseBase> {
         return this.buildErrorResponse('NOT_IMPLEMENTED', message);
     }
 
-    async generateResponse(req: RouteHandlerRequest): Promise<GeneratedResonse<SuccessResponse>> {
+    async generateResponse(
+        req: RouteHandlerRequestData,
+        res: RouteHandlerResponseData
+    ): Promise<GeneratedResonse<SuccessResponse>> {
         return {
             status: 501,
             response: this.buildNotImplementedResponse()
         };
     }
 
-    async handle(req: RouteHandlerRequest, res: Response) {
-        const { status, response } = await this.generateResponse(req);
+    async handle(req: RouteHandlerRequestData, res: Response) {
+        const { status, response } = await this.generateResponse(req, res);
         res.status(status).json(response);
     }
 }

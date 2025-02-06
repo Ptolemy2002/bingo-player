@@ -1,6 +1,6 @@
 import { asyncErrorHandler } from "@ptolemy2002/express-utils";
 import { Router } from "express";
-import RouteHandler, { RouteHandlerRequest } from "lib/RouteHandler";
+import RouteHandler, { RouteHandlerRequestData } from "lib/RouteHandler";
 import SpaceModel from "models/SpaceModel";
 import { Types } from "mongoose";
 import { DuplicateSpaceByID200ResponseBody, ZodDuplicatSpaceByIDURLParamsSchema } from "shared";
@@ -33,7 +33,7 @@ export class DuplicateSpaceByIDHandler extends RouteHandler<DuplicateSpaceByID20
         super(1, '/#/Spaces/post_api_v1_spaces_duplicate_by_id__id_');
     }
 
-    async generateResponse(req: RouteHandlerRequest) {
+    async generateResponse(req: RouteHandlerRequestData) {
         const {
             success: paramsSuccess,
             error: paramsError,

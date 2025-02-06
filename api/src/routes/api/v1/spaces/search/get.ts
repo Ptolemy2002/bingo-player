@@ -1,6 +1,6 @@
 import { asyncErrorHandler } from "@ptolemy2002/express-utils";
 import { Router } from "express";
-import RouteHandler, { RouteHandlerRequest } from "lib/RouteHandler";
+import RouteHandler, { RouteHandlerRequestData } from "lib/RouteHandler";
 import SpaceModel from "models/SpaceModel";
 import { SearchSpaces200ResponseBody, ZodSearchSpacesURLParamsSchema, ZodSearchSpacesQueryParamsSchema } from "shared";
 import SpaceAggregationBuilder from "../utils/SpaceAggregationBuilder";
@@ -47,7 +47,7 @@ export class SearchSpacesHandler extends RouteHandler<SearchSpaces200ResponseBod
         super(1, '/#/Spaces/get_api_v1_spaces_search__query_');
     }
 
-    async generateResponse(req: RouteHandlerRequest) {
+    async generateResponse(req: RouteHandlerRequestData) {
         const {success: querySuccess, error: queryError, data: queryData} = ZodSearchSpacesQueryParamsSchema.safeParse(req.query);
 
         if (!querySuccess) {

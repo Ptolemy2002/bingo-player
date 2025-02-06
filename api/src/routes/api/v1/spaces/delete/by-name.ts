@@ -1,6 +1,6 @@
 import { asyncErrorHandler } from "@ptolemy2002/express-utils";
 import { Router } from "express";
-import RouteHandler, { RouteHandlerRequest } from "lib/RouteHandler";
+import RouteHandler, { RouteHandlerRequestData } from "lib/RouteHandler";
 import SpaceModel from "models/SpaceModel";
 import { DeleteSpaceByName200ResponseBody, ZodDeleteSpaceByNameURLParamsSchema } from "shared";
 
@@ -32,7 +32,7 @@ export class DeleteSpaceByNameHandler extends RouteHandler<DeleteSpaceByName200R
         super(1, '/#/Spaces/delete_api_v1_spaces_delete_by_id_{id}');
     }
 
-    async generateResponse(req: RouteHandlerRequest) {
+    async generateResponse(req: RouteHandlerRequestData) {
         const { success: paramsSuccess, error: paramsError, data: params } = ZodDeleteSpaceByNameURLParamsSchema.safeParse(req.params);
 
         if (!paramsSuccess) {

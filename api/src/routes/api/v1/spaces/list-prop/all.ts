@@ -1,6 +1,6 @@
 import { asyncErrorHandler } from '@ptolemy2002/express-utils';
 import { Router } from 'express';
-import RouteHandler, { RouteHandlerRequest } from 'lib/RouteHandler';
+import RouteHandler, { RouteHandlerRequestData } from 'lib/RouteHandler';
 import SpaceModel from 'models/SpaceModel';
 import {
     ListSpaceProp200ResponseBody,
@@ -53,7 +53,7 @@ export class ListAllSpacePropValuesHandler extends RouteHandler<ListSpaceProp200
         super(1, '/#/Spaces/get_api_v1_spaces_get_all_list__prop_');
     }
 
-    async generateResponse(req: RouteHandlerRequest) {
+    async generateResponse(req: RouteHandlerRequestData) {
         const {
             success: paramsSuccess,
             error: paramsError,

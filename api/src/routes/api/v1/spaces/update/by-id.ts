@@ -1,5 +1,5 @@
 import { Router } from "express";
-import RouteHandler, { RouteHandlerRequest } from "lib/RouteHandler";
+import RouteHandler, { RouteHandlerRequestData } from "lib/RouteHandler";
 import SpaceModel from "models/SpaceModel";
 import { UpdateSpaceByID200ResponseBody, ZodUpdateSpaceByIDURLParamsSchema, ZodUpdateSpaceByIDRequestBodySchema } from "shared";
 import { asyncErrorHandler } from "@ptolemy2002/express-utils";
@@ -40,7 +40,7 @@ export class UpdateSpaceByIDHandler extends RouteHandler<UpdateSpaceByID200Respo
         super(1, '/#/Spaces/post_api_v1_spaces_update_by_id__id_');
     }
 
-    async generateResponse(req: RouteHandlerRequest) {
+    async generateResponse(req: RouteHandlerRequestData) {
         const {
             success: bodySuccess,
             error: bodyError,

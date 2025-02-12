@@ -6,17 +6,21 @@ import { listInPlainEnglish } from "@ptolemy2002/js-utils";
 import { MarkdownRenderer, omitNode } from "src/lib/Markdown";
 import TagBadge from "../TagBadge";
 import { Spacer } from "@ptolemy2002/react-utils";
+import { useMemo } from "react";
+import { LinkContainer } from "react-router-bootstrap";
 
 export default function SpaceCardBase({ className, ...props}: SpaceCardProps["functional"]) {
     const [space] = SpaceData.useContextNonNullable();
 
-    const aliasesText =
-            space.aliases.size > 0 ?
-                "AKA" + listInPlainEnglish(
+    const aliasesText = useMemo(() => {
+            if (space.aliases.size > 0) {
+                return "AKA" + listInPlainEnglish(
                     Array.from(space.aliases).map((i) => `"${i}"`), {max: space.aliases.size, conjunction: "or"}
                 )
-            : ""
-        ;
+            } else {
+                return "";
+            }
+    }, [space.aliases]);
 
     return (
         <Card className={clsx("space-card", className)} {...props}>
@@ -57,19 +61,23 @@ export default function SpaceCardBase({ className, ...props}: SpaceCardProps["fu
                     }
 
                     <b>Examples:</b> <br />
-                        {
-                            space.examples.size === 0 ?
-                                "None Provided"
-                            :
-                                <ul>
-                                    {
-                                        Array.from(space.examples).map(
-                                            (i) => <li key={`example-${i}`}>{i}</li>
-                                        )
-                                    }
-                                </ul>
-                        }
+                    {
+                        space.examples.size === 0 ?
+                            "None Provided"
+                        :
+                            <ul>
+                                {
+                                    Array.from(space.examples).map(
+                                        (i) => <li key={`example-${i}`}>{i}</li>
+                                    )
+                                }
+                            </ul>
+                    }
                 </Card.Text>
+
+                <LinkContainer to={`/space/${encodeURIComponent(space.name)}`}>
+                    <Card.Link>View Details</Card.Link>
+                </LinkContainer>
             </Card.Body>
         </Card>
     )

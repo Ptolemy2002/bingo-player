@@ -94,7 +94,7 @@ export class GetSpacesByPropHandler extends RouteHandler<GetSpacesByProp200Respo
                 response: this.buildZodErrorResponse(queryError, "BAD_QUERY")
             };
         }
-
+        
         const pipeline = new SpaceAggregationBuilder(queryData, this.help)
             .then("add-known-as")
             .thenMatch({ queryProp, queryString })

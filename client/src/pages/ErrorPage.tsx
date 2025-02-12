@@ -1,7 +1,7 @@
 import { MouseEventHandler } from "react";
 import { Alert } from "react-bootstrap";
 import { FallbackProps } from "react-error-boundary";
-import ErrorAlert from "src/components/ErrorAlert";
+import ErrorAlert from "src/components/alerts/ErrorAlert";
 
 export type ErrorPageProps = FallbackProps & { onReset?: MouseEventHandler };
 

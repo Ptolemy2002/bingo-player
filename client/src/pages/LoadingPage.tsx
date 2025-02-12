@@ -1,4 +1,4 @@
-import LoadingAlert from "src/components/LoadingAlert";
+import LoadingAlert from "src/components/alerts/LoadingAlert";
 
 export default function LoadingPage() {
     return (

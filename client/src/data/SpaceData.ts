@@ -142,7 +142,7 @@ export default class SpaceData extends MongoData<
             } else {
                 data = (
                     await api.get(
-                        `/spaces/get/by-prop/name/${this.name}`,
+                        `/spaces/get/by-prop/name/${encodeURIComponent(this.name)}`,
                         {
                             params: {
                                 limit: 1,
@@ -155,12 +155,12 @@ export default class SpaceData extends MongoData<
                     )
                 ).data;
             }
-
+            
             if (data.ok) {
                 if ("space" in data) {
-                    this.fromJSON(data.space);
+                    this.fromJSON(data.space, true);
                 } else if ("spaces" in data) {
-                    this.fromJSON(data.spaces[0]);
+                    this.fromJSON(data.spaces[0], true);
                 }
             }
         }, {

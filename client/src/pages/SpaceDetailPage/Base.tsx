@@ -8,8 +8,11 @@ import SpaceData from 'src/data/SpaceData';
 import { useParams } from 'react-router';
 import TagBadge from 'src/components/TagBadge';
 import { listInPlainEnglish } from '@ptolemy2002/js-utils';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { MarkdownRenderer } from 'src/lib/Markdown';
+import useManualErrorHandling from '@ptolemy2002/react-manual-error-handling';
+import { AxiosError } from 'axios';
+import NotFoundPage from '../NotFoundPage';
 
 export default function SpaceDetailPageBase({
     className,
@@ -17,8 +20,11 @@ export default function SpaceDetailPageBase({
     LoadingAlert=DefaultLoadingAlert
 }: SpaceDetailPageProps["functional"]) {
     const [space, setSpace] = SpaceData.useContext();
+    const [is404, setIs404] = useState(false);
     const { name } = useParams();
+    const { _try } = useManualErrorHandling();
 
+    if (is404) return <NotFoundPage />;
     return (
         <div id="space-detail-page" className={className}>
             <h1>Space Detail</h1>
@@ -48,10 +54,20 @@ export default function SpaceDetailPageBase({
                     }
 
                     init={async () => {
-                        if (space === null) {
+                        if (space === null || space.name !== name) {
                             // Populate the name and pull all the data
                             const newSpace = setSpace({ name })!;
-                            await newSpace.pull();
+                            await _try(
+                                () =>
+                                    newSpace.pull()
+                                    .catch((e: AxiosError) => {
+                                        if (e.status === 404) {
+                                            setIs404(true);
+                                        } else {
+                                            throw e;
+                                        }
+                                    })
+                            );
                         }
                     }}
                 >

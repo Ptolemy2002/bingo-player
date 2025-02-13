@@ -8,8 +8,6 @@ import { ErrorBoundary } from "react-error-boundary";
 import DefaultErrorAlert from "src/components/alerts/ErrorAlert";
 import { Alert } from "react-bootstrap";
 import DefaultLoadingAlert from "src/components/alerts/LoadingAlert";
-import SpaceData from "src/data/SpaceData";
-import { useMountEffect } from "@ptolemy2002/react-mount-effects";
 
 export default function SpaceGalleryPageBase({
     className,
@@ -18,13 +16,7 @@ export default function SpaceGalleryPageBase({
     ErrorAlert=DefaultErrorAlert,
     LoadingAlert=DefaultLoadingAlert
 }: SpaceGalleryPageProps["functional"]) {
-    const [, setSpace] = SpaceData.useContext();
     const { q, setQ } = useSpaceGallerySearchParamState();
-
-    useMountEffect(() => {
-        // Remove the current space being edited
-        setSpace(null);
-    });
 
     return (
         <div id="space-gallery-page" className={className}>

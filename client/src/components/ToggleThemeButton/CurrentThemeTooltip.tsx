@@ -1,8 +1,8 @@
-import { Tooltip } from "react-tooltip";
 import { useBreakpointQuery } from "@ptolemy2002/react-bs-media-queries";
 import { CurrentThemeTooltipProps } from "./Types";
 import { NamedThemes, useNamedTheme } from "src/NamedTheme";
 import clsx from "clsx";
+import StyledTooltip from "../StyledTooltip";
 
 export default function CurrentThemeTooltipBase({
     id="toggle-theme-tooltip",
@@ -13,7 +13,8 @@ export default function CurrentThemeTooltipBase({
     const isLg = useBreakpointQuery("lg", "min");
 
     return (
-        <Tooltip
+        <StyledTooltip
+            $variant="currentTheme"
             id={id}
             place={isLg ? "left" : "right"}
             delayHide={100}
@@ -33,6 +34,6 @@ export default function CurrentThemeTooltipBase({
                     </option>
                 ))}
             </select>
-        </Tooltip>
+        </StyledTooltip>
     )
 }

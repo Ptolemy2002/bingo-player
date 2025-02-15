@@ -2,16 +2,13 @@ import Base from "./Base";
 import BaseStyled from "./BaseStyled";
 import SpaceGallerySearchBarBase from "./SearchBarBase";
 import SpaceGallerySearchBarStyled from "./SearchBarStyled";
-import SpaceGallerySearchSettingsButtonBase from "./SearchSettingsButtonBase";
-import SpaceGallerySearchSettingsButtonStyled from "./SearchSettingsButtonStyled";
-import SpaceGallerySearchSubmitButtonBase from "./SearchSubmitButtonBase";
-import SpaceGallerySearchSubmitButtonStyled from "./SearchSubmitButtonStyled";
+import SpaceGallerySearchSettingsButtonBase from "./SearchSettingsButton";
+import SpaceGallerySearchSubmitButtonBase from "./SearchSubmitButton";
 import SpaceGallerySearchSettingsTooltipBase from "./SearchSettingsTooltipBase";
 import SpaceGallerySearchSettingsTooltipStyled from "./SearchSettingsTooltipStyled";
 import SpaceGallerySearchResultsBase from "./SearchResultsBase";
 import SpaceGallerySearchResultsStyled from "./SearchResultsStyled";
-import SpaceGalleryPageChangeButtonBase from "./PageChangeButtonBase";
-import SpaceGalleryPageChangeButtonStyled from "./PageChangeButtonStyled";
+import SpaceGalleryPageChangeButtonBase from "./PageChangeButton";
 import { SpaceGallerySearchContext, SpaceGallerySearchProvider } from "./Context";
 
 export const UnstyledSpaceGalleryPage = Object.assign(Base, {
@@ -29,14 +26,14 @@ export const UnstyledSpaceGalleryPage = Object.assign(Base, {
 });
 export default Object.assign(BaseStyled, {
     SearchBar: Object.assign(SpaceGallerySearchBarStyled, {
-        SearchSettingsButton: Object.assign(SpaceGallerySearchSettingsButtonStyled, {
+        SearchSettingsButton: Object.assign(SpaceGallerySearchSettingsButtonBase, {
             Tooltip: SpaceGallerySearchSettingsTooltipStyled
         }),
-        SearchSubmitButton: SpaceGallerySearchSubmitButtonStyled,
+        SearchSubmitButton: SpaceGallerySearchSubmitButtonBase,
         SearchResults: Object.assign(SpaceGallerySearchResultsStyled, {
             Context: SpaceGallerySearchContext,
             Provider: SpaceGallerySearchProvider,
-            PageChangeButton: SpaceGalleryPageChangeButtonStyled
+            PageChangeButton: SpaceGalleryPageChangeButtonBase
         })
     })
 });
@@ -53,26 +50,25 @@ export const UnstyledSpaceGallerySearchBar = Object.assign(SpaceGallerySearchBar
     })
 });
 export const SpaceGallerySearchBar = Object.assign(SpaceGallerySearchBarStyled, {
-    SearchSettingsButton: Object.assign(SpaceGallerySearchSettingsButtonStyled, {
-        Tooltip: SpaceGallerySearchSettingsTooltipStyled
+    SearchSettingsButton: Object.assign(SpaceGallerySearchSettingsButtonBase, {
+        Tooltip: SpaceGallerySearchSettingsTooltipBase
     }),
-    SearchSubmitButton: SpaceGallerySearchSubmitButtonStyled,
+    SearchSubmitButton: SpaceGallerySearchSubmitButtonBase,
     SearchResults: Object.assign(SpaceGallerySearchResultsStyled, {
         Context: SpaceGallerySearchContext,
         Provider: SpaceGallerySearchProvider,
-        PageChangeButton: SpaceGalleryPageChangeButtonStyled
+        PageChangeButton: SpaceGalleryPageChangeButtonBase
     })
 });
 
 export const UnstyledSpaceGallerySearchSettingsButton = Object.assign(SpaceGallerySearchSettingsButtonBase, {
-    Tooltip: SpaceGallerySearchSettingsTooltipBase
-});
-export const SpaceGallerySearchSettingsButton = Object.assign(SpaceGallerySearchSettingsButtonStyled, {
     Tooltip: SpaceGallerySearchSettingsTooltipStyled
 });
+export const SpaceGallerySearchSettingsButton = Object.assign(SpaceGallerySearchSettingsButtonBase, {
+    Tooltip: SpaceGallerySearchSettingsTooltipBase
+});
 
-export const UnstyledSpaceGallerySearchSubmitButton = SpaceGallerySearchSubmitButtonBase;
-export const SpaceGallerySearchSubmitButton = SpaceGallerySearchSubmitButtonStyled;
+export const SpaceGallerySearchSubmitButton = SpaceGallerySearchSubmitButtonBase;
 
 export const UnstyledSpaceGallerySearchSettingsTooltip = SpaceGallerySearchSettingsTooltipBase;
 export const SpaceGallerySearchSettingsTooltip = SpaceGallerySearchSettingsTooltipStyled;
@@ -85,11 +81,10 @@ export const UnstyledSpaceGallerySearchResults = Object.assign(SpaceGallerySearc
 export const SpaceGallerySearchResults = Object.assign(SpaceGallerySearchResultsStyled, {
     Context: SpaceGallerySearchContext,
     Provider: SpaceGallerySearchProvider,
-    PageChangeButton: SpaceGalleryPageChangeButtonStyled
+    PageChangeButton: SpaceGalleryPageChangeButtonBase
 });
 
-export const UnstyledSpaceGalleryPageChangeButton = SpaceGalleryPageChangeButtonBase;
-export const SpaceGalleryPageChangeButton = SpaceGalleryPageChangeButtonStyled;
+export const SpaceGalleryPageChangeButton = SpaceGalleryPageChangeButtonBase;
 
 export * from "./Controllers";
 export * from "./Context";

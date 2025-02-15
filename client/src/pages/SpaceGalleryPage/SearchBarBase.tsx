@@ -1,9 +1,9 @@
 import { Form } from "react-bootstrap";
 import useSpaceGallerySearchParamState from "./SearchParams";
 import { SpaceGallerySearchBarProps } from "./Types";
-import DefaultSearchSetingsButton from "./SearchSettingsButtonStyled";
-import DefaultSearchSubmitButton from "./SearchSubmitButtonStyled";
-import DefaultPageChangeButton from "./PageChangeButtonStyled";
+import DefaultSearchSetingsButton from "./SearchSettingsButton";
+import DefaultSearchSubmitButton from "./SearchSubmitButton";
+import DefaultPageChangeButton from "./PageChangeButton";
 import { useSpaceGallerySearchFunctions } from "./Controllers";
 
 export default function SpaceGallerySearchBarBase({

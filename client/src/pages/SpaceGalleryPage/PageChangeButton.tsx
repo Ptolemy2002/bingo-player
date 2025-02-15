@@ -3,7 +3,8 @@ import { useSpaceGallerySearchContext } from "./Context";
 import { calcPagination } from "./Other";
 import useSpaceGallerySearchParamState from "./SearchParams";
 import { SpaceGalleryPageChangeButtonProps } from "./Types";
-import { Button } from "react-bootstrap";
+import StyledButton from "src/components/StyledButton";
+import { MouseEvent } from "react";
 
 export default function SpaceGalleryPageChangeButtonBase({
     type,
@@ -12,7 +13,7 @@ export default function SpaceGalleryPageChangeButtonBase({
     onClick,
     children,
     ...props
-}: SpaceGalleryPageChangeButtonProps["functional"]) {
+}: SpaceGalleryPageChangeButtonProps["all"]) {
     const { p, setP, ps } = useSpaceGallerySearchParamState();
     const [search] = useSpaceGallerySearchContext(["totalCount"]);
 
@@ -23,7 +24,8 @@ export default function SpaceGalleryPageChangeButtonBase({
     } = calcPagination(p, ps, search.totalCount);
 
     return (
-        <Button
+        <StyledButton
+            $variant="pageChange"
             className={clsx(`space-gallery-page-${type}-button`, className)}
             disabled={
                 disabled 
@@ -32,13 +34,13 @@ export default function SpaceGalleryPageChangeButtonBase({
                     ||
                 (type === "prev" && currentPage === 1)
             }
-            onClick={(e) => {
+            onClick={(e: MouseEvent<HTMLButtonElement>) => {
                 setP(currentPage + offset);
                 onClick?.(e);
             }}
             {...props}
         >
             {children}
-        </Button>
+        </StyledButton>
     );
 }

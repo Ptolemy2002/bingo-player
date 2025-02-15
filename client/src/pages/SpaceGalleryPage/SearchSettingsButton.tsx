@@ -1,9 +1,9 @@
-import { Button } from "react-bootstrap";
 import { SpaceGallerySearchSettingsButtonProps } from "./Types";
 import DefaultGearIcon from "src/components/icons/GearIcon";
 import DefaultSearchSettingsTooltip from "./SearchSettingsTooltipStyled";
 import { useState } from "react";
 import clsx from "clsx";
+import StyledButton from "src/components/StyledButton";
 
 export default function SpaceGallerySearchSettingsButtonBase({
     className,
@@ -11,7 +11,7 @@ export default function SpaceGallerySearchSettingsButtonBase({
     GearIcon=DefaultGearIcon,
     SearchSettingsTooltip=DefaultSearchSettingsTooltip,
     ...props
-}: SpaceGallerySearchSettingsButtonProps["functional"]) {
+}: SpaceGallerySearchSettingsButtonProps["all"]) {
     const [open, setOpen] = useState(false);
 
     return <>
@@ -29,13 +29,14 @@ export default function SpaceGallerySearchSettingsButtonBase({
             />
         }
         
-        <Button
+        <StyledButton
+            $variant="searchSettings"
             className={clsx("space-gallery-search-settings-button", className)}
             {...props}
             data-tooltip-id={tooltipId}
             onClick={() => setOpen((v) => !v)}
         >
             <GearIcon />
-        </Button>
+        </StyledButton>
     </>;
 }

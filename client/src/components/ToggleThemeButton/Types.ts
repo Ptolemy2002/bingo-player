@@ -1,6 +1,7 @@
 import { StyledComponentPropsWithCSS } from "@ptolemy2002/react-styled-component-utils";
-import { ComponentProps, ComponentType } from "react";
-import { Tooltip } from "react-tooltip";
+import { Override } from "@ptolemy2002/ts-utils";
+import { ComponentProps, ComponentType, RefObject } from "react";
+import { Tooltip, TooltipRefProps } from "react-tooltip";
 import { ButtonStyles, TooltipStyles } from "styled-components";
 
 export type ToggleThemeButtonProps = StyledComponentPropsWithCSS<{
@@ -14,6 +15,10 @@ export type ToggleThemeButtonProps = StyledComponentPropsWithCSS<{
     >;
 }, ButtonStyles>;
 
-export type CurrentThemeTooltipProps = StyledComponentPropsWithCSS<ComponentProps<typeof Tooltip> & {
-    className?: string;
-}, TooltipStyles>;
+export type CurrentThemeTooltipProps = StyledComponentPropsWithCSS<
+    Override<ComponentProps<typeof Tooltip>, {
+        className?: string;
+        ref?: RefObject<TooltipRefProps>;
+    }>,
+    TooltipStyles
+>;

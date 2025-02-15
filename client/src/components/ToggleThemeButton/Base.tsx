@@ -8,8 +8,10 @@ import { css } from "styled-components";
 export default function ToggleThemeButtonBase({
     className,
     tooltipId="toggle-theme-tooltip",
-    CurrentThemeTooltip=DefaultCurrentThemeTooltip
-}: ToggleThemeButtonProps["functional"]) {
+    CurrentThemeTooltip=DefaultCurrentThemeTooltip,
+    $css,
+    ...props
+}: ToggleThemeButtonProps["all"]) {
     const [{icon}, {nextTheme}] = useNamedTheme();
     
     return <>
@@ -27,7 +29,9 @@ export default function ToggleThemeButtonBase({
 
                 // Remove padding for alignment purposes
                 padding: 0;
+                ${$css}
             `}
+            {...props}
         >
             {icon}
         </StyledButton>

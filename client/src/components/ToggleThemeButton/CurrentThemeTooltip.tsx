@@ -2,13 +2,13 @@ import { useBreakpointQuery } from "@ptolemy2002/react-bs-media-queries";
 import { CurrentThemeTooltipProps } from "./Types";
 import { NamedThemes, useNamedTheme } from "src/NamedTheme";
 import clsx from "clsx";
-import StyledTooltip from "../StyledTooltip";
+import StyledTooltip from "src/components/StyledTooltip";
 
 export default function CurrentThemeTooltipBase({
     id="toggle-theme-tooltip",
     className,
     ...props
-}: CurrentThemeTooltipProps["functional"]) {
+}: CurrentThemeTooltipProps["all"]) {
     const [{id: themeId}, {setTheme}] = useNamedTheme();
     const isLg = useBreakpointQuery("lg", "min");
 
@@ -17,10 +17,11 @@ export default function CurrentThemeTooltipBase({
             $variant="currentTheme"
             id={id}
             place={isLg ? "left" : "right"}
+            className={clsx("current-theme-tooltip", className)}
             delayHide={100}
+
             clickable
             {...props}
-            className={clsx("current-theme-tooltip", className)}
         >
             Current theme: {" "}
             <select value={themeId} onChange={(e) => setTheme(e.target.value)}>

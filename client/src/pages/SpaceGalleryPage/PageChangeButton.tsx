@@ -7,7 +7,7 @@ import StyledButton from "src/components/StyledButton";
 import { MouseEvent } from "react";
 
 export default function SpaceGalleryPageChangeButtonBase({
-    type,
+    type="next",
     className,
     disabled,
     onClick,
@@ -38,6 +38,7 @@ export default function SpaceGalleryPageChangeButtonBase({
                 setP(currentPage + offset);
                 onClick?.(e);
             }}
+
             {...props}
         >
             {children}

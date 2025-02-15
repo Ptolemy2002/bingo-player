@@ -106,5 +106,5 @@ export type SpaceGallerySearchResultsProps = StyledComponentPropsWithCSS<{
 
 export type SpaceGalleryPageChangeButtonProps = StyledComponentPropsWithCSS<Override<ButtonProps, {
     className?: string;
-    type: "next" | "prev";
+    type?: "next" | "prev";
 }>, ButtonStyles>;

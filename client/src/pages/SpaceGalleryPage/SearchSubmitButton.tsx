@@ -9,7 +9,7 @@ export default function SpaceGallerySearchSubmitButtonBase({
     MagnifyingGlassIcon=DefaultMagnifyingGlassIcon,
     onClick,
     ...props
-}: SpaceGallerySearchSubmitButtonProps["functional"]) {
+}: SpaceGallerySearchSubmitButtonProps["all"]) {
     const { handleClick } = useSpaceGallerySearchSubmitButtonController(onClick);
 
     return <>

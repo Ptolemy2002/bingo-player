@@ -160,8 +160,8 @@ importers:
         specifier: ^3.2.2
         version: 3.2.2(@ptolemy2002/js-utils@3.2.2)(@ptolemy2002/react-hook-result@2.2.4(@ptolemy2002/js-utils@3.2.2)(@ptolemy2002/ts-utils@3.0.0(@ptolemy2002/ts-brand-utils@1.0.0)(is-callable@1.2.7)))(@ptolemy2002/ts-brand-utils@1.0.0)(is-callable@1.2.7)(react-dom@18.3.1(react@18.3.1))(react-router-dom@6.29.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
       '@ptolemy2002/react-styled-component-utils':
-        specifier: ^1.1.2
-        version: 1.1.2(@ptolemy2002/bs-utils@1.0.0)(polished@4.3.1)(styled-components@6.1.15(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
+        specifier: ^1.1.4
+        version: 1.1.4(@ptolemy2002/bs-utils@1.0.0)(polished@4.3.1)(styled-components@6.1.15(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
       '@ptolemy2002/react-suspense':
         specifier: ^2.0.4
         version: 2.0.4(@ptolemy2002/react-mount-effects@2.0.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@ptolemy2002/react-proxy-context@2.3.1(@ptolemy2002/react-force-rerender@2.0.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@ptolemy2002/react-hook-result@2.2.4(@ptolemy2002/js-utils@3.2.2)(@ptolemy2002/ts-utils@3.0.0(@ptolemy2002/ts-brand-utils@1.0.0)(is-callable@1.2.7)))(@ptolemy2002/react-mount-effects@2.0.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@ptolemy2002/react-utils@3.4.0(clsx@2.1.1)(is-callable@1.2.7)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(is-callable@1.2.7)(nanoid@5.0.9)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@ptolemy2002/react-utils@3.4.0(clsx@2.1.1)(is-callable@1.2.7)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-components@6.1.15(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
@@ -791,8 +791,8 @@ packages:
       react-dom: ^18.3.1
       react-router-dom: ^6.27.0
 
-  '@ptolemy2002/react-styled-component-utils@1.1.2':
-    resolution: {integrity: sha512-5qUrlKeCRW9PEEPQfR3nQyvQziERodzWi4lyBd3yiNOYcjpOxMPcxhaob/yPFPZUJz6DPylzgF4IH2SBcWj0FA==}
+  '@ptolemy2002/react-styled-component-utils@1.1.4':
+    resolution: {integrity: sha512-OBDrXO7k/QxNk9e6gGmGXREVUXao1FvxrazjvVUtoz3/tTkhqAuBA/2KnL7BMEYewS7wQEBlJ+o3MP04SRZt+A==}
     peerDependencies:
       '@ptolemy2002/bs-utils': ^1.0.0
       polished: ^4.3.1
@@ -3260,7 +3260,7 @@ snapshots:
       - '@ptolemy2002/ts-brand-utils'
       - is-callable
 
-  '@ptolemy2002/react-styled-component-utils@1.1.2(@ptolemy2002/bs-utils@1.0.0)(polished@4.3.1)(styled-components@6.1.15(react-dom@18.3.1(react@18.3.1))(react@18.3.1))':
+  '@ptolemy2002/react-styled-component-utils@1.1.4(@ptolemy2002/bs-utils@1.0.0)(polished@4.3.1)(styled-components@6.1.15(react-dom@18.3.1(react@18.3.1))(react@18.3.1))':
     dependencies:
       '@ptolemy2002/bs-utils': 1.0.0
       polished: 4.3.1

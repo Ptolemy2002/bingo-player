@@ -39,13 +39,13 @@ export const converts: ConvertFunctions<SpaceGallerySearchParams> = {
     p: (value) => z.coerce.number().int().positive().catch(1).parse(value),
 
     so: (value) => {
-        const { success, data } = ZodSearchSpacesQueryParamsSchema.safeParse({sortOrder: value});
+        const { success, data } = ZodSearchSpacesQueryParamsSchema.safeParse({so: value});
         const result = success ? data.sortOrder : "asc";
         return result ?? "asc";
     },
 
     sb: (value) => {
-        const { success, data } = ZodSearchSpacesQueryParamsSchema.safeParse({sortBy: value});
+        const { success, data } = ZodSearchSpacesQueryParamsSchema.safeParse({sb: value});
         const result = success ? data.sortBy : "name";
         return result ?? "name";
     }
@@ -53,7 +53,7 @@ export const converts: ConvertFunctions<SpaceGallerySearchParams> = {
 
 export const defaultValues: Partial<SpaceGallerySearchParams> = {
     q: "",
-    cat: "name",
+    cat: "general",
     cs: false,
     mw: false,
     as: false,
@@ -61,7 +61,7 @@ export const defaultValues: Partial<SpaceGallerySearchParams> = {
     ps: 12,
     p: 1,
     so: "asc",
-    sb: "score"
+    sb: "name"
 };
 
 function useSearchParamSetter<K extends keyof SpaceGallerySearchParams>(key: K, set: SetSearchParamFunction<SpaceGallerySearchParams>) {

@@ -4,12 +4,17 @@ import { Card } from "react-bootstrap";
 import clsx from "clsx";
 import { listInPlainEnglish } from "@ptolemy2002/js-utils";
 import { MarkdownRenderer, omitNode } from "src/lib/Markdown";
-import TagBadge from "../TagBadge";
+import DefaultTagBadge from "../TagBadge";
 import { Spacer } from "@ptolemy2002/react-utils";
 import { useMemo } from "react";
 import { LinkContainer } from "react-router-bootstrap";
+import StyledButton from "../StyledButton";
 
-export default function SpaceCardBase({ className, ...props}: SpaceCardProps["functional"]) {
+export default function SpaceCardBase({
+    className,
+    TagBadge=DefaultTagBadge,
+    ...props
+}: SpaceCardProps["functional"]) {
     const [space] = SpaceData.useContextNonNullable();
 
     const aliasesText = useMemo(() => {
@@ -76,7 +81,11 @@ export default function SpaceCardBase({ className, ...props}: SpaceCardProps["fu
                 </Card.Text>
 
                 <LinkContainer to={`/space/${encodeURIComponent(space.name)}`}>
-                    <Card.Link>View Details</Card.Link>
+                    <StyledButton
+                        $variant="cardViewDetails"
+                    >
+                        View Details
+                    </StyledButton>
                 </LinkContainer>
             </Card.Body>
         </Card>

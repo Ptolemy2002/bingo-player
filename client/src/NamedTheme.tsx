@@ -83,6 +83,14 @@ export const NamedThemes: NamedTheme[] = [
                 }
             },
 
+            buttons: {
+                cardViewDetails: {
+                    borderStyle: "solid",
+                    hoverBackgroundColor: "black",
+                    hoverTextColor: "white"
+                }
+            },
+
             icons: {
                 gear: {
                     outerColor: "black",
@@ -137,6 +145,14 @@ export const NamedThemes: NamedTheme[] = [
                 legendary: {
                     backgroundColor: "#ff55ff",
                     textColor: "black"
+                }
+            },
+
+            buttons: {
+                cardViewDetails: {
+                    borderStyle: "solid",
+                    hoverBackgroundColor: "white",
+                    hoverTextColor: "black"
                 }
             },
 

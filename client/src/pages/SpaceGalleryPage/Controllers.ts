@@ -1,7 +1,6 @@
-import { useDelayedEffect, useMountEffect } from "@ptolemy2002/react-mount-effects";
 import { useSpaceGallerySearchContext } from "./Context";
 import useSpaceGallerySearchParamState from "./SearchParams";
-import { useCallback, MouseEventHandler } from "react";
+import { useCallback, MouseEventHandler, useEffect } from "react";
 import useManualErrorHandling from "@ptolemy2002/react-manual-error-handling";
 import getApi from "src/Api";
 import { useSuspenseController } from "@ptolemy2002/react-suspense";
@@ -15,36 +14,20 @@ export function useSpaceGallerySearchSubmitButtonController(
     const {
         q, p, ps
     } = useSpaceGallerySearchParamState();
-    const [search] = useSpaceGallerySearchContext();
     const { _try } = useManualErrorHandling();
     const [{ suspend }] = useSuspenseController();
 
     const { runSearch, runGetAll } = useSpaceGallerySearchFunctions();
 
-    useMountEffect(() => {
-        // Slightly delay this so that we can make sure dependent
-        // components have had a chance to initialize their subscriptions
-        // to the hasPressed property
-        setTimeout(() => {
-            if (q.length !== 0 && !search.hasPressed) {
-                // Perform search if there is initially a query
-                _try(() => suspend(() => runSearch(false)));
-            } else {
-                _try(() => suspend(() => runGetAll(false)));
-            }
-        }, 0);
-    });
-
-    // Because this is a delayed effect, it will not run on mount. Only
-    // when the page number changes
-    useDelayedEffect(() => {
-        // Perform a new search when the page number changes
+    useEffect(() => {
+        // Perform a new search when the page number changes and on mount
         if (q.length !== 0) {
             _try(() => suspend(() => runSearch(false)));
         } else {
             _try(() => suspend(() => runGetAll(false)));
         }
-    }, [p, ps], 1);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [p, ps]);
 
     const handleClick = useCallback<MouseEventHandler<HTMLButtonElement>>((e) => {
         if (q.length !== 0) {

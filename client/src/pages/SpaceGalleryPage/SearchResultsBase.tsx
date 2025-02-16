@@ -17,7 +17,9 @@ export default function SpaceSearchResultsBase({
     cardsPerRowXl=3,
     SpaceCard=DefaultSpaceCard
 }: SpaceGallerySearchResultsProps["functional"]) {
-    const { p, ps } = useSpaceGallerySearchParamState();
+    const {
+        p, ps
+    } = useSpaceGallerySearchParamState();
     const [search] = useSpaceGallerySearchContext(["hasPressed", "results"]);
 
     const {

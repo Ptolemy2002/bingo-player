@@ -4,11 +4,11 @@ import { Card } from "react-bootstrap";
 import clsx from "clsx";
 import { listInPlainEnglish } from "@ptolemy2002/js-utils";
 import { MarkdownRenderer, omitNode } from "src/lib/Markdown";
-import DefaultTagBadge from "../TagBadge";
+import DefaultTagBadge from "src/components/TagBadge";
 import { Spacer } from "@ptolemy2002/react-utils";
 import { useMemo } from "react";
 import { LinkContainer } from "react-router-bootstrap";
-import StyledButton from "../StyledButton";
+import StyledButton from "src/components/StyledButton";
 
 export default function SpaceCardBase({
     className,
@@ -36,7 +36,9 @@ export default function SpaceCardBase({
                 <Card.Text as="div">
                     {
                         Array.from(space.tags).map(
-                            (tag) => <TagBadge className="me-1" key={`tag-${tag}`} tag={tag} pill />
+                            (tag) => {
+                                return <TagBadge className="me-1" key={`tag-${tag}`} tag={tag} pill />;
+                            }
                         )
                     }
 

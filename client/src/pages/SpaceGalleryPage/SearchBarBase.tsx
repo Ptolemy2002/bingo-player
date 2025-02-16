@@ -17,12 +17,14 @@ export default function SpaceGallerySearchBarBase({
     PageChangeButton=DefaultPageChangeButton,
     ...props
 }: SpaceGallerySearchBarProps["functional"]) {
-    const { q, setQ } = useSpaceGallerySearchParamState();
+    const {
+        q, setQ
+    } = useSpaceGallerySearchParamState();
     const { runSearch, runGetAll } = useSpaceGallerySearchFunctions();
     const { _try } = useManualErrorHandling();
     const [{ suspend }] = useSuspenseController();
 
-    const keyJustDownRef = useRef(false);
+    const justChangedRef = useRef(false);
     const formControlRef = useRef<HTMLInputElement>(null);
 
     const updateResults = useCallback(() => {
@@ -34,13 +36,14 @@ export default function SpaceGallerySearchBarBase({
     }, [q, _try, suspend, runSearch, runGetAll]);
 
     useEffect(() => {
-        // If the query was changed in a way other than pressing enter
-        if (!keyJustDownRef.current) {
+        // If the query was changed in a way other than pressing enter or typing in
+        // the field
+        if (!justChangedRef.current) {
             formControlRef.current!.value = q;
             formControlRef.current!.focus();
             updateResults();
         }
-        keyJustDownRef.current = false;
+        justChangedRef.current = false;
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [q]);
 
@@ -53,12 +56,15 @@ export default function SpaceGallerySearchBarBase({
                 ref={formControlRef}
                 placeholder={placeholder}
                 defaultValue={q}
-                onChange={(e) => setQ(e.target.value)}
+                onChange={(e) => {
+                    justChangedRef.current = true;
+                    setQ(e.target.value)
+                }}
                 onKeyDown={(e) => {
                     if (e.key === "Enter") {
                         // Prevent form submission
                         e.preventDefault();
-                        keyJustDownRef.current = true;
+                        justChangedRef.current = true;
                         updateResults();
                     }
                 }}

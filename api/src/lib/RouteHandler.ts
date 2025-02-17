@@ -1,7 +1,7 @@
 import getEnv, { EnvType } from 'env';
 import { ErrorCode, ErrorResponse, ErrorResponse400, ErrorResponse404, ErrorResponse501, ErrorResponseWithCode, SuccessResponseBase } from 'shared';
 import { ZodError } from 'zod';
-import { interpretZodError } from '@ptolemy2002/regex-utils';
+import { interpretZodError, InterpretZodErrorOptions } from '@ptolemy2002/regex-utils';
 import { Response } from 'express';
 
 export type GeneratedResonse<SuccessResponse extends SuccessResponseBase> = {
@@ -87,10 +87,21 @@ export default class RouteHandler<SuccessResponse extends SuccessResponseBase> {
     protected buildZodErrorResponse(
         error: ZodError,
         code: ErrorResponse400['code'] = 'BAD_INPUT',
+        interpretOptions: InterpretZodErrorOptions = {},
     ): ErrorResponse400 {
+        if (interpretOptions.prefix === undefined) {
+            if (code === 'BAD_BODY') {
+                interpretOptions.prefix = 'body';
+            } else if (code === 'BAD_URL') {
+                interpretOptions.prefix = 'url';
+            } else if (code === 'BAD_QUERY') {
+                interpretOptions.prefix = 'query';
+            }
+        }
+
         return this.buildErrorResponse(
             code,
-            interpretZodError(error)
+            interpretZodError(error, interpretOptions)
         );
     }
 

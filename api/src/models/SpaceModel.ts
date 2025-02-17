@@ -77,16 +77,16 @@ const SpaceSchema = new Schema<MongoDocumentSpace, SpaceModel, SpaceInstanceMeth
     }
 });
 
-SpaceSchema.path("name").validate(zodValidateWithErrors(ZodMongoSpaceShape.name, true));
-SpaceSchema.path("description").validate(zodValidateWithErrors(ZodMongoSpaceShape.description, true));
-SpaceSchema.path("examples").validate(zodValidateWithErrors(ZodMongoSpaceShape.examples, true));
+SpaceSchema.path("name").validate(zodValidateWithErrors(ZodMongoSpaceShape.name, { _throw: true, prefix: "name" }));
+SpaceSchema.path("description").validate(zodValidateWithErrors(ZodMongoSpaceShape.description, { _throw: true, prefix: "description" }));
+SpaceSchema.path("examples").validate(zodValidateWithErrors(ZodMongoSpaceShape.examples, { _throw: true, prefix: "examples" }));
 
 SpaceSchema.path("aliases").validate(function(aliases: string[]) {
-    zodValidateWithErrors(ZodMongoSpaceShape.aliases, true)(aliases);
+    zodValidateWithErrors(ZodMongoSpaceShape.aliases, { _throw: true })(aliases);
     return refineNoAliasMatchingName(this.name, aliases);
 }, "The aliases must be unique and not include the name of the space.");
 
-SpaceSchema.path("tags").validate(zodValidateWithErrors(ZodMongoSpaceShape.tags, true));
+SpaceSchema.path("tags").validate(zodValidateWithErrors(ZodMongoSpaceShape.tags, { _throw: true, prefix: "tags" }));
 
 SpaceSchema.method("toClientJSON", function() {
     const {_id, ...space} = this.toJSON();

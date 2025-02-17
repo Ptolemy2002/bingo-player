@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@ptolemy2002/regex-utils':
-        specifier: ^2.3.0
-        version: 2.3.0(zod@3.24.1)
+        specifier: ^2.5.0
+        version: 2.5.0(zod@3.24.1)
       '@ptolemy2002/ts-utils':
         specifier: ^3.0.0
         version: 3.0.0(@ptolemy2002/ts-brand-utils@1.0.0)(is-callable@1.2.7)
@@ -30,8 +30,8 @@ importers:
         specifier: ^1.1.1
         version: 1.1.1(@ptolemy2002/ts-utils@3.0.0(@ptolemy2002/ts-brand-utils@1.0.0)(is-callable@1.2.7))(is-callable@1.2.7)(mongoose@8.9.5)
       '@ptolemy2002/regex-utils':
-        specifier: ^2.3.0
-        version: 2.3.0(zod@3.24.1)
+        specifier: ^2.5.0
+        version: 2.5.0(zod@3.24.1)
       '@ptolemy2002/ts-utils':
         specifier: ^3.0.0
         version: 3.0.0(@ptolemy2002/ts-brand-utils@1.0.0)(is-callable@1.2.7)
@@ -105,6 +105,9 @@ importers:
       '@types/http-errors':
         specifier: ~2.0.4
         version: 2.0.4
+      '@types/mongoose':
+        specifier: ^5.11.97
+        version: 5.11.97
       '@types/morgan':
         specifier: ~1.9.9
         version: 1.9.9
@@ -821,6 +824,11 @@ packages:
     peerDependencies:
       zod: ^3.23.8
 
+  '@ptolemy2002/regex-utils@2.5.0':
+    resolution: {integrity: sha512-rgvemzp3jOLxYzW3R4w+OnBKuoELPCSdSDXN5zfKP4utHF+xD6rF+uEQfZIYTgmBrJOcke0+c8JnlxlTsaX+Vw==}
+    peerDependencies:
+      zod: ^3.23.8
+
   '@ptolemy2002/ts-brand-utils@1.0.0':
     resolution: {integrity: sha512-E8u3dXr2UG0FYifa4RvM3EU1lD/Zvq57ziZN+8Mn/duMOIY6WRwICq8YNrYoOHamR5QDNnLcersNtN5IiAwrNA==}
 
@@ -1033,6 +1041,10 @@ packages:
 
   '@types/mime@1.3.5':
     resolution: {integrity: sha512-/pyBZWSLD2n0dcHE3hq8s8ZvcETHtEuF+3E7XVt0Ig2nvsVQXdghHVcEkIWjy9A0wKfTn97a/PSDYohKIlnP/w==}
+
+  '@types/mongoose@5.11.97':
+    resolution: {integrity: sha512-cqwOVYT3qXyLiGw7ueU2kX9noE8DPGRY6z8eUxudhXY8NZ7DMKYAxyZkLSevGfhCX3dO/AoX5/SO9lAzfjon0Q==}
+    deprecated: Mongoose publishes its own types, so you do not need to install this package.
 
   '@types/morgan@1.9.9':
     resolution: {integrity: sha512-iRYSDKVaC6FkGSpEVVIvrRGw0DfJMiQzIn3qr2G5B3C//AWkulhXgaBd7tS9/J79GWSYMTHGs7PfI5b3Y8m+RQ==}
@@ -3286,6 +3298,10 @@ snapshots:
     dependencies:
       zod: 3.24.1
 
+  '@ptolemy2002/regex-utils@2.5.0(zod@3.24.1)':
+    dependencies:
+      zod: 3.24.1
+
   '@ptolemy2002/ts-brand-utils@1.0.0': {}
 
   '@ptolemy2002/ts-utils@3.0.0(@ptolemy2002/ts-brand-utils@1.0.0)(is-callable@1.2.7)':
@@ -3481,6 +3497,19 @@ snapshots:
       '@types/unist': 3.0.3
 
   '@types/mime@1.3.5': {}
+
+  '@types/mongoose@5.11.97':
+    dependencies:
+      mongoose: 8.9.5
+    transitivePeerDependencies:
+      - '@aws-sdk/credential-providers'
+      - '@mongodb-js/zstd'
+      - gcp-metadata
+      - kerberos
+      - mongodb-client-encryption
+      - snappy
+      - socks
+      - supports-color
 
   '@types/morgan@1.9.9':
     dependencies:

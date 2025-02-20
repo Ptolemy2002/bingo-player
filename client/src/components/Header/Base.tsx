@@ -5,7 +5,7 @@ import DefaultMenuIcon from "src/components/icons/MenuIcon";
 import ToggleThemeButton from "src/components/ToggleThemeButton";
 import clsx from "clsx";
 
-export default function HeaderBase({
+function HeaderBase({
     title,
     className,
     MenuIcon = DefaultMenuIcon
@@ -46,3 +46,13 @@ export default function HeaderBase({
         </Navbar>
     );
 }
+
+export function applySubComponents<
+    T extends typeof HeaderBase
+>(C: T) {
+    return Object.assign(C, {
+        MenuIcon: DefaultMenuIcon
+    });
+}
+
+export default applySubComponents(HeaderBase);

@@ -10,7 +10,7 @@ import { useMemo } from "react";
 import { LinkContainer } from "react-router-bootstrap";
 import StyledButton from "src/components/StyledButton";
 
-export default function SpaceCardBase({
+function SpaceCardBase({
     className,
     TagBadge=DefaultTagBadge,
     ...props
@@ -93,3 +93,13 @@ export default function SpaceCardBase({
         </Card>
     )
 }
+
+export function applySubComponents<
+    T extends typeof SpaceCardBase
+>(C: T) {
+    return Object.assign(C, {
+        TagBadge: DefaultTagBadge
+    });
+}
+
+export default applySubComponents(SpaceCardBase);

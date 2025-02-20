@@ -10,7 +10,7 @@ export type LoadingAlertProps = PropsWithCustomChildren<
     }
 >;
 
-export default function LoadingAlert({
+function LoadingAlert({
     children: { head, body } = {},
     ...props
 }: LoadingAlertProps) {
@@ -24,3 +24,14 @@ export default function LoadingAlert({
         </Alert>
     );
 }
+
+export function applySubComponents<
+    T extends typeof LoadingAlert
+>(C: T) {
+    return Object.assign(C, {
+        Heading: Alert.Heading,
+        Link: Alert.Link
+    });
+}
+
+export default applySubComponents(LoadingAlert);

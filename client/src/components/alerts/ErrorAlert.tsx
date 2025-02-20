@@ -10,7 +10,7 @@ export type ErrorAlertProps = PropsWithCustomChildren<
     }
 >;
 
-export default function ErrorAlert({
+function ErrorAlert({
     children: { head, body } = {},
     ...props
 }: ErrorAlertProps) {
@@ -24,3 +24,14 @@ export default function ErrorAlert({
         </Alert>
     );
 }
+
+export function applySubComponents<
+    T extends typeof ErrorAlert
+>(C: T) {
+    return Object.assign(C, {
+        Heading: Alert.Heading,
+        Link: Alert.Link
+    });
+}
+
+export default applySubComponents(ErrorAlert);

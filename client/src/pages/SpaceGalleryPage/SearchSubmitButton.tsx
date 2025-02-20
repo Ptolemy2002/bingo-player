@@ -4,7 +4,7 @@ import clsx from "clsx";
 import { useSpaceGallerySearchSubmitButtonController } from "./Controllers";
 import StyledButton from "src/components/StyledButton";
 
-export default function SpaceGallerySearchSubmitButtonBase({
+function SpaceGallerySearchSubmitButton({
     className,
     MagnifyingGlassIcon=DefaultMagnifyingGlassIcon,
     onClick,
@@ -23,3 +23,13 @@ export default function SpaceGallerySearchSubmitButtonBase({
         </StyledButton>
     </>;
 }
+
+export function applySubComponents<
+    T extends typeof SpaceGallerySearchSubmitButton
+>(C: T) {
+    return Object.assign(C, {
+        MagnifyingGlassIcon: DefaultMagnifyingGlassIcon
+    });
+}
+
+export default applySubComponents(SpaceGallerySearchSubmitButton);

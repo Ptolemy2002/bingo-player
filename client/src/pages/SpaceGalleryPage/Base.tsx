@@ -5,16 +5,14 @@ import { SpaceGalleryPageProps } from "./Types";
 import useSpaceGallerySearchParamState from "./SearchParams";
 import { SpaceGallerySearchProvider } from "./Context";
 import { ErrorBoundary } from "react-error-boundary";
-import DefaultErrorAlert from "src/components/alerts/ErrorAlert";
+import ErrorAlert from "src/components/alerts/ErrorAlert";
 import { Alert } from "react-bootstrap";
-import DefaultLoadingAlert from "src/components/alerts/LoadingAlert";
+import LoadingAlert from "src/components/alerts/LoadingAlert";
 
-export default function SpaceGalleryPageBase({
+function SpaceGalleryPageBase({
     className,
     SearchBar=DefaultSearchBar,
-    SearchResults=DefaultSearchResults,
-    ErrorAlert=DefaultErrorAlert,
-    LoadingAlert=DefaultLoadingAlert
+    SearchResults=DefaultSearchResults
 }: SpaceGalleryPageProps["functional"]) {
     const { q, setQ } = useSpaceGallerySearchParamState();
 
@@ -60,3 +58,14 @@ export default function SpaceGalleryPageBase({
         </div>
     );
 }
+
+export function applySubComponents<
+    T extends typeof SpaceGalleryPageBase
+>(C: T) {
+    return Object.assign(C, {
+        SearchBar: DefaultSearchBar,
+        SearchResults: DefaultSearchResults
+    })
+}
+
+export default applySubComponents(SpaceGalleryPageBase);

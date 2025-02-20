@@ -9,7 +9,7 @@ import { useCallback, useEffect, useRef } from "react";
 import useManualErrorHandling from "@ptolemy2002/react-manual-error-handling";
 import { useSuspenseController } from "@ptolemy2002/react-suspense";
 
-export default function SpaceGallerySearchBarBase({
+function SpaceGallerySearchBarBase({
     className,
     placeholder="What are you looking for?",
     SearchSettingsButton=DefaultSearchSetingsButton,
@@ -80,3 +80,15 @@ export default function SpaceGallerySearchBarBase({
         </Form>
     )
 }
+
+export function applySubComponents<
+    T extends typeof SpaceGallerySearchBarBase
+>(C: T) {
+    return Object.assign(C, {
+        SearchSettingsButton: DefaultSearchSetingsButton,
+        SearchSubmitButton: DefaultSearchSubmitButton,
+        PageChangeButton: DefaultPageChangeButton
+    });
+}
+
+export default applySubComponents(SpaceGallerySearchBarBase);

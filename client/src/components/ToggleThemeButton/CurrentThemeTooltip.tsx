@@ -4,7 +4,7 @@ import { NamedThemes, useNamedTheme } from "src/NamedTheme";
 import clsx from "clsx";
 import StyledTooltip from "src/components/StyledTooltip";
 
-export default function CurrentThemeTooltipBase({
+function CurrentThemeTooltipBase({
     id="toggle-theme-tooltip",
     className,
     ...props
@@ -38,3 +38,11 @@ export default function CurrentThemeTooltipBase({
         </StyledTooltip>
     )
 }
+
+export function applySubComponents<
+    T extends typeof CurrentThemeTooltipBase
+>(C: T) {
+    return Object.assign(C, {});
+}
+
+export default applySubComponents(CurrentThemeTooltipBase);

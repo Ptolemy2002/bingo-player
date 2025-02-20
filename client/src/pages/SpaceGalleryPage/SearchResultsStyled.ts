@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import { SpaceGallerySearchResultsProps } from "./Types";
-import Base from "./SearchResultsBase";
+import Base, {applySubComponents} from "./SearchResultsBase";
 
-export default Object.assign(
+export default applySubComponents(Object.assign(
     styled(Base).attrs<SpaceGallerySearchResultsProps["style"]>(
         (props) => ({
             $gutterX: props.$gutterX ?? "1rem",
@@ -30,4 +30,4 @@ export default Object.assign(
     {
         displayName: "styled(SpaceGallerySearchResults)"
     }
-);
+));

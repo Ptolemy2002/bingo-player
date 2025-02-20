@@ -5,7 +5,7 @@ import { useState } from "react";
 import clsx from "clsx";
 import StyledButton from "src/components/StyledButton";
 
-export default function SpaceGallerySearchSettingsButtonBase({
+function SpaceGallerySearchSettingsButton({
     className,
     tooltipId="search-settings-tooltip",
     GearIcon=DefaultGearIcon,
@@ -40,3 +40,14 @@ export default function SpaceGallerySearchSettingsButtonBase({
         </StyledButton>
     </>;
 }
+
+export function applySubComponents<
+    T extends typeof SpaceGallerySearchSettingsButton
+>(C: T) {
+    return Object.assign(C, {
+        GearIcon: DefaultGearIcon,
+        SearchSettingsTooltip: DefaultSearchSettingsTooltip
+    });
+}
+
+export default applySubComponents(SpaceGallerySearchSettingsButton);

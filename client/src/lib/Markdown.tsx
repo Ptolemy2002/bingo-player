@@ -1,5 +1,6 @@
 import Markdown, { Options as MarkdownOptions, ExtraProps} from 'react-markdown';
 import { clamp } from '@ptolemy2002/js-math-utils';
+import { omit } from '@ptolemy2002/ts-utils';
 import remarkGfm from 'remark-gfm';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
@@ -16,10 +17,8 @@ export type MarkdownLinkProps = ExtraProps & {
     children?: ReactNode;
 };
 
-export function omitNode<T extends ExtraProps>(props: T): Omit<T, 'node'> {
-    const newProps = {...props};
-    delete newProps.node;
-    return newProps;
+export function omitNode<T extends ExtraProps>(props: T) {
+    return omit(props, 'node');
 }
 
 export function MarkdownLink({ href, children }: MarkdownLinkProps) {

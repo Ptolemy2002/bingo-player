@@ -30,7 +30,8 @@ export default function StaticSrcSVG(src: string, Loader: FC<DefaultLoaderProps>
             </>
         },
         { 
-            displayName: `${src}(SVG)`
+            displayName: `${src}(SVG)`,
+            Loader
         }
     );
 }

@@ -6,7 +6,7 @@ import { useCallback, useRef } from "react";
 import { interpretSortOrder } from "shared";
 import { Spacer } from "@ptolemy2002/react-utils";
 
-export default function SpaceGallerySearchSettingsTooltipBase({
+function SpaceGallerySearchSettingsTooltipBase({
     id="search-settings-tooltip",
     className,
     hide,
@@ -158,3 +158,11 @@ export default function SpaceGallerySearchSettingsTooltipBase({
         </Tooltip>
     )
 }
+
+export function applySubComponents<
+    T extends typeof SpaceGallerySearchSettingsTooltipBase
+>(C: T) {
+    return Object.assign(C, {});
+}
+
+export default applySubComponents(SpaceGallerySearchSettingsTooltipBase);

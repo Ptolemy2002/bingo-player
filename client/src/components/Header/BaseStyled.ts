@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import { HeaderProps } from "./Types";
-import Base from "./Base";
+import Base, {applySubComponents} from "./Base";
 
-export default Object.assign(
+export default applySubComponents(Object.assign(
     styled(Base).attrs<HeaderProps["style"]>(
         ({theme, ...props}) => ({
             $css: props.$css ?? null,
@@ -35,4 +35,4 @@ export default Object.assign(
     {
         displayName: "styled(ToggleThemeButton)",
     }
-);
+));

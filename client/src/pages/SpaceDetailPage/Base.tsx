@@ -1,5 +1,5 @@
-import DefaultErrorAlert from 'src/components/alerts/ErrorAlert';
-import DefaultLoadingAlert from 'src/components/alerts/LoadingAlert';
+import ErrorAlert from 'src/components/alerts/ErrorAlert';
+import LoadingAlert from 'src/components/alerts/LoadingAlert';
 import { SpaceDetailPageProps } from './Types';
 import { ErrorBoundary } from 'react-error-boundary';
 import { Alert } from 'react-bootstrap';
@@ -14,10 +14,8 @@ import useManualErrorHandling from '@ptolemy2002/react-manual-error-handling';
 import { AxiosError } from 'axios';
 import NotFoundPage from '../NotFoundPage';
 
-export default function SpaceDetailPageBase({
-    className,
-    ErrorAlert=DefaultErrorAlert,
-    LoadingAlert=DefaultLoadingAlert
+function SpaceDetailPageBase({
+    className
 }: SpaceDetailPageProps["functional"]) {
     const [space, setSpace] = SpaceData.useContext();
     const [is404, setIs404] = useState(false);
@@ -139,3 +137,13 @@ function SpaceDetailPageBody() {
         </div>
     );
 }
+
+export function applySubComponents<
+    T extends typeof SpaceDetailPageBase
+>(C: T) {
+    return Object.assign(C, {
+        Body: SpaceDetailPageBody
+    });
+}
+
+export default applySubComponents(SpaceDetailPageBase);

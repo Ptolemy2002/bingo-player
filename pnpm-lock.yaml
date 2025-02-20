@@ -133,8 +133,8 @@ importers:
   client:
     dependencies:
       '@ptolemy2002/js-math-utils':
-        specifier: ^2.0.1
-        version: 2.0.1
+        specifier: ^2.0.3
+        version: 2.0.3
       '@ptolemy2002/js-utils':
         specifier: ^3.2.2
         version: 3.2.2
@@ -707,8 +707,8 @@ packages:
     peerDependencies:
       express: ^4.21.0
 
-  '@ptolemy2002/js-math-utils@2.0.1':
-    resolution: {integrity: sha512-OJUycH1wMWMo2EEM/ZLt3oBaFMVT+MijhBT9iMl9vc2yFh2dyEBXSe2U/oiTJqU6ul1W2qQT1/7Rfpw8LQjdrw==}
+  '@ptolemy2002/js-math-utils@2.0.3':
+    resolution: {integrity: sha512-SN49/1hcyJoU9vYcXRVmDPzJCI1ttAtntmJyHnPHGzEM81M/ive01Xb0VfHoT1Gl0nImpiDKrvOEMqIHaBRrwQ==}
 
   '@ptolemy2002/js-utils@3.2.2':
     resolution: {integrity: sha512-77JJdYsdZGqzOF+36LozPUDV1haSHzdar8vR99M0t0V0z4FdJsjkMJbaCWSvnONWZOpULkaMdPVKsM8l3OyAGA==}
@@ -3193,7 +3193,7 @@ snapshots:
     dependencies:
       express: 4.21.2
 
-  '@ptolemy2002/js-math-utils@2.0.1': {}
+  '@ptolemy2002/js-math-utils@2.0.3': {}
 
   '@ptolemy2002/js-utils@3.2.2': {}
 

@@ -1,9 +1,9 @@
 import styled from "styled-components";
 import { SpaceCardProps } from "./Types";
-import Base from "./Base";
+import Base, {applySubComponents} from "./Base";
 import { cardStyles, evaluateCardStyles } from "src/lib/Styles";
 
-export default Object.assign(
+export default applySubComponents(Object.assign(
     styled(Base).attrs<SpaceCardProps["style"]>(
         ({theme, ...props}) => ({
             ...evaluateCardStyles(theme, props, "space"),
@@ -27,4 +27,4 @@ export default Object.assign(
     {
         displayName: "styled(SpaceCard)",
     }
-);
+));

@@ -5,12 +5,14 @@ import useSpaceGallerySearchParamState from "./SearchParams";
 import { SpaceGalleryPageChangeButtonProps } from "./Types";
 import StyledButton from "src/components/StyledButton";
 import { MouseEvent } from "react";
+import { wrapNumber } from "@ptolemy2002/js-math-utils";
 
-export default function SpaceGalleryPageChangeButtonBase({
+function SpaceGalleryPageChangeButton({
     type="next",
     className,
     disabled,
     onClick,
+    loop=true,
     children,
     ...props
 }: SpaceGalleryPageChangeButtonProps["all"]) {
@@ -28,14 +30,17 @@ export default function SpaceGalleryPageChangeButtonBase({
             $variant="pageChange"
             className={clsx(`space-gallery-page-${type}-button`, className)}
             disabled={
-                disabled 
-                    ||
-                (type === "next" && currentPage === totalPages)
-                    ||
-                (type === "prev" && currentPage === 1)
+                !loop && (
+                    disabled 
+                        ||
+                    (type === "next" && currentPage === totalPages)
+                        ||
+                    (type === "prev" && currentPage === 1)
+                )
             }
             onClick={(e: MouseEvent<HTMLButtonElement>) => {
-                setP(currentPage + offset);
+                const nextPage = currentPage + offset;
+                setP(loop ? wrapNumber(nextPage, 1, totalPages) : nextPage, { replace: false });
                 onClick?.(e);
             }}
 
@@ -45,3 +50,11 @@ export default function SpaceGalleryPageChangeButtonBase({
         </StyledButton>
     );
 }
+
+export function applySubComponents<
+    T extends typeof SpaceGalleryPageChangeButton
+>(C: T) {
+    return Object.assign(C, {});
+}
+
+export default applySubComponents(SpaceGalleryPageChangeButton);

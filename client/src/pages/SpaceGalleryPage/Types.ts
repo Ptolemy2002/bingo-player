@@ -8,8 +8,6 @@ import { ButtonStyles, TooltipStyles } from "styled-components";
 import { Override } from "@ptolemy2002/ts-utils";
 import { ButtonProps, FormProps } from "react-bootstrap";
 import { Tooltip } from "react-tooltip";
-import { ErrorAlertProps } from "src/components/alerts/ErrorAlert";
-import { LoadingAlertProps } from "src/components/alerts/LoadingAlert";
 import { SpaceCardProps } from "src/components/SpaceCard";
 import { Scoped } from "src/lib/Styles";
 
@@ -47,8 +45,6 @@ export type SpaceGalleryPageProps = StyledComponentPropsWithCSS<{
     className?: string;
     SearchBar?: ComponentType<SpaceGallerySearchBarProps["functional"]>;
     SearchResults?: ComponentType<SpaceGallerySearchResultsProps["functional"]>;
-    ErrorAlert?: ComponentType<ErrorAlertProps>;
-    LoadingAlert?: ComponentType<LoadingAlertProps>;
 }, {}>;
 
 export type SpaceGallerySearchBarProps = StyledComponentPropsWithCSS<Override<FormProps, {
@@ -106,5 +102,6 @@ export type SpaceGallerySearchResultsProps = StyledComponentPropsWithCSS<{
 
 export type SpaceGalleryPageChangeButtonProps = StyledComponentPropsWithCSS<Override<ButtonProps, {
     className?: string;
+    loop?: boolean;
     type?: "next" | "prev";
 }>, ButtonStyles>;

@@ -1,10 +1,10 @@
 import styled, { css } from "styled-components";
 import { SearchSettingsTooltipProps } from "./Types";
-import Base from "./SearchSettingsTooltipBase";
+import Base, {applySubComponents} from "./SearchSettingsTooltipBase";
 import { buttonStyles, evaluateButtonStyles, evaluateTooltipStyles, tooltipStyles } from "src/lib/Styles";
 import { bsBreakpointMax, bsBreakpointMin } from "@ptolemy2002/react-styled-component-utils";
 
-export default Object.assign(
+export default applySubComponents(Object.assign(
     styled(Base).attrs<SearchSettingsTooltipProps["style"]>(
         ({theme, ...props}) => ({
             ...evaluateTooltipStyles(theme, props, "spaceGallerySearchSettings"),
@@ -61,4 +61,4 @@ export default Object.assign(
     {
         displayName: "styled(SearchSettingsTooltip)"
     }
-);
+));

@@ -8,7 +8,7 @@ import SpaceData from "src/data/SpaceData";
 import DefaultSpaceCard from "src/components/SpaceCard";
 import { Col, Row } from "react-bootstrap";
 
-export default function SpaceSearchResultsBase({
+function SpaceSearchResultsBase({
     className,
     cardsPerRowXs=12,
     cardsPerRowSm=12,
@@ -66,3 +66,13 @@ export default function SpaceSearchResultsBase({
 
     return element;
 }
+
+export function applySubComponents<
+    T extends typeof SpaceSearchResultsBase
+>(C: T) {
+    return Object.assign(C, {
+        SpaceCard: DefaultSpaceCard
+    });
+}
+
+export default applySubComponents(SpaceSearchResultsBase);

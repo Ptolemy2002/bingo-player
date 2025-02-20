@@ -1,9 +1,9 @@
 import styled, { css } from "styled-components";
 import { SpaceGallerySearchBarProps } from "./Types";
-import Base from "./SearchBarBase";
+import Base, {applySubComponents} from "./SearchBarBase";
 import { bsBreakpointMax } from "@ptolemy2002/react-styled-component-utils";
 
-export default Object.assign(
+export default applySubComponents(Object.assign(
     styled(Base).attrs<SpaceGallerySearchBarProps["style"]>(
         (props) => ({
             $gap: props.$gap ?? "5px",
@@ -43,4 +43,4 @@ export default Object.assign(
     {
         displayName: "styled(SpaceGallerySearchBar)"
     }
-);
+));

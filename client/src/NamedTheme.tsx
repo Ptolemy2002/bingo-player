@@ -263,7 +263,7 @@ export function NamedThemeProvider({initial="detect", ...props}: NamedThemeProvi
         _setCurrentTheme((prev) => {
             prev = interpretTheme(prev);
             const index = findThemeIndexById(prev);
-            return NamedThemes[wrapNumber(index + 1, 0, NamedThemes.length)]!.id;
+            return NamedThemes[wrapNumber(index + 1, 0, NamedThemes.length - 1)]!.id;
         });
     }, [_setCurrentTheme]);
 
@@ -271,7 +271,7 @@ export function NamedThemeProvider({initial="detect", ...props}: NamedThemeProvi
         _setCurrentTheme((prev) => {
             prev = interpretTheme(prev);
             const index = findThemeIndexById(prev);
-            return NamedThemes[wrapNumber(index - 1, 0, NamedThemes.length)]!.id;
+            return NamedThemes[wrapNumber(index - 1, 0, NamedThemes.length - 1)]!.id;
         });
     }, [_setCurrentTheme]);
 

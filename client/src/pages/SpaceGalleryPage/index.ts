@@ -1,90 +1,18 @@
-import Base from "./Base";
-import BaseStyled from "./BaseStyled";
-import SpaceGallerySearchBarBase from "./SearchBarBase";
-import SpaceGallerySearchBarStyled from "./SearchBarStyled";
-import SpaceGallerySearchSettingsButtonBase from "./SearchSettingsButton";
-import SpaceGallerySearchSubmitButtonBase from "./SearchSubmitButton";
-import SpaceGallerySearchSettingsTooltipBase from "./SearchSettingsTooltipBase";
-import SpaceGallerySearchSettingsTooltipStyled from "./SearchSettingsTooltipStyled";
-import SpaceGallerySearchResultsBase from "./SearchResultsBase";
-import SpaceGallerySearchResultsStyled from "./SearchResultsStyled";
-import SpaceGalleryPageChangeButtonBase from "./PageChangeButton";
-import { SpaceGallerySearchContext, SpaceGallerySearchProvider } from "./Context";
+export { default as UnstyledSpaceGalleryPage } from "./Base";
+export { default } from "./BaseStyled";
 
-export const UnstyledSpaceGalleryPage = Object.assign(Base, {
-    SearchBar: Object.assign(SpaceGallerySearchBarBase, {
-        SearchSettingsButton: Object.assign(SpaceGallerySearchSettingsButtonBase, {
-            Tooltip: SpaceGallerySearchSettingsTooltipBase
-        }),
-        SearchSubmitButton: SpaceGallerySearchSubmitButtonBase,
-        SearchResults: Object.assign(SpaceGallerySearchResultsBase, {
-            Context: SpaceGallerySearchContext,
-            Provider: SpaceGallerySearchProvider,
-            PageChangeButton: SpaceGalleryPageChangeButtonBase
-        })
-    })
-});
-export default Object.assign(BaseStyled, {
-    SearchBar: Object.assign(SpaceGallerySearchBarStyled, {
-        SearchSettingsButton: Object.assign(SpaceGallerySearchSettingsButtonBase, {
-            Tooltip: SpaceGallerySearchSettingsTooltipStyled
-        }),
-        SearchSubmitButton: SpaceGallerySearchSubmitButtonBase,
-        SearchResults: Object.assign(SpaceGallerySearchResultsStyled, {
-            Context: SpaceGallerySearchContext,
-            Provider: SpaceGallerySearchProvider,
-            PageChangeButton: SpaceGalleryPageChangeButtonBase
-        })
-    })
-});
+export { default as PageChangeButton } from "./PageChangeButton";
+export { default as SearchSettingsButton } from "./SearchSettingsButton";
+export { default as SearchSubmitButton } from "./SearchSubmitButton";
 
-export const UnstyledSpaceGallerySearchBar = Object.assign(SpaceGallerySearchBarBase, {
-    SearchSettingsButton: Object.assign(SpaceGallerySearchSettingsButtonBase, {
-        Tooltip: SpaceGallerySearchSettingsTooltipBase
-    }),
-    SearchSubmitButton: SpaceGallerySearchSubmitButtonBase,
-    SearchResults: Object.assign(SpaceGallerySearchResultsBase, {
-        Context: SpaceGallerySearchContext,
-        Provider: SpaceGallerySearchProvider,
-        PageChangeButton: SpaceGalleryPageChangeButtonBase
-    })
-});
-export const SpaceGallerySearchBar = Object.assign(SpaceGallerySearchBarStyled, {
-    SearchSettingsButton: Object.assign(SpaceGallerySearchSettingsButtonBase, {
-        Tooltip: SpaceGallerySearchSettingsTooltipBase
-    }),
-    SearchSubmitButton: SpaceGallerySearchSubmitButtonBase,
-    SearchResults: Object.assign(SpaceGallerySearchResultsStyled, {
-        Context: SpaceGallerySearchContext,
-        Provider: SpaceGallerySearchProvider,
-        PageChangeButton: SpaceGalleryPageChangeButtonBase
-    })
-});
+export { default as UnstyledSearchBar } from "./SearchBarBase";
+export { default as SearchBar } from "./SearchBarStyled";
 
-export const UnstyledSpaceGallerySearchSettingsButton = Object.assign(SpaceGallerySearchSettingsButtonBase, {
-    Tooltip: SpaceGallerySearchSettingsTooltipStyled
-});
-export const SpaceGallerySearchSettingsButton = Object.assign(SpaceGallerySearchSettingsButtonBase, {
-    Tooltip: SpaceGallerySearchSettingsTooltipBase
-});
+export { default as UnstyledSearchResults } from "./SearchResultsBase";
+export { default as SearchResults } from "./SearchResultsStyled";
 
-export const SpaceGallerySearchSubmitButton = SpaceGallerySearchSubmitButtonBase;
-
-export const UnstyledSpaceGallerySearchSettingsTooltip = SpaceGallerySearchSettingsTooltipBase;
-export const SpaceGallerySearchSettingsTooltip = SpaceGallerySearchSettingsTooltipStyled;
-
-export const UnstyledSpaceGallerySearchResults = Object.assign(SpaceGallerySearchResultsBase, {
-    Context: SpaceGallerySearchContext,
-    Provider: SpaceGallerySearchProvider,
-    PageChangeButton: SpaceGalleryPageChangeButtonBase
-});
-export const SpaceGallerySearchResults = Object.assign(SpaceGallerySearchResultsStyled, {
-    Context: SpaceGallerySearchContext,
-    Provider: SpaceGallerySearchProvider,
-    PageChangeButton: SpaceGalleryPageChangeButtonBase
-});
-
-export const SpaceGalleryPageChangeButton = SpaceGalleryPageChangeButtonBase;
+export { default as UnstyledSearchSettingsTooltip } from "./SearchSettingsTooltipBase";
+export { default as SearchSettingsTooltip } from "./SearchSettingsTooltipStyled";
 
 export * from "./Controllers";
 export * from "./Context";

@@ -5,7 +5,7 @@ import clsx from "clsx";
 import StyledButton from "../StyledButton";
 import { css } from "styled-components";
 
-export default function ToggleThemeButtonBase({
+function ToggleThemeButtonBase({
     className,
     tooltipId="toggle-theme-tooltip",
     CurrentThemeTooltip=DefaultCurrentThemeTooltip,
@@ -37,3 +37,13 @@ export default function ToggleThemeButtonBase({
         </StyledButton>
     </>;
 }
+
+export function applySubComponents<
+    T extends typeof ToggleThemeButtonBase
+>(C: T) {
+    return Object.assign(C, {
+        Tooltip: DefaultCurrentThemeTooltip
+    });
+}
+
+export default applySubComponents(ToggleThemeButtonBase);

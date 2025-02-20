@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import { SpaceGalleryPageProps } from "./Types";
-import Base from "./Base";
+import Base, {applySubComponents} from "./Base";
 
-export default Object.assign(
+export default applySubComponents(Object.assign(
     styled(Base).attrs<SpaceGalleryPageProps["style"]>(
         (props) => ({
             $css: props.$css ?? null
@@ -13,4 +13,4 @@ export default Object.assign(
     {
         displayName: "styled(SpaceGalleryPage)",
     }
-);
+));

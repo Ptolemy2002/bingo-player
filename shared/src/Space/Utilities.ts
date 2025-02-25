@@ -1,5 +1,6 @@
 import { MongoSpaceWithScore } from "src/Api";
 import { CleanMongoSpace, SpaceQueryProp, ZodSpaceSchema, ZodMongoSpaceSchema, CleanSpace, MongoSpace, SpaceQueryPropNonId, SpaceQueryPropWithScore, SpaceQueryPropNonIdWithScore, Space} from "./Zod";
+import { OptionalValueCondition, valueConditionMatches, ValueOf } from "@ptolemy2002/ts-utils";
 
 export function interpretSpaceQueryProp(prop: SpaceQueryProp): (keyof CleanMongoSpace) | "known-as" {
     if (prop === "id") prop = "_id";
@@ -90,53 +91,52 @@ export function toMongoSpace(space: MongoSpace | Space): CleanMongoSpace {
     });
 }
 
-// 0 indicates the key can have a number as one of its key values
-export const MongoSpaceChildPathLookup: Readonly<Record<keyof MongoSpace, (0 | string)[]>> = {
-    _id: [],
-    name: [],
-    description: [],
-    examples: [0],
-    aliases: [0],
-    tags: [0]
-} as const;
+export const MongoSpacePaths = [
+    "_id",
+    "name",
+    "description",
+
+    "examples",
+    "examples.<number>",
+
+    "aliases",
+    "aliases.<number>",
+
+    "tags",
+    "tags.<number>"
+] as const;
 
 export function parseSpacePath(
-    path: string,
-    allowed?: {
-        key: keyof MongoSpace,
-        allowDirect?: boolean,
-        allowNested?: boolean
-    }[]
+    input: string,
+    pathCondition: OptionalValueCondition<ValueOf<typeof MongoSpacePaths>> = null
 ): boolean {
-    if (!allowed) allowed = Object.keys(MongoSpaceChildPathLookup).map(key => ({key: key as keyof MongoSpace}));
+    const inputWords = input.split(".");
+    
+    const paths = MongoSpacePaths.filter(p => valueConditionMatches(p, pathCondition));
+    for (const path of paths) {
+        const pathWords = path.split(".");
+        if (inputWords.length !== pathWords.length) continue;
 
-    const pattern = `^(${
-        allowed.map(({key}) => key).join("|")
-    })(\.([^\.]+))?`;
-    const regex = new RegExp(pattern);
-
-    const match = path.match(regex);
-    if (!match) return false;
-
-    const [, key,, value] = match;
-    const {
-        allowDirect: allowedDirect = true,
-        allowNested: allowedNested = true
-    } = allowed.find(({key: k}) => k === key) ?? {};
-
-    if (value === undefined) return allowedDirect;
-
-    const lookup = MongoSpaceChildPathLookup[key as keyof MongoSpace];
-    if (lookup === undefined) return false;
-
-    if (allowedNested && lookup.includes(0)) {
-        try {
-            parseInt(value);
-            return true;
-        } catch {
-            return lookup.includes(value);
+        let match = true;
+        for (let i = 0; i < inputWords.length; i++) {
+            if (pathWords[i] === "<number>") {
+                if (!(/^\d+$/.test(inputWords[i]))) {
+                    match = false;
+                    break;
+                }
+            } else if (pathWords[i] === "<string>") {
+                if (inputWords[i] === "") {
+                    match = false;
+                    break;
+                }
+            } else if (pathWords[i] !== inputWords[i]) {
+                match = false;
+                break;
+            }
         }
+
+        if (match) return true;
     }
 
-    return allowedNested && lookup.includes(value);
+    return false;
 }

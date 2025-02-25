@@ -18,8 +18,8 @@ export const ZodUpdateSpaceByIDRequestBodySchema = swaggerRegistry.register(
     z.object({
         difference: z.object({
             $set: z.record(
-                z.string().refine((s) => parseSpacePath(s), {
-                    message: "Invalid path."
+                z.string().refine((s) => parseSpacePath(s, (s: string) => s !== "_id"), {
+                    message: "Invalid path or path that does not support setting."
                 }),
                 z.unknown()
             )
@@ -33,17 +33,14 @@ export const ZodUpdateSpaceByIDRequestBodySchema = swaggerRegistry.register(
             }),
 
             $unset: z.record(
-                z.string().refine((s) => parseSpacePath(s, [{
-                    key: "aliases",
-                    allowDirect: false
-                }, {
-                    key: "examples",
-                    allowDirect: false
-                }, {
-                    key: "tags",
-                    allowDirect: false
-                }]), {
-                    message: "Invalid path."
+                z.string().refine((s) => parseSpacePath(
+                    s, [
+                        "aliases.<number>",
+                        "examples.<number>",
+                        "tags.<number>"
+                    ]
+                ), {
+                    message: "Invalid path or path that does not support unsetting."
                 }),
                 z.literal("")
             )
@@ -56,17 +53,12 @@ export const ZodUpdateSpaceByIDRequestBodySchema = swaggerRegistry.register(
             }),
 
             $push: z.record(
-                z.string().refine((s) => parseSpacePath(s, [{
-                    key: "aliases",
-                    allowNested: false
-                }, {
-                    key: "examples",
-                    allowNested: false
-                }, {
-                    key: "tags",
-                    allowNested: false
-                }]), {
-                    message: "Invalid path."
+                z.string().refine((s) => parseSpacePath(s, [
+                    "aliases",
+                    "examples",
+                    "tags"
+                ]), {
+                    message: "Invalid path or path that does not support pushing."
                 }),
                 z.object({
                     $each: z.array(z.unknown())
@@ -83,17 +75,12 @@ export const ZodUpdateSpaceByIDRequestBodySchema = swaggerRegistry.register(
             }),
 
             $pullAll: z.record(
-                z.string().refine((s) => parseSpacePath(s, [{
-                    key: "aliases",
-                    allowNested: false
-                }, {
-                    key: "examples",
-                    allowNested: false
-                }, {
-                    key: "tags",
-                    allowNested: false
-                }]), {
-                    message: "Invalid path."
+                z.string().refine((s) => parseSpacePath(s, [
+                    "aliases",
+                    "examples",
+                    "tags"
+                ]), {
+                    message: "Invalid path or path that does not support pulling."
                 }),
                 z.object({
                     $in: z.array(z.unknown())

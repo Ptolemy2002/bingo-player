@@ -1,4 +1,4 @@
-import axios, { AxiosInstance, CreateAxiosDefaults } from 'axios';
+import axios, { CreateAxiosDefaults } from 'axios';
 import { TypedAxios, RouteDef } from 'typed-axios-instance';
 import {
     CountSpacesByPropQueryParamsInput,
@@ -19,10 +19,11 @@ import {
     SearchSpacesURLParams,
 } from 'shared';
 import getEnv from 'src/Env';
-import { setupCache, CacheOptions } from 'axios-cache-interceptor';
+import { setupCache, CacheOptions, AxiosCacheInstance } from 'axios-cache-interceptor';
 import { minutesToMilliseconds } from 'date-fns';
+import { Override } from "@ptolemy2002/ts-utils";
 
-export let Api: AxiosInstance | null = null;
+export let Api: AxiosCacheInstance | null = null;
 
 // This is just a wrapper to ensure that ApiRoutes is an array of RouteDefs.
 // TypeScript will error if it is not.
@@ -89,7 +90,7 @@ export default function getApi(
         ttl: minutesToMilliseconds(5),
     },
     createNew = false,
-): TypedAxios<ApiRoutes> {
+): Override<AxiosCacheInstance, TypedAxios<ApiRoutes>> {
     if (!createNew && Api) {
         return Api;
     }

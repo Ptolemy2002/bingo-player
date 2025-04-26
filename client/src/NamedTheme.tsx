@@ -27,6 +27,24 @@ export function createNamedTheme<T extends string>(
     return {id, ...theme};
 }
 
+const borderedButtonStyleLight = {
+    borderStyle: "solid",
+    borderColor: "black",
+    backgroundColor: "transparent",
+    textColor: "black",
+    hoverBackgroundColor: "black",
+    hoverTextColor: "white"
+} as const;
+
+const borderedButtonStyleDark = {
+    ...borderedButtonStyleLight,
+    backgroundColor: "transparent",
+    borderColor: "white",
+    textColor: "white",
+    hoverBackgroundColor: "white",
+    hoverTextColor: "black"
+} as const;
+
 export const NamedThemes: NamedTheme[] = [
     createNamedTheme("light", {
         displayName: "Light",
@@ -84,6 +102,14 @@ export const NamedThemes: NamedTheme[] = [
             },
 
             buttons: {
+                addAlias: borderedButtonStyleLight,
+                removeAlias: {
+                    ...borderedButtonStyleLight,
+                    hoverBackgroundColor: "red",
+                    hoverTextColor: "white"
+                },
+                spaceEditSubmit: borderedButtonStyleLight,
+
                 cardViewDetails: {
                     borderStyle: "solid",
                     hoverBackgroundColor: "black",
@@ -149,6 +175,14 @@ export const NamedThemes: NamedTheme[] = [
             },
 
             buttons: {
+                addAlias: borderedButtonStyleDark,
+                removeAlias: {
+                    ...borderedButtonStyleDark,
+                    hoverBackgroundColor: "red",
+                    hoverTextColor: "white"
+                },
+                spaceEditSubmit: borderedButtonStyleDark,
+                
                 cardViewDetails: {
                     borderStyle: "solid",
                     hoverBackgroundColor: "white",

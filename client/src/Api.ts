@@ -12,6 +12,9 @@ import {
     GetSpacesByPropURLParams,
     GetSpacesQueryParamsInput,
     GetSpacesResponseBody,
+    ListSpacePropQueryParamsInput,
+    ListSpacePropResponseBody,
+    ListSpacePropURLParams,
     SearchSpacesCountResponseBody,
     SearchSpacesCountURLParams,
     SearchSpacesQueryParamsInput,
@@ -81,6 +84,13 @@ export type ApiRoutes = RouteDefArray<
             queryParams: {};
             jsonResponse: SearchSpacesCountResponseBody;
         },
+
+        {
+            route: `/spaces/get/all/list/${ListSpacePropURLParams['prop']}`;
+            method: 'GET';
+            queryParams: ListSpacePropQueryParamsInput;
+            jsonResponse: ListSpacePropResponseBody;
+        }
     ]
 >;
 
@@ -92,6 +102,7 @@ export const RouteIds = {
     countAllSpaces: "/spaces/count/all",
     searchSpaces: "/spaces/search/:query",
     searchSpacesCount: "/spaces/search/:query/count",
+    listSpaceProp: "/spaces/get/all/list/:prop"
 } as const;
 
 export type GetAPIOptions = {

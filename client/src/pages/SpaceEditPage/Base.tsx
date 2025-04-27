@@ -6,7 +6,6 @@ import { Alert } from 'react-bootstrap';
 import { SuspenseBoundary } from '@ptolemy2002/react-suspense';
 import SpaceData from 'src/data/SpaceData';
 import { useParams } from 'react-router';
-import TagBadge from 'src/components/TagBadge';
 import { useCallback, useMemo, useState } from 'react';
 import { MarkdownRenderer } from 'src/lib/Markdown';
 import useManualErrorHandling from '@ptolemy2002/react-manual-error-handling';
@@ -17,6 +16,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { MongoSpace, ZodMongoSpaceSchema } from 'shared';
 import { Form } from 'react-bootstrap';
 import StyledButton from 'src/components/StyledButton';
+import SpaceTagList from 'src/context/SpaceTagList';
 
 function SpaceEditPageBase({
     className
@@ -25,6 +25,7 @@ function SpaceEditPageBase({
     const [is404, setIs404] = useState(false);
     const { name } = useParams();
     const { _try } = useManualErrorHandling();
+    const [spaceTagList] = SpaceTagList.useContext([]);
 
     if (is404) return <NotFoundPage />;
     return (
@@ -72,6 +73,8 @@ function SpaceEditPageBase({
                                         }
                                     })
                             );
+
+                            await spaceTagList.tagsRequest();
                             
                             spaceToCheckpoint = newSpace;
                         }
@@ -91,7 +94,7 @@ function SpaceEditPageBody() {
     const [space] = SpaceData.useContext();
 
     const {
-        register: formRegister, handleSubmit, setError,
+        register: formRegister, handleSubmit,
         control,
         formState: {submitCount, errors}
     } = useForm({
@@ -116,16 +119,6 @@ function SpaceEditPageBody() {
         });
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [space, space?.examples]);
-
-    const tagsElements = useMemo(() => {
-        if (space === null) return [];
-        return Array.from(space.tags).map((tag) => {
-            return (
-                <TagBadge key={"tag-" + tag} tag={tag} pill={true} className="me-1 mb-2" />   
-            );
-        });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [space, space?.tags]);
 
     const onSubmit = useCallback((items: MongoSpace) => {
         console.log("Submit", items);
@@ -195,10 +188,13 @@ function SpaceEditPageBody() {
                     >
                         Add Alias
                     </StyledButton>
+
+                    {errors.aliases && <Form.Text className="text-danger">{errors.aliases.message}</Form.Text>}
                 </Form.Group>
 
-
-                {tagsElements}
+                <Form.Group className="mb-3">
+                    <Form.Label>Tags</Form.Label> <br />
+                </Form.Group>
 
                 <h3>Description</h3>
                 <MarkdownRenderer
@@ -222,7 +218,7 @@ function SpaceEditPageBody() {
                     type="submit"
                     disabled={submitCount > 0 && Object.keys(errors).length > 0}
                 >
-                    Submit
+                    Save Changes
                 </StyledButton>
             </Form>
         </div>

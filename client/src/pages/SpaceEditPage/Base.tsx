@@ -1,6 +1,6 @@
 import ErrorAlert from 'src/components/alerts/ErrorAlert';
 import LoadingAlert from 'src/components/alerts/LoadingAlert';
-import { SpaceEditPageProps } from './Types';
+import { SpaceEditPageBodyProps, SpaceEditPageProps } from './Types';
 import { ErrorBoundary } from 'react-error-boundary';
 import { Alert } from 'react-bootstrap';
 import { SuspenseBoundary } from '@ptolemy2002/react-suspense';
@@ -17,9 +17,12 @@ import { MongoSpace, ZodMongoSpaceSchema } from 'shared';
 import { Form } from 'react-bootstrap';
 import StyledButton from 'src/components/StyledButton';
 import SpaceTagList from 'src/context/SpaceTagList';
+import DefaultNameField from './NameField';
 
 function SpaceEditPageBase({
-    className
+    className,
+    NameField = DefaultNameField,
+    ...props
 }: SpaceEditPageProps["functional"]) {
     const [space, setSpace] = SpaceData.useContext();
     const [is404, setIs404] = useState(false);
@@ -29,7 +32,7 @@ function SpaceEditPageBase({
 
     if (is404) return <NotFoundPage />;
     return (
-        <div id="space-edit-page" className={className}>
+        <div id="space-edit-page" className={className} {...props}>
             <h1>Space Edit</h1>
             <ErrorBoundary fallbackRender={
                     ({ resetErrorBoundary, ...props}) =>
@@ -83,14 +86,18 @@ function SpaceEditPageBase({
                     }}
                 >
                     
-                    <SpaceEditPageBody />
+                    <SpaceEditPageBody
+                        NameField={NameField}
+                    />
                 </SuspenseBoundary>
             </ErrorBoundary>
         </div>
     );
 }
 
-function SpaceEditPageBody() {
+function SpaceEditPageBody({
+    NameField = DefaultNameField,
+}: SpaceEditPageBodyProps) {
     const [space] = SpaceData.useContext();
 
     const {
@@ -138,16 +145,13 @@ function SpaceEditPageBody() {
             }
 
             <Form onSubmit={handleSubmit(onSubmit)}>
-                <Form.Group className="mb-3">
-                    <Form.Label>Name</Form.Label>
-                    <Form.Control
-                        type="text"
-                        placeholder="Name"
-                        {...formRegister("name")}
-                        defaultValue={space.name}
-                    />
-                    {errors.name && <Form.Text className="text-danger">{errors.name.message}</Form.Text>}
-                </Form.Group>
+                <NameField 
+                    className='mb-3'
+                    defaultValue={space.name}
+
+                    register={formRegister}
+                    errors={errors}
+                />
 
                 <Form.Group className="mb-3">
                     <Form.Label>Aliases</Form.Label>

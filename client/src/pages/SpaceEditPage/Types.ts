@@ -1,5 +1,4 @@
 import { StyledComponentPropsWithCSS } from "@ptolemy2002/react-styled-component-utils";
-import { FieldErrors, UseFormRegister } from "react-hook-form";
 import { MongoSpace } from "shared";
 import { FC, HTMLProps } from "react";
 import { Override } from "@ptolemy2002/ts-utils";
@@ -11,6 +10,7 @@ export type SpaceEditPageProps = StyledComponentPropsWithCSS<
         {
             className?: string;
             NameField?: FC<SpaceEditNameFieldProps>;
+            AliasesField?: FC<SpaceEditAliasesFieldProps>;
         }
     >,
 {}>;
@@ -18,19 +18,22 @@ export type SpaceEditPageProps = StyledComponentPropsWithCSS<
 export type SpaceEditPageBodyProps = Required<
     Pick<
         SpaceEditPageProps["functional"],
-        "NameField"
+        "NameField" | "AliasesField"
     >
 >;
 
 export type CustomFormFieldProps<T> = {
     label?: string;
     placeholder?: string;
-    register: UseFormRegister<MongoSpace>;
-    errors?: FieldErrors<MongoSpace>;
     defaultValue?: T;
 };
 
 export type SpaceEditNameFieldProps = Override<
-    FormGroupProps,
+    Omit<FormGroupProps, "children">,
     CustomFormFieldProps<MongoSpace["name"]>
+>;
+
+export type SpaceEditAliasesFieldProps = Override<
+    Omit<FormGroupProps, "children">,
+    CustomFormFieldProps<MongoSpace["aliases"]>
 >;

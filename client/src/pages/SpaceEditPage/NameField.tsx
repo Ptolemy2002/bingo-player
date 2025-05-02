@@ -1,14 +1,19 @@
 import { Form } from "react-bootstrap";
 import { SpaceEditNameFieldProps } from "./Types";
+import { useFormContext } from "react-hook-form";
+import { MongoSpace } from "shared";
 
 function SpaceEditNameField({
     label="Name",
     placeholder="Name",
-    register,
-    errors={},
     defaultValue="",
     ...props
 }: SpaceEditNameFieldProps) {
+    const {
+        register,
+        formState: {errors}
+    } = useFormContext<MongoSpace>();
+    
     return (
         <Form.Group {...props}>
             <Form.Label>{label}</Form.Label>

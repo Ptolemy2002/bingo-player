@@ -197,7 +197,8 @@ export function applySubComponents<
 >(C: T) {
     return Object.assign(C, {
         Body: SpaceEditPageBody,
-        NameField: DefaultNameField
+        NameField: DefaultNameField,
+        AliasesField: DefaultAliasesField
     });
 }
 

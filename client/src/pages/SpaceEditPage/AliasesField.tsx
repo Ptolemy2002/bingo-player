@@ -1,18 +1,18 @@
 import { ArrayPath, useFieldArray, useFormContext } from "react-hook-form";
 import { MongoSpace } from "shared";
-import { SpaceEditAliasesFieldProps } from "./Types";
+import { SpaceEditAliasesFieldProps, SpaceEditAliasItemProps } from "./Types";
 import { Form } from "react-bootstrap";
 import StyledButton from "src/components/StyledButton";
 import { useEffect } from "react";
+import clsx from "clsx";
 
-function SpaceEditPageAliasesField({
+export default function SpaceEditAliasesField({
     label="Aliases",
     placeholder="Alias",
     defaultValue=[],
     ...props
 }: SpaceEditAliasesFieldProps) {
     const {
-        register: formRegister,
         control,
         formState: { errors }
     } = useFormContext<MongoSpace>();
@@ -43,22 +43,16 @@ function SpaceEditPageAliasesField({
                     aliasesFields.length > 0 ?
                         aliasesFields.map((field, i) => {
                             return (
-                                <li key={field.id}>
-                                    <Form.Control
-                                        type="text"
-                                        className="mb-2"
-                                        placeholder={placeholder}
-                                        {...formRegister(`aliases.${i}`)}
-                                        defaultValue={defaultValue[i]}
-                                    />
+                                <SpaceEditAliasItemField
+                                    key={field.id}
+                                    index={i}
 
-                                    <StyledButton
-                                        $variant="removeAlias"
-                                        onClick={() => removeAlias(i)}
-                                    >
-                                        Remove
-                                    </StyledButton>
-                                </li>
+                                    controlProps={{
+                                        placeholder
+                                    }}
+
+                                    remove={() => removeAlias(i)}
+                                />
                             );
                         })
                     :
@@ -80,4 +74,41 @@ function SpaceEditPageAliasesField({
     );
 }
 
-export default SpaceEditPageAliasesField;
+export function SpaceEditAliasItemField({
+    index,
+    controlProps: {
+        className: controlPropsClassName,
+        placeholder="Alias",
+        ...controlProps
+    },
+    remove,
+    defaultValue,
+    ...props
+}: SpaceEditAliasItemProps) {
+    const {
+        register: formRegister,
+        formState: { errors }
+    } = useFormContext<MongoSpace>();
+
+    return (
+        <li {...props}>
+            <Form.Control
+                {...controlProps}
+                type="text"
+                className={clsx("mb-2", controlPropsClassName)}
+                placeholder={placeholder}
+                {...formRegister(`aliases.${index}`)}
+                defaultValue={defaultValue}
+            />
+
+            <StyledButton
+                $variant="removeAlias"
+                onClick={remove}
+            >
+                Remove
+            </StyledButton>
+
+            {errors.aliases && <Form.Text className="text-danger">{errors.aliases.message}</Form.Text>}
+        </li>
+    );
+}

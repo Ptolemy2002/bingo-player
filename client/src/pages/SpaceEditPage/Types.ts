@@ -2,7 +2,10 @@ import { StyledComponentPropsWithCSS } from "@ptolemy2002/react-styled-component
 import { MongoSpace } from "shared";
 import { FC, HTMLProps } from "react";
 import { Override } from "@ptolemy2002/ts-utils";
-import { FormGroupProps } from "react-bootstrap";
+import { FormControlProps, FormGroupProps } from "react-bootstrap";
+import { UseFormRegisterReturn } from "react-hook-form";
+
+type NonNull<T> = Exclude<T, null | undefined>;
 
 export type SpaceEditPageProps = StyledComponentPropsWithCSS<
     Override<
@@ -28,6 +31,13 @@ export type CustomFormFieldProps<T> = {
     defaultValue?: T;
 };
 
+export type CustomFormFieldItemProps<T> = {
+    index: number;
+    controlProps: Omit<FormControlProps, "children" | "defaultValue" | "type" | keyof UseFormRegisterReturn>;
+    remove: () => void;
+    defaultValue?: T;
+}
+
 export type SpaceEditNameFieldProps = Override<
     Omit<FormGroupProps, "children">,
     CustomFormFieldProps<MongoSpace["name"]>
@@ -36,4 +46,11 @@ export type SpaceEditNameFieldProps = Override<
 export type SpaceEditAliasesFieldProps = Override<
     Omit<FormGroupProps, "children">,
     CustomFormFieldProps<MongoSpace["aliases"]>
+>;
+
+export type SpaceEditAliasItemProps = Override<
+    Omit<HTMLProps<HTMLLIElement>, "children">,
+    CustomFormFieldItemProps<
+        NonNull<MongoSpace["aliases"]>[number]
+    >
 >;

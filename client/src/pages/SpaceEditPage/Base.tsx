@@ -7,7 +7,6 @@ import { SuspenseBoundary } from '@ptolemy2002/react-suspense';
 import SpaceData from 'src/data/SpaceData';
 import { useParams } from 'react-router';
 import { useCallback, useMemo, useState } from 'react';
-import { MarkdownRenderer } from 'src/lib/Markdown';
 import useManualErrorHandling from '@ptolemy2002/react-manual-error-handling';
 import { AxiosError } from 'axios';
 import NotFoundPage from 'src/pages/NotFoundPage';
@@ -19,11 +18,13 @@ import StyledButton from 'src/components/StyledButton';
 import SpaceTagList from 'src/context/SpaceTagList';
 import DefaultNameField from './NameField';
 import DefaultAliasesField from './AliasesField';
+import DefaultDescriptionField from './DescriptionField';
 
 function SpaceEditPageBase({
     className,
     NameField = DefaultNameField,
     AliasesField = DefaultAliasesField,
+    DescriptionField = DefaultDescriptionField,
     ...props
 }: SpaceEditPageProps["functional"]) {
     const [space, setSpace] = SpaceData.useContext();
@@ -91,6 +92,7 @@ function SpaceEditPageBase({
                     <SpaceEditPageBody
                         NameField={NameField}
                         AliasesField={AliasesField}
+                        DescriptionField={DescriptionField}
                     />
                 </SuspenseBoundary>
             </ErrorBoundary>
@@ -101,6 +103,7 @@ function SpaceEditPageBase({
 function SpaceEditPageBody({
     NameField = DefaultNameField,
     AliasesField = DefaultAliasesField,
+    DescriptionField = DefaultDescriptionField,
 }: SpaceEditPageBodyProps) {
     const [space] = SpaceData.useContext();
 
@@ -162,12 +165,11 @@ function SpaceEditPageBody({
                         <Form.Label>Tags</Form.Label> <br />
                     </Form.Group>
 
-                    <h3>Description</h3>
-                    <MarkdownRenderer
+                    <DescriptionField
+                        className='mb-3'
+                        defaultValue={space.description}
                         baseHLevel={4}
-                    >
-                        {space.description ?? "No description provided."}
-                    </MarkdownRenderer>
+                    />
 
                     <h3>Examples</h3>
                     <ul>
@@ -198,7 +200,8 @@ export function applySubComponents<
     return Object.assign(C, {
         Body: SpaceEditPageBody,
         NameField: DefaultNameField,
-        AliasesField: DefaultAliasesField
+        AliasesField: DefaultAliasesField,
+        DescriptionField: DefaultDescriptionField,
     });
 }
 

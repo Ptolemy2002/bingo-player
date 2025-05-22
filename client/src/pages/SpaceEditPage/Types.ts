@@ -14,6 +14,7 @@ export type SpaceEditPageProps = StyledComponentPropsWithCSS<
             className?: string;
             NameField?: FC<SpaceEditNameFieldProps>;
             AliasesField?: FC<SpaceEditAliasesFieldProps>;
+            DescriptionField?: FC<SpaceEditDescriptionFieldProps>;
         }
     >,
 {}>;
@@ -21,7 +22,7 @@ export type SpaceEditPageProps = StyledComponentPropsWithCSS<
 export type SpaceEditPageBodyProps = Required<
     Pick<
         SpaceEditPageProps["functional"],
-        "NameField" | "AliasesField"
+        "NameField" | "AliasesField" | "DescriptionField"
     >
 >;
 
@@ -53,4 +54,12 @@ export type SpaceEditAliasItemProps = Override<
     CustomFormFieldItemProps<
         NonNull<MongoSpace["aliases"]>[number]
     >
+>;
+
+export type SpaceEditDescriptionFieldProps = Override<
+    Omit<FormGroupProps, "children">,
+    CustomFormFieldProps<MongoSpace["description"]> & {
+        baseHLevel?: number;
+        rows?: number;
+    }
 >;

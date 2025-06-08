@@ -13,7 +13,7 @@ declare module "styled-components" {
     export type ButtonVariant = 
         "searchSettings" | "searchSubmit" | "toggleTheme" | "pageChange" | "pageSizeApply" | "cardViewDetails" |
         "spaceEditSubmit" |
-        "addAlias" | "removeAlias" | "removeTag" | "addTag"
+        "addAlias" | "removeAlias" | "removeTag" | "addTag" | "addExample" | "removeExample"
     ;
     export type ButtonStyles = Partial<{
         borderStyle: RequiredCSSProperties["borderStyle"],

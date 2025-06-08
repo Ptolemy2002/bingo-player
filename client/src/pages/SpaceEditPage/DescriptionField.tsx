@@ -40,7 +40,7 @@ function SpaceEditDescriptionField({
             <MarkdownRenderer
                 baseHLevel={baseHLevel}
             >
-                {description || "No description provided."}
+                {description || defaultValue || "No description provided."}
             </MarkdownRenderer>
 
             {errors.description && <Form.Text className="text-danger">{errors.description.message}</Form.Text>}

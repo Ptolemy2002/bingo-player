@@ -5,7 +5,7 @@ import { ZodSpaceIDSchema } from "./SpaceID";
 import { ZodSpaceExampleSchema } from "./SpaceExample";
 import { ZodSpaceNameSchema } from "./SpaceName";
 import { ZodSpaceTagSchema } from "./SpaceTag";
-import { refineNoAliasMatchingName } from "../Other";
+import { refineNoAliasMatchingName, findAliasMatchingNameIndex } from "../Other";
 
 function validateNotRepeat<T>(arr: T[]): boolean {
     if (arr.length === 0) return true;
@@ -43,9 +43,15 @@ export const ZodCleanMongoSpaceSchema = swaggerRegistry.register(
     "CleanMongoSpace",
     ZodCleanSpaceSchema._def.schema.omit({ id: true })
     .merge(Zod_id)
-    .refine(({ name, aliases }) => refineNoAliasMatchingName(name, aliases), {
-        message: "No alias should match the name.",
-        path: ["aliases"]
+    .superRefine(({ name, aliases }, ctx) => {
+        if (!refineNoAliasMatchingName(name, aliases)) {
+            const index = findAliasMatchingNameIndex(name, aliases);
+            ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                message: "No alias should match the name.",
+                path: ["aliases", index ?? 0]
+            });
+        }
     })
     .openapi({
         description: "The MongoDB representation of a Space."
@@ -57,9 +63,15 @@ export const ZodMongoSpaceSchema = swaggerRegistry.register(
     "MongoSpace",
     ZodSpaceSchema._def.schema.omit({ id: true })
     .merge(Zod_id_optional)
-    .refine(({ name, aliases }) => refineNoAliasMatchingName(name, aliases), {
-        message: "No alias should match the name.",
-        path: ["aliases"]
+    .superRefine(({ name, aliases }, ctx) => {
+        if (!refineNoAliasMatchingName(name, aliases)) {
+            const index = findAliasMatchingNameIndex(name, aliases);
+            ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                message: "No alias should match the name.",
+                path: ["aliases", index ?? 0]
+            });
+        }
     })
     .openapi({
         description: "CleanMongoSpace, but with some fields optional and provided sensible defaults."

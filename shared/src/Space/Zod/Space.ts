@@ -5,7 +5,7 @@ import { ZodSpaceNameSchema } from "./SpaceName";
 import { ZodSpaceDescriptionSchema } from "./SpaceDescription";
 import { ZodSpaceExampleSchema } from "./SpaceExample";
 import { ZodSpaceTagSchema } from "./SpaceTag";
-import { refineNoAliasMatchingName } from "../Other";
+import { findAliasMatchingNameIndex, refineNoAliasMatchingName } from "../Other";
 
 export const ZodCleanSpaceSchema = swaggerRegistry.register(
     "CleanSpace",
@@ -53,9 +53,15 @@ export const ZodCleanSpaceSchema = swaggerRegistry.register(
                 )
             })
     })
-    .refine(({ name, aliases }) => refineNoAliasMatchingName(name, aliases), {
-        message: "No alias should match the name.",
-        path: ["aliases"]
+    .superRefine(({ name, aliases }, ctx) => {
+        if (!refineNoAliasMatchingName(name, aliases)) {
+            const index = findAliasMatchingNameIndex(name, aliases);
+            ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                message: "No alias should match the name.",
+                path: ["aliases", index ?? 0]
+            });
+        }
     })
     .openapi({
         description: "A space for a Bingo Board."
@@ -71,9 +77,15 @@ export const ZodSpaceSchema = swaggerRegistry.register(
         aliases: ZodCleanSpaceShape.aliases.default(new Set()),
         tags: ZodCleanSpaceShape.tags.default(new Set())
     }))
-    .refine(({ name, aliases }) => refineNoAliasMatchingName(name, aliases), {
-        message: "No alias should match the name.",
-        path: ["aliases"]
+    .superRefine(({ name, aliases }, ctx) => {
+        if (!refineNoAliasMatchingName(name, aliases)) {
+            const index = findAliasMatchingNameIndex(name, aliases);
+            ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                message: "No alias should match the name.",
+                path: ["aliases", index ?? 0]
+            });
+        }
     })
     .openapi({
         description: "CleanSpace, but with some fields optional and provided sensible defaults."

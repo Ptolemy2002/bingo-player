@@ -103,11 +103,20 @@ export const NamedThemes: NamedTheme[] = [
 
             buttons: {
                 addAlias: borderedButtonStyleLight,
+                addExample: borderedButtonStyleLight,
+
                 removeAlias: {
                     ...borderedButtonStyleLight,
                     hoverBackgroundColor: "red",
                     hoverTextColor: "white"
                 },
+                
+                removeExample: {
+                    ...borderedButtonStyleLight,
+                    hoverBackgroundColor: "red",
+                    hoverTextColor: "white"
+                },
+
                 spaceEditSubmit: borderedButtonStyleLight,
 
                 cardViewDetails: {
@@ -176,11 +185,20 @@ export const NamedThemes: NamedTheme[] = [
 
             buttons: {
                 addAlias: borderedButtonStyleDark,
+                addExample: borderedButtonStyleDark,
+
                 removeAlias: {
                     ...borderedButtonStyleDark,
                     hoverBackgroundColor: "red",
                     hoverTextColor: "white"
                 },
+
+                removeExample: {
+                    ...borderedButtonStyleDark,
+                    hoverBackgroundColor: "red",
+                    hoverTextColor: "white"
+                },
+
                 spaceEditSubmit: borderedButtonStyleDark,
                 
                 cardViewDetails: {

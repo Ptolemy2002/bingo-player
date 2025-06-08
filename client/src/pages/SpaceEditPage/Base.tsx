@@ -18,12 +18,15 @@ import StyledButton from 'src/components/StyledButton';
 import SpaceTagList from 'src/context/SpaceTagList';
 import DefaultNameField from './NameField';
 import DefaultAliasesField from './AliasesField';
+import DefaultExamplesField from './ExamplesField';
 import DefaultDescriptionField from './DescriptionField';
+import { omit } from '@ptolemy2002/ts-utils';
 
 function SpaceEditPageBase({
     className,
     NameField = DefaultNameField,
     AliasesField = DefaultAliasesField,
+    ExamplesField = DefaultExamplesField,
     DescriptionField = DefaultDescriptionField,
     ...props
 }: SpaceEditPageProps["functional"]) {
@@ -92,6 +95,7 @@ function SpaceEditPageBase({
                     <SpaceEditPageBody
                         NameField={NameField}
                         AliasesField={AliasesField}
+                        ExamplesField={ExamplesField}
                         DescriptionField={DescriptionField}
                     />
                 </SuspenseBoundary>
@@ -103,30 +107,25 @@ function SpaceEditPageBase({
 function SpaceEditPageBody({
     NameField = DefaultNameField,
     AliasesField = DefaultAliasesField,
+    ExamplesField = DefaultExamplesField,
     DescriptionField = DefaultDescriptionField,
 }: SpaceEditPageBodyProps) {
     const [space] = SpaceData.useContext();
 
     const formMethods = useForm({
-        resolver: zodResolver(ZodMongoSpaceSchema)
+        resolver: zodResolver(ZodMongoSpaceSchema),
     });
 
     const {
         handleSubmit,
+        setValue,
         formState: {submitCount, errors}
     } = formMethods;
 
-    const examplesElements = useMemo(() => {
-        if (space === null) return [];
-        return Array.from(space.examples).map((example, i) => {
-            return (
-                <li key={"example-" + i}>{example}</li>
-            );
-        });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [space, space?.examples]);
-
-    const onSubmit = useCallback((items: MongoSpace) => {
+    const onSubmit = useCallback(async (_items: MongoSpace) => {
+        // Remove the ID from the items, as it was only there to pass validation
+        // and we don't need it.
+        const items = omit(_items, "_id");
         console.log("Submit", items);
     }, []);
 
@@ -135,6 +134,12 @@ function SpaceEditPageBody({
         return Array.from(space.aliases);
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [space?.aliases]);
+
+    const examplesArray = useMemo(() => {
+        if (space === null) return [];
+        return Array.from(space.examples);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [space?.examples]);
 
     if (space === null) return null;
     return (
@@ -150,7 +155,15 @@ function SpaceEditPageBody({
                         </ErrorAlert>
                 }
 
-                <Form onSubmit={handleSubmit(onSubmit)}>
+                <Form onSubmit={(...args) => {
+                    // Set the ID to make sure we pass checks.
+                    setValue("_id", space.id, {
+                        shouldDirty: false,
+                        shouldTouch: false,
+                        shouldValidate: false,
+                    });
+                    return handleSubmit(onSubmit)(...args)
+                }}>
                     <NameField 
                         className='mb-3'
                         defaultValue={space.name}
@@ -171,15 +184,10 @@ function SpaceEditPageBody({
                         baseHLevel={4}
                     />
 
-                    <h3>Examples</h3>
-                    <ul>
-                        {
-                            examplesElements.length > 0 ?
-                                examplesElements:
-                            // Else
-                            "None"
-                        }
-                    </ul>
+                    <ExamplesField
+                        className='mb-3'
+                        defaultValue={examplesArray}
+                    />
 
                     <StyledButton
                         $variant="spaceEditSubmit"

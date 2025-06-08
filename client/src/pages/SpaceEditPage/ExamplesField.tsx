@@ -1,48 +1,48 @@
 import { ArrayPath, useFieldArray, useFormContext } from "react-hook-form";
 import { MongoSpace } from "shared";
-import { SpaceEditAliasesFieldProps, SpaceEditAliasItemFieldProps } from "./Types";
+import { SpaceEditExamplesFieldProps, SpaceEditExampleItemFieldProps } from "./Types";
 import { Form } from "react-bootstrap";
 import StyledButton from "src/components/StyledButton";
 import { useEffect } from "react";
 import clsx from "clsx";
 
-export default function SpaceEditAliasesField({
-    label="Aliases",
-    placeholder="Alias",
+export default function SpaceEditExamplesField({
+    label="Examples",
+    placeholder="Example",
     defaultValue=[],
     ...props
-}: SpaceEditAliasesFieldProps) {
+}: SpaceEditExamplesFieldProps) {
     const {
         control
     } = useFormContext<MongoSpace>();
 
     const {
-        fields: aliaseFields,
-        append: appendAlias,
-        remove: removeAlias
+        fields: exampleFields,
+        append: appendExample,
+        remove: removeExample
     } = useFieldArray({
-        name: "aliases" as ArrayPath<MongoSpace>,
+        name: "examples" as ArrayPath<MongoSpace>,
         control
     });
 
     // Sync the fields with the value provided
     useEffect(() => {
         // No arguments removes all fields
-        removeAlias();
+        removeExample();
         for (let i = 0; i < defaultValue.length; i++) {
-            appendAlias(defaultValue[i]);
+            appendExample(defaultValue[i]);
         }
-    }, [defaultValue, appendAlias, removeAlias]);
+    }, [defaultValue, appendExample, removeExample]);
 
     return (
         <Form.Group {...props}>
             <Form.Label>{label}</Form.Label>
             <ul>
                 {
-                    aliaseFields.length > 0 ?
-                        aliaseFields.map((field, i) => {
+                    exampleFields.length > 0 ?
+                        exampleFields.map((field, i) => {
                             return (
-                                <SpaceEditAliasItemField
+                                <SpaceEditExampleItemField
                                     key={field.id}
                                     index={i}
 
@@ -50,7 +50,7 @@ export default function SpaceEditAliasesField({
                                         placeholder
                                     }}
 
-                                    remove={() => removeAlias(i)}
+                                    remove={() => removeExample(i)}
                                 />
                             );
                         })
@@ -62,26 +62,26 @@ export default function SpaceEditAliasesField({
                 }
             </ul>
             <StyledButton
-                $variant="addAlias"
-                onClick={() => appendAlias("Alias " + (aliaseFields.length + 1))}
+                $variant="addExample"
+                onClick={() => appendExample("Example " + (exampleFields.length + 1))}
             >
-                Add Alias
+                Add Example
             </StyledButton>
         </Form.Group>
     );
 }
 
-export function SpaceEditAliasItemField({
+export function SpaceEditExampleItemField({
     index,
     controlProps: {
         className: controlPropsClassName,
-        placeholder="Alias",
+        placeholder="Example",
         ...controlProps
     },
     remove,
     defaultValue,
     ...props
-}: SpaceEditAliasItemFieldProps) {
+}: SpaceEditExampleItemFieldProps) {
     const {
         register: formRegister,
         formState: { errors }
@@ -94,19 +94,19 @@ export function SpaceEditAliasItemField({
                 type="text"
                 className={clsx("mb-2", controlPropsClassName)}
                 placeholder={placeholder}
-                {...formRegister(`aliases.${index}`)}
+                {...formRegister(`examples.${index}`)}
                 defaultValue={defaultValue}
             />
 
             <StyledButton
-                $variant="removeAlias"
+                $variant="removeExample"
                 onClick={remove}
             >
                 Remove
             </StyledButton>
 
-            {errors.aliases?.[index] && <>
-                <br /> <Form.Text className="text-danger">{errors.aliases[index].message}</Form.Text>
+            {errors.examples?.[index] && <>
+                <br /> <Form.Text className="text-danger">{errors.examples[index].message}</Form.Text>
             </>}
         </li>
     );

@@ -2,15 +2,21 @@ import { swaggerRegistry } from "src/Swagger";
 import { zodSuccessResponseSchema } from "./SuccessResponse";
 import { ZodErrorResponseSchema } from "./ErrorResponse";
 import { z } from "zod";
-import { refineNoAliasMatchingName, ZodCleanMongoSpaceSchema, ZodMongoSpaceSchema } from "src/Space";
+import { findAliasMatchingNameIndex, refineNoAliasMatchingName, ZodCleanMongoSpaceSchema, ZodMongoSpaceSchema } from "src/Space";
 
 export const ZodNewSpaceRequestBodySchema = swaggerRegistry.register(
     "NewSpaceRequestBody",
     z.object({
         space: ZodMongoSpaceSchema._def.schema.omit({ _id: true })
-            .refine(({ name, aliases}) => refineNoAliasMatchingName(name, aliases), {
-                message: "No alias should match the name.",
-                path: ["aliases"]
+            .superRefine(({ name, aliases }, ctx) => {
+                if (!refineNoAliasMatchingName(name, aliases)) {
+                    const index = findAliasMatchingNameIndex(name, aliases);
+                    ctx.addIssue({
+                        code: z.ZodIssueCode.custom,
+                        message: "No alias should match the name.",
+                        path: ["aliases", index ?? 0]
+                    });
+                }
             })
         }).openapi({
         description: "The request body for creating a new space"

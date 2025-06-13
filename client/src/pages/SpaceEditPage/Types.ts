@@ -16,6 +16,7 @@ export type SpaceEditPageProps = StyledComponentPropsWithCSS<
             AliasesField?: FC<SpaceEditAliasesFieldProps>;
             ExamplesField?: FC<SpaceEditExamplesFieldProps>;
             DescriptionField?: FC<SpaceEditDescriptionFieldProps>;
+            TagsField?: FC<SpaceEditTagsFieldProps>;
         }
     >,
 {}>;
@@ -23,7 +24,7 @@ export type SpaceEditPageProps = StyledComponentPropsWithCSS<
 export type SpaceEditPageBodyProps = Required<
     Pick<
         SpaceEditPageProps["functional"],
-        "NameField" | "AliasesField" | "DescriptionField" | "ExamplesField"
+        "NameField" | "AliasesField" | "DescriptionField" | "ExamplesField" | "TagsField"
     >
 >;
 
@@ -74,5 +75,17 @@ export type SpaceEditExampleItemFieldProps = Override<
     Omit<HTMLProps<HTMLLIElement>, "children">,
     CustomFormFieldItemProps<
         NonNull<MongoSpace["examples"]>[number]
+    >
+>;
+
+export type SpaceEditTagsFieldProps = Override<
+    Omit<FormGroupProps, "children">,
+    CustomFormFieldProps<MongoSpace["tags"]>
+>;
+
+export type SpaceEditTagItemFieldProps = Override<
+    Omit<HTMLProps<HTMLLIElement>, "children">,
+    CustomFormFieldItemProps<
+        NonNull<MongoSpace["tags"]>[number]
     >
 >;

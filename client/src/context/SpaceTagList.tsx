@@ -109,6 +109,13 @@ export default class SpaceTagList {
         return this.tags;
     }
 
+    sortTags() {
+        if (this.requstInProgress) throw new Error('Cannot sort tags while a request is in progress');
+        if (this.tags === null) return [];
+        this.tags.sort((a, b) => a.localeCompare(b));
+        return this.tags;
+    }
+
     clearTags() {
         this.tags = null;
     }

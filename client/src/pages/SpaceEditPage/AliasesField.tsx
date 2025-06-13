@@ -17,7 +17,7 @@ export default function SpaceEditAliasesField({
     } = useFormContext<MongoSpace>();
 
     const {
-        fields: aliaseFields,
+        fields: aliasFields,
         append: appendAlias,
         remove: removeAlias
     } = useFieldArray({
@@ -39,8 +39,8 @@ export default function SpaceEditAliasesField({
             <Form.Label>{label}</Form.Label>
             <ul>
                 {
-                    aliaseFields.length > 0 ?
-                        aliaseFields.map((field, i) => {
+                    aliasFields.length > 0 ?
+                        aliasFields.map((field, i) => {
                             return (
                                 <SpaceEditAliasItemField
                                     key={field.id}
@@ -63,7 +63,7 @@ export default function SpaceEditAliasesField({
             </ul>
             <StyledButton
                 $variant="addAlias"
-                onClick={() => appendAlias("Alias " + (aliaseFields.length + 1))}
+                onClick={() => appendAlias("Alias " + (aliasFields.length + 1))}
             >
                 Add Alias
             </StyledButton>
@@ -98,12 +98,14 @@ export function SpaceEditAliasItemField({
                 defaultValue={defaultValue}
             />
 
-            <StyledButton
-                $variant="removeAlias"
-                onClick={remove}
-            >
-                Remove
-            </StyledButton>
+            <div className="btn-row">
+                <StyledButton
+                    $variant="removeAlias"
+                    onClick={remove}
+                >
+                    Remove
+                </StyledButton>
+            </div>
 
             {errors.aliases?.[index] && <>
                 <br /> <Form.Text className="text-danger">{errors.aliases[index].message}</Form.Text>

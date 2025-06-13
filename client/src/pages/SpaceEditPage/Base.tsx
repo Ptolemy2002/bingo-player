@@ -20,6 +20,7 @@ import DefaultNameField from './NameField';
 import DefaultAliasesField from './AliasesField';
 import DefaultExamplesField from './ExamplesField';
 import DefaultDescriptionField from './DescriptionField';
+import DefaultTagsField from './TagsField';
 import { omit } from '@ptolemy2002/ts-utils';
 
 function SpaceEditPageBase({
@@ -28,6 +29,7 @@ function SpaceEditPageBase({
     AliasesField = DefaultAliasesField,
     ExamplesField = DefaultExamplesField,
     DescriptionField = DefaultDescriptionField,
+    TagsField = DefaultTagsField,
     ...props
 }: SpaceEditPageProps["functional"]) {
     const [space, setSpace] = SpaceData.useContext();
@@ -97,6 +99,7 @@ function SpaceEditPageBase({
                         AliasesField={AliasesField}
                         ExamplesField={ExamplesField}
                         DescriptionField={DescriptionField}
+                        TagsField={TagsField}
                     />
                 </SuspenseBoundary>
             </ErrorBoundary>
@@ -109,6 +112,7 @@ function SpaceEditPageBody({
     AliasesField = DefaultAliasesField,
     ExamplesField = DefaultExamplesField,
     DescriptionField = DefaultDescriptionField,
+    TagsField = DefaultTagsField
 }: SpaceEditPageBodyProps) {
     const [space] = SpaceData.useContext();
 
@@ -140,6 +144,12 @@ function SpaceEditPageBody({
         return Array.from(space.examples);
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [space?.examples]);
+
+    const tagsArray = useMemo(() => {
+        if (space === null) return [];
+        return Array.from(space.tags);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [space?.tags]);
 
     if (space === null) return null;
     return (
@@ -174,9 +184,10 @@ function SpaceEditPageBody({
                         defaultValue={aliasesArray}
                     />
 
-                    <Form.Group className="mb-3">
-                        <Form.Label>Tags</Form.Label> <br />
-                    </Form.Group>
+                    <TagsField
+                        className='mb-3'
+                        defaultValue={tagsArray}
+                    />
 
                     <DescriptionField
                         className='mb-3'

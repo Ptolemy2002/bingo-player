@@ -104,6 +104,7 @@ export const NamedThemes: NamedTheme[] = [
             buttons: {
                 addAlias: borderedButtonStyleLight,
                 addExample: borderedButtonStyleLight,
+                addTag: borderedButtonStyleLight,
 
                 removeAlias: {
                     ...borderedButtonStyleLight,
@@ -116,6 +117,15 @@ export const NamedThemes: NamedTheme[] = [
                     hoverBackgroundColor: "red",
                     hoverTextColor: "white"
                 },
+
+                removeTag: {
+                    ...borderedButtonStyleLight,
+                    hoverBackgroundColor: "red",
+                    hoverTextColor: "white"
+                },
+
+                selectTagExisting: borderedButtonStyleLight,
+                writeTag: borderedButtonStyleLight,
 
                 spaceEditSubmit: borderedButtonStyleLight,
 
@@ -186,6 +196,7 @@ export const NamedThemes: NamedTheme[] = [
             buttons: {
                 addAlias: borderedButtonStyleDark,
                 addExample: borderedButtonStyleDark,
+                addTag: borderedButtonStyleDark,
 
                 removeAlias: {
                     ...borderedButtonStyleDark,
@@ -198,6 +209,15 @@ export const NamedThemes: NamedTheme[] = [
                     hoverBackgroundColor: "red",
                     hoverTextColor: "white"
                 },
+
+                removeTag: {
+                    ...borderedButtonStyleDark,
+                    hoverBackgroundColor: "red",
+                    hoverTextColor: "white"
+                },
+
+                selectTagExisting: borderedButtonStyleDark,
+                writeTag: borderedButtonStyleDark,
 
                 spaceEditSubmit: borderedButtonStyleDark,
                 

@@ -98,16 +98,16 @@ export function SpaceEditExampleItemField({
                 defaultValue={defaultValue}
             />
 
-            <StyledButton
-                $variant="removeExample"
-                onClick={remove}
-            >
-                Remove
-            </StyledButton>
+            <div className="btn-row">
+                <StyledButton
+                    $variant="removeExample"
+                    onClick={remove}
+                >
+                    Remove
+                </StyledButton>
+            </div>
 
-            {errors.examples?.[index] && <>
-                <br /> <Form.Text className="text-danger">{errors.examples[index].message}</Form.Text>
-            </>}
+            {errors.examples?.[index] && <Form.Text className="text-danger">{errors.examples[index].message}</Form.Text>}
         </li>
     );
 }

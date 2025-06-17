@@ -2346,7 +2346,14 @@
             "$ref": "#/components/schemas/SpaceName"
           },
           "description": {
-            "$ref": "#/components/schemas/SpaceDescription"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SpaceDescription"
+              },
+              {
+                "default": null
+              }
+            ]
           },
           "examples": {
             "type": "array",
@@ -2429,7 +2436,14 @@
             "$ref": "#/components/schemas/SpaceName"
           },
           "description": {
-            "$ref": "#/components/schemas/SpaceDescription"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SpaceDescription"
+              },
+              {
+                "default": null
+              }
+            ]
           },
           "examples": {
             "type": "array",
@@ -3906,7 +3920,14 @@
                 "$ref": "#/components/schemas/SpaceName"
               },
               "description": {
-                "$ref": "#/components/schemas/SpaceDescription"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/SpaceDescription"
+                  },
+                  {
+                    "default": null
+                  }
+                ]
               },
               "examples": {
                 "type": "array",

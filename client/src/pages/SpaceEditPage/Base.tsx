@@ -22,6 +22,7 @@ import DefaultExamplesField from './ExamplesField';
 import DefaultDescriptionField from './DescriptionField';
 import DefaultTagsField from './TagsField';
 import { omit } from '@ptolemy2002/ts-utils';
+import { useNavigate } from 'react-router';
 
 function SpaceEditPageBase({
     className,
@@ -126,12 +127,21 @@ function SpaceEditPageBody({
         formState: {submitCount, errors}
     } = formMethods;
 
+    const navigate = useNavigate();
+
+    const goBack = useCallback(() => {
+        navigate(`/space/${encodeURIComponent(space!.name)}`);
+    }, [navigate, space]);
+
     const onSubmit = useCallback(async (_items: MongoSpace) => {
         // Remove the ID from the items, as it was only there to pass validation
         // and we don't need it.
         const items = omit(_items, "_id");
-        console.log("Submit", items);
-    }, []);
+
+        // We aren't saving yet because that will be done on the viewing page.
+        space!.fromJSON(items);
+        goBack();
+    }, [space, goBack]);
 
     const aliasesArray = useMemo(() => {
         if (space === null) return [];
@@ -172,6 +182,7 @@ function SpaceEditPageBody({
                         shouldTouch: false,
                         shouldValidate: false,
                     });
+
                     return handleSubmit(onSubmit)(...args)
                 }}>
                     <NameField 
@@ -199,14 +210,24 @@ function SpaceEditPageBody({
                         className='mb-3'
                         defaultValue={examplesArray}
                     />
+                    
+                    <div className='btn-row'>
+                        <StyledButton
+                            $variant="spaceEditSubmit"
+                            type="submit"
+                            disabled={submitCount > 0 && Object.keys(errors).length > 0}
+                        >
+                            Save Changes
+                        </StyledButton>
 
-                    <StyledButton
-                        $variant="spaceEditSubmit"
-                        type="submit"
-                        disabled={submitCount > 0 && Object.keys(errors).length > 0}
-                    >
-                        Save Changes
-                    </StyledButton>
+                        <StyledButton
+                            $variant="spaceEditCancel"
+                            type="button"
+                            onClick={goBack}
+                        >
+                            Cancel
+                        </StyledButton>
+                    </div>
                 </Form>
             </div>
         </FormProvider>
@@ -221,6 +242,8 @@ export function applySubComponents<
         NameField: DefaultNameField,
         AliasesField: DefaultAliasesField,
         DescriptionField: DefaultDescriptionField,
+        ExamplesField: DefaultExamplesField,
+        TagsField: DefaultTagsField,
     });
 }
 

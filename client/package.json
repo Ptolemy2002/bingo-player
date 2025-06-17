@@ -67,7 +67,7 @@
     "shared": "file:../shared",
     "styled-components": "^6.1.15",
     "typed-axios-instance": "^3.3.1",
-    "zod": "link:@hookform/resolvers/zod"
+    "zod": "^3.24.1"
   },
   "dependenciesMeta": {
     "shared": {

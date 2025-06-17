@@ -5,7 +5,7 @@ import { ErrorBoundary } from 'react-error-boundary';
 import { Alert } from 'react-bootstrap';
 import { SuspenseBoundary } from '@ptolemy2002/react-suspense';
 import SpaceData from 'src/data/SpaceData';
-import { useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import TagBadge from 'src/components/TagBadge';
 import { listInPlainEnglish } from '@ptolemy2002/js-utils';
 import { useMemo, useState } from 'react';
@@ -13,6 +13,7 @@ import { MarkdownRenderer } from 'src/lib/Markdown';
 import useManualErrorHandling from '@ptolemy2002/react-manual-error-handling';
 import { AxiosError } from 'axios';
 import NotFoundPage from '../NotFoundPage';
+import StyledButton from 'src/components/StyledButton';
 
 function SpaceDetailPageBase({
     className
@@ -79,6 +80,7 @@ function SpaceDetailPageBase({
 
 function SpaceDetailPageBody() {
     const [space] = SpaceData.useContext();
+    const navigate = useNavigate();
 
     const aliasesText = useMemo(() => {
         if (space === null) return "If you see this, something is wrong.";
@@ -134,6 +136,23 @@ function SpaceDetailPageBody() {
                     "None"
                 }
             </ul>
+
+            <div className='btn-row'>
+                <StyledButton
+                    $variant="goToSpaceEdit"
+                    onClick={() => navigate(`/space/${encodeURIComponent(space.name)}/edit`)}
+                >
+                    Edit
+                </StyledButton>
+
+                <StyledButton
+                    $variant="spaceEditUndo"
+                    disabled={space.lastCheckpoint("pre-edit") === null || !space.isDirty("pre-edit")}
+                    onClick={() => space.revert("pre-edit")}
+                >
+                    Undo Last Changes
+                </StyledButton>
+            </div>
         </div>
     );
 }

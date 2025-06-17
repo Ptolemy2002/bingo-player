@@ -126,8 +126,16 @@ export const NamedThemes: NamedTheme[] = [
 
                 selectTagExisting: borderedButtonStyleLight,
                 writeTag: borderedButtonStyleLight,
+                
+                goToSpaceEdit: borderedButtonStyleLight,
+                spaceEditUndo: borderedButtonStyleLight,
 
                 spaceEditSubmit: borderedButtonStyleLight,
+                spaceEditCancel: {
+                    ...borderedButtonStyleLight,
+                    hoverBackgroundColor: "red",
+                    hoverTextColor: "white"
+                },
 
                 cardViewDetails: {
                     borderStyle: "solid",
@@ -219,7 +227,15 @@ export const NamedThemes: NamedTheme[] = [
                 selectTagExisting: borderedButtonStyleDark,
                 writeTag: borderedButtonStyleDark,
 
+                goToSpaceEdit: borderedButtonStyleDark,
+                spaceEditUndo: borderedButtonStyleDark,
+
                 spaceEditSubmit: borderedButtonStyleDark,
+                spaceEditCancel: {
+                    ...borderedButtonStyleDark,
+                    hoverBackgroundColor: "red",
+                    hoverTextColor: "white"
+                },
                 
                 cardViewDetails: {
                     borderStyle: "solid",

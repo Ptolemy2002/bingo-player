@@ -68,6 +68,12 @@ export const GlobalStyle = createGlobalStyle`
         margin-bottom: .25rem;
     }
 
+    .btn-row {
+        display: flex;
+        flex-direction: row;
+        gap: 0.5rem;
+    }
+
     // Override Bootstrap Alert styles where applicable
     ${({ theme }) => {
         if (!theme.alerts) return null;

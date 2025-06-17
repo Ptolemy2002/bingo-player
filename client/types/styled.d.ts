@@ -12,7 +12,7 @@ declare module "styled-components" {
 
     export type ButtonVariant = 
         "searchSettings" | "searchSubmit" | "toggleTheme" | "pageChange" | "pageSizeApply" | "cardViewDetails" |
-        "spaceEditSubmit" |
+        "goToSpaceEdit" | "spaceEditUndo" | "spaceEditSubmit" | "spaceEditCancel" |
         "addAlias" | "removeAlias" | "removeTag" | "addTag" | "addExample" | "removeExample" | "selectTagExisting" | "writeTag"
     ;
     export type ButtonStyles = Partial<{

@@ -8,12 +8,6 @@ export default applySubComponents(Object.assign(
             $css: props.$css ?? null
         })
     )`
-        .btn-row {
-            display: flex;
-            flex-direction: row;
-            gap: 0.5rem;
-        }
-
         ${({$css}) => $css}
     `,
     {

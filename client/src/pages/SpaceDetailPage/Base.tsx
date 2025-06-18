@@ -81,6 +81,7 @@ function SpaceDetailPageBase({
 function SpaceDetailPageBody() {
     const [space] = SpaceData.useContext();
     const navigate = useNavigate();
+    const { _try } = useManualErrorHandling();
 
     const aliasesText = useMemo(() => {
         if (space === null) return "If you see this, something is wrong.";
@@ -139,6 +140,19 @@ function SpaceDetailPageBody() {
 
             <div className='btn-row'>
                 <StyledButton
+                    $variant="spaceRefresh"
+                    onClick={() => _try(() => space.pull(true))}
+                    disabled={!space.allowRefresh()}
+                >
+                    {
+                        space.hasInProgressRequest("pull") ?
+                            "Refreshing..."
+                        :
+                            "Refresh"
+                    }
+                </StyledButton>
+
+                <StyledButton
                     $variant="goToSpaceEdit"
                     onClick={() => navigate(`/space/${encodeURIComponent(space.name)}/edit`)}
                 >
@@ -146,8 +160,21 @@ function SpaceDetailPageBody() {
                 </StyledButton>
 
                 <StyledButton
+                    $variant="spaceSave"
+                    onClick={() => _try(() => space.push())}
+                    disabled={!space.allowPush()}
+                >
+                    {
+                        space.hasInProgressRequest("push") ?
+                            "Saving..."
+                        :
+                            "Save Changes"
+                    }
+                </StyledButton>
+
+                <StyledButton
                     $variant="spaceEditUndo"
-                    disabled={space.lastCheckpoint("pre-edit") === null || !space.isDirty("pre-edit")}
+                    disabled={!space.allowUndo()}
                     onClick={() => space.revert("pre-edit")}
                 >
                     Undo Last Changes

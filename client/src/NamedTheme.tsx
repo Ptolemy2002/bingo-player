@@ -137,6 +137,16 @@ export const NamedThemes: NamedTheme[] = [
                     hoverTextColor: "white"
                 },
 
+                spaceSave: borderedButtonStyleLight,
+                spaceRefresh: borderedButtonStyleLight,
+                spaceDuplicate: borderedButtonStyleLight,
+
+                spaceDelete: {
+                    ...borderedButtonStyleLight,
+                    hoverBackgroundColor: "red",
+                    hoverTextColor: "white"
+                },
+
                 cardViewDetails: {
                     borderStyle: "solid",
                     hoverBackgroundColor: "black",
@@ -232,6 +242,15 @@ export const NamedThemes: NamedTheme[] = [
 
                 spaceEditSubmit: borderedButtonStyleDark,
                 spaceEditCancel: {
+                    ...borderedButtonStyleDark,
+                    hoverBackgroundColor: "red",
+                    hoverTextColor: "white"
+                },
+
+                spaceSave: borderedButtonStyleDark,
+                spaceRefresh: borderedButtonStyleDark,
+                spaceDuplicate: borderedButtonStyleDark,
+                spaceDelete: {
                     ...borderedButtonStyleDark,
                     hoverBackgroundColor: "red",
                     hoverTextColor: "white"

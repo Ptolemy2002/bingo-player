@@ -20,6 +20,12 @@ import {
     SearchSpacesQueryParamsInput,
     SearchSpacesResponseBody,
     SearchSpacesURLParams,
+    UpdateSpaceByIDRequestBodyInput,
+    UpdateSpaceByIDResponseBody,
+    UpdateSpaceByIDURLParams,
+    UpdateSpaceByNameURLParams,
+    UpdateSpaceByNameRequestBodyInput,
+    UpdateSpaceByNameResponseBody
 } from 'shared';
 import getEnv from 'src/Env';
 import { setupCache, CacheOptions, AxiosCacheInstance } from 'axios-cache-interceptor';
@@ -90,6 +96,22 @@ export type ApiRoutes = RouteDefArray<
             method: 'GET';
             queryParams: ListSpacePropQueryParamsInput;
             jsonResponse: ListSpacePropResponseBody;
+        },
+
+        {
+            route: `/spaces/update/by-id/${UpdateSpaceByIDURLParams['id']}`;
+            method: 'POST';
+            queryParams: {};
+            jsonRequest: UpdateSpaceByIDRequestBodyInput;
+            jsonResponse: UpdateSpaceByIDResponseBody;
+        },
+
+        {
+            route: `/spaces/update/by-name/${UpdateSpaceByNameURLParams['name']}`;
+            method: 'POST';
+            queryParams: {};
+            jsonRequest: UpdateSpaceByNameRequestBodyInput;
+            jsonResponse: UpdateSpaceByNameResponseBody;
         }
     ]
 >;
@@ -102,7 +124,9 @@ export const RouteIds = {
     countAllSpaces: "/spaces/count/all",
     searchSpaces: "/spaces/search/:query",
     searchSpacesCount: "/spaces/search/:query/count",
-    listSpaceProp: "/spaces/get/all/list/:prop"
+    listSpaceProp: "/spaces/get/all/list/:prop",
+    updateSpaceByID: "/spaces/update/by-id/:id",
+    updateSpaceByName: "/spaces/update/by-name/:name"
 } as const;
 
 export type GetAPIOptions = {

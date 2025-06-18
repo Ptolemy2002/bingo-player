@@ -69,8 +69,6 @@ function SpaceEditPageBase({
                     }
 
                     init={async () => {
-                        let spaceToCheckpoint = space;
-
                         if (space === null || space.name !== name) {
                             // Populate the name and pull all the data
                             const newSpace = setSpace({ name })!;
@@ -87,11 +85,7 @@ function SpaceEditPageBase({
                             );
 
                             if (!spaceTagList.hasInProgressRequest()) await spaceTagList.tagsRequest();
-                            
-                            spaceToCheckpoint = newSpace;
                         }
-
-                        spaceToCheckpoint!.checkpoint("pre-edit");
                     }}
                 >
                     
@@ -139,7 +133,12 @@ function SpaceEditPageBody({
         const items = omit(_items, "_id");
 
         // We aren't saving yet because that will be done on the viewing page.
-        space!.fromJSON(items);
+        if (space === null) {
+            throw new Error("Space is null, cannot submit.");
+        }
+
+        space.checkpoint("pre-edit");
+        space.fromJSON(items);
         goBack();
     }, [space, goBack]);
 

@@ -5,7 +5,8 @@ import { createProxyContext, Dependency, OnChangePropCallback, OnChangeReinitCal
 import getApi from "src/Api";
 
 export type SpaceRequests = {
-    pull: () => Promise<void>;
+    pull: (force?: boolean) => Promise<void>;
+    push: () => Promise<void>;
 };
 
 export type CompletedSpaceData = Override<SpaceData, CompletedMongoData<
@@ -125,18 +126,21 @@ export default class SpaceData extends MongoData<
             initial: new Set()
         });
 
-        this.defineRequestType("pull", async function(this: CompletedSpaceData, ac) {
+        this.defineRequestType("pull", async function(this: CompletedSpaceData, ac, force = false) {
             const api = getApi();
 
             if (!this.id && !this.name) {
                 throw new Error("Space ID or name must be set before pulling");
             }
 
+            const cacheOptions: {cache: false} | {} = force ? { cache: false } : {};
+
             let data: GetSpaceByExactIDResponseBody | GetSpacesByPropResponseBody;
             if (this.id) {
                 data = (
                     await api.get(`/spaces/get/by-id/${this.id}`, {
-                        signal: ac.signal
+                        signal: ac.signal,
+                        ...cacheOptions
                     })
                 ).data;
             } else {
@@ -150,7 +154,8 @@ export default class SpaceData extends MongoData<
                                 accentSensitive: "t",
                                 matchWhole: "t"
                             },
-                            signal: ac.signal
+                            signal: ac.signal,
+                            ...cacheOptions
                         }
                     )
                 ).data;
@@ -166,5 +171,61 @@ export default class SpaceData extends MongoData<
         }, {
             undoOnFail: false
         });
+
+        this.defineRequestType("push", async function(this: CompletedSpaceData, ac) {
+            const api = getApi();
+
+            if (!this.id && !this.name) {
+                throw new Error("Space ID or name must be set before pushing");
+            }
+
+            let data;
+            if (this.id) {
+                data = (await api.post(
+                    `/spaces/update/by-id/${this.id || encodeURIComponent(this.id)}`,
+                    {
+                        difference: this.difference({type: ["push", "pull"]}),
+                    },
+                    { signal: ac.signal }
+                )).data;
+            } else {
+                data = (await api.post(
+                    `/spaces/update/by-name/${encodeURIComponent(this.name)}`,
+                    {
+                        difference: this.difference({type: ["push", "pull"]}),
+                    },
+                    { signal: ac.signal }
+                )).data;
+            }
+
+            if (data.ok) {
+                // Ensure the most up-to-date data is loaded
+                this.fromJSON(data.space, true);
+            }
+
+        }, {
+            undoOnFail: false
+        });
+    }
+
+    hasNewEdits() {
+        const lastPreEditCheckpointIndex = this.lastCheckpointIndex("pre-edit", {includeCurrent: true});
+        if (lastPreEditCheckpointIndex === -1) return false;
+        const lastPushOrPullCheckpointIndex = this.lastCheckpointIndex(["push", "pull"], {includeCurrent: true});
+        if (lastPushOrPullCheckpointIndex === -1) return true;
+        if (lastPushOrPullCheckpointIndex > lastPreEditCheckpointIndex) return false;
+        return this.isDirty("pre-edit");
+    }
+
+    allowRefresh() {
+        return !this.hasInProgressRequest() && !this.hasNewEdits();
+    }
+
+    allowPush() {
+        return !this.hasInProgressRequest() && this.isDirty(["push", "pull"]);
+    }
+
+    allowUndo() {
+        return this.hasNewEdits();
     }
 }

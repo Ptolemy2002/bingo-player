@@ -154,8 +154,8 @@ importers:
         specifier: ^2.0.3
         version: 2.0.3(@ptolemy2002/react-hook-result@2.2.4(@ptolemy2002/js-utils@3.2.2)(@ptolemy2002/ts-utils@3.0.0(@ptolemy2002/ts-brand-utils@1.0.0)(is-callable@1.2.7)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@ptolemy2002/react-mongo-data':
-        specifier: ^2.5.2
-        version: 2.5.2(48e5347880f8f7ad245b4fad565deab3)
+        specifier: ^2.5.5
+        version: 2.5.5(48e5347880f8f7ad245b4fad565deab3)
       '@ptolemy2002/react-mount-effects':
         specifier: ^2.0.0
         version: 2.0.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -791,8 +791,8 @@ packages:
       react: ^18.3.1
       react-dom: ^18.3.1
 
-  '@ptolemy2002/react-mongo-data@2.5.2':
-    resolution: {integrity: sha512-rMEPkAJa/tBCRLL/IiMZYNjkJwr5Wxm5HE6FM85UK9lJP5sK4HdhXnR8CdEu80QltAYZ83PWZHxE3/0AGOdq6w==}
+  '@ptolemy2002/react-mongo-data@2.5.5':
+    resolution: {integrity: sha512-5GlCMKZfzhu44nJYtUsdX/4BEI+TZta3SK67xf9pKIAbf6ESE11r8vp4bH6CU+VsB3buo5XEawFhE9G30LeANg==}
     peerDependencies:
       '@ptolemy2002/js-utils': ^3.0.2
       '@ptolemy2002/list-object-utils': ^3.0.0
@@ -3326,7 +3326,7 @@ snapshots:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
 
-  '@ptolemy2002/react-mongo-data@2.5.2(48e5347880f8f7ad245b4fad565deab3)':
+  '@ptolemy2002/react-mongo-data@2.5.5(48e5347880f8f7ad245b4fad565deab3)':
     dependencies:
       '@ptolemy2002/js-utils': 3.2.2
       '@ptolemy2002/list-object-utils': 3.0.1(@ptolemy2002/ts-utils@3.0.0(@ptolemy2002/ts-brand-utils@1.0.0)(is-callable@1.2.7))(is-callable@1.2.7)

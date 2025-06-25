@@ -147,6 +147,8 @@ export const NamedThemes: NamedTheme[] = [
                     hoverTextColor: "white"
                 },
 
+                createSpace: borderedButtonStyleLight,
+
                 cardViewDetails: {
                     borderStyle: "solid",
                     hoverBackgroundColor: "black",
@@ -255,6 +257,8 @@ export const NamedThemes: NamedTheme[] = [
                     hoverBackgroundColor: "red",
                     hoverTextColor: "white"
                 },
+                
+                createSpace: borderedButtonStyleDark,
                 
                 cardViewDetails: {
                     borderStyle: "solid",

@@ -2,13 +2,13 @@ import { Override } from "@ptolemy2002/ts-utils";
 import { CleanMongoSpace, CleanSpace, GetSpaceByExactIDResponseBody, GetSpacesByPropResponseBody } from "shared";
 import MongoData, { CompletedMongoData } from "@ptolemy2002/react-mongo-data";
 import { createProxyContext, Dependency, OnChangePropCallback, OnChangeReinitCallback } from "@ptolemy2002/react-proxy-context";
-import getApi, { getApiCacheManager, RouteTags } from "src/Api";
+import getApi, { invalidateSpaceCollectionCaches } from "src/Api";
 
 export type SpaceRequests = {
-    pull: (force?: boolean) => Promise<void>;
-    push: () => Promise<void>;
-    duplicate: () => Promise<CleanMongoSpace | null>;
-    delete: () => Promise<void>;
+    pull: (force?: boolean, apiId?: string) => Promise<void>;
+    push: (apiKey?: string) => Promise<void>;
+    duplicate: (apiKey?: string) => Promise<CleanMongoSpace | null>;
+    delete: (apiKey?: string) => Promise<void>;
 };
 
 export type CompletedSpaceData = Override<SpaceData, CompletedMongoData<
@@ -128,8 +128,8 @@ export default class SpaceData extends MongoData<
             initial: new Set()
         });
 
-        this.defineRequestType("pull", async function(this: CompletedSpaceData, ac, force = false) {
-            const api = getApi();
+        this.defineRequestType("pull", async function(this: CompletedSpaceData, ac, force = false, apiKey: string="default") {
+            const api = getApi({ key: apiKey });
 
             if (!this.id && !this.name) {
                 throw new Error("Space ID or name must be set before pulling");
@@ -174,8 +174,8 @@ export default class SpaceData extends MongoData<
             undoOnFail: false
         });
 
-        this.defineRequestType("push", async function(this: CompletedSpaceData, ac) {
-            const api = getApi();
+        this.defineRequestType("push", async function(this: CompletedSpaceData, ac, apiKey: string="default") {
+            const api = getApi({ key: apiKey });
 
             if (!this.id && !this.name) {
                 throw new Error("Space ID or name must be set before pushing");
@@ -209,8 +209,8 @@ export default class SpaceData extends MongoData<
             undoOnFail: false
         });
 
-        this.defineRequestType("duplicate", async function(this: CompletedSpaceData, ac) {
-            const api = getApi();
+        this.defineRequestType("duplicate", async function(this: CompletedSpaceData, ac, apiKey: string="default") {
+            const api = getApi({ key: apiKey });
 
             if (!this.id && !this.name) {
                 throw new Error("Space ID or name must be set before duplicating");
@@ -232,13 +232,7 @@ export default class SpaceData extends MongoData<
             }
 
             // Invalidate various caches to ensure the new space appears in searches
-            const cm = getApiCacheManager();
-            await cm.removeByTag(api, RouteTags.getAllSpaces);
-            await cm.removeByTag(api, RouteTags.getSpacesByProp);
-            await cm.removeByTag(api, RouteTags.countAllSpaces);
-            await cm.removeByTag(api, RouteTags.countSpacesByProp);
-            await cm.removeByTag(api, RouteTags.searchSpaces);
-            await cm.removeByTag(api, RouteTags.searchSpacesCount);
+            await invalidateSpaceCollectionCaches(apiKey);
 
             if (data.ok) {
                 return data.space;
@@ -249,8 +243,8 @@ export default class SpaceData extends MongoData<
             undoOnFail: false
         });
 
-        this.defineRequestType("delete", async function(this: CompletedSpaceData, ac) {
-            const api = getApi();
+        this.defineRequestType("delete", async function(this: CompletedSpaceData, ac, apiKey: string="default") {
+            const api = getApi({ key: apiKey });
 
             if (!this.id && !this.name) {
                 throw new Error("Space ID or name must be set before deleting");
@@ -263,13 +257,7 @@ export default class SpaceData extends MongoData<
             }
 
             // Invalidate various caches to ensure the space no longer appears in searches
-            const cm = getApiCacheManager();
-            await cm.removeByTag(api, RouteTags.getAllSpaces);
-            await cm.removeByTag(api, RouteTags.getSpacesByProp);
-            await cm.removeByTag(api, RouteTags.countAllSpaces);
-            await cm.removeByTag(api, RouteTags.countSpacesByProp);
-            await cm.removeByTag(api, RouteTags.searchSpaces);
-            await cm.removeByTag(api, RouteTags.searchSpacesCount);
+            await invalidateSpaceCollectionCaches(apiKey);
         }, {
             undoOnFail: false
         });

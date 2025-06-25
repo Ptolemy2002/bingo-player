@@ -1,6 +1,7 @@
 import { SuspenseBoundary } from "@ptolemy2002/react-suspense";
 import DefaultSearchBar from "./SearchBarStyled";
 import DefaultSearchResults from "./SearchResultsStyled";
+import DefaultCreateButton from "./SpaceCreateButton";
 import { SpaceGalleryPageProps } from "./Types";
 import useSpaceGallerySearchParamState from "./SearchParams";
 import { SpaceGallerySearchProvider } from "./Context";
@@ -12,7 +13,8 @@ import LoadingAlert from "src/components/alerts/LoadingAlert";
 function SpaceGalleryPageBase({
     className,
     SearchBar=DefaultSearchBar,
-    SearchResults=DefaultSearchResults
+    SearchResults=DefaultSearchResults,
+    CreateButton=DefaultCreateButton
 }: SpaceGalleryPageProps["functional"]) {
     const { q, setQ } = useSpaceGallerySearchParamState();
 
@@ -51,6 +53,13 @@ function SpaceGalleryPageBase({
                         renderDeps={[q]}
                     >
                         <SearchBar />
+                        
+                        <br />
+                        <div className="btn-row">
+                            <CreateButton />
+                        </div>
+                        <br />
+
                         <SearchResults />
                     </SuspenseBoundary>
                 </SpaceGallerySearchProvider>

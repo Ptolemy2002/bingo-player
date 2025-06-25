@@ -14,7 +14,8 @@ declare module "styled-components" {
         "searchSettings" | "searchSubmit" | "toggleTheme" | "pageChange" | "pageSizeApply" | "cardViewDetails" |
         "goToSpaceEdit" | "spaceEditUndo" | "spaceEditSubmit" | "spaceEditCancel" |
         "spaceSave" | "spaceRefresh" | "spaceDelete" | "spaceDuplicate" |
-        "addAlias" | "removeAlias" | "removeTag" | "addTag" | "addExample" | "removeExample" | "selectTagExisting" | "writeTag"
+        "addAlias" | "removeAlias" | "removeTag" | "addTag" | "addExample" | "removeExample" | "selectTagExisting" | "writeTag" |
+        "createSpace"
     ;
     export type ButtonStyles = Partial<{
         borderStyle: RequiredCSSProperties["borderStyle"],

@@ -33,7 +33,9 @@ import {
     DeleteSpaceByIDURLParams,
     DeleteSpaceByIDResponseBody,
     DeleteSpaceByNameURLParams,
-    DeleteSpaceByNameResponseBody
+    DeleteSpaceByNameResponseBody,
+    NewSpaceRequestBody,
+    NewSpaceResponseBody
 } from 'shared';
 import getEnv from 'src/Env';
 import { setupCache, CacheOptions, AxiosCacheInstance, defaultKeyGenerator } from 'axios-cache-interceptor';
@@ -153,6 +155,14 @@ export type ApiRoutes = RouteDefArray<
             queryParams: {};
             jsonRequest: {};
             jsonResponse: DeleteSpaceByNameResponseBody;
+        },
+
+        {
+            route: "/spaces/new";
+            method: 'POST';
+            queryParams: {};
+            jsonRequest: NewSpaceRequestBody;
+            jsonResponse: NewSpaceResponseBody;
         }
     ]
 >;
@@ -270,8 +280,6 @@ export default function getApi(
     }), {
         ...cacheOptions,
         generateKey: (config) => {
-            
-
             // Generate a key using the default method with an instance of the config that
             // does not have the id specified so that it will generate unique keys for each request
             const configWithoutId = omit(config, "id");
@@ -279,7 +287,7 @@ export default function getApi(
 
             // If the config has an id, add the generated key to the cache manager
             if (config.id) {
-                const cm = getApiCacheManager(key);
+                const cm = getApiCacheManager({ key });
                 cm.addId(config.id, generatedKey);
             }
 
@@ -291,10 +299,27 @@ export default function getApi(
     return result;
 }
 
-export function getApiCacheManager(key: string = "default", createNew = false): ApiCacheManager {
+export type GetApiCacheManagerOptions = {
+    key?: string,
+    createNew?: boolean
+};
+
+export function getApiCacheManager({ key = "default", createNew = false }: GetApiCacheManagerOptions = {}): ApiCacheManager {
     if (createNew || !(key in ApiCacheManagerInstances)) {
         ApiCacheManagerInstances[key] = new ApiCacheManager();
     }
 
     return ApiCacheManagerInstances[key];
+}
+
+export async function invalidateSpaceCollectionCaches(apiKey: string = "default"): Promise<void> {
+    const cm = getApiCacheManager({ key: apiKey });
+    const api = getApi({ key: apiKey });
+
+    await cm.removeByTag(api, RouteTags.getAllSpaces);
+    await cm.removeByTag(api, RouteTags.getSpacesByProp);
+    await cm.removeByTag(api, RouteTags.countAllSpaces);
+    await cm.removeByTag(api, RouteTags.countSpacesByProp);
+    await cm.removeByTag(api, RouteTags.searchSpaces);
+    await cm.removeByTag(api, RouteTags.searchSpacesCount);
 }

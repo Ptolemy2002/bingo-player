@@ -10,6 +10,7 @@ import { ButtonProps, FormProps } from "react-bootstrap";
 import { Tooltip } from "react-tooltip";
 import { SpaceCardProps } from "src/components/SpaceCard";
 import { Scoped } from "src/lib/Styles";
+import { StyledButtonProps } from "src/components/StyledButton";
 
 export type SpaceGallerySearchParams = {
     // q = query
@@ -45,6 +46,7 @@ export type SpaceGalleryPageProps = StyledComponentPropsWithCSS<{
     className?: string;
     SearchBar?: ComponentType<SpaceGallerySearchBarProps["functional"]>;
     SearchResults?: ComponentType<SpaceGallerySearchResultsProps["functional"]>;
+    CreateButton?: ComponentType<SpaceCreateButtonProps>;
 }, {}>;
 
 export type SpaceGallerySearchBarProps = StyledComponentPropsWithCSS<Override<FormProps, {
@@ -105,3 +107,5 @@ export type SpaceGalleryPageChangeButtonProps = StyledComponentPropsWithCSS<Over
     loop?: boolean;
     type?: "next" | "prev";
 }>, ButtonStyles>;
+
+export type SpaceCreateButtonProps = Omit<StyledButtonProps["all"], "$variant" | "onClick">;

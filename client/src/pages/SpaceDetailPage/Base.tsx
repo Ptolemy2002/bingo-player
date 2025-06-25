@@ -87,7 +87,7 @@ function SpaceDetailPageBody() {
         if (space === null) return "If you see this, something is wrong.";
 
         if (space.aliases.size > 0) {
-            return "AKA" + listInPlainEnglish(Array.from(space.aliases).map((i) => `"${i}"`), {conjunction: "or"});
+            return "AKA " + listInPlainEnglish(Array.from(space.aliases).map((i) => `"${i}"`), {conjunction: "or"});
         } else {
             return "";
         }

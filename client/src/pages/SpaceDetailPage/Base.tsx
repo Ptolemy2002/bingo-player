@@ -179,6 +179,44 @@ function SpaceDetailPageBody() {
                 >
                     Undo Last Changes
                 </StyledButton>
+
+                <StyledButton
+                    $variant="spaceDuplicate"
+                    onClick={() => _try(async () => {
+                        const newSpace = await space.duplicate();
+                        if (newSpace) {
+                            navigate(`/space/${encodeURIComponent(newSpace.name)}`);
+                        } else {
+                            throw new Error("Failed to duplicate space");
+                        }
+                    })}
+
+                    disabled={!space.allowDuplicate()}
+                >
+                    {
+                        space.hasInProgressRequest("duplicate") ?
+                            "Duplicating..."
+                        :
+                            "Duplicate Space"
+                    }
+                </StyledButton>
+
+                <StyledButton
+                    $variant="spaceDelete"
+                    onClick={() => _try(async () => {
+                        await space.delete();
+                        navigate("/space-gallery", { replace: true  });
+                    })}
+
+                    disabled={!space.allowDelete()}
+                >
+                    {
+                        space.hasInProgressRequest("delete") ?
+                            "Deleting..."
+                        :
+                            "Delete Space"
+                    }
+                </StyledButton>
             </div>
         </div>
     );

@@ -2,7 +2,7 @@ import { useSpaceGallerySearchContext } from "./Context";
 import useSpaceGallerySearchParamState from "./SearchParams";
 import { useCallback, MouseEventHandler, useEffect } from "react";
 import useManualErrorHandling from "@ptolemy2002/react-manual-error-handling";
-import getApi from "src/Api";
+import getApi, { RouteTags } from "src/Api";
 import { useSuspenseController } from "@ptolemy2002/react-suspense";
 import { calcPagination } from "./Other";
 import { omit } from "@ptolemy2002/ts-utils";
@@ -58,7 +58,9 @@ export function useSpaceGallerySearchFunctions() {
         const api = getApi();
         search.hasPressed = true;
         if (cat === "general") {
-            const { data: countData } = await api.get(`/spaces/search/${encodeURIComponent(q)}/count`)
+            const { data: countData } = await api.get(`/spaces/search/${encodeURIComponent(q)}/count`, {
+                id: RouteTags.searchSpacesCount
+            })
                 .catch((e: AxiosError) => {
                     if (e.status === 404) {
                         return { data: { ok: true, count: 0 } };
@@ -80,6 +82,7 @@ export function useSpaceGallerySearchFunctions() {
 
             const { offset, limit } = calcPagination(p, ps, search.totalCount);
             const { data: spacesData } = await api.get(`/spaces/search/${encodeURIComponent(q)}`, {
+                id: RouteTags.searchSpaces,
                 params: {
                     o: offset,
                     l: limit,
@@ -98,6 +101,7 @@ export function useSpaceGallerySearchFunctions() {
             const _sb = sb === "score" || sb === "_score" ? "name" : sb;
 
             const { data: countData } = await api.get(`/spaces/count/by-prop/${cat}/${q}`, {
+                id: RouteTags.countSpacesByProp,
                 params: {
                     as: as ? "y" : "n",
                     cs: cs ? "y" : "n",
@@ -127,6 +131,7 @@ export function useSpaceGallerySearchFunctions() {
             const { offset, limit } = calcPagination(p, ps, search.totalCount);
 
             const { data: spacesData } = await api.get(`/spaces/get/by-prop/${cat}/${q}`, {
+                id: RouteTags.searchSpaces,
                 params: {
                     as: as ? "y" : "n",
                     cs: cs ? "y" : "n",
@@ -165,6 +170,7 @@ export function useSpaceGallerySearchFunctions() {
         const { offset, limit } = calcPagination(p, ps, search.totalCount);
 
         const { data: spacesData } = await api.get("/spaces/get/all", {
+            id: RouteTags.getAllSpaces,
             params: {
                 sb: _sb, so,
                 o: offset,

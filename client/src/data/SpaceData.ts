@@ -2,11 +2,13 @@ import { Override } from "@ptolemy2002/ts-utils";
 import { CleanMongoSpace, CleanSpace, GetSpaceByExactIDResponseBody, GetSpacesByPropResponseBody } from "shared";
 import MongoData, { CompletedMongoData } from "@ptolemy2002/react-mongo-data";
 import { createProxyContext, Dependency, OnChangePropCallback, OnChangeReinitCallback } from "@ptolemy2002/react-proxy-context";
-import getApi from "src/Api";
+import getApi, { getApiCacheManager, RouteTags } from "src/Api";
 
 export type SpaceRequests = {
     pull: (force?: boolean) => Promise<void>;
     push: () => Promise<void>;
+    duplicate: () => Promise<CleanMongoSpace | null>;
+    delete: () => Promise<void>;
 };
 
 export type CompletedSpaceData = Override<SpaceData, CompletedMongoData<
@@ -206,6 +208,72 @@ export default class SpaceData extends MongoData<
         }, {
             undoOnFail: false
         });
+
+        this.defineRequestType("duplicate", async function(this: CompletedSpaceData, ac) {
+            const api = getApi();
+
+            if (!this.id && !this.name) {
+                throw new Error("Space ID or name must be set before duplicating");
+            }
+
+            let data;
+            if (this.id) {
+                data = (await api.post(
+                    `/spaces/duplicate/by-id/${this.id}`,
+                    {},
+                    { signal: ac.signal }
+                )).data;
+            } else {
+                data = (await api.post(
+                    `/spaces/duplicate/by-name/${encodeURIComponent(this.name)}`,
+                    {},
+                    { signal: ac.signal }
+                )).data;
+            }
+
+            // Invalidate various caches to ensure the new space appears in searches
+            const cm = getApiCacheManager();
+            await cm.removeByTag(api, RouteTags.getAllSpaces);
+            await cm.removeByTag(api, RouteTags.getSpacesByProp);
+            await cm.removeByTag(api, RouteTags.countAllSpaces);
+            await cm.removeByTag(api, RouteTags.countSpacesByProp);
+            await cm.removeByTag(api, RouteTags.searchSpaces);
+            await cm.removeByTag(api, RouteTags.searchSpacesCount);
+
+            if (data.ok) {
+                return data.space;
+            }
+
+            return null;
+        }, {
+            undoOnFail: false
+        });
+
+        this.defineRequestType("delete", async function(this: CompletedSpaceData, ac) {
+            const api = getApi();
+
+            if (!this.id && !this.name) {
+                throw new Error("Space ID or name must be set before deleting");
+            }
+
+            if (this.id) {
+                await api.delete(`/spaces/delete/by-id/${this.id}`, { signal: ac.signal });
+            } else {
+                await api.delete(`/spaces/delete/by-name/${encodeURIComponent(this.name)}`, { signal: ac.signal });
+            }
+
+            // Invalidate various caches to ensure the space no longer appears in searches
+            const cm = getApiCacheManager();
+            await cm.removeByTag(api, RouteTags.getAllSpaces);
+            await cm.removeByTag(api, RouteTags.getSpacesByProp);
+            await cm.removeByTag(api, RouteTags.countAllSpaces);
+            await cm.removeByTag(api, RouteTags.countSpacesByProp);
+            await cm.removeByTag(api, RouteTags.searchSpaces);
+            await cm.removeByTag(api, RouteTags.searchSpacesCount);
+        }, {
+            undoOnFail: false
+        });
+
     }
 
     hasNewEdits() {
@@ -227,5 +295,13 @@ export default class SpaceData extends MongoData<
 
     allowUndo() {
         return this.hasNewEdits();
+    }
+
+    allowDuplicate() {
+        return !this.hasInProgressRequest() && !this.hasNewEdits();
+    }
+
+    allowDelete() {
+        return !this.hasInProgressRequest();
     }
 }

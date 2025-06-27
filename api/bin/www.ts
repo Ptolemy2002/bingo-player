@@ -11,7 +11,7 @@ import app from 'app';
 
 const port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
-console.log('Running on port', port);
+console.log('Server Running on port', port);
 
 /**
  * Create HTTP server.

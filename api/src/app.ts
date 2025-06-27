@@ -18,8 +18,10 @@ const env = getEnv();
 
 import indexRouter from 'routes/index';
 import { ZodErrorCodeSchema, ZodHelpLinkSchema } from 'shared';
+import { startSocket } from 'services/socket';
 
 const app = express();
+const socketApp = express();
 
 // Connect to MongoDB
 mongoose.connect(env.mongoConnectionString)
@@ -56,6 +58,8 @@ app.use(cors({
 }));
 
 app.use('/', indexRouter);
+
+startSocket(env.socketPort, socketApp);
 
 app.use(function(err: HttpError, req: Request, res: Response, next: NextFunction) {
     console.error(err.stack);

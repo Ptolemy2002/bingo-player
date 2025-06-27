@@ -48,6 +48,10 @@ export const EnvSchema = z.object({
         .int({message: "PORT must be an integer"})
         .positive({message: "PORT must be positive"})
         .default(8080),
+    SOCKET_PORT: z.coerce.number()
+        .int({message: "SOCKET_PORT must be an integer"})
+        .positive({message: "SOCKET_PORT must be positive"})
+        .default(8081),
     DEV_API_URL: url("http://localhost:8080", false),
     PROD_API_URL: nullableUrl(null),
     DEV_CLIENT_URL: url("http://localhost:3000", false),
@@ -63,6 +67,7 @@ export type EnvType = {
     isDev: boolean,
     isTest: boolean,
     port: number,
+    socketPort: number,
     devApiUrl: string,
     prodApiUrl: string | null,
     devClientUrl: string,
@@ -90,6 +95,7 @@ export default function getEnv(createNew=false): EnvType {
 
         EnvInstance = Object.freeze({
             port: Env.PORT,
+            socketPort: Env.SOCKET_PORT,
             nodeEnv: Env.NODE_ENV,
             isProd: Env.NODE_ENV === "production",
             isDev: Env.NODE_ENV === "development",

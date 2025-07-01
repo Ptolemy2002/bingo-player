@@ -17,6 +17,8 @@ import getEnv from 'env';
 const env = getEnv();
 
 import indexRouter from 'routes/index';
+// Registers all socket consumers
+import "socket-consumers";
 import { ZodErrorCodeSchema, ZodHelpLinkSchema } from 'shared';
 import { startSocket } from 'services/socket';
 
@@ -58,6 +60,14 @@ app.use(cors({
 }));
 
 app.use('/', indexRouter);
+
+socketApp.get('/', function(_, res) {
+    res.send("Root route for Socket Server. For docs, go <a href='/docs'>here</a>.");
+});
+
+socketApp.get("/docs", (_, res: Response) => {
+    res.sendFile("views/socketDocs.html", { root: __dirname });
+});
 
 startSocket(env.socketPort, socketApp);
 

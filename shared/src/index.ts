@@ -5,5 +5,6 @@ export * from "./Swagger";
 export * from "./Utilities";
 export * from "./Space";
 export * from "./Api";
+export * from "./Socket";
 
 export const swaggerGenerator = new OpenApiGeneratorV31(swaggerRegistry.definitions);

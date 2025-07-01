@@ -16,7 +16,7 @@ router.get('/', function(req, res, next) {
             schema: "Root route. For docs, go <a href='/api/v1/docs'>here</a>."
         }
     */
-    res.send("Root route. For docs, go <a href='/api/v1/docs'>here</a>.");
+    res.send("Root route for Express Server. For docs, go <a href='/api/v1/docs'>here</a>.");
 });
 
 router.get("/ping", (req, res) => {

@@ -2,11 +2,15 @@ import { Socket, Server as SocketServer } from 'socket.io';
 import { createServer, Server as HttpServer } from 'http';
 import { Express } from 'express';
 import getEnv from 'env';
+import { SocketClientToServerEvents, SocketServerToClientEvents } from 'shared';
 
-export type SocketConsumer = (socket: Socket, io: SocketServer) => void;
+export type TypedSocket = Socket<SocketClientToServerEvents, SocketServerToClientEvents>;
+export type TypedSocketServer = SocketServer<SocketClientToServerEvents, SocketServerToClientEvents>;
+
+export type SocketConsumer = (socket: TypedSocket, io: TypedSocketServer) => void;
 
 let server: HttpServer | null = null;
-let io: SocketServer | null = null;
+let io: TypedSocketServer | null = null;
 let socketConsumers: Record<string, SocketConsumer> = {};
 
 export function initServer(app: Express) {
@@ -17,7 +21,10 @@ export function initServer(app: Express) {
 export function initIO(app: Express) {
     if (!server) server = initServer(app);
 
-    io = new SocketServer(server, {
+    io = new SocketServer<
+        SocketClientToServerEvents,
+        SocketServerToClientEvents
+    >(server, {
         cors: {
             origin: getEnv().clientURL,
             methods: ["GET", "POST"],

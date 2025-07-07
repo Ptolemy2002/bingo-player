@@ -46,6 +46,8 @@ export const EnvSchema = z.object({
     VITE_PROD_API_URL: nullableUrl(null),
     VITE_DEV_CLIENT_URL: url("http://localhost:3000"),
     VITE_PROD_CLIENT_URL: nullableUrl(null),
+    VITE_DEV_SOCKET_URL: url("http://localhost:8081", false),
+    VITE_PROD_SOCKET_URL: nullableUrl(null),
 
     // Additional environment variables here
 });
@@ -61,6 +63,9 @@ export type EnvType = {
     prodClientUrl: string | null,
     apiURL: string,
     clientURL: string,
+    devSocketUrl: string,
+    prodSocketUrl: string | null,
+    socketUrl: string,
 
     // Additional environment variables here
 };
@@ -73,6 +78,7 @@ export default function getEnv(createNew=false): EnvType {
         if (Env.NODE_ENV === "production") {
             if (!Env.VITE_PROD_API_URL) throw new Error("PROD_API_URL is required in production environment");
             if (!Env.VITE_PROD_CLIENT_URL) throw new Error("PROD_CLIENT_URL is required in production environment");
+            if (!Env.VITE_PROD_SOCKET_URL) throw new Error("PROD_SOCKET_URL is required in production environment");
         }
 
         EnvInstance = Object.freeze({
@@ -86,6 +92,9 @@ export default function getEnv(createNew=false): EnvType {
             prodClientUrl: Env.VITE_PROD_CLIENT_URL,
             apiURL: Env.NODE_ENV === "production" ? Env.VITE_PROD_API_URL! : Env.VITE_DEV_API_URL,
             clientURL: Env.NODE_ENV === "production" ? Env.VITE_PROD_CLIENT_URL! : Env.VITE_DEV_CLIENT_URL,
+            devSocketUrl: Env.VITE_DEV_SOCKET_URL,
+            prodSocketUrl: Env.VITE_PROD_SOCKET_URL,
+            socketUrl: Env.NODE_ENV === "production" ? Env.VITE_PROD_SOCKET_URL! : Env.VITE_DEV_SOCKET_URL,
         });
     }
 

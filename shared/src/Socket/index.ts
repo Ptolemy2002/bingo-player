@@ -11,7 +11,7 @@ export type SocketEvent<A=undefined, R=undefined> = (...args:
 ) => void;
 
 export type SocketClientToServerEvents = {
-    ping: SocketEvent<SocketPingArgs, SocketPingResponse>;
+    bingoPing: SocketEvent<SocketPingArgs, SocketPingResponse>;
 };
 
 export type SocketServerToClientEvents = {};

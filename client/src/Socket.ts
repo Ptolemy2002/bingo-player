@@ -1,7 +1,8 @@
 import { io, ManagerOptions, SocketOptions as _SocketOptions, Socket as _Socket } from "socket.io-client";
 import getEnv from "./Env";
+import { SocketClientToServerEvents, SocketServerToClientEvents } from "shared";
 
-export type Socket = _Socket & { offDebug: () => void, name: string };
+export type Socket = _Socket<SocketServerToClientEvents, SocketClientToServerEvents> & { offDebug: () => void, name: string };
 export type SocketOptions = Partial<ManagerOptions & _SocketOptions>;
 
 export const SocketInstances: Record<string, Socket> = {};
@@ -54,29 +55,35 @@ export default function getSocket(
             console.debug(`${socketName} disconnected:`, result.id);
         };
 
-        const onError = (error: unknown) => {
-            console.error(`${socketName} error:`, error);
-        };
-
         const onAny = (event: string, ...args: unknown[]) => {
             console.debug(`${socketName} event: ${event}`, ...args);
         };
 
         result.on("connect", onConnect);
         result.on("disconnect", onDisconnect);
-        result.on("error", onError);
         result.onAny(onAny);
 
         offDebug = () => {
             console.debug(`Turning off debug for ${socketName}...`);
             result.off("connect", onConnect);
             result.off("disconnect", onDisconnect);
-            result.off("error", onError);
             result.offAny(onAny);
         };
     }
 
     result.offDebug = offDebug;
     SocketInstances[key] = result;
+
+    if (debug) {
+        console.debug(`${socketName} is ready. Emitting ping...`);
+        result.emit("bingoPing", (res) => {
+            if (res === "pong") {
+                console.debug(`${socketName} pong received with correct response.`);
+            } else { // @eslint-disable-line no-console
+                console.error(`${socketName} pong received, but incorrect response:`, res);
+            }
+        });
+    }
+
     return result;
 }

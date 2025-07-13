@@ -15,7 +15,7 @@ import { AxiosError } from 'axios';
 import NotFoundPage from '../NotFoundPage';
 import StyledButton from 'src/components/StyledButton';
 
-function SpaceDetailPageBase({
+export function SpaceDetailPageBase({
     className
 }: SpaceDetailPageProps["functional"]) {
     const [space, setSpace] = SpaceData.useContext();
@@ -78,7 +78,7 @@ function SpaceDetailPageBase({
     );
 }
 
-function SpaceDetailPageBody() {
+export function SpaceDetailPageBody() {
     const [space] = SpaceData.useContext();
     const navigate = useNavigate();
     const { _try } = useManualErrorHandling();

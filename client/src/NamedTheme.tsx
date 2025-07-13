@@ -349,7 +349,7 @@ export function interpretTheme(theme: string | number) {
 export type NamedThemeProviderProps = Omit<ThemeProviderProps, "theme"> & {initial?: string | number};
 export function NamedThemeProvider({initial="detect", ...props}: NamedThemeProviderProps) {
     const [_currentTheme, _setCurrentTheme] = usePersistentState<string>(
-        "theme", verifyTheme(initial)
+        "bingoPlayerApp.theme", verifyTheme(initial)
     );
 
     const currentTheme = interpretTheme(_currentTheme);

@@ -1,6 +1,6 @@
 import { asyncErrorHandler } from '@ptolemy2002/express-utils';
 import { Router } from 'express';
-import RouteHandler, { RouteHandlerRequestData } from 'lib/RouteHandler';
+import RouteHandler, { ExpressRouteHandlerRequestData } from 'lib/ExpressRouteHandler';
 import SpaceModel from 'models/SpaceModel';
 import {
     ZodListSpacePropByPropURLParamsSchema,
@@ -83,7 +83,7 @@ export class ListSpacePropByPropHandler extends RouteHandler<ListSpacePropByProp
         super(1, '/#/Spaces/get_api_v1_spaces_get_all_list__prop_');
     }
 
-    async generateResponse(req: RouteHandlerRequestData) {
+    async generateResponse(req: ExpressRouteHandlerRequestData) {
         const {
             success: paramsSuccess,
             error: paramsError,

@@ -1,13 +1,13 @@
 import { asyncErrorHandler } from "@ptolemy2002/express-utils";
 import { Router } from "express";
 import { CountSpaces200ResponseBody } from "shared";
-import RouteHandler from "lib/RouteHandler";
 import SpaceAggregationBuilder from "../utils/SpaceAggregationBuilder";
 import SpaceModel from "models/SpaceModel";
+import ExpressRouteHandler from "lib/ExpressRouteHandler";
 
 const router = Router();
 
-export class CountAllSpacesHandler extends RouteHandler<CountSpaces200ResponseBody> {
+export class CountAllSpacesHandler extends ExpressRouteHandler<CountSpaces200ResponseBody> {
     /*
         #swagger.start
         #swagger.tags = ['Spaces', 'Count']

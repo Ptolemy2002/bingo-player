@@ -56,6 +56,9 @@ export const EnvSchema = z.object({
     PROD_API_URL: nullableUrl(null),
     DEV_CLIENT_URL: url("http://localhost:3000", false),
     PROD_CLIENT_URL: nullableUrl(null),
+    PROD_SOCKET_URL: nullableUrl(null),
+    DEV_SOCKET_URL: url("http://localhost:8081", false),
+
     MONGO_CONNECTION_STRING: z.string().url(),  
     
     // Additional environment variables here
@@ -72,9 +75,13 @@ export type EnvType = {
     prodApiUrl: string | null,
     devClientUrl: string,
     prodClientUrl: string | null,
+    devSocketUrl: string,
+    prodSocketUrl: string | null,
     apiURL: string,
     clientURL: string,
-    getDocsURL: (version: number) => string,
+    socketURL: string,
+    getExpressDocsURL: (version: number) => string,
+    socketDocsURL: string,
     mongoConnectionString: string,
 
     // Additional environment variables here
@@ -88,10 +95,12 @@ export default function getEnv(createNew=false): EnvType {
         if (Env.NODE_ENV === "production") {
             if (!Env.PROD_API_URL) throw new Error("PROD_API_URL is required in production environment");
             if (!Env.PROD_CLIENT_URL) throw new Error("PROD_CLIENT_URL is required in production environment");
+            if (!Env.PROD_SOCKET_URL) throw new Error("PROD_SOCKET_URL is required in production environment");
         }
 
         const apiURL = Env.NODE_ENV === "production" ? Env.PROD_API_URL! : Env.DEV_API_URL;
         const clientURL = Env.NODE_ENV === "production" ? Env.PROD_CLIENT_URL! : Env.DEV_CLIENT_URL;
+        const socketURL = Env.NODE_ENV === "production" ? Env.PROD_SOCKET_URL! : Env.DEV_SOCKET_URL;
 
         EnvInstance = Object.freeze({
             port: Env.PORT,
@@ -104,9 +113,13 @@ export default function getEnv(createNew=false): EnvType {
             prodApiUrl: Env.PROD_API_URL,
             devClientUrl: Env.DEV_CLIENT_URL,
             prodClientUrl: Env.PROD_CLIENT_URL,
+            devSocketUrl: Env.DEV_SOCKET_URL,
+            prodSocketUrl: Env.PROD_SOCKET_URL,
             apiURL,
             clientURL,
-            getDocsURL: (v) => (/\/api\/v\d+$/.test(apiURL) ? stripWords(apiURL, "/", 0, 2) : apiURL) + `/api/v${v}/docs`,
+            socketURL,
+            getExpressDocsURL: (v) => (/\/api\/v\d+$/.test(apiURL) ? stripWords(apiURL, "/", 0, 2) : apiURL) + `/api/v${v}/docs`,
+            socketDocsURL: socketURL + "/docs",
             mongoConnectionString: Env.MONGO_CONNECTION_STRING
         });
     }

@@ -77,7 +77,7 @@ app.use(function(err: HttpError, req: Request, res: Response, next: NextFunction
     let code = err.code ?? "UNKNOWN";
     const { success: codeSuccess } = ZodErrorCodeSchema.safeParse(code);
 
-    let help = err.help ?? getEnv().getDocsURL(1);
+    let help = err.help ?? getEnv().getExpressDocsURL(1);
     const { success: helpSuccess } = ZodHelpLinkSchema.safeParse(help);
 
     if (!codeSuccess) {
@@ -85,7 +85,7 @@ app.use(function(err: HttpError, req: Request, res: Response, next: NextFunction
     }
 
     if (!helpSuccess) {
-        help = getEnv().getDocsURL(1);
+        help = getEnv().getExpressDocsURL(1);
     }
 
     res.status(err.status ?? 500);

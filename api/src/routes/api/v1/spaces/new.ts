@@ -1,6 +1,6 @@
 import { asyncErrorHandler } from "@ptolemy2002/express-utils";
 import { Router } from "express";
-import RouteHandler, { RouteHandlerRequestData } from "lib/RouteHandler";
+import RouteHandler, { ExpressRouteHandlerRequestData } from "lib/ExpressRouteHandler";
 import SpaceModel from "models/SpaceModel";
 import { NewSpace200ResponseBody, ZodNewSpaceRequestBodySchema } from "shared";
 
@@ -32,7 +32,7 @@ export class NewSpaceHandler extends RouteHandler<NewSpace200ResponseBody> {
         super(1, '/#/Spaces/post_api_v1_spaces_new');
     }
 
-    async generateResponse(req: RouteHandlerRequestData) {
+    async generateResponse(req: ExpressRouteHandlerRequestData) {
         const { success: bodySuccess, error: bodyError, data: body } = ZodNewSpaceRequestBodySchema.safeParse(req.body);
 
         if (!bodySuccess) {

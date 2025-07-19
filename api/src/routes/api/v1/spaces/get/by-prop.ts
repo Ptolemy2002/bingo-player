@@ -5,7 +5,7 @@ import {
     GetSpacesByProp200ResponseBody
 } from 'shared';
 import SpaceModel from 'models/SpaceModel';
-import RouteHandler, { RouteHandlerRequestData } from 'lib/RouteHandler';
+import RouteHandler, { ExpressRouteHandlerRequestData } from 'lib/ExpressRouteHandler';
 import SpaceAggregationBuilder from '../utils/SpaceAggregationBuilder';
 import { asyncErrorHandler } from '@ptolemy2002/express-utils';
 
@@ -76,7 +76,7 @@ export class GetSpacesByPropHandler extends RouteHandler<GetSpacesByProp200Respo
         super(1, '/#/Spaces/get_api_v1_spaces_get_by_prop__prop___query_');
     }
 
-    async generateResponse(req: RouteHandlerRequestData) {
+    async generateResponse(req: ExpressRouteHandlerRequestData) {
         const { success: paramsSuccess, error: paramsError, data: params } = ZodGetSpacesByPropURLParamsSchema.safeParse(req.params);
 
         if (!paramsSuccess) {

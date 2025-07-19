@@ -77,9 +77,9 @@ export default function getSocket(
     if (debug) {
         console.debug(`${socketName} is ready. Emitting ping...`);
         result.emit("bingoPing", (res) => {
-            if (res === "pong") {
+            if (res.ok && res.message === "pong") {
                 console.debug(`${socketName} pong received with correct response.`);
-            } else { // @eslint-disable-line no-console
+            } else {
                 console.error(`${socketName} pong received, but incorrect response:`, res);
             }
         });

@@ -1,5 +1,6 @@
 import { ZodMongoSpaceSchema } from 'src/Space';
 import { z } from 'zod';
+import { registerBingoSchema } from 'src/Bingo/Registry';
 
 export const BingoSpaceSetExample = [
     {
@@ -15,15 +16,23 @@ export const BingoSpaceSetExample = [
     }
 ] as const;
 
+const BingoSpaceSetIsMarkedSchema = z.boolean();
+registerBingoSchema(BingoSpaceSetIsMarkedSchema, {
+    id: "BingoSpaceSet.isMarked",
+    description: "Indicates if the space is marked",
+    example: BingoSpaceSetExample[0].isMarked
+});
+
+const BingoSpaceSetSpaceDataSchema = ZodMongoSpaceSchema;
+registerBingoSchema(BingoSpaceSetSpaceDataSchema, {
+    id: "BingoSpaceSet.spaceData",
+    description: "Data for the bingo space, including its ID and other properties. Matched the MongoDB schema for spaces."
+});
+
 export const ZodBingoSpaceSetSchema = z.array(
     z.object({
-        isMarked: z.boolean().meta({
-            description: "Indicates if the space is marked",
-            example: BingoSpaceSetExample[0].isMarked
-        }),
-        spaceData: ZodMongoSpaceSchema.meta({
-            description: "Data for the bingo space, including its ID and other properties. Matched the MongoDB schema for spaces."
-        })
+        isMarked: BingoSpaceSetIsMarkedSchema,
+        spaceData: BingoSpaceSetSpaceDataSchema
     })
 ).superRefine((spaceSet, ctx) => {
     const seenIds: string[] = [];
@@ -38,7 +47,9 @@ export const ZodBingoSpaceSetSchema = z.array(
             seenIds.push(entry.spaceData._id);
         }
     }
-}).meta({
+});
+
+registerBingoSchema(ZodBingoSpaceSetSchema, {
     id: "BingoSpaceSet",
     description: "Set of bingo spaces, each with a marked status and space data",
     example: BingoSpaceSetExample

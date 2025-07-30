@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { registerBingoSchema } from "src/Bingo/Registry";
 import { ZodBingoPlayerRoleSchema } from "./PlayerRole";
 import { ZodSocketIDSchema } from "src/Socket";
 
@@ -34,7 +35,9 @@ export const ZodBingoPlayerSetSchema = z.array(ZodBingoPlayerSchema).superRefine
             seenNames.push(player.name);
         }
     }
-}).meta({
+});
+
+registerBingoSchema(ZodBingoPlayerSetSchema, {
     id: "BingoPlayerSet",
     description: "Set of Bingo players, ensuring unique names",
     examples: BingoPlayerExamples

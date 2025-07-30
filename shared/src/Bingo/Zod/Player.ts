@@ -2,6 +2,19 @@ import { z } from "zod";
 import { ZodBingoPlayerRoleSchema } from "./PlayerRole";
 import { ZodSocketIDSchema } from "src/Socket";
 
+export const BingoPlayerExamples = [
+    {
+        name: "Alice",
+        role: "host",
+        socketId: "socket123"
+    },
+    {
+        name: "Bob",
+        role: "player",
+        socketId: "socket456"
+    }
+] as const;
+
 export const ZodBingoPlayerSchema = z.object({
     name: z.string().min(1, "Name must have at least 1 character"),
     role: ZodBingoPlayerRoleSchema,
@@ -23,7 +36,8 @@ export const ZodBingoPlayerSetSchema = z.array(ZodBingoPlayerSchema).superRefine
     }
 }).meta({
     id: "BingoPlayerSet",
-    description: "Set of Bingo players, ensuring unique names"
+    description: "Set of Bingo players, ensuring unique names",
+    examples: BingoPlayerExamples
 });
 
 export type BingoPlayer = z.infer<typeof ZodBingoPlayerSchema>;

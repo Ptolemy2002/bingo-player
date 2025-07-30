@@ -1,5 +1,6 @@
 import { SocketPingResponse } from ".";
 import { SocketPingArgs } from ".";
+import { GameStateArgs, GameStateResponse } from "./Zod";
 
 export * from "./Zod";
 
@@ -12,6 +13,7 @@ export type SocketEvent<A=undefined, R=undefined> = (...args:
 
 export type SocketClientToServerEvents = {
     bingoPing: SocketEvent<SocketPingArgs, SocketPingResponse>;
+    gameState: SocketEvent<GameStateArgs, GameStateResponse>;
 };
 
 export type SocketServerToClientEvents = {};

@@ -1,10 +1,25 @@
 import { ZodMongoSpaceSchema } from 'src/Space';
 import { z } from 'zod';
 
+export const BingoSpaceSetExample = [
+    {
+        isMarked: false,
+        spaceData: {
+            _id: "abc123",
+            name: "My Space",
+            aliases: ["Alias 1", "Alias 2"],
+            description: "A free space in the center of the bingo card",
+            examples: ["Example 1", "Example 2"],
+            tags: ["tag-1", "in:collection-1"]
+        }
+    }
+] as const;
+
 export const ZodBingoSpaceSetSchema = z.array(
     z.object({
         isMarked: z.boolean().meta({
-            description: "Indicates if the space is marked"
+            description: "Indicates if the space is marked",
+            example: BingoSpaceSetExample[0].isMarked
         }),
         spaceData: ZodMongoSpaceSchema.meta({
             description: "Data for the bingo space, including its ID and other properties. Matched the MongoDB schema for spaces."
@@ -25,7 +40,8 @@ export const ZodBingoSpaceSetSchema = z.array(
     }
 }).meta({
     id: "BingoSpaceSet",
-    description: "Set of bingo spaces, each with a marked status and space data"
+    description: "Set of bingo spaces, each with a marked status and space data",
+    example: BingoSpaceSetExample
 });
 
 export type BingoSpaceSet = z.infer<typeof ZodBingoSpaceSetSchema>;

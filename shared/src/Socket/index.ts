@@ -1,9 +1,7 @@
 import { SocketPingResponse } from ".";
 import { SocketPingArgs } from ".";
 
-export * from "./Zod/ClientToServer";
-
-type NoDistribute<T> = [T] extends [any] ? T : never;
+export * from "./Zod";
 
 export type SocketEvent<A=undefined, R=undefined> = (...args: 
     [A] extends [undefined] ?

@@ -57,8 +57,8 @@ export const ZodCleanSpaceSchema = swaggerRegistry.register(
         if (!refineNoAliasMatchingName(name, aliases)) {
             const index = findAliasMatchingNameIndex(name, aliases);
             ctx.addIssue({
-                code: z.ZodIssueCode.custom,
-                message: "No alias should match the name.",
+                code: "custom",
+                error: "No alias should match the name.",
                 path: ["aliases", index ?? 0]
             });
         }
@@ -67,22 +67,22 @@ export const ZodCleanSpaceSchema = swaggerRegistry.register(
         description: "A space for a Bingo Board."
     })
 );
-export const ZodCleanSpaceShape = ZodCleanSpaceSchema._def.schema.shape;
+export const ZodCleanSpaceShape = ZodCleanSpaceSchema.shape;
 
 export const ZodSpaceSchema = swaggerRegistry.register(
     "Space",
-    ZodCleanSpaceSchema._def.schema.merge(z.object({
+    ZodCleanSpaceSchema.extend(z.object({
         description: ZodCleanSpaceShape.description.default(null),
         examples: ZodCleanSpaceShape.examples.default(new Set()),
         aliases: ZodCleanSpaceShape.aliases.default(new Set()),
         tags: ZodCleanSpaceShape.tags.default(new Set())
-    }))
+    }).shape)
     .superRefine(({ name, aliases }, ctx) => {
         if (!refineNoAliasMatchingName(name, aliases)) {
             const index = findAliasMatchingNameIndex(name, aliases);
             ctx.addIssue({
-                code: z.ZodIssueCode.custom,
-                message: "No alias should match the name.",
+                code: "custom",
+                error: "No alias should match the name.",
                 path: ["aliases", index ?? 0]
             });
         }
@@ -91,7 +91,7 @@ export const ZodSpaceSchema = swaggerRegistry.register(
         description: "CleanSpace, but with some fields optional and provided sensible defaults."
     })
 );
-export const ZodSpaceShape = ZodSpaceSchema._def.schema.shape;
+export const ZodSpaceShape = ZodSpaceSchema.shape;
 
 
 export type CleanSpace = z.infer<typeof ZodCleanSpaceSchema>;

@@ -1,8 +1,6 @@
-import getEnv, { EnvType } from 'env';
 import { ErrorCode, ErrorResponse, ErrorResponse400, ErrorResponse404, ErrorResponse501, ErrorResponseWithCode, SuccessResponseBase } from 'shared';
 import { ZodError } from 'zod';
 import { interpretZodError, InterpretZodErrorOptions } from '@ptolemy2002/regex-utils';
-import { Response } from 'express';
 
 export type GeneratedResonse<SuccessResponse extends SuccessResponseBase> = {
     status: number;

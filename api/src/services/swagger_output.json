@@ -2081,6 +2081,7 @@
           "$ref": "#/components/schemas/limit"
         },
         "required": false,
+        "description": "[Query Parameter] The maximum number of resources to return. Must be a positive integer and non-zero. If not provided, the server will return all found resources.",
         "name": "limit",
         "in": "query"
       },
@@ -2089,6 +2090,7 @@
           "$ref": "#/components/schemas/l"
         },
         "required": false,
+        "description": "[Query Parameter] Shorthand for limit.",
         "name": "l",
         "in": "query"
       },
@@ -2097,6 +2099,7 @@
           "$ref": "#/components/schemas/offset"
         },
         "required": false,
+        "description": "[Query Parameter] The number of spaces to skip before returning results. Must be a non-negative integer. If not provided, it will be considered 0.",
         "name": "offset",
         "in": "query"
       },
@@ -2105,6 +2108,7 @@
           "$ref": "#/components/schemas/o"
         },
         "required": false,
+        "description": "[Query Parameter] Shorthand for offset.",
         "name": "o",
         "in": "query"
       },
@@ -2113,6 +2117,7 @@
           "$ref": "#/components/schemas/caseSensitive"
         },
         "required": false,
+        "description": "[Query Parameter] Whether to match the query case-sensitively. False if not provided.",
         "name": "caseSensitive",
         "in": "query"
       },
@@ -2121,6 +2126,7 @@
           "$ref": "#/components/schemas/cs"
         },
         "required": false,
+        "description": "[Query Parameter] Shorthand for caseSensitive.",
         "name": "cs",
         "in": "query"
       },
@@ -2129,6 +2135,7 @@
           "$ref": "#/components/schemas/accentSensitive"
         },
         "required": false,
+        "description": "[Query Parameter] Whether to match the query accent-sensitively. False if not provided.",
         "name": "accentSensitive",
         "in": "query"
       },
@@ -2137,6 +2144,7 @@
           "$ref": "#/components/schemas/as"
         },
         "required": false,
+        "description": "[Query Parameter] Shorthand for accentSensitive.",
         "name": "as",
         "in": "query"
       },
@@ -2145,6 +2153,7 @@
           "$ref": "#/components/schemas/matchWhole"
         },
         "required": false,
+        "description": "[Query Parameter] Whether to match the query as the whole string. False if not provided.",
         "name": "matchWhole",
         "in": "query"
       },
@@ -2153,6 +2162,7 @@
           "$ref": "#/components/schemas/mw"
         },
         "required": false,
+        "description": "[Query Parameter] Shorthand for matchWhole.",
         "name": "mw",
         "in": "query"
       },
@@ -2161,6 +2171,7 @@
           "$ref": "#/components/schemas/sortOrder"
         },
         "required": false,
+        "description": "[Query Parameter] The order to sort the field by. Ascending if not provided.",
         "name": "sortOrder",
         "in": "query"
       },
@@ -2169,6 +2180,7 @@
           "$ref": "#/components/schemas/so"
         },
         "required": false,
+        "description": "[Query Parameter] Shorthand for sortOrder.",
         "name": "so",
         "in": "query"
       },
@@ -2177,6 +2189,7 @@
           "$ref": "#/components/schemas/sortOrderDescDefault"
         },
         "required": false,
+        "description": "[Query Parameter] The order to sort the field by. Descending by default.",
         "name": "sortOrder",
         "in": "query"
       },
@@ -2185,6 +2198,7 @@
           "$ref": "#/components/schemas/soDescDefault"
         },
         "required": false,
+        "description": "[Query Parameter] Shorthand for sortOrder.",
         "name": "so",
         "in": "query"
       },
@@ -2193,6 +2207,7 @@
           "$ref": "#/components/schemas/sortBy"
         },
         "required": false,
+        "description": "[Query Parameter] The field to sort by. 'id' if not provided.",
         "name": "sortBy",
         "in": "query"
       },
@@ -2201,6 +2216,7 @@
           "$ref": "#/components/schemas/sb"
         },
         "required": false,
+        "description": "[Query Parameter] Shorthand for sortBy.",
         "name": "sb",
         "in": "query"
       },
@@ -2209,6 +2225,7 @@
           "$ref": "#/components/schemas/sortByWithScore"
         },
         "required": false,
+        "description": "[Query Parameter] The field to sort by. 'id' if not provided.",
         "name": "sortBy",
         "in": "query"
       },
@@ -2217,6 +2234,7 @@
           "$ref": "#/components/schemas/sbWithScore"
         },
         "required": false,
+        "description": "[Query Parameter] Shorthand for sortBy.",
         "name": "sb",
         "in": "query"
       },
@@ -2232,6 +2250,7 @@
           ]
         },
         "required": false,
+        "description": "The field to sort by.",
         "name": "sortBy",
         "in": "query"
       },
@@ -2240,6 +2259,7 @@
           "$ref": "#/components/schemas/sbSearchListProp"
         },
         "required": false,
+        "description": "[Query Parameter] Shorthand for searchListPropSortBy.",
         "name": "sb",
         "in": "query"
       },
@@ -2248,6 +2268,7 @@
           "$ref": "#/components/schemas/invert"
         },
         "required": false,
+        "description": "[Query Parameter] Whether to invert the match. False if not provided.",
         "name": "invert",
         "in": "query"
       },
@@ -2256,6 +2277,7 @@
           "$ref": "#/components/schemas/i"
         },
         "required": false,
+        "description": "[Query Parameter] Shorthand for invert.",
         "name": "i",
         "in": "query"
       }
@@ -2306,24 +2328,24 @@
           },
           "examples": {
             "type": "array",
-            "description": "Examples for what could be considered applicable to the space. NOTE: Internally, this is a set, but it is represented as an array here for compatibility reasons.",
             "items": {
               "$ref": "#/components/schemas/SpaceExample"
-            }
+            },
+            "description": "Examples for what could be considered applicable to the space. NOTE: Internally, this is a set, but it is represented as an array here for compatibility reasons."
           },
           "aliases": {
             "type": "array",
-            "description": "Aliases for the space. NOTE: Internally, this is a set, but it is represented as an array here for compatibility reasons.",
             "items": {
               "$ref": "#/components/schemas/SpaceName"
-            }
+            },
+            "description": "Aliases for the space. NOTE: Internally, this is a set, but it is represented as an array here for compatibility reasons."
           },
           "tags": {
             "type": "array",
-            "description": "Tags for the space. NOTE: Internally, this is a set, but it is represented as an array here for compatibility reasons.",
             "items": {
               "$ref": "#/components/schemas/SpaceTag"
-            }
+            },
+            "description": "Tags for the space. NOTE: Internally, this is a set, but it is represented as an array here for compatibility reasons."
           }
         },
         "required": [
@@ -2357,24 +2379,24 @@
           },
           "examples": {
             "type": "array",
-            "description": "Examples for what could be considered applicable to the space. NOTE: Internally, this is a set, but it is represented as an array here for compatibility reasons.",
             "items": {
               "$ref": "#/components/schemas/SpaceExample"
-            }
+            },
+            "description": "Examples for what could be considered applicable to the space. NOTE: Internally, this is a set, but it is represented as an array here for compatibility reasons."
           },
           "aliases": {
             "type": "array",
-            "description": "Aliases for the space. NOTE: Internally, this is a set, but it is represented as an array here for compatibility reasons.",
             "items": {
               "$ref": "#/components/schemas/SpaceName"
-            }
+            },
+            "description": "Aliases for the space. NOTE: Internally, this is a set, but it is represented as an array here for compatibility reasons."
           },
           "tags": {
             "type": "array",
-            "description": "Tags for the space. NOTE: Internally, this is a set, but it is represented as an array here for compatibility reasons.",
             "items": {
               "$ref": "#/components/schemas/SpaceTag"
-            }
+            },
+            "description": "Tags for the space. NOTE: Internally, this is a set, but it is represented as an array here for compatibility reasons."
           }
         },
         "required": [
@@ -2783,13 +2805,13 @@
       "SortOrder": {
         "type": "string",
         "enum": [
+          "1",
           "asc",
           "ascending",
           "desc",
           "descending",
           "random",
           "rand",
-          "1",
           "-1"
         ],
         "description": "The order to sort by.",
@@ -2897,13 +2919,13 @@
       "sortOrder": {
         "type": "string",
         "enum": [
+          "1",
           "asc",
           "ascending",
           "desc",
           "descending",
           "random",
           "rand",
-          "1",
           "-1"
         ],
         "default": "asc",
@@ -2913,13 +2935,13 @@
       "so": {
         "type": "string",
         "enum": [
+          "1",
           "asc",
           "ascending",
           "desc",
           "descending",
           "random",
           "rand",
-          "1",
           "-1"
         ],
         "default": "asc",
@@ -2975,6 +2997,8 @@
       "caseSensitive": {
         "type": "string",
         "enum": [
+          "0",
+          "1",
           "true",
           "false",
           "t",
@@ -2983,8 +3007,6 @@
           "no",
           "y",
           "n",
-          "1",
-          "0",
           "on",
           "off"
         ],
@@ -2994,6 +3016,8 @@
       "cs": {
         "type": "string",
         "enum": [
+          "0",
+          "1",
           "true",
           "false",
           "t",
@@ -3002,8 +3026,6 @@
           "no",
           "y",
           "n",
-          "1",
-          "0",
           "on",
           "off"
         ],
@@ -3013,6 +3035,8 @@
       "accentSensitive": {
         "type": "string",
         "enum": [
+          "0",
+          "1",
           "true",
           "false",
           "t",
@@ -3021,8 +3045,6 @@
           "no",
           "y",
           "n",
-          "1",
-          "0",
           "on",
           "off"
         ],
@@ -3032,6 +3054,8 @@
       "as": {
         "type": "string",
         "enum": [
+          "0",
+          "1",
           "true",
           "false",
           "t",
@@ -3040,8 +3064,6 @@
           "no",
           "y",
           "n",
-          "1",
-          "0",
           "on",
           "off"
         ],
@@ -3051,6 +3073,8 @@
       "matchWhole": {
         "type": "string",
         "enum": [
+          "0",
+          "1",
           "true",
           "false",
           "t",
@@ -3059,8 +3083,6 @@
           "no",
           "y",
           "n",
-          "1",
-          "0",
           "on",
           "off"
         ],
@@ -3070,6 +3092,8 @@
       "mw": {
         "type": "string",
         "enum": [
+          "0",
+          "1",
           "true",
           "false",
           "t",
@@ -3078,8 +3102,6 @@
           "no",
           "y",
           "n",
-          "1",
-          "0",
           "on",
           "off"
         ],
@@ -3089,6 +3111,8 @@
       "invert": {
         "type": "string",
         "enum": [
+          "0",
+          "1",
           "true",
           "false",
           "t",
@@ -3097,8 +3121,6 @@
           "no",
           "y",
           "n",
-          "1",
-          "0",
           "on",
           "off"
         ],
@@ -3108,6 +3130,8 @@
       "i": {
         "type": "string",
         "enum": [
+          "0",
+          "1",
           "true",
           "false",
           "t",
@@ -3116,8 +3140,6 @@
           "no",
           "y",
           "n",
-          "1",
-          "0",
           "on",
           "off"
         ],
@@ -3434,13 +3456,13 @@
       "sortOrderDescDefault": {
         "type": "string",
         "enum": [
+          "1",
           "asc",
           "ascending",
           "desc",
           "descending",
           "random",
           "rand",
-          "1",
           "-1"
         ],
         "default": "desc",
@@ -3450,13 +3472,13 @@
       "soDescDefault": {
         "type": "string",
         "enum": [
+          "1",
           "asc",
           "ascending",
           "desc",
           "descending",
           "random",
           "rand",
-          "1",
           "-1"
         ],
         "default": "desc",

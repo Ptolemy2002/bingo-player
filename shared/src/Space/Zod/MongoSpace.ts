@@ -17,11 +17,11 @@ const Zod_id = z.object({
     _id: ZodSpaceIDSchema,
     examples: z.array(ZodSpaceExampleSchema)
         .refine(validateNotRepeat, {
-            message: "Examples must not repeat."
+            error: "Examples must not repeat."
         }),
     aliases: z.array(ZodSpaceNameSchema)
         .refine(validateNotRepeat, {
-            message: "Aliases must not repeat."
+            error: "Aliases must not repeat."
         })
         .openapi({
             description: "Aliases for the space.",
@@ -29,7 +29,7 @@ const Zod_id = z.object({
         }),
     tags: z.array(ZodSpaceTagSchema)
         .refine(validateNotRepeat, {
-            message: "Tags must not repeat."
+            error: "Tags must not repeat."
         })
 });
 
@@ -41,14 +41,14 @@ const Zod_id_optional = Zod_id.merge(z.object({
 
 export const ZodCleanMongoSpaceSchema = swaggerRegistry.register(
     "CleanMongoSpace",
-    ZodCleanSpaceSchema._def.schema.omit({ id: true })
-    .merge(Zod_id)
+    ZodCleanSpaceSchema.omit({ id: true })
+    .extend(Zod_id.shape)
     .superRefine(({ name, aliases }, ctx) => {
         if (!refineNoAliasMatchingName(name, aliases)) {
             const index = findAliasMatchingNameIndex(name, aliases);
             ctx.addIssue({
-                code: z.ZodIssueCode.custom,
-                message: "No alias should match the name.",
+                code: "custom",
+                error: "No alias should match the name.",
                 path: ["aliases", index ?? 0]
             });
         }
@@ -57,18 +57,18 @@ export const ZodCleanMongoSpaceSchema = swaggerRegistry.register(
         description: "The MongoDB representation of a Space."
     })
 );
-export const ZodCleanMongoSpaceShape = ZodCleanMongoSpaceSchema._def.schema.shape;
+export const ZodCleanMongoSpaceShape = ZodCleanMongoSpaceSchema.shape;
 
 export const ZodMongoSpaceSchema = swaggerRegistry.register(
     "MongoSpace",
-    ZodSpaceSchema._def.schema.omit({ id: true })
-    .merge(Zod_id_optional)
+    ZodSpaceSchema.omit({ id: true })
+    .extend(Zod_id_optional.shape)
     .superRefine(({ name, aliases }, ctx) => {
         if (!refineNoAliasMatchingName(name, aliases)) {
             const index = findAliasMatchingNameIndex(name, aliases);
             ctx.addIssue({
-                code: z.ZodIssueCode.custom,
-                message: "No alias should match the name.",
+                code: "custom",
+                error: "No alias should match the name.",
                 path: ["aliases", index ?? 0]
             });
         }
@@ -77,7 +77,7 @@ export const ZodMongoSpaceSchema = swaggerRegistry.register(
         description: "CleanMongoSpace, but with some fields optional and provided sensible defaults."
     })
 );
-export const ZodMongoSpaceShape = ZodMongoSpaceSchema._def.schema.shape;
+export const ZodMongoSpaceShape = ZodMongoSpaceSchema.shape;
 
 export type CleanMongoSpace = z.infer<typeof ZodCleanMongoSpaceSchema>;
 export type MongoSpace = z.input<typeof ZodMongoSpaceSchema>;

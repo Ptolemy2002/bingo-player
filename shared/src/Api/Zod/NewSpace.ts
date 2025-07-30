@@ -7,12 +7,12 @@ import { findAliasMatchingNameIndex, refineNoAliasMatchingName, ZodCleanMongoSpa
 export const ZodNewSpaceRequestBodySchema = swaggerRegistry.register(
     "NewSpaceRequestBody",
     z.object({
-        space: ZodMongoSpaceSchema._def.schema.omit({ _id: true })
+        space: ZodMongoSpaceSchema.omit({ _id: true })
             .superRefine(({ name, aliases }, ctx) => {
                 if (!refineNoAliasMatchingName(name, aliases)) {
                     const index = findAliasMatchingNameIndex(name, aliases);
                     ctx.addIssue({
-                        code: z.ZodIssueCode.custom,
+                        code: "custom",
                         message: "No alias should match the name.",
                         path: ["aliases", index ?? 0]
                     });

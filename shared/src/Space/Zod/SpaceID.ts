@@ -5,7 +5,7 @@ import { z } from "zod";
 export const ZodSpaceIDSchema = swaggerRegistry.register(
     "SpaceID",
     z.string()
-        .refine((id) => Types.ObjectId.isValid(id), { message: "Invalid ID" })
+        .refine((id) => Types.ObjectId.isValid(id), { error: "Invalid ID" })
         .openapi({
             description: "The ID of a space.",
             example: "abc123"

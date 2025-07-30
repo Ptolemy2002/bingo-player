@@ -98,7 +98,7 @@ export function SpaceEditTagItemField({
 
     const [tagList] = SpaceTagList.useContext(["tags"])
     const [select, setSelect] = useState<boolean | null>(null);
-
+    
     const hasTagList = tagList.hasTags();
     useEffect(() => {
         // This should only run if we don't know if the initial value is in the tag list

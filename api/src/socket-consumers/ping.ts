@@ -1,7 +1,6 @@
 import SocketRouteHandler, { SocketRouteHandlerRequestData } from "lib/SocketRouteHandler";
 import { SocketConsumer } from "services/socket";
-import { SocketPingSuccessResponse, SocketPingResponse } from "shared";
-import { EqualTypes } from "@ptolemy2002/ts-utils";
+import { SocketPingSuccessResponse } from "shared";
 
 class BingoPingHandler extends SocketRouteHandler<SocketPingSuccessResponse> {
     constructor() {

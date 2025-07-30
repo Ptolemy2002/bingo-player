@@ -5,7 +5,7 @@ export const ZodSpaceExampleSchema = swaggerRegistry.register(
     "SpaceExample",
     z.string()
         .trim()
-        .min(1, {message: "examples must be at least 1 non-whitespace character long"})
+        .min(1, {error: "examples must be at least 1 non-whitespace character long"})
         .openapi({
             description: "An example of what could be considered applicable to a space.",
             example: "Example 1"

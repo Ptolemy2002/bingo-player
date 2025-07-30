@@ -8,15 +8,18 @@ importers:
 
   .:
     dependencies:
+      '@asteasolutions/zod-to-openapi':
+        specifier: ^8.0.0
+        version: 8.0.0(zod@4.0.14)
       '@ptolemy2002/regex-utils':
-        specifier: ^2.5.0
-        version: 2.6.2(zod@3.25.67)
+        specifier: ^3.0.0
+        version: 3.0.0(zod@4.0.14)
       '@ptolemy2002/ts-utils':
         specifier: ^3.0.0
         version: 3.0.0(@ptolemy2002/ts-brand-utils@1.0.0)(is-callable@1.2.7)
       zod:
-        specifier: ^3.24.1
-        version: 3.25.67
+        specifier: ^4.0.14
+        version: 4.0.14
 
   api:
     dependencies:
@@ -30,8 +33,8 @@ importers:
         specifier: ^1.1.1
         version: 1.1.1(@ptolemy2002/ts-utils@3.0.0(@ptolemy2002/ts-brand-utils@1.0.0)(is-callable@1.2.7))(is-callable@1.2.7)(mongoose@8.16.0)
       '@ptolemy2002/regex-utils':
-        specifier: ^2.5.0
-        version: 2.6.2(zod@3.25.67)
+        specifier: ^3.0.0
+        version: 3.0.0(zod@4.0.14)
       '@ptolemy2002/ts-utils':
         specifier: ^3.0.0
         version: 3.0.0(@ptolemy2002/ts-brand-utils@1.0.0)(is-callable@1.2.7)
@@ -87,8 +90,8 @@ importers:
         specifier: ^5.0.1
         version: 5.0.1(express@4.21.2)
       zod:
-        specifier: ^3.24.1
-        version: 3.25.67
+        specifier: ^4.0.14
+        version: 4.0.14
     devDependencies:
       '@types/app-module-path':
         specifier: ~2.2.2
@@ -178,8 +181,8 @@ importers:
         specifier: ^3.4.0
         version: 3.7.0(clsx@2.1.1)(is-callable@1.2.7)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@ptolemy2002/regex-utils':
-        specifier: ^2.3.0
-        version: 2.6.2(zod@3.25.67)
+        specifier: ^3.0.0
+        version: 3.0.0(zod@4.0.14)
       '@ptolemy2002/ts-utils':
         specifier: ^3.0.0
         version: 3.0.0(@ptolemy2002/ts-brand-utils@1.0.0)(is-callable@1.2.7)
@@ -265,8 +268,8 @@ importers:
         specifier: ^3.3.1
         version: 3.3.1(axios@1.10.0)(type-fest@4.32.0)
       zod:
-        specifier: ^3.24.1
-        version: 3.25.67
+        specifier: ^4.0.14
+        version: 4.0.14
     dependenciesMeta:
       '@ptolemy2002/regex-utils':
         injected: true
@@ -346,8 +349,8 @@ importers:
   shared:
     devDependencies:
       '@asteasolutions/zod-to-openapi':
-        specifier: ^7.3.0
-        version: 7.3.4(zod@3.25.67)
+        specifier: ^8.0.0
+        version: 8.0.0(zod@4.0.14)
       '@ptolemy2002/ts-utils':
         specifier: ^3.0.0
         version: 3.0.0(@ptolemy2002/ts-brand-utils@1.0.0)(is-callable@1.2.7)
@@ -364,8 +367,8 @@ importers:
         specifier: ^3.5.3
         version: 3.5.5(typescript@5.8.3)
       zod:
-        specifier: ^3.24.1
-        version: 3.25.67
+        specifier: ^4.0.14
+        version: 4.0.14
 
 packages:
 
@@ -373,10 +376,10 @@ packages:
     resolution: {integrity: sha512-30iZtAPgz+LTIYoeivqYo853f02jBYSd5uGnGpkFV0M3xOt9aN73erkgYAmZU43x4VfqcnLxW9Kpg3R5LC4YYw==}
     engines: {node: '>=6.0.0'}
 
-  '@asteasolutions/zod-to-openapi@7.3.4':
-    resolution: {integrity: sha512-/2rThQ5zPi9OzVwes6U7lK1+Yvug0iXu25olp7S0XsYmOqnyMfxH7gdSQjn/+DSOHRg7wnotwGJSyL+fBKdnEA==}
+  '@asteasolutions/zod-to-openapi@8.0.0':
+    resolution: {integrity: sha512-C56hBPiraeSWUNLz8mB5Z0/0LdfaFD5d6WB/+hdUg0MiC7egTgvWRGh3M3jZ3CRl03l/NJWnmv5D3OUAz+JGeg==}
     peerDependencies:
-      zod: ^3.20.2
+      zod: ^4.0.0
 
   '@babel/code-frame@7.27.1':
     resolution: {integrity: sha512-cjQ7ZlQ0Mv3b47hABuTevyTuYN4i+loJKGeV9flcCgIK37cCXRh+L1bd3iBHlynerhQ7BhCkn2BPbQUL+rGqFg==}
@@ -863,10 +866,10 @@ packages:
       react: ^18.3.1
       react-dom: ^18.3.1
 
-  '@ptolemy2002/regex-utils@2.6.2':
-    resolution: {integrity: sha512-PQhbopzo6Su8Bst4xU1uAop1IQXhSFkJ+oB6NefsreFPNI5KIBuJGZIPjx/fo50fkOrQ80wgx+0kpyCWZJB03A==}
+  '@ptolemy2002/regex-utils@3.0.0':
+    resolution: {integrity: sha512-byOqBylrNjEnuo0kZnOU3CGHHjDczS0oBB+MHGhNK+80O1YP53FerKRfPqNFtzxG5Rc9OrE8ZA1/3pKZokJovQ==}
     peerDependencies:
-      zod: ^3.23.8
+      zod: ^4.0.0
 
   '@ptolemy2002/ts-brand-utils@1.0.0':
     resolution: {integrity: sha512-E8u3dXr2UG0FYifa4RvM3EU1lD/Zvq57ziZN+8Mn/duMOIY6WRwICq8YNrYoOHamR5QDNnLcersNtN5IiAwrNA==}
@@ -3007,8 +3010,8 @@ packages:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
 
-  zod@3.25.67:
-    resolution: {integrity: sha512-idA2YXwpCdqUSKRCACDE6ItZD9TZzy3OZMtpfLoh6oPR47lipysRrJfjzMqFxQ3uJuUPyUeWe1r9vLH33xO/Qw==}
+  zod@4.0.14:
+    resolution: {integrity: sha512-nGFJTnJN6cM2v9kXL+SOBq3AtjQby3Mv5ySGFof5UGRHrRioSJ5iG680cYNjE/yWk671nROcpPj4hAS8nyLhSw==}
 
   zwitch@2.0.4:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
@@ -3020,10 +3023,10 @@ snapshots:
       '@jridgewell/gen-mapping': 0.3.8
       '@jridgewell/trace-mapping': 0.3.25
 
-  '@asteasolutions/zod-to-openapi@7.3.4(zod@3.25.67)':
+  '@asteasolutions/zod-to-openapi@8.0.0(zod@4.0.14)':
     dependencies:
       openapi3-ts: 4.4.0
-      zod: 3.25.67
+      zod: 4.0.14
 
   '@babel/code-frame@7.27.1':
     dependencies:
@@ -3453,9 +3456,9 @@ snapshots:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
 
-  '@ptolemy2002/regex-utils@2.6.2(zod@3.25.67)':
+  '@ptolemy2002/regex-utils@3.0.0(zod@4.0.14)':
     dependencies:
-      zod: 3.25.67
+      zod: 4.0.14
 
   '@ptolemy2002/ts-brand-utils@1.0.0': {}
 
@@ -5979,6 +5982,6 @@ snapshots:
 
   yocto-queue@0.1.0: {}
 
-  zod@3.25.67: {}
+  zod@4.0.14: {}
 
   zwitch@2.0.4: {}

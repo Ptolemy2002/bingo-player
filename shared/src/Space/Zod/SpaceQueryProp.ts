@@ -5,7 +5,7 @@ import { swaggerRegistry } from "src/Swagger";
 export const ZodSpaceQueryPropSchema = swaggerRegistry.register(
     "SpaceQueryProp",
     z.enum(SpaceQueryPropEnum, {
-        message: "Invalid space query prop"
+        error: "Invalid space query prop"
     }).openapi({
         description: "A property of a space that can be queried."
     })

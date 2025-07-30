@@ -99,7 +99,7 @@ export default class SpaceTagList {
             // we filter out these values
             this.tags = data.values.filter((s) => s !== null);
         }
-
+        
         return this.tags;
     }
 

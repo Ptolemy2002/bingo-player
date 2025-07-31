@@ -14,45 +14,48 @@ export const BingoSpaceSetExample = [
             tags: ["tag-1", "in:collection-1"]
         }
     }
-] as const;
+];
 
-const BingoSpaceSetIsMarkedSchema = z.boolean();
-registerBingoSchema(BingoSpaceSetIsMarkedSchema, {
-    id: "BingoSpaceSet.isMarked",
-    description: "Indicates if the space is marked",
-    example: BingoSpaceSetExample[0].isMarked
-});
-
-const BingoSpaceSetSpaceDataSchema = ZodMongoSpaceSchema;
-registerBingoSchema(BingoSpaceSetSpaceDataSchema, {
-    id: "BingoSpaceSet.spaceData",
-    description: "Data for the bingo space, including its ID and other properties. Matched the MongoDB schema for spaces."
-});
-
-export const ZodBingoSpaceSetSchema = z.array(
-    z.object({
-        isMarked: BingoSpaceSetIsMarkedSchema,
-        spaceData: BingoSpaceSetSpaceDataSchema
-    })
-).superRefine((spaceSet, ctx) => {
-    const seenIds: string[] = [];
-    for (const [index, entry] of spaceSet.entries()) {
-        if (seenIds.includes(entry.spaceData._id)) {
-            ctx.addIssue({
-                code: "custom",
-                message: `No two spaces in this list should have the same ID.`,
-                path: ["spaces", index, "spaceData", "_id"]
-            });
-        } else {
-            seenIds.push(entry.spaceData._id);
+export const ZodBingoSpaceSetSchema = registerBingoSchema(
+    z.array(
+        z.object({
+            isMarked: registerBingoSchema(
+                z.boolean(),
+                {
+                    id: "BingoSpaceSet.isMarked",
+                    description: "Indicates if the space is marked",
+                    example: BingoSpaceSetExample[0].isMarked
+                }
+            ),
+            spaceData: registerBingoSchema(
+                // This `refine` pattern allows us to copy the schema so that the original metadata
+                // is not overwritten on `ZodMongoSpaceSchema`.
+                ZodMongoSpaceSchema.refine(() => true),
+                {
+                    id: "BingoSpaceSet.spaceData",
+                    description: "Data for the bingo space, including its ID and other properties. Matched the MongoDB schema for spaces."
+                }
+            )
+        })
+    ).superRefine((spaceSet, ctx) => {
+        const seenIds: string[] = [];
+        for (const [index, entry] of spaceSet.entries()) {
+            if (seenIds.includes(entry.spaceData._id)) {
+                ctx.addIssue({
+                    code: "custom",
+                    message: `No two spaces in this list should have the same ID.`,
+                    path: ["spaces", index, "spaceData", "_id"]
+                });
+            } else {
+                seenIds.push(entry.spaceData._id);
+            }
         }
+    }),
+    {
+        id: "BingoSpaceSet",
+        description: "Set of bingo spaces, each with a marked status and space data",
+        example: BingoSpaceSetExample
     }
-});
-
-registerBingoSchema(ZodBingoSpaceSetSchema, {
-    id: "BingoSpaceSet",
-    description: "Set of bingo spaces, each with a marked status and space data",
-    example: BingoSpaceSetExample
-});
+);
 
 export type BingoSpaceSet = z.infer<typeof ZodBingoSpaceSetSchema>;

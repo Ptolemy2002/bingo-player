@@ -2,6 +2,8 @@ import { ZodErrorResponseSchema, zodSuccessResponseSchema } from "src/Api";
 import { registerSocketSchema } from "src/Socket/Registry";
 import { z } from "zod";
 
+export const SocketPingEventName = "bingoPing" as const;
+
 export const ZodSocketPingArgsSchema = z.undefined();
 export const ZodSocketPingSuccessResponseSchema = registerSocketSchema(
     zodSuccessResponseSchema(z.object({
@@ -9,7 +11,7 @@ export const ZodSocketPingSuccessResponseSchema = registerSocketSchema(
     })),
     {
         id: "SocketPingSuccessResponse",
-        description: "Response schema for a successful Socket Ping request"
+        description: `Response schema for a successful [${SocketPingEventName}] event`,
     }
 );
 
@@ -20,7 +22,7 @@ export const ZodSocketPingResponseSchema = registerSocketSchema(
     ]),
     {
         id: "SocketPingResponse",
-        description: "Response schema for the Socket Ping request"
+        description: `Response schema for the [${SocketPingEventName}] event`
     }
 );
 

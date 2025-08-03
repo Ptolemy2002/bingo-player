@@ -1,2 +1,4 @@
 export * from "./Ping";
-export * from "./GameState";
+
+export * from "./Game";
+export * from "./Space";

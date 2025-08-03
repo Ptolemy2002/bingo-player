@@ -1,0 +1,48 @@
+import { ZodErrorResponseSchema, zodSuccessResponseSchema } from "src/Api";
+import { BingoGameExample, ZodBingoGameSchema, ZodBingoPlayerRoleSchema } from "src/Bingo";
+import { registerSocketSchema } from "src/Socket/Registry";
+import { z } from "zod";
+
+export const SocketGameLeaveEventName = "gameLeave" as const;
+
+export const ZodSocketGameLeaveArgsSchema = registerSocketSchema(
+    z.object({
+        id: registerSocketSchema(
+            z.string(),
+            {
+                id: "GameLeaveArgs.id",
+                description: "The unique identifier for the game you want to leave",
+                example: BingoGameExample.id
+            }
+        ),
+        playerName: registerSocketSchema(
+            z.string(),
+            {
+                id: "GameLeaveArgs.playerName",
+                description: "The name of the player leaving the game",
+                example: "Player2"
+            }
+        )
+    }),
+    {
+        id: "GameLeaveArgs",
+        description: `Arguments schema for the [${SocketGameLeaveEventName}] event`,
+    }
+);
+
+export const ZodSocketGameLeaveSuccessResponseSchema = zodSuccessResponseSchema(z.object({}));
+
+export const ZodSocketGameLeaveResponseSchema = registerSocketSchema(
+    z.union([
+        ZodSocketGameLeaveSuccessResponseSchema,
+        ZodErrorResponseSchema,
+    ]),
+    {
+        id: "GameLeaveResponse",
+        description: `Response schema for the [${SocketGameLeaveEventName}] event`
+    }
+);
+
+export type SocketGameLeaveArgs = z.infer<typeof ZodSocketGameLeaveArgsSchema>;
+export type SocketGameLeaveResponse = z.infer<typeof ZodSocketGameLeaveResponseSchema>;
+export type SocketGameLeaveSuccessResponse = z.infer<typeof ZodSocketGameLeaveSuccessResponseSchema>;

@@ -3,7 +3,9 @@ import { BingoGameExample, ZodBingoGameSchema } from "src/Bingo";
 import { registerSocketSchema } from "src/Socket/Registry";
 import { z } from "zod";
 
-export const ZodGameStateArgsSchema = registerSocketSchema(
+export const SocketGameStateEventName = "gameState" as const;
+
+export const ZodSocketGameStateArgsSchema = registerSocketSchema(
     z.object({
         id: registerSocketSchema(
             z.string(),
@@ -16,11 +18,11 @@ export const ZodGameStateArgsSchema = registerSocketSchema(
     }),
     {
         id: "GameStateArgs",
-        description: "Arguments schema for the GameState request"
+        description: `Arguments schema for the [${SocketGameStateEventName}] event`,
     }
 );
 
-export const ZodGameStateSuccessResponseSchema = registerSocketSchema(
+export const ZodSocketGameStateSuccessResponseSchema = registerSocketSchema(
     zodSuccessResponseSchema(z.object({
         game: registerSocketSchema(
             // This `refine` pattern allows us to copy the schema so that the original metadata
@@ -35,21 +37,21 @@ export const ZodGameStateSuccessResponseSchema = registerSocketSchema(
     })),
     {
         id: "GameStateSuccessResponse",
-        description: "Response schema for a successful GameState request"
+        description: `Response schema for a successful [${SocketGameStateEventName}] event`
     }
 );
 
-export const ZodGameStateResponseSchema = registerSocketSchema(
+export const ZodSocketGameStateResponseSchema = registerSocketSchema(
     z.union([
-        ZodGameStateSuccessResponseSchema,
+        ZodSocketGameStateSuccessResponseSchema,
         ZodErrorResponseSchema,
     ]),
     {
         id: "GameStateResponse",
-        description: "Response schema for the GameState request"
+        description: `Response schema for the [${SocketGameStateEventName}] event`
     }
 );
 
-export type GameStateArgs = z.infer<typeof ZodGameStateArgsSchema>;
-export type GameStateSuccessResponse = z.infer<typeof ZodGameStateSuccessResponseSchema>;
-export type GameStateResponse = z.infer<typeof ZodGameStateResponseSchema>;
+export type SocketGameStateArgs = z.infer<typeof ZodSocketGameStateArgsSchema>;
+export type SocketGameStateSuccessResponse = z.infer<typeof ZodSocketGameStateSuccessResponseSchema>;
+export type SocketGameStateResponse = z.infer<typeof ZodSocketGameStateResponseSchema>;

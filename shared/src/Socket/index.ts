@@ -1,6 +1,16 @@
 import { SocketPingResponse } from ".";
 import { SocketPingArgs } from ".";
-import { GameStateArgs, GameStateResponse } from "./Zod";
+import {
+    SocketGameCreateArgs, SocketGameCreateResponse, SocketGameListArgs, SocketGameListResponse,
+    SocketGameStateArgs, SocketGameStateResponse, SocketGameJoinArgs, SocketGameJoinResponse,
+    SocketGameLeaveArgs, SocketGameLeaveResponse, SocketSpaceMarkAllArgs,
+    SocketSpaceMarkAllResponse, SocketGameCreateEventName, SocketGameJoinEventName,
+    SocketGameLeaveEventName,
+    SocketGameListEventName,
+    SocketGameStateEventName,
+    SocketSpaceMarkAllEventName,
+    SocketPingEventName
+} from "./Zod";
 
 export * from "./Zod";
 export * from "./Registry";
@@ -13,8 +23,15 @@ export type SocketEvent<A=undefined, R=undefined> = (...args:
 ) => void;
 
 export type SocketClientToServerEvents = {
-    bingoPing: SocketEvent<SocketPingArgs, SocketPingResponse>;
-    gameState: SocketEvent<GameStateArgs, GameStateResponse>;
+    [SocketPingEventName]: SocketEvent<SocketPingArgs, SocketPingResponse>;
+
+    [SocketGameStateEventName]: SocketEvent<SocketGameStateArgs, SocketGameStateResponse>;
+    [SocketGameListEventName]: SocketEvent<SocketGameListArgs, SocketGameListResponse>;
+    [SocketGameCreateEventName]: SocketEvent<SocketGameCreateArgs, SocketGameCreateResponse>;
+    [SocketGameJoinEventName]: SocketEvent<SocketGameJoinArgs, SocketGameJoinResponse>;
+    [SocketGameLeaveEventName]: SocketEvent<SocketGameLeaveArgs, SocketGameLeaveResponse>;
+    
+    [SocketSpaceMarkAllEventName]: SocketEvent<SocketSpaceMarkAllArgs, SocketSpaceMarkAllResponse>;
 };
 
 export type SocketServerToClientEvents = {};

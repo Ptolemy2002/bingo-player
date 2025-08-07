@@ -2,12 +2,12 @@ import { SocketPingResponse } from ".";
 import { SocketPingArgs } from ".";
 import {
     SocketGameCreateArgs, SocketGameCreateResponse, SocketGameListArgs, SocketGameListResponse,
-    SocketGameStateArgs, SocketGameStateResponse, SocketGameJoinArgs, SocketGameJoinResponse,
+    SocketGameGetArgs, SocketGameGetResponse, SocketGameJoinArgs, SocketGameJoinResponse,
     SocketGameLeaveArgs, SocketGameLeaveResponse, SocketSpaceOpArgs,
     SocketSpaceOpResponse, SocketGameCreateEventName, SocketGameJoinEventName,
     SocketGameLeaveEventName,
     SocketGameListEventName,
-    SocketGameStateEventName,
+    SocketGameGetEventName,
     SocketSpaceOpEventName,
     SocketPingEventName
 } from "./Zod";
@@ -26,7 +26,7 @@ export type SocketEvent<A=undefined, R=undefined> = (...args:
 export type SocketClientToServerEvents = {
     [SocketPingEventName]: SocketEvent<SocketPingArgs, SocketPingResponse>;
 
-    [SocketGameStateEventName]: SocketEvent<SocketGameStateArgs, SocketGameStateResponse>;
+    [SocketGameGetEventName]: SocketEvent<SocketGameGetArgs, SocketGameGetResponse>;
     [SocketGameListEventName]: SocketEvent<SocketGameListArgs, SocketGameListResponse>;
     [SocketGameCreateEventName]: SocketEvent<SocketGameCreateArgs, SocketGameCreateResponse>;
     [SocketGameJoinEventName]: SocketEvent<SocketGameJoinArgs, SocketGameJoinResponse>;

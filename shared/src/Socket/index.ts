@@ -3,17 +3,18 @@ import { SocketPingArgs } from ".";
 import {
     SocketGameCreateArgs, SocketGameCreateResponse, SocketGameListArgs, SocketGameListResponse,
     SocketGameStateArgs, SocketGameStateResponse, SocketGameJoinArgs, SocketGameJoinResponse,
-    SocketGameLeaveArgs, SocketGameLeaveResponse, SocketSpaceMarkAllArgs,
-    SocketSpaceMarkAllResponse, SocketGameCreateEventName, SocketGameJoinEventName,
+    SocketGameLeaveArgs, SocketGameLeaveResponse, SocketSpaceOpArgs,
+    SocketSpaceOpResponse, SocketGameCreateEventName, SocketGameJoinEventName,
     SocketGameLeaveEventName,
     SocketGameListEventName,
     SocketGameStateEventName,
-    SocketSpaceMarkAllEventName,
+    SocketSpaceOpEventName,
     SocketPingEventName
 } from "./Zod";
 
 export * from "./Zod";
 export * from "./Registry";
+export * from "./Other";
 
 export type SocketEvent<A=undefined, R=undefined> = (...args: 
     [A] extends [undefined] ?
@@ -30,8 +31,8 @@ export type SocketClientToServerEvents = {
     [SocketGameCreateEventName]: SocketEvent<SocketGameCreateArgs, SocketGameCreateResponse>;
     [SocketGameJoinEventName]: SocketEvent<SocketGameJoinArgs, SocketGameJoinResponse>;
     [SocketGameLeaveEventName]: SocketEvent<SocketGameLeaveArgs, SocketGameLeaveResponse>;
-    
-    [SocketSpaceMarkAllEventName]: SocketEvent<SocketSpaceMarkAllArgs, SocketSpaceMarkAllResponse>;
+
+    [SocketSpaceOpEventName]: SocketEvent<SocketSpaceOpArgs, SocketSpaceOpResponse>;
 };
 
 export type SocketServerToClientEvents = {};

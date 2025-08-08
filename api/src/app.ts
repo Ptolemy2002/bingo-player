@@ -19,7 +19,7 @@ const env = getEnv();
 import indexRouter from 'routes/index';
 // Registers all socket consumers
 import "socket-consumers";
-import { ZodErrorCodeSchema, ZodHelpLinkSchema } from 'shared';
+import { ZodErrorCodeSchema, ZodErrorMessageSchema, ZodHelpLinkSchema } from 'shared';
 import { startSocket } from 'services/socket';
 
 const app = express();
@@ -80,6 +80,9 @@ app.use(function(err: HttpError, req: Request, res: Response, next: NextFunction
     let help = err.help ?? getEnv().getExpressDocsURL(1);
     const { success: helpSuccess } = ZodHelpLinkSchema.safeParse(help);
 
+    let message = err.message ?? "Unknown error";
+    const { success: messageSuccess } = ZodErrorMessageSchema.safeParse(message);
+
     if (!codeSuccess) {
         code = "UNKNOWN";
     }
@@ -88,8 +91,12 @@ app.use(function(err: HttpError, req: Request, res: Response, next: NextFunction
         help = getEnv().getExpressDocsURL(1);
     }
 
+    if (!messageSuccess) {
+        message = "Unknown error";
+    }
+
     res.status(err.status ?? 500);
-    res.json({ ok: false, code, message: err.message, help });
+    res.json({ ok: false, code, message, help });
 });
 
 export default app;

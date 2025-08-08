@@ -1,4 +1,4 @@
-import { ErrorResponse, SuccessResponseBase } from "shared";
+import { ErrorResponse, SuccessResponseBase, ZodErrorCodeSchema, ZodErrorMessageSchema, ZodHelpLinkSchema } from "shared";
 import RouteHandler, { GeneratedResonse } from "./RouteHandler";
 import getEnv, { EnvType } from "env";
 import { Socket } from "socket.io";
@@ -52,7 +52,27 @@ export default class SocketRouteHandler<SuccessResponse extends SuccessResponseB
     }
 
     async handle(socket: Socket, args: unknown, callback: (res: SuccessResponse | ErrorResponse) => void): Promise<void> {
-        const { response } = await this.generateResponse({ id: socket.id, args });
-        callback(response);
+        try {
+            const { response } = await this.generateResponse({ id: socket.id, args });
+            callback(response);
+        } catch (err: any) {
+            console.error(err.stack);
+
+            let code = err.code ?? "UNKNOWN";
+            const { success: codeSuccess } = ZodErrorCodeSchema.safeParse(code);
+
+            let message = err.message ?? "Unknown error";
+            const { success: messageSuccess } = ZodErrorMessageSchema.safeParse(message);
+
+            if (!codeSuccess) {
+                code = "UNKNOWN";
+            }
+
+            if (!messageSuccess) {
+                message = "Unknown error";
+            }
+
+            callback(this.buildErrorResponse(code, message));
+        }
     }
 }

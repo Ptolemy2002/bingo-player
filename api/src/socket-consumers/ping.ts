@@ -1,10 +1,10 @@
 import SocketRouteHandler, { SocketRouteHandlerRequestData } from "lib/SocketRouteHandler";
 import { SocketConsumer } from "services/socket";
-import { SocketPingSuccessResponse } from "shared";
+import { SocketPingEventName, SocketPingSuccessResponse } from "shared";
 
-class BingoPingHandler extends SocketRouteHandler<SocketPingSuccessResponse> {
+export class BingoPingHandler extends SocketRouteHandler<SocketPingSuccessResponse> {
     constructor() {
-        super("bingoPing");
+        super(SocketPingEventName);
     }
 
     async generateResponse(req: SocketRouteHandlerRequestData) {
@@ -20,9 +20,8 @@ class BingoPingHandler extends SocketRouteHandler<SocketPingSuccessResponse> {
 }
 
 const pingSocketConsumer: SocketConsumer = (socket) => {
-    socket.on("bingoPing", async (callback) => {
+    socket.on(SocketPingEventName, async (callback) => {
         const handler = new BingoPingHandler();
-
         await handler.handle(socket, {}, callback);
     });
 };

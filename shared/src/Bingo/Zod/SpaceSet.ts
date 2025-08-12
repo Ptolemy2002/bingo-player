@@ -23,6 +23,7 @@ export const ZodBingoSpaceSetSchema = registerBingoSchema(
                 z.boolean(),
                 {
                     id: "BingoSpaceSet.isMarked",
+                    type: "prop",
                     description: "Indicates if the space is marked",
                     example: BingoSpaceSetExample[0].isMarked
                 }
@@ -33,6 +34,7 @@ export const ZodBingoSpaceSetSchema = registerBingoSchema(
                 ZodMongoSpaceSchema.refine(() => true),
                 {
                     id: "BingoSpaceSet.spaceData",
+                    type: "prop",
                     description: "Data for the bingo space, including its ID and other properties. Matched the MongoDB schema for spaces."
                 }
             )
@@ -53,6 +55,7 @@ export const ZodBingoSpaceSetSchema = registerBingoSchema(
     }),
     {
         id: "BingoSpaceSet",
+        type: "collection",
         description: "Set of bingo spaces, each with a marked status and space data",
         example: BingoSpaceSetExample
     }

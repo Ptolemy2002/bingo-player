@@ -11,6 +11,7 @@ export const ZodSocketPingSuccessResponseSchema = registerSocketSchema(
     })),
     {
         id: "SocketPingSuccessResponse",
+        type: "success-response",
         description: `Response schema for a successful [${SocketPingEventName}] event`,
     }
 );
@@ -22,6 +23,7 @@ export const ZodSocketPingResponseSchema = registerSocketSchema(
     ]),
     {
         id: "SocketPingResponse",
+        type: "response",
         description: `Response schema for the [${SocketPingEventName}] event`
     }
 );

@@ -13,6 +13,7 @@ export const ZodSocketGameListSuccessResponseSchema = registerSocketSchema(
             z.array(ZodBingoGameSchema),
             {
                 id: "GameListSuccessResponse.games",
+                type: "prop",
                 description: "An array of all available bingo games",
                 example: [BingoGameExample]
             }
@@ -20,6 +21,8 @@ export const ZodSocketGameListSuccessResponseSchema = registerSocketSchema(
     })),
     {
         id: "GameListSuccessResponse",
+        type: "success-response",
+        eventName: SocketGameListEventName,
         description: `Response schema for a successful [${SocketGameListEventName}] event`,
     }
 );
@@ -31,6 +34,8 @@ export const ZodSocketGameListResponseSchema = registerSocketSchema(
     ]),
     {
         id: "GameListResponse",
+        type: "response",
+        eventName: SocketGameListEventName,
         description: `Response schema for the [${SocketGameListEventName}] event`
     }
 );

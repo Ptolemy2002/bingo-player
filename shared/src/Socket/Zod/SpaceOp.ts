@@ -10,6 +10,7 @@ export const ZodSocketSpaceOpSchema = registerSocketSchema(
     z.enum(SocketSpaceOpEnum),
     {
         id: "SpaceOp",
+        type: "other",
         description: "A possible operation that can be performed on a space",
         example: SocketSpaceOpExample
     }

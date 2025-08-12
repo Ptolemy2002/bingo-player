@@ -8,6 +8,7 @@ export const ZodBingoPlayerRoleSchema = registerBingoSchema(
     z.enum(BingoPlayerRoleEnum),
     {
         id: "BingoPlayerRole",
+        type: "other",
         description: "Role of the player in the bingo game",
         example: BingoPlayerRoleExample
     }

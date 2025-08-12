@@ -15,6 +15,7 @@ export const ZodBingoGameSchema = registerBingoSchema(
             z.string(),
             {
                 id: "BingoGame.id",
+                type: "prop",
                 description: "Unique identifier for the game",
                 example: BingoGameExample.id
             }
@@ -25,6 +26,7 @@ export const ZodBingoGameSchema = registerBingoSchema(
             ZodBingoPlayerSetSchema.refine(() => true),
             {
                 id: "BingoGame.players",
+                type: "prop",
                 description: "Set of players participating in the game",
                 example: BingoGameExample.players
             }
@@ -35,6 +37,7 @@ export const ZodBingoGameSchema = registerBingoSchema(
             ZodBingoSpaceSetSchema.refine(() => true),
             {
                 id: "BingoGame.spaces",
+                type: "prop",
                 description: "Set of bingo spaces available in the game",
                 example: BingoGameExample.spaces
             }
@@ -42,6 +45,7 @@ export const ZodBingoGameSchema = registerBingoSchema(
     }),
     {
         id: "BingoGame",
+        type: "game-element",
         description: "Schema representing a bingo game with players and spaces",
         example: BingoGameExample
     }

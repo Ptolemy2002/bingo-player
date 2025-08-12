@@ -18,6 +18,7 @@ export const ZodSocketSpaceOpArgsSchema = registerSocketSchema(
             z.string(),
             {
                 id: "SpaceOpArgs.gameId",
+                type: "prop",
                 description: "The unique identifier for the game you want to perform the operation on",
                 example: SocketSpaceOpArgsExample.gameId
             }
@@ -30,6 +31,7 @@ export const ZodSocketSpaceOpArgsSchema = registerSocketSchema(
             ZodSocketSpaceOpSchema.refine(() => true),
             {
                 id: "SpaceOpArgs.op",
+                type: "prop",
                 description: "The operation to perform on the spaces",
                 example: SocketSpaceOpArgsExample.op
             }
@@ -44,6 +46,7 @@ export const ZodSocketSpaceOpArgsSchema = registerSocketSchema(
                         }),
                         {
                             id: "SpaceOpArgs.spaces.index",
+                            type: "prop",
                             description: "The index of the space to operate on",
                             example: SocketSpaceOpArgsExample.spaces[0] as number
                         }
@@ -55,6 +58,7 @@ export const ZodSocketSpaceOpArgsSchema = registerSocketSchema(
                         ZodSpaceIDSchema.refine(() => true),
                         {
                             id: "SpaceOpArgs.spaces.id",
+                            type: "prop",
                             description: "The ID of the space to operate on",
                             example: SocketSpaceOpArgsExample.spaces[1] as string
                         }
@@ -64,6 +68,7 @@ export const ZodSocketSpaceOpArgsSchema = registerSocketSchema(
             ),
             {
                 id: "SpaceOpArgs.spaces",
+                type: "prop",
                 description: "The spaces to operate on",
                 example: SocketSpaceOpArgsExample.spaces
             }
@@ -71,6 +76,8 @@ export const ZodSocketSpaceOpArgsSchema = registerSocketSchema(
     }),
     {
         id: "SpaceMarkAllArgs",
+        type: "args",
+        eventName: SocketSpaceOpEventName,
         description: `Arguments schema for the [${SocketSpaceOpEventName}] event`,
     }
 );
@@ -79,6 +86,8 @@ export const ZodSocketSpaceOpSuccessResponseSchema = registerSocketSchema(
     zodSuccessResponseSchema(z.object({})),
     {
         id: "SpaceOpSuccessResponse",
+        type: "success-response",
+        eventName: SocketSpaceOpEventName,
         description: `Response schema for a successful [${SocketSpaceOpEventName}] event`
     }
 );
@@ -90,6 +99,8 @@ export const ZodSocketSpaceOpResponseSchema = registerSocketSchema(
     ]),
     {
         id: "SpaceOpResponse",
+        type: "response",
+        eventName: SocketSpaceOpEventName,
         description: `Response schema for the [${SocketSpaceOpEventName}] event`
     }
 );

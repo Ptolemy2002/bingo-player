@@ -11,6 +11,7 @@ export const ZodSocketGameCreateArgsSchema = registerSocketSchema(
             z.string(),
             {
                 id: "GameCreateArgs.id",
+                type: "prop",
                 description: "The unique identifier for the game you want to create",
                 example: BingoGameExample.id
             }
@@ -19,6 +20,7 @@ export const ZodSocketGameCreateArgsSchema = registerSocketSchema(
             z.string(),
             {
                 id: "GameCreateArgs.hostName",
+                type: "prop",
                 description: "The name of the player creating and therefore hosting the game",
                 example: "Player1"
             }
@@ -26,6 +28,8 @@ export const ZodSocketGameCreateArgsSchema = registerSocketSchema(
     }),
     {
         id: "GameCreateArgs",
+        type: "args",
+        eventName: SocketGameCreateEventName,
         description: `Arguments schema for the [${SocketGameCreateEventName}] event`,
     }
 );
@@ -38,6 +42,7 @@ export const ZodSocketGameCreateSuccessResponseSchema = registerSocketSchema(
             ZodBingoGameSchema.refine(() => true),
             {
                 id: "GameCreateSuccessResponse.game",
+                type: "prop",
                 description: "The newly created bingo game",
                 example: BingoGameExample
             }
@@ -45,6 +50,8 @@ export const ZodSocketGameCreateSuccessResponseSchema = registerSocketSchema(
     })),
     {
         id: "GameCreateSuccessResponse",
+        type: "success-response",
+        eventName: SocketGameCreateEventName,
         description: `Response schema for a successful [${SocketGameCreateEventName}] event`,
     }
 );
@@ -56,6 +63,8 @@ export const ZodSocketGameCreateResponseSchema = registerSocketSchema(
     ]),
     {
         id: "GameCreateResponse",
+        type: "response",
+        eventName: SocketGameCreateEventName,
         description: `Response schema for the [${SocketGameCreateEventName}] event`
     }
 );

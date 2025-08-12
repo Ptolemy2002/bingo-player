@@ -16,11 +16,45 @@ export const BingoPlayerExamples = [
     }
 ];
 
-export const ZodBingoPlayerSchema = z.object({
-    name: z.string().min(1, "Name must have at least 1 character"),
-    role: ZodBingoPlayerRoleSchema,
-    socketId: ZodSocketIDSchema
-});
+export const ZodBingoPlayerSchema = registerBingoSchema(
+    z.object({
+        name: registerBingoSchema(
+            z.string().min(1, "Name must have at least 1 character"),
+            {
+                id: "BingoPlayer.name",
+                type: "prop",
+                description: "Name of the player",
+                example: BingoPlayerExamples[0].name
+            }
+        ),
+        role: registerBingoSchema(
+            // This `refine` pattern allows us to copy the schema so that the original metadata
+            // is not overwritten on `ZodBingoPlayerRoleSchema`.
+            ZodBingoPlayerRoleSchema.refine(() => true),
+            {
+                id: "BingoPlayer.role",
+                type: "prop",
+                description: "Role of the player",
+                example: BingoPlayerExamples[0].role
+            }
+        ),
+        socketId: registerBingoSchema(
+            ZodSocketIDSchema,
+            {
+                id: "BingoPlayer.socketId",
+                type: "prop",
+                description: "Socket ID of the player",
+                example: BingoPlayerExamples[0].socketId
+            }
+        )
+    }),
+    {
+        id: "BingoPlayer",
+        type: "game-element",
+        description: "Schema representing a bingo player",
+        example: BingoPlayerExamples[0]
+    }
+);
 
 export const ZodBingoPlayerSetSchema = registerBingoSchema(
     z.array(ZodBingoPlayerSchema).superRefine((players, ctx) => {
@@ -39,6 +73,7 @@ export const ZodBingoPlayerSetSchema = registerBingoSchema(
     }),
     {
         id: "BingoPlayerSet",
+        type: "collection",
         description: "Set of Bingo players, ensuring unique names",
         example: BingoPlayerExamples
     }

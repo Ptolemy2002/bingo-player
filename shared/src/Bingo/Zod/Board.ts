@@ -17,6 +17,7 @@ export const ZodBingoBoardSchema = registerBingoSchema(
             z.string(),
             {
                 id: "BingoBoard.id",
+                type: "prop",
                 description: "Unique identifier for the bingo board",
                 example: BingoBoardExample.id
             }
@@ -25,6 +26,7 @@ export const ZodBingoBoardSchema = registerBingoSchema(
             z.string(),
             {
                 id: "BingoBoard.gameId",
+                type: "prop",
                 description: "Identifier of the game this board belongs to",
                 example: BingoBoardExample.gameId
             }
@@ -35,6 +37,7 @@ export const ZodBingoBoardSchema = registerBingoSchema(
                     z.number().int().positive(),
                     {
                         id: "BingoBoard.shape.width",
+                        type: "prop",
                         description: "Width of the bingo board",
                         example: BingoBoardExample.shape.width
                     }
@@ -43,6 +46,7 @@ export const ZodBingoBoardSchema = registerBingoSchema(
                     z.number().int().positive(),
                     {
                         id: "BingoBoard.shape.height",
+                        type: "prop",
                         description: "Height of the bingo board",
                         example: BingoBoardExample.shape.height
                     }
@@ -50,6 +54,7 @@ export const ZodBingoBoardSchema = registerBingoSchema(
             }),
             {
                 id: "BingoBoard.shape",
+                type: "prop",
                 description: "Dimensions of the bingo board, specifying its width and height",
                 example: BingoBoardExample.shape
             }
@@ -59,7 +64,8 @@ export const ZodBingoBoardSchema = registerBingoSchema(
                 registerBingoSchema(
                     z.int().positive(),
                     {
-                        id: "BingoBoard.spaces.index",
+                        id: "BingoBoard.spaces.item (number)",
+                        type: "prop",
                         description: "The index of a space within the game's space set",
                         example: BingoBoardExample.spaces[0]!
                     }
@@ -67,13 +73,15 @@ export const ZodBingoBoardSchema = registerBingoSchema(
                 registerBingoSchema(
                     z.null(),
                     {
-                        id: "BingoBoard.spaces.null",
+                        id: "BingoBoard.spaces.item (null)",
+                        type: "prop",
                         description: "Represents an empty space on the board"
                     }
                 )
             ])),
             {
                 id: "BingoBoard.spaces",
+                type: "prop",
                 description: "Array of spaces on the board. Must be the same length as shape.width * shape.height.",
                 example: BingoBoardExample.spaces
             }
@@ -89,6 +97,7 @@ export const ZodBingoBoardSchema = registerBingoSchema(
     }),
     {
         id: "BingoBoard",
+        type: "game-element",
         description: "Schema representing a bingo board with its dimensions and spaces"
     }
 );

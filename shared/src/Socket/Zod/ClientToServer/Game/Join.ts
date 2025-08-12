@@ -11,6 +11,7 @@ export const ZodSocketGameJoinArgsSchema = registerSocketSchema(
             z.string(),
             {
                 id: "GameJoinArgs.id",
+                type: "prop",
                 description: "The unique identifier for the game you want to join",
                 example: BingoGameExample.id
             }
@@ -20,6 +21,7 @@ export const ZodSocketGameJoinArgsSchema = registerSocketSchema(
             z.string(),
             {
                 id: "GameJoinArgs.playerName",
+                type: "prop",
                 description: "The name of the player joining the game",
                 example: "Player2"
             }
@@ -29,6 +31,7 @@ export const ZodSocketGameJoinArgsSchema = registerSocketSchema(
             ZodBingoPlayerRoleSchema.exclude(["host"]),
             {
                 id: "GameJoinArgs.playerRole",
+                type: "prop",
                 description: "The role of the player joining the game. You cannot join as a host, but a host can change your role later.",
                 example: "player"
             }
@@ -36,6 +39,8 @@ export const ZodSocketGameJoinArgsSchema = registerSocketSchema(
     }),
     {
         id: "GameJoinArgs",
+        type: "args",
+        eventName: SocketGameJoinEventName,
         description: `Arguments schema for the [${SocketGameJoinEventName}] event`,
     }
 );
@@ -48,6 +53,7 @@ export const ZodSocketGameJoinSuccessResponseSchema = registerSocketSchema(
             ZodBingoGameSchema.refine(() => true),
             {
                 id: "GameJoinSuccessResponse.game",
+                type: "prop",
                 description: "The bingo game you joined",
                 example: BingoGameExample
             }
@@ -55,6 +61,8 @@ export const ZodSocketGameJoinSuccessResponseSchema = registerSocketSchema(
     })),
     {
         id: "GameJoinSuccessResponse",
+        type: "success-response",
+        eventName: SocketGameJoinEventName,
         description: `Response schema for a successful [${SocketGameJoinEventName}] event`,
     }
 );
@@ -66,6 +74,8 @@ export const ZodSocketGameJoinResponseSchema = registerSocketSchema(
     ]),
     {
         id: "GameJoinResponse",
+        type: "response",
+        eventName: SocketGameJoinEventName,
         description: `Response schema for the [${SocketGameJoinEventName}] event`
     }
 );

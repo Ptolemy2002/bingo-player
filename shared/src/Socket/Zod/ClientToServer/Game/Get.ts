@@ -11,6 +11,7 @@ export const ZodSocketGameGetArgsSchema = registerSocketSchema(
             z.string(),
             {
                 id: "GameGetArgs.id",
+                type: "prop",
                 description: "The unique identifier for the game you want to retrieve the state for",
                 example: BingoGameExample.id
             }
@@ -18,6 +19,8 @@ export const ZodSocketGameGetArgsSchema = registerSocketSchema(
     }),
     {
         id: "GameGetArgs",
+        type: "args",
+        eventName: SocketGameGetEventName,
         description: `Arguments schema for the [${SocketGameGetEventName}] event`,
     }
 );
@@ -30,6 +33,7 @@ export const ZodSocketGameGetSuccessResponseSchema = registerSocketSchema(
             ZodBingoGameSchema.refine(() => true),
             {
                 id: "GameGetSuccessResponse.game",
+                type: "prop",
                 description: "The current state of the bingo game",
                 example: BingoGameExample
             }
@@ -37,6 +41,8 @@ export const ZodSocketGameGetSuccessResponseSchema = registerSocketSchema(
     })),
     {
         id: "GameGetSuccessResponse",
+        type: "success-response",
+        eventName: SocketGameGetEventName,
         description: `Response schema for a successful [${SocketGameGetEventName}] event`
     }
 );
@@ -48,6 +54,8 @@ export const ZodSocketGameGetResponseSchema = registerSocketSchema(
     ]),
     {
         id: "GameGetResponse",
+        type: "response",
+        eventName: SocketGameGetEventName,
         description: `Response schema for the [${SocketGameGetEventName}] event`
     }
 );

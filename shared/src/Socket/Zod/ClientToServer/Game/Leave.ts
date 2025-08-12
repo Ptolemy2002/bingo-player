@@ -11,6 +11,7 @@ export const ZodSocketGameLeaveArgsSchema = registerSocketSchema(
             z.string(),
             {
                 id: "GameLeaveArgs.id",
+                type: "prop",
                 description: "The unique identifier for the game you want to leave",
                 example: BingoGameExample.id
             }
@@ -19,6 +20,7 @@ export const ZodSocketGameLeaveArgsSchema = registerSocketSchema(
             z.string(),
             {
                 id: "GameLeaveArgs.playerName",
+                type: "prop",
                 description: "The name of the player leaving the game",
                 example: "Player2"
             }
@@ -26,6 +28,8 @@ export const ZodSocketGameLeaveArgsSchema = registerSocketSchema(
     }),
     {
         id: "GameLeaveArgs",
+        type: "args",
+        eventName: SocketGameLeaveEventName,
         description: `Arguments schema for the [${SocketGameLeaveEventName}] event`,
     }
 );
@@ -39,6 +43,8 @@ export const ZodSocketGameLeaveResponseSchema = registerSocketSchema(
     ]),
     {
         id: "GameLeaveResponse",
+        type: "response",
+        eventName: SocketGameLeaveEventName,
         description: `Response schema for the [${SocketGameLeaveEventName}] event`
     }
 );

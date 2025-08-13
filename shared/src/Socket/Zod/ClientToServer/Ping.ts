@@ -4,7 +4,13 @@ import { z } from "zod";
 
 export const SocketPingEventName = "bingoPing" as const;
 
-export const ZodSocketPingArgsSchema = z.undefined();
+export const ZodSocketPingArgsSchema = registerSocketSchema(z.undefined(), {
+    id: "SocketPingArgs",
+    type: "args",
+    eventName: SocketPingEventName,
+    description: `Arguments schema for the [${SocketPingEventName}] event`
+});
+
 export const ZodSocketPingSuccessResponseSchema = registerSocketSchema(
     zodSuccessResponseSchema(z.object({
         message: z.literal("pong")
@@ -12,6 +18,7 @@ export const ZodSocketPingSuccessResponseSchema = registerSocketSchema(
     {
         id: "SocketPingSuccessResponse",
         type: "success-response",
+        eventName: SocketPingEventName,
         description: `Response schema for a successful [${SocketPingEventName}] event`,
     }
 );
@@ -23,6 +30,7 @@ export const ZodSocketPingResponseSchema = registerSocketSchema(
     ]),
     {
         id: "SocketPingResponse",
+        eventName: SocketPingEventName,
         type: "response",
         description: `Response schema for the [${SocketPingEventName}] event`
     }

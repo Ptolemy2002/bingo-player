@@ -5,7 +5,12 @@ import { z } from "zod";
 
 export const SocketGameListEventName = "gameList" as const;
 
-export const ZodSocketGameListArgsSchema = z.undefined();
+export const ZodSocketGameListArgsSchema = registerSocketSchema(z.undefined(), {
+    id: "GameListArgs",
+    type: "args",
+    eventName: SocketGameListEventName,
+    description: `Arguments schema for the [${SocketGameListEventName}] event`
+});
 
 export const ZodSocketGameListSuccessResponseSchema = registerSocketSchema(
     zodSuccessResponseSchema(z.object({
@@ -23,7 +28,7 @@ export const ZodSocketGameListSuccessResponseSchema = registerSocketSchema(
         id: "GameListSuccessResponse",
         type: "success-response",
         eventName: SocketGameListEventName,
-        description: `Response schema for a successful [${SocketGameListEventName}] event`,
+        description: `Response schema for a successful [${SocketGameListEventName}] event`
     }
 );
 

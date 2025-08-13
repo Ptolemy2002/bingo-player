@@ -75,7 +75,7 @@ export const ZodSocketSpaceOpArgsSchema = registerSocketSchema(
         )
     }),
     {
-        id: "SpaceMarkAllArgs",
+        id: "SpaceOpArgs",
         type: "args",
         eventName: SocketSpaceOpEventName,
         description: `Arguments schema for the [${SocketSpaceOpEventName}] event`,

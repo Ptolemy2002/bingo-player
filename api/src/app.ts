@@ -14,16 +14,15 @@ import swaggerFile from 'services/swagger_output.json';
 import mongoose from 'mongoose';
 
 import getEnv from 'env';
+
 const env = getEnv();
 
+import "socketApp"; // Ensure socketApp is imported to start the socket server
+
 import indexRouter from 'routes/index';
-// Registers all socket consumers
-import "socket-consumers";
 import { ZodErrorCodeSchema, ZodErrorMessageSchema, ZodHelpLinkSchema } from 'shared';
-import { startSocket } from 'services/socket';
 
 const app = express();
-const socketApp = express();
 
 // Connect to MongoDB
 mongoose.connect(env.mongoConnectionString)
@@ -60,16 +59,6 @@ app.use(cors({
 }));
 
 app.use('/', indexRouter);
-
-socketApp.get('/', function(_, res) {
-    res.send("Root route for Socket Server. For docs, go <a href='/docs'>here</a>.");
-});
-
-socketApp.get("/docs", (_, res: Response) => {
-    res.sendFile("views/socketDocs.html", { root: __dirname });
-});
-
-startSocket(env.socketPort, socketApp);
 
 app.use(function(err: HttpError, req: Request, res: Response, next: NextFunction) {
     console.error(err.stack);

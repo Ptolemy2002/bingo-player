@@ -6,17 +6,19 @@ export type BingoMetaSchemaType = "prop" | "collection" | "game-element" | "othe
 export type BingoMeta<T extends ZodType = ZodType> =Override<
     GlobalMeta,
     {
+        id: string;
+        description: string;
         type: BingoMetaSchemaType;
         example?: z.output<T>;
         examples?: z.output<T>[];
     }
 >;
 
-export const bingoSchemas: ZodType[] = [];
+export const BingoSchemas: ZodType[] = [];
 export const bingoRegistry = z.registry<BingoMeta>();
 
 export function registerBingoSchema<T extends ZodType>(schema: T, meta: BingoMeta<T>): T {
-    bingoSchemas.push(schema);
+    BingoSchemas.push(schema);
     bingoRegistry.add(schema, meta);
     return schema;
 }

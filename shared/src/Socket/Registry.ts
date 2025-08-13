@@ -6,6 +6,8 @@ export type SocketMetaSchemaType = "args" | "prop" | "response" | "success-respo
 export type SocketMeta<T extends ZodType = ZodType> = Override<
     GlobalMeta,
     {
+        id: string;
+        description: string;
         type: SocketMetaSchemaType;
         eventName?: string;
         example?: z.input<T>;
@@ -13,11 +15,11 @@ export type SocketMeta<T extends ZodType = ZodType> = Override<
     }
 >;
 
-export const socketSchemas: ZodType[] = [];
+export const SocketSchemas: ZodType[] = [];
 export const socketRegistry = z.registry<SocketMeta>();
 
 export function registerSocketSchema<T extends ZodType>(schema: T, meta: SocketMeta<T>): T {
-    socketSchemas.push(schema);
+    SocketSchemas.push(schema);
     socketRegistry.add(schema, meta);
     return schema;
 }

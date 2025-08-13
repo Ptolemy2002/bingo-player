@@ -2582,7 +2582,8 @@
           "INTERNAL",
           "NOT_FOUND",
           "NOT_IMPLEMENTED",
-          "VALIDATION"
+          "VALIDATION",
+          "CONFLICT"
         ],
         "description": "An error code that may be returned by the server."
       },

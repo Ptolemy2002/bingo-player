@@ -136,13 +136,20 @@ class SchemaProcessor {
     }
 
     private processBingoSchemas(): void {
+        // Process non-prop schemas first
+        BingoSchemas.forEach((schema) => {
+            const meta = bingoRegistry.get(schema)!;
+
+            if (meta.type !== "prop") {
+                this.processBingoOtherSchema(meta);
+            }
+        });
+
         BingoSchemas.forEach((schema) => {
             const meta = bingoRegistry.get(schema)!;
 
             if (meta.type === "prop") {
                 this.processBingoPropSchema(meta);
-            } else {
-                this.processBingoOtherSchema(meta);
             }
         });
     }
@@ -193,8 +200,13 @@ class SchemaProcessor {
         if (!miscEntry) return;
 
         const miscItem = miscEntry[1];
-        miscItem.description = meta.description || "No description";
-        this.addExamples(miscItem, meta);
+        const examples = this.extractExamples(meta);
+
+        miscItem.props.push({
+            id: meta.id,
+            description: meta.description || "No description",
+            examples
+        });
     }
 
     private addExamples(target: { examples: string[] }, meta: any): void {
@@ -231,7 +243,7 @@ class HTMLRenderer {
 
         const propsHtml = section.props.length > 0 ? `
             <h${sectionTitle === "Response" ? "5" : "4"}>Props</h${sectionTitle === "Response" ? "5" : "4"}>
-            ${section.props.map(prop => this.renderProperty(prop)).join("")}
+            ${section.props.sort((a, b) => a.id.localeCompare(b.id)).map(prop => this.renderProperty(prop)).join("")}
         ` : '';
 
         return `
@@ -256,12 +268,15 @@ class HTMLRenderer {
         }
 
         return Array.from(endpoints.values())
+            .sort((a, b) => a.id.localeCompare(b.id))
             .map(endpoint => this.renderEndpoint(endpoint))
             .join("");
     }
 
     private renderMiscellaneous(misc: Map<string, Miscellaneous>): string {
-        return Array.from(misc.entries()).map(([key, miscItem]) => {
+        return Array.from(misc.entries())
+            .sort(([a], [b]) => a.localeCompare(b))
+            .map(([key, miscItem]) => {
             const examplesSection = miscItem.examples.length > 0 ? `
                 <h4>Examples</h4>
                 <ul>${miscItem.examples.map(e => `<li><pre>${e}</pre></li>`).join("")}</ul>
@@ -269,7 +284,7 @@ class HTMLRenderer {
 
             const propsSection = miscItem.props.length > 0 ? `
                 <h4>Properties</h4>
-                ${miscItem.props.map(p => {
+                ${miscItem.props.sort((a, b) => a.id.localeCompare(b.id)).map(p => {
                     const propExamples = p.examples.length > 0 ? `
                         <h6>Examples</h6>
                         <ul>${p.examples.map(e => `<li><pre>${e}</pre></li>`).join("")}</ul>

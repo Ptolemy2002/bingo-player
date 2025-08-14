@@ -12,7 +12,7 @@ export const ZodSocketGameCreateArgsSchema = registerSocketSchema(
             {
                 id: "GameCreateArgs.id",
                 type: "prop",
-                description: "The unique identifier for the game you want to create",
+                description: "The unique identifier for the game you want to create. Must be a string.",
                 example: BingoGameExample.id
             }
         ),
@@ -21,7 +21,7 @@ export const ZodSocketGameCreateArgsSchema = registerSocketSchema(
             {
                 id: "GameCreateArgs.hostName",
                 type: "prop",
-                description: "The name of the player creating and therefore hosting the game",
+                description: "The name of the player creating and therefore hosting the game. Must be a string.",
                 example: "Player1"
             }
         )

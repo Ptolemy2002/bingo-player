@@ -8,7 +8,7 @@ export const ZodSocketIDSchema = registerSocketSchema(
     {
         id: "SocketID",
         type: "other",
-        description: "A unique identifier for a socket connection, exactly 20 characters long.",
+        description: "A unique identifier for a socket connection, exactly 20 characters long. Must be a string.",
         example: SocketIDExample
     }
 );

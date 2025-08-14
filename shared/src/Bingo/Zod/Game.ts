@@ -16,7 +16,7 @@ export const ZodBingoGameSchema = registerBingoSchema(
             {
                 id: "BingoGame.id",
                 type: "prop",
-                description: "Unique identifier for the game",
+                description: "Unique identifier for the game. Must be a string.",
                 example: BingoGameExample.id
             }
         ),
@@ -27,7 +27,7 @@ export const ZodBingoGameSchema = registerBingoSchema(
             {
                 id: "BingoGame.players",
                 type: "prop",
-                description: "Set of players participating in the game",
+                description: "Set of players participating in the game, enforcing name uniqueness.",
                 example: BingoGameExample.players
             }
         ),
@@ -38,7 +38,7 @@ export const ZodBingoGameSchema = registerBingoSchema(
             {
                 id: "BingoGame.spaces",
                 type: "prop",
-                description: "Set of bingo spaces available in the game",
+                description: "Set of bingo spaces available in the game, enforcing ID uniqueness.",
                 example: BingoGameExample.spaces
             }
         )

@@ -12,7 +12,7 @@ export const ZodSocketGameGetArgsSchema = registerSocketSchema(
             {
                 id: "GameGetArgs.id",
                 type: "prop",
-                description: "The unique identifier for the game you want to retrieve the state for",
+                description: "The unique identifier for the game you want to retrieve the state for. Must be a string.",
                 example: BingoGameExample.id
             }
         )

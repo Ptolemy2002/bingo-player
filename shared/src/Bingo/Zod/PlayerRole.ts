@@ -9,7 +9,7 @@ export const ZodBingoPlayerRoleSchema = registerBingoSchema(
     {
         id: "BingoPlayerRole",
         type: "other",
-        description: "Role of the player in the bingo game",
+        description: `Role of the player in the bingo game. Options: ${JSON.stringify(BingoPlayerRoleEnum)}`,
         example: BingoPlayerRoleExample
     }
 );

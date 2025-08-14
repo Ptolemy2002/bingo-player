@@ -8,7 +8,7 @@ export const ZodSocketPingArgsSchema = registerSocketSchema(z.undefined(), {
     id: "SocketPingArgs",
     type: "args",
     eventName: SocketPingEventName,
-    description: `Arguments schema for the [${SocketPingEventName}] event`
+    description: `Arguments schema for the [${SocketPingEventName}] event. Currently empty.`
 });
 
 export const ZodSocketPingSuccessResponseSchema = registerSocketSchema(

@@ -2,6 +2,7 @@ import { z } from "zod";
 import { registerBingoSchema } from "src/Bingo/Registry";
 import { ZodBingoPlayerRoleSchema } from "./PlayerRole";
 import { ZodSocketIDSchema } from "src/Socket";
+import { BingoPlayerRoleEnum } from "../Other";
 
 export const BingoPlayerExamples = [
     {
@@ -23,7 +24,7 @@ export const ZodBingoPlayerSchema = registerBingoSchema(
             {
                 id: "BingoPlayer.name",
                 type: "prop",
-                description: "Name of the player",
+                description: "Name of the player. Must be a string with at least 1 character.",
                 example: BingoPlayerExamples[0].name
             }
         ),
@@ -34,16 +35,18 @@ export const ZodBingoPlayerSchema = registerBingoSchema(
             {
                 id: "BingoPlayer.role",
                 type: "prop",
-                description: "Role of the player",
+                description: `Role of the player. Options: ${JSON.stringify(BingoPlayerRoleEnum)}`,
                 example: BingoPlayerExamples[0].role
             }
         ),
         socketId: registerBingoSchema(
-            ZodSocketIDSchema,
+            // This `refine` pattern allows us to copy the schema so that the original metadata
+            // is not overwritten on `ZodSocketIDSchema`.
+            ZodSocketIDSchema.refine(() => true),
             {
                 id: "BingoPlayer.socketId",
                 type: "prop",
-                description: "Socket ID of the player",
+                description: "Socket ID of the player. Must be a string exactly 20 characters long",
                 example: BingoPlayerExamples[0].socketId
             }
         )
@@ -74,7 +77,7 @@ export const ZodBingoPlayerSetSchema = registerBingoSchema(
     {
         id: "BingoPlayerSet",
         type: "collection",
-        description: "Set of Bingo players, ensuring unique names",
+        description: "Set of Bingo players, enforcing unique names",
         example: BingoPlayerExamples
     }
 );

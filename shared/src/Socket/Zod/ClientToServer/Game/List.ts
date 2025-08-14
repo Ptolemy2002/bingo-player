@@ -9,7 +9,7 @@ export const ZodSocketGameListArgsSchema = registerSocketSchema(z.undefined(), {
     id: "GameListArgs",
     type: "args",
     eventName: SocketGameListEventName,
-    description: `Arguments schema for the [${SocketGameListEventName}] event`
+    description: `Arguments schema for the [${SocketGameListEventName}] event. Currently empty.`,
 });
 
 export const ZodSocketGameListSuccessResponseSchema = registerSocketSchema(

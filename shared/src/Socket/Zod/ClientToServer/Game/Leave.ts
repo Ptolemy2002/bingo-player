@@ -12,7 +12,7 @@ export const ZodSocketGameLeaveArgsSchema = registerSocketSchema(
             {
                 id: "GameLeaveArgs.id",
                 type: "prop",
-                description: "The unique identifier for the game you want to leave",
+                description: "The unique identifier for the game you want to leave. Must be a string.",
                 example: BingoGameExample.id
             }
         ),
@@ -21,7 +21,7 @@ export const ZodSocketGameLeaveArgsSchema = registerSocketSchema(
             {
                 id: "GameLeaveArgs.playerName",
                 type: "prop",
-                description: "The name of the player leaving the game",
+                description: "The name of the player leaving the game. Must be a string.",
                 example: "Player2"
             }
         )

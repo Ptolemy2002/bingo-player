@@ -1,6 +1,6 @@
 import { ZodErrorResponseSchema, zodSuccessResponseSchema } from "src/Api";
 import { BingoGameExample, ZodBingoGameSchema } from "src/Bingo";
-import { registerSocketSchema, SocketSpaceOpExample, ZodSocketSpaceOpSchema } from "src/Socket";
+import { registerSocketSchema, SocketSpaceOpEnum, SocketSpaceOpExample, ZodSocketSpaceOpSchema } from "src/Socket";
 import { ZodSpaceIDSchema } from "src/Space";
 import { z } from "zod";
 
@@ -19,7 +19,7 @@ export const ZodSocketSpaceOpArgsSchema = registerSocketSchema(
             {
                 id: "SpaceOpArgs.gameId",
                 type: "prop",
-                description: "The unique identifier for the game you want to perform the operation on",
+                description: "The unique identifier for the game you want to perform the operation on. Must be a string.",
                 example: SocketSpaceOpArgsExample.gameId
             }
         ),
@@ -32,7 +32,7 @@ export const ZodSocketSpaceOpArgsSchema = registerSocketSchema(
             {
                 id: "SpaceOpArgs.op",
                 type: "prop",
-                description: "The operation to perform on the spaces",
+                description: `The operation to perform on the spaces. Options: ${JSON.stringify(SocketSpaceOpEnum)}`,
                 example: SocketSpaceOpArgsExample.op
             }
         ),
@@ -45,9 +45,9 @@ export const ZodSocketSpaceOpArgsSchema = registerSocketSchema(
                             error: "Space index must be a non-negative integer, as the game's space set is zero-indexed."
                         }),
                         {
-                            id: "SpaceOpArgs.spaces.index",
+                            id: "SpaceOpArgs.spaces.item<number>",
                             type: "prop",
-                            description: "The index of the space to operate on",
+                            description: "The index of the space to operate on. Must be a non-negative integer.",
                             example: SocketSpaceOpArgsExample.spaces[0] as number
                         }
                     ),
@@ -57,9 +57,9 @@ export const ZodSocketSpaceOpArgsSchema = registerSocketSchema(
                         // is not overwritten on `ZodBingoPlayerSetSchema`.
                         ZodSpaceIDSchema.refine(() => true),
                         {
-                            id: "SpaceOpArgs.spaces.id",
+                            id: "SpaceOpArgs.spaces.item<string>",
                             type: "prop",
-                            description: "The ID of the space to operate on",
+                            description: "The ID of the space to operate on. Must be a MongoDB ObjectId string.",
                             example: SocketSpaceOpArgsExample.spaces[1] as string
                         }
                     )

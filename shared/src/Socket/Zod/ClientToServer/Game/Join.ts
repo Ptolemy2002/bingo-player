@@ -1,5 +1,5 @@
 import { ZodErrorResponseSchema, zodSuccessResponseSchema } from "src/Api";
-import { BingoGameExample, ZodBingoGameSchema, ZodBingoPlayerRoleSchema } from "src/Bingo";
+import { BingoGameExample, BingoPlayerRoleEnum, ZodBingoGameSchema, ZodBingoPlayerRoleSchema } from "src/Bingo";
 import { registerSocketSchema } from "src/Socket/Registry";
 import { z } from "zod";
 
@@ -12,7 +12,7 @@ export const ZodSocketGameJoinArgsSchema = registerSocketSchema(
             {
                 id: "GameJoinArgs.id",
                 type: "prop",
-                description: "The unique identifier for the game you want to join",
+                description: "The unique identifier for the game you want to join. Must be a string.",
                 example: BingoGameExample.id
             }
         ),
@@ -22,7 +22,7 @@ export const ZodSocketGameJoinArgsSchema = registerSocketSchema(
             {
                 id: "GameJoinArgs.playerName",
                 type: "prop",
-                description: "The name of the player joining the game",
+                description: "The name of the player joining the game. Must be a string.",
                 example: "Player2"
             }
         ),
@@ -32,7 +32,9 @@ export const ZodSocketGameJoinArgsSchema = registerSocketSchema(
             {
                 id: "GameJoinArgs.playerRole",
                 type: "prop",
-                description: "The role of the player joining the game. You cannot join as a host, but a host can change your role later.",
+                description: 
+                    `The role of the player joining the game. You cannot join as a host, but a host can change your role later. ` +
+                    `Options: ${JSON.stringify(BingoPlayerRoleEnum.filter(r => r !== "host"))}`,
                 example: "player"
             }
         )

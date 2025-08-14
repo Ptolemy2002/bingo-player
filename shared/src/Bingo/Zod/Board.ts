@@ -18,7 +18,7 @@ export const ZodBingoBoardSchema = registerBingoSchema(
             {
                 id: "BingoBoard.id",
                 type: "prop",
-                description: "Unique identifier for the bingo board",
+                description: "Unique identifier for the bingo board. Must be a string.",
                 example: BingoBoardExample.id
             }
         ),
@@ -27,7 +27,7 @@ export const ZodBingoBoardSchema = registerBingoSchema(
             {
                 id: "BingoBoard.gameId",
                 type: "prop",
-                description: "Identifier of the game this board belongs to",
+                description: "Identifier of the game this board belongs to. Must be a string.",
                 example: BingoBoardExample.gameId
             }
         ),
@@ -38,7 +38,7 @@ export const ZodBingoBoardSchema = registerBingoSchema(
                     {
                         id: "BingoBoard.shape.width",
                         type: "prop",
-                        description: "Width of the bingo board",
+                        description: "Width of the bingo board. Must be a positive integer.",
                         example: BingoBoardExample.shape.width
                     }
                 ),
@@ -47,7 +47,7 @@ export const ZodBingoBoardSchema = registerBingoSchema(
                     {
                         id: "BingoBoard.shape.height",
                         type: "prop",
-                        description: "Height of the bingo board",
+                        description: "Height of the bingo board. Must be a positive integer.",
                         example: BingoBoardExample.shape.height
                     }
                 )
@@ -55,18 +55,18 @@ export const ZodBingoBoardSchema = registerBingoSchema(
             {
                 id: "BingoBoard.shape",
                 type: "prop",
-                description: "Dimensions of the bingo board, specifying its width and height",
+                description: "Dimensions of the bingo board, specifying its width and height.",
                 example: BingoBoardExample.shape
             }
         ),
         spaces: registerBingoSchema(
             z.array(z.union([
                 registerBingoSchema(
-                    z.int().positive(),
+                    z.int().nonnegative(),
                     {
                         id: "BingoBoard.spaces.item<number>",
                         type: "prop",
-                        description: "The index of a space within the game's space set",
+                        description: "The index of a space within the game's space set. Must be a non-negative integer.",
                         example: BingoBoardExample.spaces[0]!
                     }
                 ),

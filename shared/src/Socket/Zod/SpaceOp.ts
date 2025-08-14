@@ -11,7 +11,7 @@ export const ZodSocketSpaceOpSchema = registerSocketSchema(
     {
         id: "SpaceOp",
         type: "other",
-        description: "A possible operation that can be performed on a space",
+        description: `A possible operation that can be performed on a space. Options: ${JSON.stringify(SocketSpaceOpEnum)}`,
         example: SocketSpaceOpExample
     }
 );

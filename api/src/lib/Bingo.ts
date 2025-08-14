@@ -15,6 +15,10 @@ export class BingoGameData {
         this.fromJSON(omit(game, "id"));
     }
 
+    getSocketRoomName() {
+        return `game(${this.id})`;
+    }
+
     fromJSON(data: Partial<BingoGame>) {
         if (data.id) this.id = data.id;
 

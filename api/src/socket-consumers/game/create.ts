@@ -37,6 +37,8 @@ export class BingoGameCreateHandler extends SocketRouteHandler<SocketGameCreateS
             role: "host"
         });
 
+        await req.socket.join(game.getSocketRoomName());
+
         return {
             status: 200,
             response: this.buildSuccessResponse({

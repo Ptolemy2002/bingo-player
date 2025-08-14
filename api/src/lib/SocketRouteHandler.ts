@@ -4,6 +4,7 @@ import getEnv, { EnvType } from "env";
 import { Socket } from "socket.io";
 
 export type SocketRouteHandlerRequestData = {
+    socket: Socket;
     id: string;
     args: unknown;
 };
@@ -53,7 +54,7 @@ export default class SocketRouteHandler<SuccessResponse extends SuccessResponseB
 
     async handle(socket: Socket, args: unknown, callback: (res: SuccessResponse | ErrorResponse) => void): Promise<void> {
         try {
-            const { response } = await this.generateResponse({ id: socket.id, args });
+            const { response } = await this.generateResponse({ socket, id: socket.id, args });
             callback(response);
         } catch (err: any) {
             console.error(err.stack);

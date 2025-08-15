@@ -3,6 +3,7 @@ import { createServer, Server as HttpServer } from 'http';
 import { Express } from 'express';
 import getEnv from 'env';
 import { SocketClientToServerEvents, SocketServerToClientEvents } from 'shared';
+import RouteError from 'lib/RouteError';
 
 export type TypedSocket = Socket<SocketClientToServerEvents, SocketServerToClientEvents>;
 export type TypedSocketServer = SocketServer<SocketClientToServerEvents, SocketServerToClientEvents>;
@@ -57,7 +58,7 @@ export function initSocket(app: Express) {
 
 export function getServer(app?: Express, createNew=false) {
     if (createNew || !server) {
-        if (!app) throw new Error("Server is not initialized and no Express app provided for initialization");
+        if (!app) throw new RouteError("Server is not initialized and no Express app provided for initialization", 500, "INTERNAL");
         initServer(app);
     }
 
@@ -66,7 +67,7 @@ export function getServer(app?: Express, createNew=false) {
 
 export function getIO(app?: Express, createNew=false) {
     if (createNew || !io) {
-        if (!app) throw new Error("Socket.IO is not initialized and no Express app provided for initialization");
+        if (!app) throw new RouteError("Socket.IO is not initialized and no Express app provided for initialization", 500, "INTERNAL");
         initIO(app);
     }
     return io!;
@@ -74,7 +75,7 @@ export function getIO(app?: Express, createNew=false) {
 
 export function getSocket(app?: Express, createNew=false) {
     if (createNew || !io || !server) {
-        if (!app) throw new Error("Socket server is not initialized and no Express app provided for initialization");
+        if (!app) throw new RouteError("Socket server is not initialized and no Express app provided for initialization", 500, "INTERNAL");
         initSocket(app);
     }
 

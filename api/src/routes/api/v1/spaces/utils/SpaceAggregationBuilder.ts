@@ -160,8 +160,9 @@ export default class SpaceAggregationBuilder extends AggregationBuilder<SpaceAgg
                 const sortObject: Record<string, 1 | -1> = {};
 
                 if (sortBy === 'known-as' && !this.hasKnownAs()) {
-                    throw new TypeError(
+                    throw new RouteError(
                         'Cannot sort by known-as without adding it first.',
+                        500, "INTERNAL"
                     );
                 }
 
@@ -233,8 +234,9 @@ export default class SpaceAggregationBuilder extends AggregationBuilder<SpaceAgg
                 );
 
                 if (queryProp === 'known-as' && !this.hasKnownAs()) {
-                    throw new TypeError(
+                    throw new RouteError(
                         'Cannot match known-as without adding it first.',
+                        500, "INTERNAL"
                     );
                 }
 
@@ -309,8 +311,9 @@ export default class SpaceAggregationBuilder extends AggregationBuilder<SpaceAgg
 
                 const interpretedProp = interpretSpaceQueryPropWithScore(listProp);
                 if (interpretedProp === 'known-as' && !this.hasKnownAs()) {
-                    throw new TypeError(
+                    throw new RouteError(
                         'Cannot unwind known-as without adding it first.',
+                        500, "INTERNAL"
                     );
                 }
 
@@ -333,8 +336,9 @@ export default class SpaceAggregationBuilder extends AggregationBuilder<SpaceAgg
 
                 const interpretedProp = interpretSpaceQueryPropWithScore(listProp);
                 if (interpretedProp === 'known-as' && !this.hasKnownAs()) {
-                    throw new TypeError(
+                    throw new RouteError(
                         'Cannot group by known-as without adding it first.',
+                        500, "INTERNAL"
                     );
                 }
 
@@ -388,8 +392,9 @@ export default class SpaceAggregationBuilder extends AggregationBuilder<SpaceAgg
                 );
 
                 if (searchQuery === "_score" && !this.hasScore()) {
-                    throw new TypeError(
-                        'Cannot sort by score without adding it first.'
+                    throw new RouteError(
+                        'Cannot sort by score without adding it first.',
+                        500, "INTERNAL"
                     );
                 }
 

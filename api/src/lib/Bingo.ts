@@ -1,5 +1,6 @@
 import { omit } from "@ptolemy2002/ts-utils";
 import { BingoGame, BingoPlayer, BingoPlayerRole, BingoSpaceSet, cleanMongoSpace, MongoSpace, SocketID } from "shared";
+import RouteError from "./RouteError";
 
 // Creating partials that still require necessary fields
 export type BingoGameInit = Partial<BingoGame> & Pick<BingoGame, "id">;
@@ -89,7 +90,7 @@ export class BingoGameData {
         if (space) {
             space.isMarked = true;
         } else {
-            throw new Error(`Space ${_space} not found in game "${this.id}"`);
+            throw new RouteError(`Space ${_space} not found in game "${this.id}"`, 404, "NOT_FOUND");
         }
 
         return this;
@@ -100,7 +101,7 @@ export class BingoGameData {
         if (space) {
             space.isMarked = false;
         } else {
-            throw new Error(`Space ${_space} not found in game "${this.id}"`);
+            throw new RouteError(`Space ${_space} not found in game "${this.id}"`, 404, "NOT_FOUND");
         }
 
         return this;
@@ -111,14 +112,14 @@ export class BingoGameData {
         if (space) {
             space.isMarked = !space.isMarked;
         } else {
-            throw new Error(`Space ${_space} not found in game "${this.id}"`);
+            throw new RouteError(`Space ${_space} not found in game "${this.id}"`, 404, "NOT_FOUND");
         }
 
         return this;
     }
 
     addSpace(space: MongoSpace) {
-        if (this.hasSpace(space._id)) throw new Error(`Space ${space._id} already exists in game "${this.id}"`);
+        if (this.hasSpace(space._id)) throw new RouteError(`Space ${space._id} already exists in game "${this.id}"`, 409, "CONFLICT");
 
         const newSpace = {
             isMarked: false,
@@ -135,15 +136,15 @@ export class BingoGameData {
         if (index !== -1) {
             this.spaces.splice(index, 1);
         } else {
-            throw new Error(`Space ${space} not found in game "${this.id}"`);
+            throw new RouteError(`Space ${space} not found in game "${this.id}"`, 404, "NOT_FOUND");
         }
 
         return this;
     }
 
     addPlayer(player: BingoPlayerInit) {
-        if (this.hasPlayerByName(player.name)) throw new Error(`Player "${player.name}" already exists in game "${this.id}"`);
-        if (this.hasPlayerBySocketId(player.socketId)) throw new Error(`Player with socket ID ${player.socketId} already exists in game "${this.id}"`);
+        if (this.hasPlayerByName(player.name)) throw new RouteError(`Player "${player.name}" already exists in game "${this.id}"`, 409, "CONFLICT");
+        if (this.hasPlayerBySocketId(player.socketId)) throw new RouteError(`Player with socket ID ${player.socketId} already exists in game "${this.id}"`, 409, "CONFLICT");
 
         const newPlayer = new BingoPlayerData(player);
         this.players.push(newPlayer);
@@ -157,7 +158,7 @@ export class BingoGameData {
         if (index !== -1) {
             this.players.splice(index, 1);
         } else {
-            throw new Error(`Player "${name}" not found in game "${this.id}"`);
+            throw new RouteError(`Player "${name}" not found in game "${this.id}"`, 404, "NOT_FOUND");
         }
 
         return player;
@@ -170,7 +171,7 @@ export class BingoGameData {
         if (index !== -1) {
             this.players.splice(index, 1);
         } else {
-            throw new Error(`Player with socket ID ${socketId} not found in game "${this.id}"`);
+            throw new RouteError(`Player with socket ID ${socketId} not found in game "${this.id}"`, 404, "NOT_FOUND");
         }
 
         return player;
@@ -220,7 +221,7 @@ export class BingoGameCollection {
     }
 
     addGame(game: BingoGameInit) {
-        if (this.hasGame(game.id)) throw new Error(`Game with ID "${game.id}" already exists`);
+        if (this.hasGame(game.id)) throw new RouteError(`Game with ID "${game.id}" already exists`, 409, "CONFLICT");
         return this.setGame(game);
     }
 

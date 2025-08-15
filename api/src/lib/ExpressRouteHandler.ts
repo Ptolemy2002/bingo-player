@@ -69,7 +69,17 @@ export default class ExpressRouteHandler<SuccessResponse extends SuccessResponse
     }
 
     async handle(req: ExpressRouteHandlerRequestData, res: Response) {
-        const { status, response } = await this.generateResponse(req, res);
-        res.status(status).json(response);
+        try {
+            const { status, response } = await this.generateResponse(req, res);
+            res.status(status).json(response);
+        } catch (e: any) {
+            // Inject the help URL if none exists so that reporting is most helpful.
+            // Rethrow, since it will be caught higher up.
+            if (!e.help) {
+                e.help = this.help;
+            }
+            
+            throw e;
+        }
     }
 }

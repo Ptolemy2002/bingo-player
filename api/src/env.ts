@@ -1,6 +1,7 @@
 import { z, ZodString, ZodLiteral, ZodNull, ZodUnion } from 'zod';
 import dotEnv from 'dotenv';
 import { stripWords } from '@ptolemy2002/js-utils';
+import RouteError from 'lib/RouteError';
 dotEnv.config();
 
 function nullableUrl(defaultValue?: string | null, emptyIsDefault = true) {
@@ -93,9 +94,9 @@ export default function getEnv(createNew=false): EnvType {
     if (createNew || Env === null) Env = EnvSchema.parse(process.env);
     if (createNew || !EnvInstance) {
         if (Env.NODE_ENV === "production") {
-            if (!Env.PROD_API_URL) throw new Error("PROD_API_URL is required in production environment");
-            if (!Env.PROD_CLIENT_URL) throw new Error("PROD_CLIENT_URL is required in production environment");
-            if (!Env.PROD_SOCKET_URL) throw new Error("PROD_SOCKET_URL is required in production environment");
+            if (!Env.PROD_API_URL) throw new RouteError("PROD_API_URL is required in production environment", 500, "INTERNAL");
+            if (!Env.PROD_CLIENT_URL) throw new RouteError("PROD_CLIENT_URL is required in production environment", 500, "INTERNAL");
+            if (!Env.PROD_SOCKET_URL) throw new RouteError("PROD_SOCKET_URL is required in production environment", 500, "INTERNAL");
         }
 
         const apiURL = Env.NODE_ENV === "production" ? Env.PROD_API_URL! : Env.DEV_API_URL;

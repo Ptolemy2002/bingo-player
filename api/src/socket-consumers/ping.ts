@@ -19,10 +19,10 @@ export class BingoPingHandler extends SocketRouteHandler<SocketPingSuccessRespon
     }
 }
 
-const pingSocketConsumer: SocketConsumer = (socket) => {
+const pingSocketConsumer: SocketConsumer = (socket, io) => {
     socket.on(SocketPingEventName, async (callback) => {
         const handler = new BingoPingHandler();
-        await handler.handle(socket, {}, callback);
+        await handler.handle(socket, io, {}, callback);
     });
 };
 

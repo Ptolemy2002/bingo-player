@@ -8,7 +8,8 @@ export const ErrorCodeEnum = [
     "NOT_FOUND",
     "NOT_IMPLEMENTED",
     "VALIDATION",
-    "CONFLICT"
+    "CONFLICT",
+    "FORBIDDEN"
 ] as const;
 
 export const SortOrderEnum = [

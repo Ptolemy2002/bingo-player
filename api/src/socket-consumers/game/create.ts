@@ -48,10 +48,10 @@ export class BingoGameCreateHandler extends SocketRouteHandler<SocketGameCreateS
     }
 }
 
-const gameCreateSocketConsumer: SocketConsumer = (socket) => {
+const gameCreateSocketConsumer: SocketConsumer = (socket, io) => {
     socket.on(SocketGameCreateEventName, async (args, callback) => {
         const handler = new BingoGameCreateHandler();
-        await handler.handle(socket, args, callback);
+        await handler.handle(socket, io, args, callback);
     });
 };
 

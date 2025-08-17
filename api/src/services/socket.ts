@@ -49,6 +49,10 @@ export function initIO(app: Express) {
     return io;
 }
 
+export function getSocketClientById(io: TypedSocketServer, id: string) {
+    return io.sockets.sockets.get(id) ?? null;
+}
+
 export function initSocket(app: Express) {
     server = initServer(app);
     io = initIO(app);

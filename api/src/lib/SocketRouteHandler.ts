@@ -2,9 +2,11 @@ import { ErrorResponse, SuccessResponseBase, ZodErrorCodeSchema, ZodErrorMessage
 import RouteHandler, { GeneratedResonse } from "./RouteHandler";
 import getEnv, { EnvType } from "env";
 import { Socket } from "socket.io";
+import { TypedSocketServer } from "services/socket";
 
 export type SocketRouteHandlerRequestData = {
     socket: Socket;
+    io: TypedSocketServer;
     id: string;
     args: unknown;
 };
@@ -52,9 +54,9 @@ export default class SocketRouteHandler<SuccessResponse extends SuccessResponseB
         };
     }
 
-    async handle(socket: Socket, args: unknown, callback: (res: SuccessResponse | ErrorResponse) => void): Promise<void> {
+    async handle(socket: Socket, io: TypedSocketServer, args: unknown, callback: (res: SuccessResponse | ErrorResponse) => void): Promise<void> {
         try {
-            const { response } = await this.generateResponse({ socket, id: socket.id, args });
+            const { response } = await this.generateResponse({ socket, io, id: socket.id, args });
             callback(response);
         } catch (err: any) {
             console.error(err.stack);

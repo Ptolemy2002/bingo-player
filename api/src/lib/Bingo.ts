@@ -71,6 +71,18 @@ export class BingoGameData {
         return this.players.findIndex(player => player.socketId === socketId);
     }
 
+    getPlayerByName(name: string) {
+        const index = this.getPlayerIndexByName(name);
+        if (index === -1) return null;
+        return this.players[index];
+    }
+
+    getPlayerBySocketId(socketId: SocketID) {
+        const index = this.getPlayerIndexBySocketId(socketId);
+        if (index === -1) return null;
+        return this.players[index];
+    }
+
     hasPlayerByName(name: string) {
         return this.getPlayerIndexByName(name) !== -1;
     }
@@ -153,28 +165,27 @@ export class BingoGameData {
 
     removePlayerByName(name: string) {
         const index = this.getPlayerIndexByName(name);
-        const player = this.players[index];
-
+        
         if (index !== -1) {
+            const player = this.players[index];
             this.players.splice(index, 1);
+            return player;
         } else {
             throw new RouteError(`Player "${name}" not found in game "${this.id}"`, 404, "NOT_FOUND");
         }
-
-        return player;
     }
 
     removePlayerBySocketId(socketId: SocketID) {
         const index = this.getPlayerIndexBySocketId(socketId);
-        const player = this.players[index];
+        
 
         if (index !== -1) {
+            const player = this.players[index];
             this.players.splice(index, 1);
+            return player;
         } else {
             throw new RouteError(`Player with socket ID ${socketId} not found in game "${this.id}"`, 404, "NOT_FOUND");
         }
-
-        return player;
     }
 }
 

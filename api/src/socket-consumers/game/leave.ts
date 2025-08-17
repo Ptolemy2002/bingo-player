@@ -50,7 +50,7 @@ export class BingoGameLeaveHandler extends SocketRouteHandler<SocketGameLeaveSuc
 
         game.removePlayerByName(playerName);
         // Unsubscribe the client from the game room
-        getSocketClientById(req.io, player.socketId)?.leave(game.getSocketRoomName());
+        await getSocketClientById(req.io, player.socketId)?.leave(game.getSocketRoomName());
 
         return {
             status: 200,

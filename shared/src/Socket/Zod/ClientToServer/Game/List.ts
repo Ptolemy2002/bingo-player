@@ -5,12 +5,34 @@ import { z } from "zod";
 
 export const SocketGameListEventName = "gameList" as const;
 
-export const ZodSocketGameListArgsSchema = registerSocketSchema(z.undefined(), {
-    id: "GameListArgs",
-    type: "args",
-    eventName: SocketGameListEventName,
-    description: `Arguments schema for the [${SocketGameListEventName}] event. Currently empty.`,
-});
+export const ZodSocketGameListArgsSchema = registerSocketSchema(
+    z.object({
+        mine: registerSocketSchema(
+            z.union([
+                z.stringbool(),
+                z.boolean()
+            ]).default(false),
+            {
+                id: "GameListArgs.mine",
+                type: "prop",
+                description: 
+                    "Whether to include only games you are a part of in the list. " +
+                    "Parses common affirmative and negative strings to booleans, " +
+                    "case insensitively. Defaults to false.",
+                examples: [
+                    true, false,
+                    "true", "1", "yes", "on", "y", "enabled",
+                    "false", "0", "no", "off", "n", "disabled"
+                ]
+            }
+        )
+    }), {
+        id: "GameListArgs",
+        type: "args",
+        eventName: SocketGameListEventName,
+        description: `Arguments schema for the [${SocketGameListEventName}] event. Currently empty.`,
+    }
+);
 
 export const ZodSocketGameListSuccessResponseSchema = registerSocketSchema(
     zodSuccessResponseSchema(z.object({
@@ -45,6 +67,6 @@ export const ZodSocketGameListResponseSchema = registerSocketSchema(
     }
 );
 
-export type SocketGameListArgs = z.infer<typeof ZodSocketGameListArgsSchema>;
+export type SocketGameListArgs = z.input<typeof ZodSocketGameListArgsSchema>;
 export type SocketGameListSuccessResponse = z.infer<typeof ZodSocketGameListSuccessResponseSchema>;
 export type SocketGameListResponse = z.infer<typeof ZodSocketGameListResponseSchema>;

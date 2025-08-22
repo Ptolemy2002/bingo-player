@@ -1,5 +1,6 @@
 import { bingoRegistry, BingoSchemas, socketRegistry, SocketSchemas } from "shared";
 import escapeHTML from "escape-html";
+import { getSocketConsumers } from "./socket";
 
 interface Property {
     id: string;
@@ -252,8 +253,11 @@ class HTMLRenderer {
     }
 
     private renderEndpoint(endpoint: Endpoint): string {
+
         return `
             <h2 id="${endpoint.id}">${escapeHTML(endpoint.id)}</h2>
+            ${this.renderImplementation(endpoint)}
+
             <h3>Args</h3>
             ${this.renderEndpointSection(endpoint.args, "Args")}
 
@@ -302,6 +306,14 @@ class HTMLRenderer {
                 <p>${escapeHTML(miscItem.description)}</p>${examplesSection}${propsSection}
             `;
         }).join("");
+    }
+
+    private renderImplementation(endpoint: Endpoint): string {
+        if (endpoint.id in getSocketConsumers()) {
+            return `<p style="color: green;">Implemented</p>`;
+        } else {
+            return `<p style="color: red;">Not Implemented</p>`;
+        }
     }
 
     render(data: ProcessedData): string {

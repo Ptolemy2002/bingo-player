@@ -6,3 +6,6 @@ export { default as gameJoinSocketConsumer } from "./join";
 
 export * from "./leave";
 export { default as gameLeaveSocketConsumer } from "./leave";
+
+export * from "./get";
+export { default as gameGetSocketConsumer } from "./get";

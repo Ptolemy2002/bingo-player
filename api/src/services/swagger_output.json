@@ -2583,7 +2583,8 @@
           "NOT_FOUND",
           "NOT_IMPLEMENTED",
           "VALIDATION",
-          "CONFLICT"
+          "CONFLICT",
+          "FORBIDDEN"
         ],
         "description": "An error code that may be returned by the server."
       },

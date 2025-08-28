@@ -30,7 +30,7 @@ export const ZodSocketGameLeaveArgsSchema = registerSocketSchema(
         id: "GameLeaveArgs",
         type: "args",
         eventName: SocketGameLeaveEventName,
-        description: `Arguments schema for the [${SocketGameLeaveEventName}] event`,
+        description: `Leave the game with the specified ID. Doubles as a kick action for hosts.`
     }
 );
 

@@ -30,7 +30,7 @@ export const ZodSocketGameListArgsSchema = registerSocketSchema(
         id: "GameListArgs",
         type: "args",
         eventName: SocketGameListEventName,
-        description: `Arguments schema for the [${SocketGameListEventName}] event. Currently empty.`,
+        description: `List all available bingo games. Set \`mine\` to true to only include games you are a part of.`
     }
 );
 
@@ -50,7 +50,7 @@ export const ZodSocketGameListSuccessResponseSchema = registerSocketSchema(
         id: "GameListSuccessResponse",
         type: "success-response",
         eventName: SocketGameListEventName,
-        description: `Response schema for a successful [${SocketGameListEventName}] event`
+        description: `Each game currently in the database, or only those you are a part of if \`mine\` was true.`
     }
 );
 

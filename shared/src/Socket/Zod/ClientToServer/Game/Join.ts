@@ -43,7 +43,7 @@ export const ZodSocketGameJoinArgsSchema = registerSocketSchema(
         id: "GameJoinArgs",
         type: "args",
         eventName: SocketGameJoinEventName,
-        description: `Arguments schema for the [${SocketGameJoinEventName}] event`,
+        description: `Add a player with the specified name and role to the game with the specified ID. The player will be associated with your socket ID.`
     }
 );
 
@@ -65,7 +65,7 @@ export const ZodSocketGameJoinSuccessResponseSchema = registerSocketSchema(
         id: "GameJoinSuccessResponse",
         type: "success-response",
         eventName: SocketGameJoinEventName,
-        description: `Response schema for a successful [${SocketGameJoinEventName}] event`,
+        description: `The bingo game you joined`
     }
 );
 

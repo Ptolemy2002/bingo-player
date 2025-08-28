@@ -21,7 +21,7 @@ export const ZodSocketGameGetArgsSchema = registerSocketSchema(
         id: "GameGetArgs",
         type: "args",
         eventName: SocketGameGetEventName,
-        description: `Arguments schema for the [${SocketGameGetEventName}] event`,
+        description: `Retrieve the current state of the game with the specified ID.`
     }
 );
 
@@ -43,7 +43,7 @@ export const ZodSocketGameGetSuccessResponseSchema = registerSocketSchema(
         id: "GameGetSuccessResponse",
         type: "success-response",
         eventName: SocketGameGetEventName,
-        description: `Response schema for a successful [${SocketGameGetEventName}] event`
+        description: `The current state of the game with the specified ID`
     }
 );
 

@@ -78,7 +78,7 @@ export const ZodSocketSpaceOpArgsSchema = registerSocketSchema(
         id: "SpaceOpArgs",
         type: "args",
         eventName: SocketSpaceOpEventName,
-        description: `Arguments schema for the [${SocketSpaceOpEventName}] event`,
+        description: `Perform a space operation on the specified spaces in the specified game.`
     }
 );
 

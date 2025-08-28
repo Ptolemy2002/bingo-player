@@ -30,7 +30,7 @@ export const ZodSocketGameCreateArgsSchema = registerSocketSchema(
         id: "GameCreateArgs",
         type: "args",
         eventName: SocketGameCreateEventName,
-        description: `Arguments schema for the [${SocketGameCreateEventName}] event`,
+        description: `Create a game with the specified identifier and add a host player with the specified name and your socket ID`
     }
 );
 
@@ -52,7 +52,7 @@ export const ZodSocketGameCreateSuccessResponseSchema = registerSocketSchema(
         id: "GameCreateSuccessResponse",
         type: "success-response",
         eventName: SocketGameCreateEventName,
-        description: `Response schema for a successful [${SocketGameCreateEventName}] event`,
+        description: `The newly created game including the host player`
     }
 );
 

@@ -1,12 +1,12 @@
 import { Form } from "react-bootstrap";
 import { NameFieldProps } from "./Types";
 import clsx from "clsx";
+import { usePersistentState } from "@ptolemy2002/react-utils";
 
 function NameFieldBase({
-    name,
-    setName,
     className
 }: NameFieldProps["functional"]) {
+    const [name, setName] = usePersistentState("bingoPlayerApp.name", "");
     return (
         <Form className={clsx("name-field", className)}>
             <Form.Label htmlFor="name">Name</Form.Label>

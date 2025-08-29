@@ -89,7 +89,7 @@ export const ZodSocketSpaceOpSuccessResponseSchema = registerSocketSchema(
             // is not overwritten on `ZodBingoGameSchema`.
             ZodBingoGameSchema.refine(() => true),
             {
-                id: "GameGetSuccessResponse.game",
+                id: "SpaceOpSuccessResponse.game",
                 type: "prop",
                 description: "The current state of the bingo game an operation was performed on.",
                 example: BingoGameExample

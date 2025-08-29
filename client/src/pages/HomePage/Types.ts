@@ -6,8 +6,6 @@ export type HomePageProps = {
 };
 
 export type NameFieldProps = StyledComponentPropsWithCSS<{
-    name: string;
-    setName: (name: string) => void;
     className?: string;
 }, {
     horizontal?: boolean;

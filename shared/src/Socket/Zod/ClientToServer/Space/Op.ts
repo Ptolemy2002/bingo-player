@@ -83,12 +83,24 @@ export const ZodSocketSpaceOpArgsSchema = registerSocketSchema(
 );
 
 export const ZodSocketSpaceOpSuccessResponseSchema = registerSocketSchema(
-    zodSuccessResponseSchema(z.object({})),
+    zodSuccessResponseSchema(z.object({
+        game: registerSocketSchema(
+            // This `refine` pattern allows us to copy the schema so that the original metadata
+            // is not overwritten on `ZodBingoGameSchema`.
+            ZodBingoGameSchema.refine(() => true),
+            {
+                id: "GameGetSuccessResponse.game",
+                type: "prop",
+                description: "The current state of the bingo game an operation was performed on.",
+                example: BingoGameExample
+            }
+        )
+    })),
     {
         id: "SpaceOpSuccessResponse",
         type: "success-response",
         eventName: SocketSpaceOpEventName,
-        description: `Response schema for a successful [${SocketSpaceOpEventName}] event`
+        description: `The updated state of the bingo game after a space operation was performed successfully.`
     }
 );
 

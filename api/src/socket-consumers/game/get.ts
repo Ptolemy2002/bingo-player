@@ -31,8 +31,6 @@ export class BingoGameGetHandler extends SocketRouteHandler<SocketGameGetSuccess
 
         const game = BingoGameCollection.global.getGame(gameId)!;
 
-        await req.socket.join(game.getSocketRoomName());
-
         return {
             status: 200,
             response: this.buildSuccessResponse({

@@ -9,3 +9,6 @@ export { default as gameLeaveSocketConsumer } from "./leave";
 
 export * from "./get";
 export { default as gameGetSocketConsumer } from "./get";
+
+export * from "./list";
+export { default as gameListSocketConsumer } from "./list";

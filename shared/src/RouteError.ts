@@ -1,6 +1,6 @@
 import { ErrorCode, HelpLink } from "src";
 
-export default class RouteError extends Error {
+export class RouteError extends Error {
     status: number = 500;
     code: ErrorCode = "UNKNOWN";
     help: HelpLink = "https://example.com/docs";

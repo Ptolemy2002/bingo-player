@@ -7,5 +7,6 @@ export * from "./Space";
 export * from "./Api";
 export * from "./Socket";
 export * from "./Bingo";
+export * from "./RouteError";
 
 export const swaggerGenerator = new OpenApiGeneratorV31(swaggerRegistry.definitions);

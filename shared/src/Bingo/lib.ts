@@ -1,6 +1,5 @@
 import { omit } from "@ptolemy2002/ts-utils";
-import { BingoGame, BingoPlayer, BingoPlayerRole, BingoSpaceSet, cleanMongoSpace, MongoSpace, SocketID } from "src";
-import RouteError from "./RouteError";
+import { BingoGame, BingoPlayer, BingoPlayerRole, BingoSpaceSet, cleanMongoSpace, MongoSpace, SocketID, RouteError } from "src";
 
 // Creating partials that still require necessary fields
 export type BingoGameInit = Partial<BingoGame> & Pick<BingoGame, "id">;

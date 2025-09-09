@@ -2,8 +2,7 @@ import { Socket, Server as SocketServer } from 'socket.io';
 import { createServer, Server as HttpServer } from 'http';
 import { Express } from 'express';
 import getEnv from 'env';
-import { SocketClientToServerEvents, SocketServerToClientEvents } from 'shared';
-import RouteError from 'lib/RouteError';
+import { SocketClientToServerEvents, SocketServerToClientEvents, RouteError } from 'shared';
 
 export type TypedSocket = Socket<SocketClientToServerEvents, SocketServerToClientEvents>;
 export type TypedSocketServer = SocketServer<SocketClientToServerEvents, SocketServerToClientEvents>;

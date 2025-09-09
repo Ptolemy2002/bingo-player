@@ -1,8 +1,7 @@
-import { BingoGameCollection } from "lib/Bingo";
 import SocketRouteHandler, { SocketRouteHandlerRequestData } from "lib/SocketRouteHandler";
 import SpaceModel from "models/SpaceModel";
 import { SocketConsumer } from "services/socket";
-import { SocketSpaceOpSuccessResponse, SocketSpaceOpEventName, ZodSocketSpaceOpArgsSchema } from "shared";
+import { SocketSpaceOpSuccessResponse, SocketSpaceOpEventName, ZodSocketSpaceOpArgsSchema, BingoGameCollection } from "shared";
 
 export class BingoSpaceOpHandler extends SocketRouteHandler<SocketSpaceOpSuccessResponse> {
     constructor() {

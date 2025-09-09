@@ -1,7 +1,7 @@
 import { z, ZodString, ZodLiteral, ZodNull, ZodUnion } from 'zod';
 import dotEnv from 'dotenv';
 import { stripWords } from '@ptolemy2002/js-utils';
-import RouteError from 'lib/RouteError';
+import { RouteError } from 'shared';
 dotEnv.config();
 
 function nullableUrl(defaultValue?: string | null, emptyIsDefault = true) {

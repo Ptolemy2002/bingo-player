@@ -12,6 +12,9 @@
     "esModuleInterop": true,
 
     "paths":{
+      "src":[
+        "./src/index"
+      ],
       "src/*":[
         "./src/*"
       ]

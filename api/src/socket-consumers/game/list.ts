@@ -1,7 +1,6 @@
-import { BingoGameCollection } from "lib/Bingo";
 import SocketRouteHandler, { SocketRouteHandlerRequestData } from "lib/SocketRouteHandler";
 import { SocketConsumer } from "services/socket";
-import { SocketGameListSuccessResponse, SocketGameListEventName, ZodSocketGameListArgsSchema } from "shared";
+import { SocketGameListSuccessResponse, SocketGameListEventName, ZodSocketGameListArgsSchema, BingoGameCollection } from "shared";
 
 export class BingoGameListHandler extends SocketRouteHandler<SocketGameListSuccessResponse> {
     constructor() {

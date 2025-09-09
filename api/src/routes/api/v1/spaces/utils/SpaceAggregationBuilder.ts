@@ -4,9 +4,8 @@ import {
     AggregationBuilder,
     StageGeneration,
 } from '@ptolemy2002/mongoose-utils';
-import { SpaceQueryProp, SortOrder, interpretSortOrder, SpaceQueryPropWithScore, interpretSpaceQueryPropWithScore } from 'shared';
+import { SpaceQueryProp, SortOrder, interpretSortOrder, SpaceQueryPropWithScore, interpretSpaceQueryPropWithScore, RouteError } from 'shared';
 import SpaceModel from 'models/SpaceModel';
-import RouteError from 'lib/RouteError';
 
 export type SpaceAggregationStageType =
     | 'add-known-as'

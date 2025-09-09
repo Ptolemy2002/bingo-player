@@ -9,7 +9,10 @@ import {
     SocketGameListEventName,
     SocketGameGetEventName,
     SocketSpaceOpEventName,
-    SocketPingEventName
+    SocketPingEventName,
+    SocketIDEventName,
+    SocketIDArgs,
+    SocketIDResponse
 } from "./Zod";
 
 export * from "./Zod";
@@ -25,6 +28,7 @@ export type SocketEvent<A=undefined, R=undefined> = (...args:
 
 export type SocketClientToServerEvents = {
     [SocketPingEventName]: SocketEvent<SocketPingArgs, SocketPingResponse>;
+    [SocketIDEventName]: SocketEvent<SocketIDArgs, SocketIDResponse>;
 
     [SocketGameGetEventName]: SocketEvent<SocketGameGetArgs, SocketGameGetResponse>;
     [SocketGameListEventName]: SocketEvent<SocketGameListArgs, SocketGameListResponse>;

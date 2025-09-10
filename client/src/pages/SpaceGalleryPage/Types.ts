@@ -92,11 +92,11 @@ export type SearchSettingsTooltipProps = StyledComponentPropsWithCSS<ComponentPr
 export type SpaceGallerySearchResultsProps = StyledComponentPropsWithCSS<{
     className?: string;
     SpaceCard?: ComponentType<SpaceCardProps["functional"]>;
-    cardsPerRowXs?: number;
-    cardsPerRowSm?: number;
-    cardsPerRowMd?: number;
-    cardsPerRowLg?: number;
-    cardsPerRowXl?: number;
+    colSizeXs?: number;
+    colSizeSm?: number;
+    colSizeMd?: number;
+    colSizeLg?: number;
+    colSizeXl?: number;
 }, {
     gutterX: RequiredCSSProperties["gap"];
     gutterY: RequiredCSSProperties["gap"];

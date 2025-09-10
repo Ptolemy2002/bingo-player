@@ -5,11 +5,18 @@ import useManualErrorHandling from "@ptolemy2002/react-manual-error-handling";
 import { useEffect, useState } from "react";
 import { BingoGameData, BingoGameCollection } from "shared";
 import getSocket from "src/Socket";
+import GameCard from "src/components/GameCard";
+import { Col, Row } from "react-bootstrap";
 
 function GameListBase({
     className,
     socketId,
-    category="all"
+    category="all",
+    colSizeXs=12,
+    colSizeSm=12,
+    colSizeMd=6,
+    colSizeLg=4,
+    colSizeXl=3,
 }: GameListProps["functional"]) {
     const [games, setGames] = useState<BingoGameData[]>([]);
     const [{suspend}] = useSuspenseController();
@@ -37,19 +44,28 @@ function GameListBase({
     }, [category, socketId]);
 
     return (
-        <ul className={clsx("game-list", className)}>
+        <div className={clsx("game-list", "card-container", className)}>
             {
                 games.length > 0 ? (
-                    games.map(g => (
-                        <li key={g.id}>
-                            {g.id}
-                        </li>
-                    ))
+                    <Row>
+                        {games.map((game) => (
+                            <Col
+                                key={game.id}
+                                xs={colSizeXs}
+                                sm={colSizeSm}
+                                md={colSizeMd}
+                                lg={colSizeLg}
+                                xl={colSizeXl}
+                            >
+                                <GameCard game={game} />
+                            </Col>
+                        ))}
+                    </Row>
                 ) : (
-                    <li>Nothing here</li>
+                    <i>Nothing here</i>
                 )
             }
-        </ul>
+        </div>
     );
 }
 

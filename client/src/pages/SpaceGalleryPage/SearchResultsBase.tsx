@@ -10,11 +10,11 @@ import { Col, Row } from "react-bootstrap";
 
 function SpaceSearchResultsBase({
     className,
-    cardsPerRowXs=12,
-    cardsPerRowSm=12,
-    cardsPerRowMd=6,
-    cardsPerRowLg=4,
-    cardsPerRowXl=3,
+    colSizeXs=12,
+    colSizeSm=12,
+    colSizeMd=6,
+    colSizeLg=4,
+    colSizeXl=3,
     SpaceCard=DefaultSpaceCard
 }: SpaceGallerySearchResultsProps["functional"]) {
     const {
@@ -48,11 +48,11 @@ function SpaceSearchResultsBase({
                         <Col
                             key={space._id}
                             className="col"
-                            xs={cardsPerRowXs}
-                            sm={cardsPerRowSm}
-                            md={cardsPerRowMd}
-                            lg={cardsPerRowLg}
-                            xl={cardsPerRowXl}
+                            xs={colSizeXs}
+                            sm={colSizeSm}
+                            md={colSizeMd}
+                            lg={colSizeLg}
+                            xl={colSizeXl}
                         >
                             <SpaceData.Provider value={space}>
                                 <SpaceCard />

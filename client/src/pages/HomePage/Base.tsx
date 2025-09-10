@@ -1,6 +1,6 @@
 import { usePersistentState } from "@ptolemy2002/react-utils";
 import DefaultNameField from "./NameFieldStyled";
-import DefaultGameList from "./GameListBase";
+import DefaultGameList from "./GameListStyled";
 import { HomePageProps } from "./Types";
 import { SuspenseBoundary } from "@ptolemy2002/react-suspense";
 import { useState } from "react";

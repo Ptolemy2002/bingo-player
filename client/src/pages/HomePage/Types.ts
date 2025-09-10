@@ -24,7 +24,10 @@ export type GameListProps = StyledComponentPropsWithCSS<
         className?: string;
         socketId: SocketID | null;
         category?: "mine" | "not-mine" | "all";
-    }, {
-
-    }
+        colSizeXs?: number;
+        colSizeSm?: number;
+        colSizeMd?: number;
+        colSizeLg?: number;
+        colSizeXl?: number;
+    }, {}
 >;

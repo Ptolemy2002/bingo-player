@@ -18,17 +18,20 @@ function GameListBase({
 
     useEffect(() => {
         _try(() => suspend(async () => {
-            const res = await socket.emitSafeWithAck("gameList", { mine: category === "mine" });
-            const gameCollection = new BingoGameCollection(res.games);
-
-            if (!socketId || category === "mine" || category === "all") {
-                setGames(gameCollection.getAllGames());
-            } else {
-                setGames(
-                    gameCollection.getAllGames()
-                        .filter((g) => !g.hasPlayerBySocketId(socketId))
-                );
+            if (!socketId) {
+                // Skip fetch this time. When we get a value, we'll fetch again.
+                setGames([]);
+                return;
             }
+
+            const res = await socket.emitSafeWithAck("gameList", { mine: category === "mine" });
+            let gc = new BingoGameCollection(res.games);
+
+            if (category === "not-mine") {
+                gc = gc.filter(g => !g.hasPlayerBySocketId(socketId));
+            }
+
+            setGames(gc.getAllGames());
         }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [category, socketId]);

@@ -241,8 +241,12 @@ export class BingoGameCollection {
         return game;
     }
 
-    getGame(gameId: BingoGame["id"]) {
-        return this.games.get(gameId) ?? null;
+    getGame(gameId: BingoGame["id"] | number) {
+        if (typeof gameId === "number") {
+            return this.size() > gameId ? this.getAllGames()[gameId]! : null;
+        } else {
+            return this.games.get(gameId) ?? null;
+        }
     }
 
     getAllGames() {
@@ -277,6 +281,12 @@ export class BingoGameCollection {
 
     forEach(callback: (game: BingoGameData) => void) {
         this.games.forEach((game) => callback(game));
+    }
+
+    filter(callback: (game: BingoGameData, index: number, collection: BingoGameCollection) => boolean) {
+        return new BingoGameCollection(
+            this.getAllGames().filter((game, index) => callback(game, index, this))
+        );
     }
 
     *[Symbol.iterator]() {

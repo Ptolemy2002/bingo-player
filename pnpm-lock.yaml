@@ -159,6 +159,9 @@ importers:
       '@ptolemy2002/react-bs-media-queries':
         specifier: ^1.0.5
         version: 1.0.5(@ptolemy2002/bs-utils@1.0.0)(react-dom@18.3.1(react@18.3.1))(react-responsive@10.0.0(react@18.3.1))(react@18.3.1)
+      '@ptolemy2002/react-force-rerender':
+        specifier: ^2.0.0
+        version: 2.0.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@ptolemy2002/react-hook-result':
         specifier: ^2.2.4
         version: 2.2.4(@ptolemy2002/js-utils@3.2.2)(@ptolemy2002/ts-utils@3.0.0(@ptolemy2002/ts-brand-utils@1.0.0)(is-callable@1.2.7))

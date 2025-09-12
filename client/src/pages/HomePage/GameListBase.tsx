@@ -2,11 +2,12 @@ import clsx from "clsx";
 import { GameListProps } from "./Types";
 import { useSuspenseController } from "@ptolemy2002/react-suspense";
 import useManualErrorHandling from "@ptolemy2002/react-manual-error-handling";
-import { useEffect, useState } from "react";
-import { BingoGameData, BingoGameCollection } from "shared";
+import { useEffect } from "react";
+import { BingoGameCollection } from "shared";
 import getSocket from "src/Socket";
 import GameCard from "src/components/GameCard";
 import { Col, Row } from "react-bootstrap";
+import { useBingoGameCollectionContext } from "src/context/BingoGameCollection";
 
 function GameListBase({
     className,
@@ -18,7 +19,7 @@ function GameListBase({
     colSizeLg=4,
     colSizeXl=3,
 }: GameListProps["functional"]) {
-    const [games, setGames] = useState<BingoGameData[]>([]);
+    const [games, setGames] = useBingoGameCollectionContext();
     const [{suspend}] = useSuspenseController();
     const { _try } = useManualErrorHandling();
     const socket = getSocket();
@@ -38,7 +39,7 @@ function GameListBase({
                 gc = gc.filter(g => !g.hasPlayerBySocketId(socketId));
             }
 
-            setGames(gc.getAllGames());
+            setGames(gc);
         }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [category, socketId]);
@@ -46,9 +47,9 @@ function GameListBase({
     return (
         <div className={clsx("game-list", "card-container", className)}>
             {
-                games.length > 0 ? (
+                games.size() > 0 ? (
                     <Row>
-                        {games.map((game) => (
+                        {games.getAllGames().map((game) => (
                             <Col
                                 key={game.id}
                                 xs={colSizeXs}

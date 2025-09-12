@@ -6,6 +6,7 @@ import { SuspenseBoundary } from "@ptolemy2002/react-suspense";
 import { useState } from "react";
 import { SocketID } from "shared";
 import getSocket from "src/Socket";
+import { BingoGameCollectionProvider } from "src/context/BingoGameCollection";
 
 function HomePage({
     NameField = DefaultNameField,
@@ -17,25 +18,27 @@ function HomePage({
 
     return (
         <div id="home-page">
-            <p>Welcome to Bingo Player! From here, you can enter games and play bingo.</p>
-            <NameField />
+            <BingoGameCollectionProvider value={[]}>
+                <p>Welcome to Bingo Player! From here, you can enter games and play bingo.</p>
+                <NameField />
 
-            {
-                name ? (
-                    <SuspenseBoundary fallback={<p>Loading Game List...</p>} init={async () => {
-                        const res = await socket.emitSafeWithAck("socketId");
-                        setSocketId(res.id);
-                    }}>
-                        <h2>Your Games</h2>
-                        <GameList socketId={socketId} category="mine" />
+                {
+                    name ? (
+                        <SuspenseBoundary fallback={<p>Loading Game List...</p>} init={async () => {
+                            const res = await socket.emitSafeWithAck("socketId");
+                            setSocketId(res.id);
+                        }}>
+                            <h2>Your Games</h2>
+                            <GameList socketId={socketId} category="mine" />
 
-                        <h2>Other Games</h2>
-                        <GameList socketId={socketId} category="not-mine" />
-                    </SuspenseBoundary>
-                ) : (
-                    <p>Please enter your name to start viewing and joining games.</p>
-                )
-            }
+                            <h2>Other Games</h2>
+                            <GameList socketId={socketId} category="not-mine" />
+                        </SuspenseBoundary>
+                    ) : (
+                        <p>Please enter your name to start viewing and joining games.</p>
+                    )
+                }
+            </BingoGameCollectionProvider>
         </div>
     );
 }

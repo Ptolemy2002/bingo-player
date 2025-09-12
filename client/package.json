@@ -30,6 +30,7 @@
     "@ptolemy2002/js-utils": "^3.2.2",
     "@ptolemy2002/list-object-utils": "^3.0.1",
     "@ptolemy2002/react-bs-media-queries": "^1.0.5",
+    "@ptolemy2002/react-force-rerender": "^2.0.0",
     "@ptolemy2002/react-hook-result": "^2.2.4",
     "@ptolemy2002/react-manual-error-handling": "^2.0.3",
     "@ptolemy2002/react-mongo-data": "^2.5.5",

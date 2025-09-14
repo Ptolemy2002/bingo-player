@@ -23,7 +23,7 @@ export function BingoGameCollectionProvider({
     value,
     children
 }: BingoGameCollectionProviderProps) {
-    const valueRef = useRef(Array.isArray(value) ? new BingoGameCollection(value) : value);
+    const valueRef = useRef(new BingoGameCollection(value));
     const forceRerender = useForceRerender();
 
     const set = useCallback<BingoGameCollectionContextValue["set"]>((v) => {

@@ -3,17 +3,22 @@ import { Override } from "@ptolemy2002/ts-utils";
 import { ComponentProps, ComponentType, RefObject } from "react";
 import { Tooltip, TooltipRefProps } from "react-tooltip";
 import { ButtonStyles, TooltipStyles } from "styled-components";
+import { StyledButtonProps } from "../StyledButton";
 
-export type ToggleThemeButtonProps = StyledComponentPropsWithCSS<{
-    className?: string;
-    tooltipId?: string;
-    CurrentThemeTooltip?: ComponentType<
-        Pick<
-            CurrentThemeTooltipProps["functional"],
-            "id"
-        >
-    >;
-}, ButtonStyles>;
+export type ToggleThemeButtonProps = StyledComponentPropsWithCSS<
+    Override<
+        StyledButtonProps["functional"], {
+            className?: string;
+            tooltipId?: string;
+            CurrentThemeTooltip?: ComponentType<
+                Pick<
+                    CurrentThemeTooltipProps["functional"],
+                    "id"
+                >
+            >;
+        }
+    >, ButtonStyles
+>;
 
 export type CurrentThemeTooltipProps = StyledComponentPropsWithCSS<
     Override<ComponentProps<typeof Tooltip>, {

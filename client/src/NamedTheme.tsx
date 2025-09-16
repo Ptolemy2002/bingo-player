@@ -45,6 +45,11 @@ const borderedButtonStyleDark = {
     hoverTextColor: "black"
 } as const;
 
+const hoverRedButtonStyle = {
+    hoverBackgroundColor: "red",
+    hoverTextColor: "white"
+} as const;
+
 export const NamedThemes: NamedTheme[] = [
     createNamedTheme("light", {
         displayName: "Light",
@@ -102,52 +107,44 @@ export const NamedThemes: NamedTheme[] = [
             },
 
             buttons: {
-                addAlias: borderedButtonStyleLight,
-                addExample: borderedButtonStyleLight,
-                addTag: borderedButtonStyleLight,
+                default: borderedButtonStyleLight,
 
-                removeAlias: {
-                    ...borderedButtonStyleLight,
-                    hoverBackgroundColor: "red",
-                    hoverTextColor: "white"
-                },
-                
-                removeExample: {
-                    ...borderedButtonStyleLight,
-                    hoverBackgroundColor: "red",
-                    hoverTextColor: "white"
-                },
+                removeAlias: hoverRedButtonStyle,
+                removeExample: hoverRedButtonStyle,
+                removeTag: hoverRedButtonStyle,
+                spaceEditCancel: hoverRedButtonStyle,
+                spaceDelete: hoverRedButtonStyle,
 
-                removeTag: {
-                    ...borderedButtonStyleLight,
-                    hoverBackgroundColor: "red",
-                    hoverTextColor: "white"
+                pageChange: {
+                    borderColor: "transparent",
+                    hoverBorderColor: "black",
+                    hoverTextColor: "black",
+                    hoverBackgroundColor: "transparent"
                 },
 
-                selectTagExisting: borderedButtonStyleLight,
-                writeTag: borderedButtonStyleLight,
-                
-                goToSpaceEdit: borderedButtonStyleLight,
-                spaceEditUndo: borderedButtonStyleLight,
-
-                spaceEditSubmit: borderedButtonStyleLight,
-                spaceEditCancel: {
-                    ...borderedButtonStyleLight,
-                    hoverBackgroundColor: "red",
-                    hoverTextColor: "white"
+                searchSettings: {
+                    borderColor: "transparent",
+                    hoverBorderColor: "black",
+                    hoverTextColor: "black",
+                    hoverBackgroundColor: "transparent"
                 },
 
-                spaceSave: borderedButtonStyleLight,
-                spaceRefresh: borderedButtonStyleLight,
-                spaceDuplicate: borderedButtonStyleLight,
-
-                spaceDelete: {
-                    ...borderedButtonStyleLight,
-                    hoverBackgroundColor: "red",
-                    hoverTextColor: "white"
+                searchSubmit: {
+                    borderColor: "transparent",
+                    hoverBorderColor: "black",
+                    hoverTextColor: "black",
+                    hoverBackgroundColor: "transparent",
                 },
 
-                createSpace: borderedButtonStyleLight,
+                pageSizeApply: borderedButtonStyleDark,
+
+                toggleTheme: {
+                    borderStyle: "none",
+                    backgroundColor: "transparent",
+                    hoverBackgroundColor: "transparent",
+                    textColor: "black",
+                    hoverTextColor: "orange"
+                },
 
                 cardViewDetails: {
                     borderStyle: "solid",
@@ -214,51 +211,44 @@ export const NamedThemes: NamedTheme[] = [
             },
 
             buttons: {
-                addAlias: borderedButtonStyleDark,
-                addExample: borderedButtonStyleDark,
-                addTag: borderedButtonStyleDark,
+                default: borderedButtonStyleDark,
 
-                removeAlias: {
-                    ...borderedButtonStyleDark,
-                    hoverBackgroundColor: "red",
+                removeAlias: hoverRedButtonStyle,
+                removeExample: hoverRedButtonStyle,
+                removeTag: hoverRedButtonStyle,
+                spaceEditCancel: hoverRedButtonStyle,
+                spaceDelete: hoverRedButtonStyle,
+
+                pageChange: {
+                    borderColor: "transparent",
+                    hoverBorderColor: "white",
+                    hoverTextColor: "white",
+                    hoverBackgroundColor: "transparent",
+                },
+
+                searchSettings: {
+                    borderColor: "transparent",
+                    hoverBorderColor: "white",
+                    hoverTextColor: "white",
+                    hoverBackgroundColor: "transparent"
+                },
+
+                searchSubmit: {
+                    borderColor: "transparent",
+                    hoverBorderColor: "white",
+                    hoverBackgroundColor: "transparent",
                     hoverTextColor: "white"
                 },
 
-                removeExample: {
-                    ...borderedButtonStyleDark,
-                    hoverBackgroundColor: "red",
-                    hoverTextColor: "white"
+                pageSizeApply: borderedButtonStyleLight,
+
+                toggleTheme: {
+                    borderStyle: "none",
+                    backgroundColor: "transparent",
+                    hoverBackgroundColor: "transparent",
+                    textColor: "white",
+                    hoverTextColor: "blue"
                 },
-
-                removeTag: {
-                    ...borderedButtonStyleDark,
-                    hoverBackgroundColor: "red",
-                    hoverTextColor: "white"
-                },
-
-                selectTagExisting: borderedButtonStyleDark,
-                writeTag: borderedButtonStyleDark,
-
-                goToSpaceEdit: borderedButtonStyleDark,
-                spaceEditUndo: borderedButtonStyleDark,
-
-                spaceEditSubmit: borderedButtonStyleDark,
-                spaceEditCancel: {
-                    ...borderedButtonStyleDark,
-                    hoverBackgroundColor: "red",
-                    hoverTextColor: "white"
-                },
-
-                spaceSave: borderedButtonStyleDark,
-                spaceRefresh: borderedButtonStyleDark,
-                spaceDuplicate: borderedButtonStyleDark,
-                spaceDelete: {
-                    ...borderedButtonStyleDark,
-                    hoverBackgroundColor: "red",
-                    hoverTextColor: "white"
-                },
-                
-                createSpace: borderedButtonStyleDark,
                 
                 cardViewDetails: {
                     borderStyle: "solid",

@@ -18,6 +18,7 @@ function GameListBase({
     colSizeMd=6,
     colSizeLg=4,
     colSizeXl=3,
+    ...props
 }: GameListProps["functional"]) {
     const [games, setGames] = useBingoGameCollectionContext();
     const [{suspend}] = useSuspenseController();
@@ -45,7 +46,7 @@ function GameListBase({
     }, [category, socketId]);
 
     return (
-        <div className={clsx("game-list", "card-container", className)}>
+        <div className={clsx("game-list", "card-container", className)} {...props}>
             {
                 games.size() > 0 ? (
                     <Row>

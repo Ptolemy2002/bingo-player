@@ -1,8 +1,10 @@
 import { RequiredCSSProperties, StyledComponentPropsWithCSS } from "@ptolemy2002/react-styled-component-utils";
 import { Override } from "@ptolemy2002/ts-utils";
-import { FC } from "react"
+import { FC, HTMLProps } from "react"
 import { FormProps } from "react-bootstrap";
 import { SocketID } from "shared";
+import { StyledButtonProps } from "src/components/StyledButton";
+import { ButtonStyles } from "styled-components";
 
 export type HomePageProps = {
     NameField?: FC<NameFieldProps["functional"]>;
@@ -20,7 +22,7 @@ export type NameFieldProps = StyledComponentPropsWithCSS<
 >;
 
 export type GameListProps = StyledComponentPropsWithCSS<
-    {
+    Override<HTMLProps<HTMLDivElement>, {
         className?: string;
         socketId: SocketID | null;
         category?: "mine" | "not-mine" | "all";
@@ -29,5 +31,13 @@ export type GameListProps = StyledComponentPropsWithCSS<
         colSizeMd?: number;
         colSizeLg?: number;
         colSizeXl?: number;
-    }, {}
+    }>, {}
+>;
+
+export type GameCreateButtonProps = StyledComponentPropsWithCSS<
+    Override<
+        Omit<StyledButtonProps["functional"], "onClick">, {
+            className?: string;
+        }
+    >, ButtonStyles
 >;

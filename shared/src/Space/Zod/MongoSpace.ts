@@ -33,11 +33,11 @@ const Zod_id = z.object({
         })
 });
 
-const Zod_id_optional = Zod_id.merge(z.object({
+const Zod_id_optional = Zod_id.extend(z.object({
     examples: Zod_id.shape.examples.default([]),
     aliases: Zod_id.shape.aliases.default([]),
     tags: Zod_id.shape.tags.default([])
-}));
+}).shape);
 
 export const ZodCleanMongoSpaceSchema = swaggerRegistry.register(
     "CleanMongoSpace",

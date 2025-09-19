@@ -43,7 +43,7 @@
     "socket.io": "^4.8.1",
     "swagger-autogen": "^2.23.7",
     "swagger-ui-express": "^5.0.1",
-    "zod": "^4.0.14"
+    "zod": "^4.1.9"
   },
   "devDependencies": {
     "@types/app-module-path": "~2.2.2",

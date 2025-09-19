@@ -28,7 +28,7 @@
         "tsc-alias": "^1.8.10",
         "tsconfig-paths": "^4.2.0",
         "typescript-transform-paths": "^3.5.3",
-        "zod": "^4.0.14"
+        "zod": "^4.1.9"
     },
     "peerDependencies": {
         "@asteasolutions/zod-to-openapi": "^8.0.0",

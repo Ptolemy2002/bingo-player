@@ -1,4 +1,4 @@
 packages:
-  - "api"
-  - "client"
-  - "shared"
+  - api
+  - client
+  - shared

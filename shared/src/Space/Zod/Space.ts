@@ -71,7 +71,12 @@ export const ZodCleanSpaceShape = ZodCleanSpaceSchema.shape;
 
 export const ZodSpaceSchema = swaggerRegistry.register(
     "Space",
-    ZodCleanSpaceSchema.extend(z.object({
+    ZodCleanSpaceSchema.omit({
+        description: true,
+        examples: true,
+        aliases: true,
+        tags: true
+    }).extend(z.object({
         description: ZodCleanSpaceShape.description.default(null),
         examples: ZodCleanSpaceShape.examples.default(new Set()),
         aliases: ZodCleanSpaceShape.aliases.default(new Set()),

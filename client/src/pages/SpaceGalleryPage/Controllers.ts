@@ -7,6 +7,7 @@ import { useSuspenseController } from "@ptolemy2002/react-suspense";
 import { calcPagination } from "./Other";
 import { omit } from "@ptolemy2002/ts-utils";
 import { AxiosError } from "axios";
+import { MongoSpaceWithScore } from "shared";
 
 export function useSpaceGallerySearchSubmitButtonController(
     onClick?: MouseEventHandler<HTMLButtonElement>
@@ -93,7 +94,7 @@ export function useSpaceGallerySearchFunctions() {
 
             if (resetP) setP(1);
             if (spacesData.ok) {
-                search.results = spacesData.spaces.map((v) => omit(v, "_score"));
+                search.results = spacesData.spaces.map((v: MongoSpaceWithScore) => omit(v, "_score"));
             }
         } else {
             // Since there is no "score" when getting in a non-general category, we need to

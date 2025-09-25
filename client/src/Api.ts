@@ -1,42 +1,51 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import axios, { CreateAxiosDefaults } from 'axios';
 import { TypedAxios, RouteDef } from 'typed-axios-instance';
 import {
+    CountSpacesByPropURLParams,
+    GetSpaceByExactIDURLParams,
+    GetSpacesByPropURLParams,
+    ListSpacePropURLParams,
+    SearchSpacesCountURLParams,
+    SearchSpacesURLParams,
+    UpdateSpaceByIDURLParams,
+    UpdateSpaceByNameURLParams,
+    DuplicateSpaceByIDURLParams,
+    DuplicateSpaceByNameURLParams,
+    DeleteSpaceByIDURLParams,
+    DeleteSpaceByNameURLParams
+} from 'shared';
+
+// These types are no longer used because the `typed-axios-instance` package isn't working right now,
+// so all references to them have been replaced with `any`.
+// Original shared imports preserved for reverting after the package is fixed.
+/*
+import {
     CountSpacesByPropQueryParamsInput,
     CountSpacesByPropResponseBody,
-    CountSpacesByPropURLParams,
     CountSpacesResponseBody,
     GetSpaceByExactIDResponseBody,
-    GetSpaceByExactIDURLParams,
     GetSpacesByPropQueryParamsInput,
     GetSpacesByPropResponseBody,
-    GetSpacesByPropURLParams,
     GetSpacesQueryParamsInput,
     GetSpacesResponseBody,
     ListSpacePropQueryParamsInput,
     ListSpacePropResponseBody,
-    ListSpacePropURLParams,
     SearchSpacesCountResponseBody,
-    SearchSpacesCountURLParams,
     SearchSpacesQueryParamsInput,
     SearchSpacesResponseBody,
-    SearchSpacesURLParams,
     UpdateSpaceByIDRequestBodyInput,
     UpdateSpaceByIDResponseBody,
-    UpdateSpaceByIDURLParams,
-    UpdateSpaceByNameURLParams,
     UpdateSpaceByNameRequestBodyInput,
     UpdateSpaceByNameResponseBody,
-    DuplicateSpaceByIDURLParams,
     DuplicateSpaceByIDResponseBody,
-    DuplicateSpaceByNameURLParams,
     DuplicateSpaceByNameResponseBody,
-    DeleteSpaceByIDURLParams,
     DeleteSpaceByIDResponseBody,
-    DeleteSpaceByNameURLParams,
     DeleteSpaceByNameResponseBody,
     NewSpaceRequestBody,
     NewSpaceResponseBody
 } from 'shared';
+*/
 import getEnv from 'src/Env';
 import { setupCache, CacheOptions, AxiosCacheInstance, defaultKeyGenerator } from 'axios-cache-interceptor';
 import { minutesToMilliseconds } from 'date-fns';
@@ -54,75 +63,83 @@ export type ApiRoutes = RouteDefArray<
             route: `/spaces/get/by-id/${GetSpaceByExactIDURLParams['id']}`;
             method: 'GET';
 
-            jsonResponse: GetSpaceByExactIDResponseBody;
+            jsonRequest: {};
+            jsonResponse: /* GetSpaceByExactIDResponseBody */ any;
         },
 
         {
             route: `/spaces/get/by-prop/${GetSpacesByPropURLParams['prop']}/${GetSpacesByPropURLParams['query']}`;
             method: 'GET';
 
-            queryParams: GetSpacesByPropQueryParamsInput;
-            jsonResponse: GetSpacesByPropResponseBody;
+            queryParams: /* GetSpacesByPropQueryParamsInput */ any;
+            jsonRequest: {};
+            jsonResponse: /* GetSpacesByPropResponseBody */ any;
         },
 
         {
             route: `/spaces/count/by-prop/${CountSpacesByPropURLParams['prop']}/${CountSpacesByPropURLParams['query']}`;
             method: 'GET';
 
-            queryParams: CountSpacesByPropQueryParamsInput;
-            jsonResponse: CountSpacesByPropResponseBody;
+            queryParams: /* CountSpacesByPropQueryParamsInput */ any;
+            jsonRequest: {};
+            jsonResponse: /* CountSpacesByPropResponseBody */ any;
         },
 
         {
             route: '/spaces/get/all';
             method: 'GET';
 
-            queryParams: GetSpacesQueryParamsInput;
-            jsonResponse: GetSpacesResponseBody;
+            queryParams: /* GetSpacesQueryParamsInput */ any;
+            jsonRequest: {};
+            jsonResponse: /* GetSpacesResponseBody */ any;
         },
 
         {
             route: '/spaces/count/all';
             method: 'GET';
             queryParams: {};
-            jsonResponse: CountSpacesResponseBody;
+            jsonRequest: {};
+            jsonResponse: /* CountSpacesResponseBody */ any;
         },
 
         {
             route: `/spaces/search/${SearchSpacesURLParams['query']}`;
             method: 'GET';
-            queryParams: SearchSpacesQueryParamsInput;
-            jsonResponse: SearchSpacesResponseBody;
+            queryParams: /* SearchSpacesQueryParamsInput */ any;
+            jsonRequest: {};
+            jsonResponse: /* SearchSpacesResponseBody */ any;
         },
 
         {
             route: `/spaces/search/${SearchSpacesCountURLParams['query']}/count`;
             method: 'GET';
             queryParams: {};
-            jsonResponse: SearchSpacesCountResponseBody;
+            jsonRequest: {};
+            jsonResponse: /* SearchSpacesCountResponseBody */ any;
         },
 
         {
             route: `/spaces/get/all/list/${ListSpacePropURLParams['prop']}`;
             method: 'GET';
-            queryParams: ListSpacePropQueryParamsInput;
-            jsonResponse: ListSpacePropResponseBody;
+            queryParams: /* ListSpacePropQueryParamsInput */ any;
+            jsonRequest: {};
+            jsonResponse: /* ListSpacePropResponseBody */ any;
         },
 
         {
             route: `/spaces/update/by-id/${UpdateSpaceByIDURLParams['id']}`;
             method: 'POST';
             queryParams: {};
-            jsonRequest: UpdateSpaceByIDRequestBodyInput;
-            jsonResponse: UpdateSpaceByIDResponseBody;
+            jsonRequest: /* UpdateSpaceByIDRequestBodyInput */ any;
+            jsonResponse: /* UpdateSpaceByIDResponseBody */ any;
         },
 
         {
             route: `/spaces/update/by-name/${UpdateSpaceByNameURLParams['name']}`;
             method: 'POST';
             queryParams: {};
-            jsonRequest: UpdateSpaceByNameRequestBodyInput;
-            jsonResponse: UpdateSpaceByNameResponseBody;
+            jsonRequest: /* UpdateSpaceByNameRequestBodyInput */ any;
+            jsonResponse: /* UpdateSpaceByNameResponseBody */ any;
         },
 
         {
@@ -130,7 +147,7 @@ export type ApiRoutes = RouteDefArray<
             method: 'POST';
             queryParams: {};
             jsonRequest: {};
-            jsonResponse: DuplicateSpaceByIDResponseBody;
+            jsonResponse: /* DuplicateSpaceByIDResponseBody */ any;
         },
 
         {
@@ -138,7 +155,7 @@ export type ApiRoutes = RouteDefArray<
             method: 'POST';
             queryParams: {};
             jsonRequest: {};
-            jsonResponse: DuplicateSpaceByNameResponseBody;
+            jsonResponse: /* DuplicateSpaceByNameResponseBody */ any;
         },
 
         {
@@ -146,7 +163,7 @@ export type ApiRoutes = RouteDefArray<
             method: 'DELETE';
             queryParams: {};
             jsonRequest: {};
-            jsonResponse: DeleteSpaceByIDResponseBody;
+            jsonResponse: /* DeleteSpaceByIDResponseBody */ any;
         },
 
         {
@@ -154,15 +171,15 @@ export type ApiRoutes = RouteDefArray<
             method: 'DELETE';
             queryParams: {};
             jsonRequest: {};
-            jsonResponse: DeleteSpaceByNameResponseBody;
+            jsonResponse: /* DeleteSpaceByNameResponseBody */ any;
         },
 
         {
             route: "/spaces/new";
             method: 'POST';
             queryParams: {};
-            jsonRequest: NewSpaceRequestBody;
-            jsonResponse: NewSpaceResponseBody;
+            jsonRequest: /* NewSpaceRequestBody */ any;
+            jsonResponse: /* NewSpaceResponseBody */ any;
         }
     ]
 >;

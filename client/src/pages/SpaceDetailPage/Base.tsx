@@ -79,7 +79,7 @@ export function SpaceDetailPageBase({
 }
 
 export function SpaceDetailPageBody() {
-    const [space] = SpaceData.useContext(null, undefined, (curr, prev) => console.log("Reinit from", prev, "to", curr), true);
+    const [space] = SpaceData.useContext(["name", "description", "aliases", "examples", "tags", "lastRequest"]);
     const navigate = useNavigate();
     const { _try } = useManualErrorHandling();
 
@@ -114,7 +114,6 @@ export function SpaceDetailPageBody() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [space, space?.tags]);
 
-    console.log("Rendering SpaceDetailPageBody", {space});
     if (space === null) return null;
     return (
         <div className="space-detail-page-body">

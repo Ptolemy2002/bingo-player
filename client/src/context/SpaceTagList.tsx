@@ -97,7 +97,7 @@ export default class SpaceTagList {
         if (data.ok) {
             // null should not be possible when we are getting tags, but just in case
             // we filter out these values
-            this.tags = data.values.filter((s) => s !== null);
+            this.tags = data.values.filter((s: string) => s !== null);
         }
         
         return this.tags;

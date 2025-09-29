@@ -83,9 +83,9 @@ function SpaceEditPageBase({
                                         }
                                     })
                             );
-
-                            if (!spaceTagList.hasInProgressRequest()) await spaceTagList.tagsRequest();
                         }
+
+                        if (!spaceTagList.hasInProgressRequest()) await spaceTagList.tagsRequest();
                     }}
                 >
                     

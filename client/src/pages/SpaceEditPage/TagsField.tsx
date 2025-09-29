@@ -155,6 +155,8 @@ export function SpaceEditTagItemField({
                                     });
                                 }
                             }}
+                            
+                            disabled={!hasTagList}
                         >
                             Select Existing
                         </StyledButton>

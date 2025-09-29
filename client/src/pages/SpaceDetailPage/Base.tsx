@@ -79,7 +79,7 @@ export function SpaceDetailPageBase({
 }
 
 export function SpaceDetailPageBody() {
-    const [space] = SpaceData.useContext(["name", "description", "aliases", "examples", "tags", "lastRequest"]);
+    const [space] = SpaceData.useContext(["name", "description", "aliases", "examples", "tags", "lastRequest", "requestInProgress"]);
     const navigate = useNavigate();
     const { _try } = useManualErrorHandling();
 

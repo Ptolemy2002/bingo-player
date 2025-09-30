@@ -59,7 +59,11 @@ export function useSpaceGallerySearchFunctions() {
         const api = getApi();
         search.hasPressed = true;
         if (cat === "general") {
-            const { data: countData } = await api.get(`/spaces/search/${encodeURIComponent(q)}/count`, {
+            const { data: countData } = await api.get(`/spaces/search/[query]/count`, {
+                params: {
+                    query: q
+                },
+                
                 id: RouteTags.searchSpacesCount
             })
                 .catch((e: AxiosError) => {
@@ -71,6 +75,11 @@ export function useSpaceGallerySearchFunctions() {
                 });
 
             if (countData.ok) {
+                // This should never happen. It's here because the way the Axios typing works
+                // makes the search count path ambiguous with the regular search path, so
+                // it thinks that the count might not be there.
+                if (!('count' in countData)) return;
+                
                 search.totalCount = countData.count;
             } else {
                 return;
@@ -82,9 +91,11 @@ export function useSpaceGallerySearchFunctions() {
             }
 
             const { offset, limit } = calcPagination(p, ps, search.totalCount);
-            const { data: spacesData } = await api.get(`/spaces/search/${encodeURIComponent(q)}`, {
+            const { data: spacesData } = await api.get(`/spaces/search/[query]`, {
                 id: RouteTags.searchSpaces,
                 params: {
+                    query: q,
+
                     o: offset,
                     l: limit,
                     sb,
@@ -101,9 +112,12 @@ export function useSpaceGallerySearchFunctions() {
             // convert it to a supported operation before sending the request
             const _sb = sb === "score" || sb === "_score" ? "name" : sb;
 
-            const { data: countData } = await api.get(`/spaces/count/by-prop/${cat}/${q}`, {
+            const { data: countData } = await api.get(`/spaces/count/by-prop/[prop]/[query]`, {
                 id: RouteTags.countSpacesByProp,
                 params: {
+                    prop: cat,
+                    query: q,
+
                     as: as ? "y" : "n",
                     cs: cs ? "y" : "n",
                     mw: mw ? "y" : "n",
@@ -131,9 +145,12 @@ export function useSpaceGallerySearchFunctions() {
 
             const { offset, limit } = calcPagination(p, ps, search.totalCount);
 
-            const { data: spacesData } = await api.get(`/spaces/get/by-prop/${cat}/${q}`, {
+            const { data: spacesData } = await api.get(`/spaces/get/by-prop/[prop]/[q]`, {
                 id: RouteTags.searchSpaces,
                 params: {
+                    prop: cat,
+                    query: q,
+
                     as: as ? "y" : "n",
                     cs: cs ? "y" : "n",
                     mw: mw ? "y" : "n",

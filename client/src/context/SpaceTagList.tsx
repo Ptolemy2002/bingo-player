@@ -88,8 +88,8 @@ export default class SpaceTagList {
 
         this.requstInProgress = true;
 
-        const { data } = await api.get('/spaces/get/all/list/tags', {
-            params,
+        const { data } = await api.get('/spaces/get/all/list/[prop]', {
+            params: { ...params, prop: 'tags' },
         });
 
         this.requstInProgress = false;
@@ -97,7 +97,7 @@ export default class SpaceTagList {
         if (data.ok) {
             // null should not be possible when we are getting tags, but just in case
             // we filter out these values
-            this.tags = data.values.filter((s: string) => s !== null);
+            this.tags = data.values.filter((s) => s !== null);
         }
         
         return this.tags;

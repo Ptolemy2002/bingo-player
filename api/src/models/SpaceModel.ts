@@ -2,6 +2,7 @@ import { HydratedDocumentFromSchema, Model, PipelineStage, Schema, Types, model 
 import { CleanMongoSpace, ZodMongoSpaceShape } from 'shared';
 import { zodValidateWithErrors } from '@ptolemy2002/regex-utils';
 import { refineNoAliasMatchingName } from 'shared';
+import { omit } from '@ptolemy2002/ts-utils';
 
 export type MongoDocumentSpace =
     // Here we're manually defining the _id field an ObjectId
@@ -89,8 +90,8 @@ SpaceSchema.path("aliases").validate(function(aliases: string[]) {
 SpaceSchema.path("tags").validate(zodValidateWithErrors(ZodMongoSpaceShape.tags, { _throw: true, prefix: "tags" }));
 
 SpaceSchema.method("toClientJSON", function() {
-    const {_id, ...space} = this.toJSON();
-    delete space.__v;
+    const {_id, ...space} = omit(this.toJSON(), "__v");
+    
     return {
         _id: _id.toString(),
         ...space

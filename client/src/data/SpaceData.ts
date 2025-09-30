@@ -148,9 +148,12 @@ export default class SpaceData extends MongoData<
             } else {
                 data = (
                     await api.get(
-                        `/spaces/get/by-prop/name/${encodeURIComponent(this.name)}`,
+                        `/spaces/get/by-prop/[prop]/[query]`,
                         {
                             params: {
+                                prop: "name",
+                                query: this.name,
+
                                 limit: 1,
                                 caseSensitive: "t",
                                 accentSensitive: "t",
@@ -184,19 +187,20 @@ export default class SpaceData extends MongoData<
             let data;
             if (this.id) {
                 data = (await api.post(
-                    `/spaces/update/by-id/${this.id || encodeURIComponent(this.id)}`,
+                    `/spaces/update/by-id/[id]`,
                     {
                         difference: this.difference({type: ["push", "pull"]}),
                     },
-                    { signal: ac.signal }
+                    { signal: ac.signal, params: { id: this.id } }
                 )).data;
             } else {
                 data = (await api.post(
-                    `/spaces/update/by-name/${encodeURIComponent(this.name)}`,
+                    `/spaces/update/by-name/[name]`,
                     {
+                        
                         difference: this.difference({type: ["push", "pull"]}),
                     },
-                    { signal: ac.signal }
+                    { signal: ac.signal, params: {name: this.name} }
                 )).data;
             }
 
@@ -219,15 +223,15 @@ export default class SpaceData extends MongoData<
             let data;
             if (this.id) {
                 data = (await api.post(
-                    `/spaces/duplicate/by-id/${this.id}`,
+                    `/spaces/duplicate/by-id/[id]`,
                     {},
-                    { signal: ac.signal }
+                    { signal: ac.signal, params: { id: this.id } }
                 )).data;
             } else {
                 data = (await api.post(
-                    `/spaces/duplicate/by-name/${encodeURIComponent(this.name)}`,
+                    `/spaces/duplicate/by-name/[name]`,
                     {},
-                    { signal: ac.signal }
+                    { signal: ac.signal, params: { name: this.name } }
                 )).data;
             }
 
@@ -251,9 +255,9 @@ export default class SpaceData extends MongoData<
             }
 
             if (this.id) {
-                await api.delete(`/spaces/delete/by-id/${this.id}`, { signal: ac.signal });
+                await api.delete(`/spaces/delete/by-id/[id]`, { signal: ac.signal, params: { id: this.id } });
             } else {
-                await api.delete(`/spaces/delete/by-name/${encodeURIComponent(this.name)}`, { signal: ac.signal });
+                await api.delete(`/spaces/delete/by-name/[name]`, { signal: ac.signal, params: { name: this.name } });
             }
 
             // Invalidate various caches to ensure the space no longer appears in searches

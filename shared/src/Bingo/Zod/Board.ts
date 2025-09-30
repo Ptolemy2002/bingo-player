@@ -8,7 +8,7 @@ export const BingoBoardExample = {
         width: 5,
         height: 5
     },
-    spaces: [0, 1, 2, null, 4, 5, 6, 7, 8, 9, null, null, null, null, null]
+    spaces: [0, 1, 2, null, 4, 5, 6, 7, 8, 9, null, null, null, null, null, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
 };
 
 export const ZodBingoBoardSchema = registerBingoSchema(

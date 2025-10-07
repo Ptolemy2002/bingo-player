@@ -1,7 +1,7 @@
 import { Override } from "@ptolemy2002/ts-utils";
 import z, { GlobalMeta, ZodType } from "zod";
 
-export type SocketMetaSchemaType = "args" | "prop" | "response" | "success-response" | "other";
+export type SocketMetaSchemaType = "args" | "prop" | "response" | "success-response" | "message-data" | "other";
 
 export type SocketMeta<T extends ZodType = ZodType> = Override<
     GlobalMeta,

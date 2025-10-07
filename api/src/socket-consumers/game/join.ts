@@ -51,6 +51,11 @@ export class BingoGameJoinHandler extends SocketRouteHandler<SocketGameJoinSucce
         });
 
         await req.socket.join(game.getSocketRoomName());
+        req.socket.to(game.getSocketRoomName()).emit("playersChange", {
+            type: "join",
+            gameId: game.id,
+            newPlayerName: playerName
+        });
 
         return {
             status: 200,

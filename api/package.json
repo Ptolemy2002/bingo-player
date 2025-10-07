@@ -12,7 +12,8 @@
     "link-shared": "bash ./scripts/link-shared.sh",
     "uninstall": "bash ./scripts/uninstall.sh",
     "reinstall": "bash ./scripts/reinstall.sh",
-    "swagger-autogen": "tsx src/services/swagger.ts"
+    "swagger-autogen": "tsx src/services/swagger.ts",
+    "typecheck": "tsc --noEmit"
   },
   "repository": {
     "type": "git",

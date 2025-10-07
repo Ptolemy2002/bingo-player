@@ -26,13 +26,22 @@ interface Endpoint {
     response: EndpointSection;
 }
 
+interface MessageData {
+    id: string;
+    description: string;
+    examples: string[];
+    props: Property[];
+}
+
 interface ProcessedData {
     endpoints: Map<string, Endpoint>;
+    messageData: Map<string, MessageData>;
     misc: Map<string, Miscellaneous>;
 }
 
 class SchemaProcessor {
     private endpoints = new Map<string, Endpoint>();
+    private messageData = new Map<string, MessageData>();
     private misc = new Map<string, Miscellaneous>();
     private excludedEventNames: Set<string>;
 
@@ -45,6 +54,7 @@ class SchemaProcessor {
         this.processBingoSchemas();
         return {
             endpoints: this.endpoints,
+            messageData: this.messageData,
             misc: this.misc
         };
     }
@@ -55,6 +65,14 @@ class SchemaProcessor {
             const meta = socketRegistry.get(schema)!;
             if (meta.type === "args") {
                 this.processArgsSchema(meta);
+            }
+        });
+
+        // Process message-data schemas
+        SocketSchemas.forEach((schema) => {
+            const meta = socketRegistry.get(schema)!;
+            if (meta.type === "message-data") {
+                this.processMessageDataSchema(meta);
             }
         });
 
@@ -99,9 +117,24 @@ class SchemaProcessor {
         this.addExamples(endpoint.args, meta);
     }
 
+    private processMessageDataSchema(meta: any): void {
+        if (!this.messageData.has(meta.id)) {
+            this.messageData.set(meta.id, {
+                id: meta.id,
+                description: meta.description || "No description",
+                examples: [],
+                props: []
+            });
+        }
+
+        const messageDataItem = this.messageData.get(meta.id)!;
+        messageDataItem.description = meta.description || "No description";
+        this.addExamples(messageDataItem, meta);
+    }
+
     private processResponseSchema(meta: any): void {
         if (this.excludedEventNames.has(meta.eventName)) return;
-        
+
         const endpoint = Array.from(this.endpoints.values()).find((e) => e.id === meta.eventName);
         if (!endpoint) return;
 
@@ -117,9 +150,16 @@ class SchemaProcessor {
 
         if (endpointEntry) {
             this.addPropertyToEndpoint(endpointEntry[1], meta);
-        } else {
-            this.addPropertyToMisc(meta);
+            return;
         }
+
+        const messageDataEntry = Array.from(this.messageData.entries()).find(([key]) => meta.id.startsWith(key));
+        if (messageDataEntry) {
+            this.addPropertyToMessageData(messageDataEntry[1], meta);
+            return;
+        }
+
+        this.addPropertyToMisc(meta);
     }
 
     private processOtherSchema(meta: any): void {
@@ -194,6 +234,16 @@ class SchemaProcessor {
         } else if (root.endsWith("Args")) {
             endpoint.args.props.push(property);
         }
+    }
+
+    private addPropertyToMessageData(messageDataItem: MessageData, meta: any): void {
+        const examples = this.extractExamples(meta);
+
+        messageDataItem.props.push({
+            id: meta.id,
+            description: meta.description || "No description",
+            examples
+        });
     }
 
     private addPropertyToMisc(meta: any): void {
@@ -277,6 +327,41 @@ class HTMLRenderer {
             .join("");
     }
 
+    private renderMessageData(messageDataMap: Map<string, MessageData>): string {
+        if (messageDataMap.size === 0) {
+            return `<p>No message data schemas registered.</p>`;
+        }
+
+        return Array.from(messageDataMap.values())
+            .sort((a, b) => a.id.localeCompare(b.id))
+            .map(messageData => {
+                const examplesSection = messageData.examples.length > 0 ? `
+                    <h4>Examples</h4>
+                    <ul>${messageData.examples.map(e => `<li><pre>${e}</pre></li>`).join("")}</ul>
+                ` : '';
+
+                const propsSection = messageData.props.length > 0 ? `
+                    <h4>Properties</h4>
+                    ${messageData.props.sort((a, b) => a.id.localeCompare(b.id)).map(p => {
+                        const propExamples = p.examples.length > 0 ? `
+                            <h6>Examples</h6>
+                            <ul>${p.examples.map(e => `<li><pre>${e}</pre></li>`).join("")}</ul>
+                        ` : '';
+
+                        return `
+                            <h5>${escapeHTML(p.id)}</h5>
+                            <p>${escapeHTML(p.description)}</p>${propExamples}
+                        `;
+                    }).join("")}
+                ` : '';
+
+                return `
+                    <h3 id="${messageData.id}">${escapeHTML(messageData.id)}</h3>
+                    <p>${escapeHTML(messageData.description)}</p>${examplesSection}${propsSection}
+                `;
+            }).join("");
+    }
+
     private renderMiscellaneous(misc: Map<string, Miscellaneous>): string {
         return Array.from(misc.entries())
             .sort(([a], [b]) => a.localeCompare(b))
@@ -293,7 +378,7 @@ class HTMLRenderer {
                         <h6>Examples</h6>
                         <ul>${p.examples.map(e => `<li><pre>${e}</pre></li>`).join("")}</ul>
                     ` : '';
-                    
+
                     return `
                         <h5>${escapeHTML(p.id)}</h5>
                         <p>${escapeHTML(p.description)}</p>${propExamples}
@@ -331,12 +416,17 @@ class HTMLRenderer {
 
                     ${this.renderEndpoints(data.endpoints)}
 
+                    <h2>Server Messages</h2>
+                    <p>This section describes messages sent from the server to clients.</p>
+
+                    ${this.renderMessageData(data.messageData)}
+
                     <h2>Miscellaneous Types</h2>
                     <p>This section describes miscellaneous types used in the API.</p>
 
                     ${this.renderMiscellaneous(data.misc)}
                 </body>
-            </html>    
+            </html>
         `;
     }
 }

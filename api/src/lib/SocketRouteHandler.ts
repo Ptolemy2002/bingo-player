@@ -1,11 +1,10 @@
-import { ErrorResponse, SuccessResponseBase, ZodErrorCodeSchema, ZodErrorMessageSchema, ZodHelpLinkSchema } from "shared";
+import { ErrorResponse, SuccessResponseBase, ZodErrorCodeSchema, ZodErrorMessageSchema } from "shared";
 import RouteHandler, { GeneratedResonse } from "./RouteHandler";
 import getEnv, { EnvType } from "env";
-import { Socket } from "socket.io";
-import { TypedSocketServer } from "services/socket";
+import { TypedSocket, TypedSocketServer } from "services/socket";
 
 export type SocketRouteHandlerRequestData = {
-    socket: Socket;
+    socket: TypedSocket;
     io: TypedSocketServer;
     id: string;
     args: unknown;
@@ -54,7 +53,7 @@ export default class SocketRouteHandler<SuccessResponse extends SuccessResponseB
         };
     }
 
-    async handle(socket: Socket, io: TypedSocketServer, args: unknown, callback: (res: SuccessResponse | ErrorResponse) => void): Promise<void> {
+    async handle(socket: TypedSocket, io: TypedSocketServer, args: unknown, callback: (res: SuccessResponse | ErrorResponse) => void): Promise<void> {
         try {
             const { response } = await this.generateResponse({ socket, io, id: socket.id, args });
             callback(response);

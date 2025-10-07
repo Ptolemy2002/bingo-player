@@ -12,7 +12,9 @@ import {
     SocketPingEventName,
     SocketIDEventName,
     SocketIDArgs,
-    SocketIDResponse
+    SocketIDResponse,
+    SocketPlayersChangeEventName,
+    SocketPlayersChangeData
 } from "./Zod";
 
 export * from "./Zod";
@@ -39,4 +41,6 @@ export type SocketClientToServerEvents = {
     [SocketSpaceOpEventName]: SocketEvent<SocketSpaceOpArgs, SocketSpaceOpResponse>;
 };
 
-export type SocketServerToClientEvents = {};
+export type SocketServerToClientEvents = {
+    [SocketPlayersChangeEventName]: SocketEvent<SocketPlayersChangeData>;
+};

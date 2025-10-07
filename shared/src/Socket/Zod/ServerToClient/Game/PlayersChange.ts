@@ -43,50 +43,28 @@ function zodSocketPlayersChangeDataBase<T extends SocketPlayersChangeType, PO ex
 }
 
 
+function createPropertyRegister(type: SocketPlayersChangeType, descriptions: Record<keyof typeof SocketPlayersChangeDataExample, { description: string; example: any }>) {
+    return <ZT extends ZodType>(prop: keyof typeof SocketPlayersChangeDataExample, s: ZT) => {
+        const desc = descriptions[prop];
+        return registerSocketSchema(s, {
+            id: `PlayersChangeData[${type}].${prop}`,
+            type: "prop",
+            description: desc.description,
+            example: desc.example as any
+        });
+    };
+}
+
 // This is a ServerToClient event. We only have the Data type.
 export const SocketPlayersChangeDataSchema = registerSocketSchema(
     z.discriminatedUnion("type", [
         registerSocketSchema(
-            zodSocketPlayersChangeDataBase("join", true, false, (p, s) => {
-                // using "as any" to avoid type issues with the examples
-                switch (p) {
-                    case "type": {
-                        return registerSocketSchema(s, {
-                            id: "PlayersChangeData[join].type",
-                            type: "prop",
-                            description: `The type of change that occurred (in this case, "join")`,
-                            example: "join" as any
-                        });
-                    }
-
-                    case "gameId": {
-                        return registerSocketSchema(s, {
-                            id: "PlayersChangeData[join].gameId",
-                            type: "prop",
-                            description: `The ID of the game the player joined`,
-                            example: BingoGameExample.id as any
-                        });
-                    }
-
-                    case "prevPlayerName": {
-                        return registerSocketSchema(s, {
-                            id: "PlayersChangeData[join].prevPlayerName",
-                            type: "prop",
-                            description: `The previous name of the player (optional and irrelevant when joining)`,
-                            example: null as any
-                        });
-                    }
-
-                    case "newPlayerName": {
-                        return registerSocketSchema(s, {
-                            id: "PlayersChangeData[join].newPlayerName",
-                            type: "prop",
-                            description: `The new name of the player who joined`,
-                            example: BingoPlayerExamples[0].name as any
-                        });
-                    }
-                }
-            }),
+            zodSocketPlayersChangeDataBase("join", true, false, createPropertyRegister("join", {
+                type: { description: `The type of change that occurred (in this case, "join")`, example: "join" },
+                gameId: { description: `The ID of the game the player joined`, example: BingoGameExample.id },
+                prevPlayerName: { description: `The previous name of the player (optional and irrelevant when joining)`, example: null },
+                newPlayerName: { description: `The new name of the player who joined`, example: BingoPlayerExamples[0].name }
+            })),
             {
                 id: "PlayersChangeData[join]",
                 type: "message-data",
@@ -94,48 +72,14 @@ export const SocketPlayersChangeDataSchema = registerSocketSchema(
                 description: `Data for when a player joins a game`
             }
         ),
-        
+
         registerSocketSchema(
-            zodSocketPlayersChangeDataBase("leave", false, true, (p, s) => {
-                // using "as any" to avoid type issues with the examples
-                switch (p) {
-                    case "type": {
-                        return registerSocketSchema(s, {
-                            id: "PlayersChangeData[leave].type",
-                            type: "prop",
-                            description: `The type of change that occurred (in this case, "leave")`,
-                            example: "leave" as any
-                        });
-                    }
-
-                    case "gameId": {
-                        return registerSocketSchema(s, {
-                            id: "PlayersChangeData[leave].gameId",
-                            type: "prop",
-                            description: `The ID of the game the player left`,
-                            example: BingoGameExample.id as any
-                        });
-                    }
-
-                    case "prevPlayerName": {
-                        return registerSocketSchema(s, {
-                            id: "PlayersChangeData[leave].prevPlayerName",
-                            type: "prop",
-                            description: `The previous name of the player who left`,
-                            example: BingoPlayerExamples[0].name as any
-                        });
-                    }
-
-                    case "newPlayerName": {
-                        return registerSocketSchema(s, {
-                            id: "PlayersChangeData[leave].newPlayerName",
-                            type: "prop",
-                            description: `The new name of the player (optional and irrelevant when leaving)`,
-                            example: null as any
-                        });
-                    }
-                }
-            }),
+            zodSocketPlayersChangeDataBase("leave", false, true, createPropertyRegister("leave", {
+                type: { description: `The type of change that occurred (in this case, "leave")`, example: "leave" },
+                gameId: { description: `The ID of the game the player left`, example: BingoGameExample.id },
+                prevPlayerName: { description: `The previous name of the player who left`, example: BingoPlayerExamples[0].name },
+                newPlayerName: { description: `The new name of the player (optional and irrelevant when leaving)`, example: null }
+            })),
             {
                 id: "PlayersChangeData[leave]",
                 type: "message-data",
@@ -145,46 +89,12 @@ export const SocketPlayersChangeDataSchema = registerSocketSchema(
         ),
 
         registerSocketSchema(
-            zodSocketPlayersChangeDataBase("nameChange", false, false, (p, s) => {
-                // using "as any" to avoid type issues with the examples
-                switch (p) {
-                    case "type": {
-                        return registerSocketSchema(s, {
-                            id: "PlayersChangeData[nameChange].type",
-                            type: "prop",
-                            description: `The type of change that occurred (in this case, "nameChange")`,
-                            example: "nameChange" as any
-                        });
-                    }
-
-                    case "gameId": {
-                        return registerSocketSchema(s, {
-                            id: "PlayersChangeData[nameChange].gameId",
-                            type: "prop",
-                            description: `The ID of the game the player changed their name in`,
-                            example: BingoGameExample.id as any
-                        });
-                    }
-
-                    case "prevPlayerName": {
-                        return registerSocketSchema(s, {
-                            id: "PlayersChangeData[nameChange].prevPlayerName",
-                            type: "prop",
-                            description: `The previous name of the player who changed their name`,
-                            example: BingoPlayerExamples[0].name as any
-                        });
-                    }
-
-                    case "newPlayerName": {
-                        return registerSocketSchema(s, {
-                            id: "PlayersChangeData[nameChange].newPlayerName",
-                            type: "prop",
-                            description: `The new name of the player who changed their name`,
-                            example: BingoPlayerExamples[1].name as any
-                        });
-                    }
-                }
-            }),
+            zodSocketPlayersChangeDataBase("nameChange", false, false, createPropertyRegister("nameChange", {
+                type: { description: `The type of change that occurred (in this case, "nameChange")`, example: "nameChange" },
+                gameId: { description: `The ID of the game the player changed their name in`, example: BingoGameExample.id },
+                prevPlayerName: { description: `The previous name of the player who changed their name`, example: BingoPlayerExamples[0].name },
+                newPlayerName: { description: `The new name of the player who changed their name`, example: BingoPlayerExamples[1].name }
+            })),
             {
                 id: "PlayersChangeData[nameChange]",
                 type: "message-data",

@@ -14,7 +14,9 @@ import {
     SocketIDArgs,
     SocketIDResponse,
     SocketPlayersChangeEventName,
-    SocketPlayersChangeData
+    SocketPlayersChangeData,
+    SocketSpacesChangeEventName,
+    SocketSpacesChangeData
 } from "./Zod";
 
 export * from "./Zod";
@@ -43,4 +45,5 @@ export type SocketClientToServerEvents = {
 
 export type SocketServerToClientEvents = {
     [SocketPlayersChangeEventName]: SocketEvent<SocketPlayersChangeData>;
+    [SocketSpacesChangeEventName]: SocketEvent<SocketSpacesChangeData>;
 };

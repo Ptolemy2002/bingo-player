@@ -54,7 +54,7 @@ export const ZodSocketSpaceOpArgsSchema = registerSocketSchema(
 
                     registerSocketSchema(
                         // This `refine` pattern allows us to copy the schema so that the original metadata
-                        // is not overwritten on `ZodBingoPlayerSetSchema`.
+                        // is not overwritten on `ZodSpaceIDSchema`.
                         ZodSpaceIDSchema.refine(() => true),
                         {
                             id: "SpaceOpArgs.spaces.item<string>",

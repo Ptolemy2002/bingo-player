@@ -1,3 +1,4 @@
+import { request } from "http";
 import SocketRouteHandler, { SocketRouteHandlerRequestData } from "lib/SocketRouteHandler";
 import SpaceModel from "models/SpaceModel";
 import { SocketConsumer } from "services/socket";
@@ -39,9 +40,18 @@ export class BingoSpaceOpHandler extends SocketRouteHandler<SocketSpaceOpSuccess
             };
         }
 
+        const prevGameState = game.toJSON();
+
+        // Necessary because if an error occurs midway through processing the space operation, we should
+        // act as if the entire operation never happened to avoid side effects
+        function revertGameState() {
+            return game.fromJSON(prevGameState);
+        }
+
         if (op !== "add") {
             for (const space in spaces) {
                 if (!game.hasSpace(space)) {
+                    revertGameState();
                     return {
                         status: 404,
                         response: this.buildNotFoundResponse(`Space with ID/index "${space}" does not exist in game "${gameId}"`)
@@ -70,9 +80,12 @@ export class BingoSpaceOpHandler extends SocketRouteHandler<SocketSpaceOpSuccess
                     }
                 }
             }
+
+            req.socket.to(game.getSocketRoomName()).emit("spacesChange", { op, spaces, gameId });
         } else {
             for (const space in spaces) {
                 if (typeof space === "number") {
+                    revertGameState();
                     return {
                         status: 400,
                         response: this.buildErrorResponse("BAD_INPUT", `Space IDs cannot be numbers when adding new spaces. Offending value: ${space}`)
@@ -80,6 +93,7 @@ export class BingoSpaceOpHandler extends SocketRouteHandler<SocketSpaceOpSuccess
                 }
 
                 if (game.hasSpace(space)) {
+                    revertGameState();
                     return {
                         status: 409,
                         response: this.buildErrorResponse("CONFLICT", `Space with ID "${space}" already exists in game "${gameId}"`)
@@ -89,6 +103,7 @@ export class BingoSpaceOpHandler extends SocketRouteHandler<SocketSpaceOpSuccess
                 const spaceData = await SpaceModel.findOne({ _id: space });
 
                 if (spaceData === null) {
+                    revertGameState();
                     return {
                         status: 404,
                         response: this.buildNotFoundResponse(`Space with ID "${space}" does not exist`)
@@ -97,6 +112,9 @@ export class BingoSpaceOpHandler extends SocketRouteHandler<SocketSpaceOpSuccess
 
                 game.addSpace(spaceData.toClientJSON());
             }
+
+            // When notifying clients of added spaces, we need to send the full space data to save on the need for clients to fetch it themselves
+            req.socket.to(game.getSocketRoomName()).emit("spacesChange", { op, spaces: spaces.map(s => game.getSpace(s)!.spaceData), gameId });
         }
 
         // If we reach this point, all space operations were successful

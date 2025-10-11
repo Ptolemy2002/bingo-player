@@ -1,13 +1,18 @@
 import { omit } from "@ptolemy2002/ts-utils";
-import { BingoGame, BingoPlayer, BingoPlayerRole, BingoSpaceSet, cleanMongoSpace, MongoSpace, SocketID, RouteError } from "src";
+import { BingoGame, BingoPlayer, BingoPlayerRole, BingoSpaceSet, cleanMongoSpace, MongoSpace, SocketID, RouteError, BingoBoard } from "src";
 
 // Creating partials that still require necessary fields
 export type BingoGameInit = Partial<BingoGame> & Pick<BingoGame, "id">;
 export type BingoPlayerInit = Partial<BingoPlayer> & Pick<BingoPlayer, "name" | "socketId">;
+export type BingoBoardInit = Omit<Partial<BingoBoard> & Pick<BingoBoard, "id" | "shape">, "ownerName" | "gameId">;
+export type BingoBoardPartial = Omit<Partial<BingoBoard>, "ownerName" | "gameId"> & { owner?: BingoPlayerData | BingoPlayerInit, game?: BingoGameData | BingoGameInit };
+
+type Coordinate = { x: number, y: number };
 
 export class BingoGameData {
     id: string;
     players: BingoPlayerData[] = [];
+    boards: BingoBoardData[] = [];
     spaces: BingoSpaceSet = [];
 
     constructor(game: BingoGameInit | BingoGameData) {
@@ -35,6 +40,18 @@ export class BingoGameData {
             });
         }
 
+        if (data.boards) {
+            const self = this;
+            data.boards.forEach(other => {
+                const matchingBoard = self.boards[self.boards.findIndex(b => b.id === other.id)];
+                if (matchingBoard) {
+                    matchingBoard.fromJSON(other);
+                } else {
+                    self.addBoard(other, self.getPlayerByName(other.ownerName)!);
+                }
+            });
+        }
+
         if (data.spaces) {
             // Do a direct override since all space data should be coming from the database and not modified in-place.
             this.spaces = [...data.spaces];
@@ -47,6 +64,7 @@ export class BingoGameData {
         return {
             id: this.id,
             players: this.players.map(player => player.toJSON()),
+            boards: this.boards.map(board => board.toJSON()),
             spaces: [...this.spaces]
         };
     }
@@ -59,8 +77,20 @@ export class BingoGameData {
         }
     }
 
+    getBoardIndex(boardId: string | number) {
+        if (typeof boardId === "string") {
+            return this.boards.findIndex(b => b.id === boardId);
+        } else {
+            return boardId;
+        }
+    }
+
     hasSpace(space: string | number) {
         return this.getSpaceIndex(space) !== -1;
+    }
+
+    hasBoard(boardId: string | number) {
+        return this.getBoardIndex(boardId) !== -1;
     }
 
     getPlayerIndexByName(name: string) {
@@ -95,6 +125,12 @@ export class BingoGameData {
         const index = this.getSpaceIndex(space);
         if (index === -1) return null;
         return this.spaces[index];
+    }
+
+    getBoard(boardId: string | number) {
+        const index = this.getBoardIndex(boardId);
+        if (index === -1) return null;
+        return this.boards[index];
     }
 
     mark(_space: string | number) {
@@ -171,11 +207,11 @@ export class BingoGameData {
         return this;
     }
 
-    addPlayer(player: BingoPlayerInit) {
+    addPlayer(player: BingoPlayerInit | BingoPlayerData) {
         if (this.hasPlayerByName(player.name)) throw new RouteError(`Player "${player.name}" already exists in game "${this.id}"`, 409, "CONFLICT");
         if (this.hasPlayerBySocketId(player.socketId)) throw new RouteError(`Player with socket ID ${player.socketId} already exists in game "${this.id}"`, 409, "CONFLICT");
 
-        const newPlayer = new BingoPlayerData(player);
+        const newPlayer = player instanceof BingoPlayerData ? player : new BingoPlayerData(player);
         this.players.push(newPlayer);
         return newPlayer;
     }
@@ -206,12 +242,26 @@ export class BingoGameData {
         }
     }
 
+    removeBoardsByOwnerName(name: string) {        
+        const removedBoards = this.boards.filter(board => board.owner.name === name);
+        this.boards = this.boards.filter(board => board.owner.name !== name);
+        return removedBoards;
+    }
+
+    removeBoardsByOwnerSocketId(socketId: SocketID) {
+        const owner = this.getPlayerBySocketId(socketId);
+        if (!owner) throw new RouteError(`Player with socket ID ${socketId} not found in game "${this.id}"`, 404, "NOT_FOUND");
+
+        return this.removeBoardsByOwnerName(owner.name);
+    }
+
     removePlayerByName(name: string) {
         const index = this.getPlayerIndexByName(name);
         
         if (index !== -1) {
             const player = this.players[index];
             this.players.splice(index, 1);
+            this.removeBoardsByOwnerName(name);
             return player;
         } else {
             throw new RouteError(`Player "${name}" not found in game "${this.id}"`, 404, "NOT_FOUND");
@@ -225,9 +275,47 @@ export class BingoGameData {
         if (index !== -1) {
             const player = this.players[index];
             this.players.splice(index, 1);
+            this.removeBoardsByOwnerSocketId(socketId);
             return player;
         } else {
             throw new RouteError(`Player with socket ID ${socketId} not found in game "${this.id}"`, 404, "NOT_FOUND");
+        }
+    }
+
+    addBoard(board: BingoBoardInit | BingoBoardData, owner: BingoPlayerData) {
+        if (board instanceof BingoBoardData) board = board.toJSON();
+        if (this.hasBoard(board.id)) throw new RouteError(`Board with ID "${board.id}" already exists in game "${this.id}"`, 409, "CONFLICT");
+
+        const newBoard = new BingoBoardData(this, owner, board);
+        this.boards.push(newBoard);
+        return newBoard;
+    }
+
+    updateBoard(boardId: string | number, data: BingoBoardPartial) {
+        const board = this.getBoard(boardId);
+        if (!board) throw new RouteError(`Board with ID "${boardId}" not found in game "${this.id}"`, 404, "NOT_FOUND");
+
+        return board.fromJSON(data);
+    }
+
+    addOrUpdateBoard(board: BingoBoardPartial, owner: BingoPlayerData) {
+        if (board.id && this.hasBoard(board.id)) {
+            return this.updateBoard(board.id, board);
+        } else if (board.id) {
+            return this.addBoard(board as BingoBoardInit, owner); // Type assertion since we know ID is present
+        } else {
+            throw new RouteError(`Board must have an ID to be added to game "${this.id}"`, 400, "BAD_INPUT");
+        }
+    }
+
+    removeBoard(boardId: string | number) {
+        const index = this.getBoardIndex(boardId);
+        if (index !== -1) {
+            const board = this.boards[index];
+            this.boards.splice(index, 1);
+            return board;
+        } else {
+            throw new RouteError(`Board with ID "${boardId}" not found in game "${this.id}"`, 404, "NOT_FOUND");
         }
     }
 
@@ -237,14 +325,20 @@ export class BingoGameData {
 }
 
 export class BingoPlayerData {
+    game: BingoGameData | null = null;
     name: string;
     socketId: SocketID;
     role: BingoPlayerRole = "player";
 
-    constructor(player: BingoPlayerInit | BingoPlayerData) {
+    constructor(player: BingoPlayerInit | BingoPlayerData, game: BingoGameInit | BingoGameData | null = null) {
         if (player instanceof BingoPlayerData) player = player.toJSON();
         this.name = player.name;
         this.socketId = player.socketId;
+
+        if (game) {
+            this.transferToGame(game);
+        }
+
         this.fromJSON(omit(player, "name", "socketId"));
     }
 
@@ -267,6 +361,198 @@ export class BingoPlayerData {
     clone() {
         return new BingoPlayerData(this.toJSON());
     }
+
+    hasGame() {
+        return this.game !== null;
+    }
+
+    leaveGame() {
+        if (!this.hasGame()) throw new RouteError(`Player "${this.name}" is not in a game`, 400, "BAD_INPUT");
+        this.game!.removePlayerBySocketId(this.socketId);
+        this.game = null;
+        return this;
+    }
+
+    transferToGame(game: BingoGameInit | BingoGameData) {
+        if (this.hasGame()) {
+            this.leaveGame();
+        }
+
+        this.game = game instanceof BingoGameData ? game : new BingoGameData(game);
+        this.game.addPlayer(this);
+        return this;
+    }
+
+    makeBoard(board: BingoBoardInit | BingoBoardData) {
+        if (!this.hasGame()) throw new RouteError(`Player "${this.name}" is not in a game`, 400, "BAD_INPUT");
+        return this.game!.addBoard(board, this);
+    }
+
+    removeBoard(boardId: string | number) {
+        if (!this.hasGame()) throw new RouteError(`Player "${this.name}" is not in a game`, 400, "BAD_INPUT");
+        const board = this.game!.getBoard(boardId);
+        if (!board) throw new RouteError(`Board with ID "${boardId}" not found in game "${this.game!.id}"`, 404, "NOT_FOUND");
+        if (board.owner.socketId !== this.socketId) throw new RouteError(`Player "${this.name}" does not own board with ID "${boardId}" in game "${this.game!.id}"`, 403, "FORBIDDEN");
+        return this.game!.removeBoard(boardId);
+    }
+
+    removeBoards() {
+        if (!this.hasGame()) throw new RouteError(`Player "${this.name}" is not in a game`, 400, "BAD_INPUT");
+        return this.game!.removeBoardsByOwnerSocketId(this.socketId);
+    }
+
+    getBoards() {
+        if (!this.hasGame()) throw new RouteError(`Player "${this.name}" is not in a game`, 400, "BAD_INPUT");
+        return this.game!.boards.filter(board => board.owner.socketId === this.socketId);
+    }
+}
+
+export class BingoBoardData {
+    id: string;
+    owner: BingoPlayerData;
+    game: BingoGameData;
+    _shape: {
+        width: number;
+        height: number;
+    };
+    _spaces: (number | null)[];
+
+    get spaces() {
+        return this.spaces;
+    }
+
+    set spaces(value: (number | null)[]) {
+        if (value.length !== this.size()) throw new RouteError(`Board spaces size must be equal to width * height (${this.size()}). Not ${value.length}`, 400, "BAD_INPUT");
+        this._spaces = value;
+    }
+
+    get shape() {
+        return this._shape;
+    }
+
+    set shape(value: BingoBoard["shape"]) {
+        if (value.width <= 0 || value.height <= 0) throw new RouteError("Board width and height must be positive integers", 400, "BAD_INPUT");
+        this._shape = value;
+
+        // Fill spaces with nulls where necessary
+        if (this.spaces.length < this.size()) {
+            this.spaces = [...this.spaces, ...Array(this.size() - this.spaces.length).fill(null)];
+        }
+        // Trim spaces where necessary
+        else if (this.spaces.length > this.size()) {
+            this.spaces = this.spaces.slice(0, this.size());
+        }
+    }
+
+    constructor(game: BingoGameData, owner: BingoPlayerData, board: BingoBoardInit | BingoBoardData) {
+        this.game = game;
+        this.owner = owner;
+
+        if (board instanceof BingoBoardData) {
+            board = board.toJSON();
+        }
+
+        this.fromJSON(board);
+    }
+
+    fromJSON(data: BingoBoardPartial) {
+        if (data.id) this.id = data.id;
+        if (data.shape) this.shape = data.shape;
+        if (data.spaces) this.spaces = data.spaces;
+
+        if (data.owner) {
+            this.owner = data.owner instanceof BingoPlayerData ? data.owner : new BingoPlayerData(data.owner);
+        }
+
+        if (data.game) {
+            this.game = data.game instanceof BingoGameData ? data.game : new BingoGameData(data.game);
+        }
+
+        return this;
+    }
+
+    toJSON(): BingoBoard {
+        return {
+            id: this.id,
+            ownerName: this.owner.name,
+            gameId: this.game.id,
+            shape: this.shape,
+            spaces: this.spaces
+        };
+    }
+
+    clone() {
+        return new BingoBoardData(this.game, this.owner, this.toJSON());
+    }
+
+    get width() {
+        return this.shape.width;
+    }
+
+    get height() {
+        return this.shape.height;
+    }
+
+    size() {
+        return this.width * this.height;
+    }
+
+    coordinateToIndex({x, y}: Coordinate) {
+        return y * this.width + x;
+    }
+
+    indexToCoordinate(index: number) {
+        const x = index % this.width;
+        const y = Math.floor(index / this.width);
+        return { x, y };
+    }
+
+    hasSpace(v: number | Coordinate) {
+        let index: number;
+        if (typeof v === "number") {
+            index = v;
+        } else {
+            index = this.coordinateToIndex(v);
+        }
+        
+        return index >= 0 && index < this.size();
+    }
+
+    getSpaceRef(v: number | Coordinate) {
+        let index: number;
+        if (typeof v === "number") {
+            index = v;
+        } else {
+            index = this.coordinateToIndex(v);
+        }
+
+        if (!this.hasSpace(v)) throw new RouteError(`Space index ${index} is out of bounds for board "${this.id}" in game "${this.game.id}"`, 400, "BAD_INPUT");
+        return index;
+    }
+
+    getSpace(v: number | Coordinate) {
+        const index = this.getSpaceRef(v);
+        const ref = this.spaces[index];
+        if (ref === null) return null;
+        return this.game.getSpace(ref);
+    }
+
+    setSpace(v: number | Coordinate, space: string | number | null) {
+        const index = this.getSpaceRef(v);
+        if (space === null) {
+            this.spaces[index] = null;
+        } else {
+            const spaceIndex = this.game.getSpaceIndex(space);
+            if (spaceIndex === -1) throw new RouteError(`Space ${space} not found in game "${this.game.id}"`, 404, "NOT_FOUND");
+            this.spaces[index] = spaceIndex;
+        }
+        return this;
+    }
+
+    remove() {
+        this.game.removeBoard(this.id);
+        return this;
+    }
 }
 
 export class BingoGameCollection {
@@ -275,7 +561,7 @@ export class BingoGameCollection {
     private games: Map<BingoGame["id"], BingoGameData> = new Map();
 
     constructor(games: BingoGameInit[] | BingoGameCollection = []) {
-        if (games instanceof BingoGameCollection) games = games.getAllGames();
+        if (games instanceof BingoGameCollection) games = games.getAllGames().map(g => g.toJSON());
         games?.forEach((game) => this.addGame(game));
     }
 
@@ -299,7 +585,7 @@ export class BingoGameCollection {
         }
 
         if (!this.hasGame(game.id)) throw new RouteError(`Game with ID "${game.id}" not found`, 404, "NOT_FOUND");
-        return this.getGame(game.id)!.fromJSON(game);
+        return this.getGame(game.id)!.fromJSON(game instanceof BingoGameData ? game.toJSON() : game);
     }
 
     addOrUpdateGame(game: BingoGameInit | BingoGameData) {
@@ -366,7 +652,7 @@ export class BingoGameCollection {
 
     filter(callback: (game: BingoGameData, index: number, collection: BingoGameCollection) => boolean) {
         return new BingoGameCollection(
-            this.getAllGames().filter((game, index) => callback(game, index, this))
+            this.getAllGames().filter((game, index) => callback(game, index, this)).map(g => g.toJSON())
         );
     }
 

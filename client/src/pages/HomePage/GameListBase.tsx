@@ -59,7 +59,7 @@ function GameListBase({
                                 lg={colSizeLg}
                                 xl={colSizeXl}
                             >
-                                <GameCard game={game} />
+                                <GameCard game={game.toJSON()} />
                             </Col>
                         ))}
                     </Row>

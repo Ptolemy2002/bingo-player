@@ -3,6 +3,7 @@ import { registerBingoSchema } from "src/Bingo";
 
 export const BingoBoardExample = {
     id: "board123",
+    ownerName: "Alice",
     gameId: "game123",
     shape: {
         width: 5,
@@ -20,6 +21,15 @@ export const ZodBingoBoardSchema = registerBingoSchema(
                 type: "prop",
                 description: "Unique identifier for the bingo board. Must be a string.",
                 example: BingoBoardExample.id
+            }
+        ),
+        ownerName: registerBingoSchema(
+            z.string().min(1, "Owner name must have at least 1 character"),
+            {
+                id: "BingoBoard.ownerName",
+                type: "prop",
+                description: "Name of the player who owns this board. Must be a string with at least 1 character.",
+                example: BingoBoardExample.ownerName
             }
         ),
         gameId: registerBingoSchema(
@@ -103,4 +113,32 @@ export const ZodBingoBoardSchema = registerBingoSchema(
     }
 );
 
+export const ZodBingoBoardSetSchema = registerBingoSchema(
+    z.array(ZodBingoBoardSchema).superRefine((boards, ctx) => {
+        const seenIds: string[] = [];
+        for (const [index, board] of boards.entries()) {
+            if (seenIds.includes(board.id)) {
+                ctx.addIssue({
+                    code: "custom",
+                    message: `No two boards in this list should have the same ID.`,
+                    path: ["id"],
+                    params: {
+                        duplicateId: board.id,
+                        boardIndex: index
+                    }
+                });
+            } else {
+                seenIds.push(board.id);
+            }
+        }
+    }),
+    {
+        id: "BingoBoardSet",
+        type: "collection",
+        description: "Set of bingo boards, enforcing unique IDs",
+        example: [BingoBoardExample]
+    }
+);
+
 export type BingoBoard = z.infer<typeof ZodBingoBoardSchema>;
+export type BingoBoardSet = z.infer<typeof ZodBingoBoardSetSchema>;

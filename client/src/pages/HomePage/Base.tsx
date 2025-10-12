@@ -1,5 +1,6 @@
 import { usePersistentState } from "@ptolemy2002/react-utils";
 import DefaultNameField from "./NameFieldStyled";
+import DefaultGameCreateField from "./GameCreateFieldStyled";
 import DefaultGameList from "./GameListStyled";
 import { HomePageProps } from "./Types";
 import { SuspenseBoundary } from "@ptolemy2002/react-suspense";
@@ -10,6 +11,7 @@ import { BingoGameCollectionProvider } from "src/context/BingoGameCollection";
 
 function HomePage({
     NameField = DefaultNameField,
+    GameCreateField = DefaultGameCreateField,
     GameList = DefaultGameList
 }: HomePageProps) {
     const [name] = usePersistentState("bingoPlayerApp.name", "");
@@ -33,6 +35,9 @@ function HomePage({
 
                             <h2>Other Games</h2>
                             <GameList socketId={socketId} category="not-mine" />
+
+                            <br />
+                            <GameCreateField />
                         </SuspenseBoundary>
                     ) : (
                         <p>Please enter your name to start viewing and joining games.</p>

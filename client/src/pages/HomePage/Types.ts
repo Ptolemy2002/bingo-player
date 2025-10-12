@@ -3,11 +3,10 @@ import { Override } from "@ptolemy2002/ts-utils";
 import { FC, HTMLProps } from "react"
 import { FormProps } from "react-bootstrap";
 import { SocketID } from "shared";
-import { StyledButtonProps } from "src/components/StyledButton";
-import { ButtonStyles } from "styled-components";
 
 export type HomePageProps = {
     NameField?: FC<NameFieldProps["functional"]>;
+    GameCreateField?: FC<GameCreateFieldProps["functional"]>;
     GameList?: FC<GameListProps["functional"]>;
 };
 
@@ -34,10 +33,14 @@ export type GameListProps = StyledComponentPropsWithCSS<
     }>, {}
 >;
 
-export type GameCreateButtonProps = StyledComponentPropsWithCSS<
+export type GameCreateFieldProps = StyledComponentPropsWithCSS<
     Override<
-        Omit<StyledButtonProps["functional"], "onClick">, {
+        FormProps, {
             className?: string;
         }
-    >, ButtonStyles
+    >, {
+        horizontal?: boolean;
+        gap?: RequiredCSSProperties["gap"];
+        maxWidth?: RequiredCSSProperties["maxWidth"];
+    }
 >;

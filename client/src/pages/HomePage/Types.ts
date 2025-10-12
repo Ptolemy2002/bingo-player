@@ -1,6 +1,6 @@
 import { RequiredCSSProperties, StyledComponentPropsWithCSS } from "@ptolemy2002/react-styled-component-utils";
 import { Override } from "@ptolemy2002/ts-utils";
-import { FC, HTMLProps } from "react"
+import { FC, HTMLProps, MouseEvent } from "react"
 import { FormProps } from "react-bootstrap";
 import { SocketID } from "shared";
 
@@ -37,6 +37,7 @@ export type GameCreateFieldProps = StyledComponentPropsWithCSS<
     Override<
         FormProps, {
             className?: string;
+            onClick?: (name: string, e: MouseEvent<HTMLButtonElement>) => void
         }
     >, {
         horizontal?: boolean;

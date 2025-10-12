@@ -55,9 +55,11 @@ export default class SocketRouteHandler<SuccessResponse extends SuccessResponseB
 
     async handle(socket: TypedSocket, io: TypedSocketServer, args: unknown, callback: (res: SuccessResponse | ErrorResponse) => void): Promise<void> {
         try {
-            const { response } = await this.generateResponse({ socket, io, id: socket.id, args });
+            const { status, response } = await this.generateResponse({ socket, io, id: socket.id, args });
             callback(response);
+            console.log("Socket route", `[${this.docsEndpoint}]`, "handled request from", `[${socket.id}]`, "with status", status);
         } catch (err: any) {
+            console.log("Socket route", `[${this.docsEndpoint}]`, "caught error:");
             console.error(err.stack);
 
             let code = err.code ?? "UNKNOWN";

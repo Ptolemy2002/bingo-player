@@ -55,6 +55,12 @@ export class BingoGameLeaveHandler extends SocketRouteHandler<SocketGameLeaveSuc
             prevPlayerName: playerName
         });
 
+        // If the game is empty, remove it from the collection
+        if (game.players.length === 0) {
+            console.log(`Game [${game.id}] is now empty, removing from collection`);
+            BingoGameCollection.global.removeGame(game.id);
+        }
+
         return {
             status: 200,
             response: this.buildSuccessResponse({})

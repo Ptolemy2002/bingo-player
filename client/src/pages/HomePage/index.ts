@@ -1,4 +1,5 @@
-export { default } from "./Base";
+export { default as UnstyledHomePage } from "./Base";
+export { default } from "./BaseStyled";
 
 export { default as UnstyledNameField } from "./NameFieldBase";
 export { default as NameField } from "./NameFieldStyled";

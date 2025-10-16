@@ -4,10 +4,12 @@ import clsx from "clsx";
 import { listInPlainEnglish } from "@ptolemy2002/js-utils";
 import { useMemo } from "react";
 import { BingoGameData } from "shared";
+import { LinkContainer } from "react-router-bootstrap";
 
 function GameCardBase({
     className,
     game: _game,
+    mine=false,
     ...props
 }: GameCardProps["functional"]) {
     const game = new BingoGameData(_game)
@@ -30,8 +32,17 @@ function GameCardBase({
                     {playerNameList}
                     <br />
 
-                    <b>Spaces Involved:</b> {game.spaces.length}
+                    <b>Spaces Involved:</b> {game.spaces.length} <br />
+                    <b>Boards Involved:</b> {game.boards.length}
                 </Card.Text>
+
+                {mine ? (
+                    <LinkContainer to={`/game/${encodeURIComponent(game.id)}`}>
+                        <p>Enter Game</p>
+                    </LinkContainer>
+                ) : (
+                    null
+                )}
             </Card.Body>
         </Card>
     )

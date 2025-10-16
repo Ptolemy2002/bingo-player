@@ -1,5 +1,5 @@
 import SocketRouteHandler, { SocketRouteHandlerRequestData } from "lib/SocketRouteHandler";
-import { SocketConsumer } from "services/socket";
+import { playerDisconnectHandler, SocketConsumer } from "services/socket";
 import { SocketGameCreateEventName, SocketGameCreateSuccessResponse, ZodSocketGameCreateArgsSchema, BingoGameCollection } from "shared";
 
 export class BingoGameCreateHandler extends SocketRouteHandler<SocketGameCreateSuccessResponse> {
@@ -37,6 +37,7 @@ export class BingoGameCreateHandler extends SocketRouteHandler<SocketGameCreateS
         });
 
         await req.socket.join(game.getSocketRoomName());
+        req.socket.on("disconnect", () => playerDisconnectHandler(req.socket, req.id, BingoGameCollection.global, game));
 
         return {
             status: 200,

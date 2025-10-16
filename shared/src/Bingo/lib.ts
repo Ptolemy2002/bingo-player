@@ -274,8 +274,8 @@ export class BingoGameData {
 
         if (index !== -1) {
             const player = this.players[index];
-            this.players.splice(index, 1);
             this.removeBoardsByOwnerSocketId(socketId);
+            this.players.splice(index, 1);
             return player;
         } else {
             throw new RouteError(`Player with socket ID ${socketId} not found in game "${this.id}"`, 404, "NOT_FOUND");

@@ -2,7 +2,7 @@ import { Socket, Server as SocketServer } from 'socket.io';
 import { createServer, Server as HttpServer } from 'http';
 import { Express } from 'express';
 import getEnv from 'env';
-import { SocketClientToServerEvents, SocketServerToClientEvents, RouteError } from 'shared';
+import { SocketClientToServerEvents, SocketServerToClientEvents, RouteError, BingoGameData, BingoGameCollection, SocketID } from 'shared';
 
 export type TypedSocket = Socket<SocketClientToServerEvents, SocketServerToClientEvents>;
 export type TypedSocketServer = SocketServer<SocketClientToServerEvents, SocketServerToClientEvents>;
@@ -120,4 +120,25 @@ export function clearSocketConsumers(...consumers: string[]) {
 
 export function getSocketConsumers() {
     return socketConsumers;
+}
+
+export async function playerDisconnectHandler(socket: TypedSocket, playerId: SocketID, collection: BingoGameCollection, game: BingoGameData) {
+    // If the player disconnects while still being in the game,
+    // remove them from the game and notify other players in the game
+    if (game.hasPlayerBySocketId(playerId)) {
+        console.log(`Player [${playerId}] disconnected, removing from game [${game.id}]`);
+        game.removePlayerBySocketId(playerId);
+        await socket.leave(game.getSocketRoomName());
+        socket.to(game.getSocketRoomName()).emit("playersChange", {
+            type: "disconnect",
+            gameId: game.id,
+            prevPlayerName: game.getPlayerBySocketId(playerId)?.name || "Unknown"
+        });
+
+        // If the game is empty, remove it from the collection
+        if (game.players.length === 0) {
+            console.log(`Game [${game.id}] is now empty, removing from collection`);
+            collection.removeGame(game.id);
+        }
+    }
 }

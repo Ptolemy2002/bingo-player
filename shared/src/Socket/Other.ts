@@ -9,5 +9,6 @@ export const SocketSpaceOpEnum = [
 export const SocketPlayersChangeTypeEnum = [
     "join",
     "leave",
+    "disconnect",
     "nameChange"
 ] as const;

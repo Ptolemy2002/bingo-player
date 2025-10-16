@@ -78,13 +78,28 @@ export const SocketPlayersChangeDataSchema = registerSocketSchema(
                 type: { description: `The type of change that occurred (in this case, "leave")`, example: "leave" },
                 gameId: { description: `The ID of the game the player left`, example: BingoGameExample.id },
                 prevPlayerName: { description: `The previous name of the player who left`, example: BingoPlayerExamples[0].name },
-                newPlayerName: { description: `The new name of the player (optional and irrelevant when leaving)`, example: null }
+                newPlayerName: { description: `The new name of the player (optional and irrelevant when leaving or disconnecting)`, example: null }
             })),
             {
                 id: "PlayersChangeData[leave]",
                 type: "message-data",
                 eventName: SocketPlayersChangeEventName,
                 description: `Data for when a player leaves a game`
+            }
+        ),
+
+        registerSocketSchema(
+            zodSocketPlayersChangeDataBase("disconnect", false, true, createPropertyRegister("disconnect", {
+                type: { description: `The type of change that occurred (in this case, "disconnect")`, example: "disconnect" },
+                gameId: { description: `The ID of the game the player disconnected from`, example: BingoGameExample.id },
+                prevPlayerName: { description: `The previous name of the player who disconnected`, example: BingoPlayerExamples[0].name },
+                newPlayerName: { description: `The new name of the player (optional and irrelevant when leaving or disconnecting)`, example: null }
+            })),
+            {
+                id: "PlayersChangeData[disconnect]",
+                type: "message-data",
+                eventName: SocketPlayersChangeEventName,
+                description: `Data for when a player disconnects from a game`
             }
         ),
 

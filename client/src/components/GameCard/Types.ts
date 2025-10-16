@@ -7,4 +7,5 @@ import { CardStyles } from "styled-components";
 export type GameCardProps = StyledComponentPropsWithCSS<Override<CardProps, {
     className?: string;
     game: BingoGame;
+    mine?: boolean;
 }>, CardStyles>;

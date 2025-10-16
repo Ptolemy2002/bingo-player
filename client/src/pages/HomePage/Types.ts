@@ -4,11 +4,12 @@ import { FC, HTMLProps, MouseEvent } from "react"
 import { FormProps } from "react-bootstrap";
 import { SocketID } from "shared";
 
-export type HomePageProps = {
+export type HomePageProps = StyledComponentPropsWithCSS<{
     NameField?: FC<NameFieldProps["functional"]>;
     GameCreateField?: FC<GameCreateFieldProps["functional"]>;
     GameList?: FC<GameListProps["functional"]>;
-};
+    className?: string;
+}, {}>;
 
 export type NameFieldProps = StyledComponentPropsWithCSS<
     Override<FormProps, {
@@ -20,11 +21,13 @@ export type NameFieldProps = StyledComponentPropsWithCSS<
     }
 >;
 
+export type GameListCategory = "mine" | "not-mine" | "all";
+
 export type GameListProps = StyledComponentPropsWithCSS<
     Override<HTMLProps<HTMLDivElement>, {
         className?: string;
         socketId: SocketID | null;
-        category?: "mine" | "not-mine" | "all";
+        category?: GameListCategory;
         colSizeXs?: number;
         colSizeSm?: number;
         colSizeMd?: number;

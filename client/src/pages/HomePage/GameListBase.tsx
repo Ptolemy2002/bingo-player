@@ -26,13 +26,12 @@ function GameListBase({
     const socket = getSocket();
 
     useEffect(() => {
-        _try(() => suspend(async () => {
-            if (!socketId) {
-                // Skip fetch this time. When we get a value, we'll fetch again.
-                setGames([]);
-                return;
-            }
+        if (!socketId) {
+            setGames([]);
+            return;
+        }
 
+        _try(() => suspend(async () => {
             const res = await socket.emitSafeWithAck("gameList", { mine: category === "mine" });
             let gc = new BingoGameCollection(res.games);
 
@@ -59,7 +58,7 @@ function GameListBase({
                                 lg={colSizeLg}
                                 xl={colSizeXl}
                             >
-                                <GameCard game={game.toJSON()} />
+                                <GameCard game={game.toJSON()} mine={game.hasPlayerBySocketId(socketId!)} />
                             </Col>
                         ))}
                     </Row>

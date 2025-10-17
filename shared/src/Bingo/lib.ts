@@ -630,9 +630,15 @@ export class BingoGameCollection {
         }
     }
 
-    removeGame(gameId: BingoGame["id"] | number) {
+    removeGame(gameId: BingoGame["id"] | number, cleanup: boolean = true) {
         const game = this.getGame(gameId);
-        if (game) this.games.delete(game.id);
+        if (game) {
+            if (cleanup) {
+                game.clearTimeouts();
+            }
+            
+            this.games.delete(game.id);
+        }
         return game;
     }
 

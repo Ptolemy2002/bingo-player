@@ -15,10 +15,23 @@ export class BingoGameData {
     boards: BingoBoardData[] = [];
     spaces: BingoSpaceSet = [];
 
+    activeTimeoutIds: number[] = [];
+
     constructor(game: BingoGameInit | BingoGameData) {
         if (game instanceof BingoGameData) game = game.toJSON();
         this.id = game.id;
         this.fromJSON(omit(game, "id"));
+    }
+
+    clearTimeout(id: number, skipCancel: boolean = false) {
+        if (!skipCancel) clearTimeout(id);
+        this.activeTimeoutIds = this.activeTimeoutIds.filter(activeId => activeId !== id);
+        return this;
+    }
+
+    clearTimeouts(skipCancel: boolean = false) {
+        this.activeTimeoutIds.forEach(id => this.clearTimeout(id, skipCancel));
+        return this;
     }
 
     getSocketRoomName() {
@@ -242,7 +255,7 @@ export class BingoGameData {
         }
     }
 
-    removeBoardsByOwnerName(name: string) {        
+    removeBoardsByOwnerName(name: string) {
         const removedBoards = this.boards.filter(board => board.owner.name === name);
         this.boards = this.boards.filter(board => board.owner.name !== name);
         return removedBoards;
@@ -255,27 +268,47 @@ export class BingoGameData {
         return this.removeBoardsByOwnerName(owner.name);
     }
 
-    removePlayerByName(name: string) {
+    removeBoardsWithGracePeriod(ownerName: string, delay: number = 0, debug: boolean = false) {
+        // Assumed to be called after a player is removed from the game, otherwise it's pointless.
+        // Give the player some time to potentially rejoin before removing their boards
+        // If a new player with the same name doesn't join in time (the socket ID will be different),
+        // remove the boards
+        if (debug) {
+            console.log(`Player [${ownerName}] boards will be removed from game [${this.id}] in ${delay}ms if they do not reconnect before then.`);
+        }
+
+        const timerId = setTimeout(() => {
+            const exists = this.hasPlayerByName(ownerName);
+            if (!exists) {
+                if (debug) console.log(`Removing boards for player [${ownerName}] from game [${this.id}] after grace period of ${delay}ms, as they did not reconnect.`);
+                this.removeBoardsByOwnerName(ownerName);
+            }
+            this.clearTimeout(timerId, true);
+        }, delay);
+        this.activeTimeoutIds.push(timerId);
+        return timerId;
+    }
+
+    removePlayerByName(name: string, boardRemoveDelay: number = 0, boardRemoveDebug: boolean = false) {
         const index = this.getPlayerIndexByName(name);
         
         if (index !== -1) {
             const player = this.players[index];
             this.players.splice(index, 1);
-            this.removeBoardsByOwnerName(name);
+            this.removeBoardsWithGracePeriod(name, boardRemoveDelay, boardRemoveDebug);
             return player;
         } else {
             throw new RouteError(`Player "${name}" not found in game "${this.id}"`, 404, "NOT_FOUND");
         }
     }
 
-    removePlayerBySocketId(socketId: SocketID) {
+    removePlayerBySocketId(socketId: SocketID, boardRemoveDelay: number = 0, boardRemoveDebug: boolean = false) {
         const index = this.getPlayerIndexBySocketId(socketId);
-        
 
         if (index !== -1) {
             const player = this.players[index];
-            this.removeBoardsByOwnerSocketId(socketId);
             this.players.splice(index, 1);
+            this.removeBoardsWithGracePeriod(player.name, boardRemoveDelay, boardRemoveDebug);
             return player;
         } else {
             throw new RouteError(`Player with socket ID ${socketId} not found in game "${this.id}"`, 404, "NOT_FOUND");

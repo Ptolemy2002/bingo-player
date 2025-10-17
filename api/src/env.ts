@@ -2,6 +2,7 @@ import { z, ZodString, ZodLiteral, ZodNull, ZodUnion } from 'zod';
 import dotEnv from 'dotenv';
 import { stripWords } from '@ptolemy2002/js-utils';
 import { RouteError } from 'shared';
+import ms from 'ms';
 dotEnv.config();
 
 function nullableUrl(defaultValue?: string | null, emptyIsDefault = true) {
@@ -60,7 +61,21 @@ export const EnvSchema = z.object({
     PROD_SOCKET_URL: nullableUrl(null),
     DEV_SOCKET_URL: url("http://localhost:8081", false),
 
-    MONGO_CONNECTION_STRING: z.string().url(),  
+    MONGO_CONNECTION_STRING: z.string().url(),
+    BOARD_GRACE_PERIOD: z.string().default("5m").transform((val, ctx) => {
+        try {
+            return ms(val);
+        } catch (e: any) {
+            ctx.addIssue({
+                code: "invalid_value",
+                path: [],
+                values: [val],
+                message: `Invalid BOARD_GRACE_PERIOD: ${e.message}`
+            });
+            return z.NEVER;
+        }
+    }),
+
     
     // Additional environment variables here
 });
@@ -84,6 +99,7 @@ export type EnvType = {
     getExpressDocsURL: (version: number) => string,
     socketDocsURL: string,
     mongoConnectionString: string,
+    boardGracePeriod: number,
 
     // Additional environment variables here
 };
@@ -121,7 +137,8 @@ export default function getEnv(createNew=false): EnvType {
             socketURL,
             getExpressDocsURL: (v) => (/\/api\/v\d+$/.test(apiURL) ? stripWords(apiURL, "/", 0, 2) : apiURL) + `/api/v${v}/docs`,
             socketDocsURL: socketURL + "/docs",
-            mongoConnectionString: Env.MONGO_CONNECTION_STRING
+            mongoConnectionString: Env.MONGO_CONNECTION_STRING,
+            boardGracePeriod: Env.BOARD_GRACE_PERIOD,
         });
     }
 

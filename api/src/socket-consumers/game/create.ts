@@ -37,7 +37,7 @@ export class BingoGameCreateHandler extends SocketRouteHandler<SocketGameCreateS
         });
 
         await req.socket.join(game.getSocketRoomName());
-        req.socket.on("disconnect", () => playerDisconnectHandler(req.socket, req.id, BingoGameCollection.global, game));
+        req.socket.on("disconnect", () => playerDisconnectHandler(req.socket, req.id, BingoGameCollection.global, game, this.env.boardGracePeriod));
 
         return {
             status: 200,

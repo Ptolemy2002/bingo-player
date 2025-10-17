@@ -122,12 +122,13 @@ export function getSocketConsumers() {
     return socketConsumers;
 }
 
-export async function playerDisconnectHandler(socket: TypedSocket, playerId: SocketID, collection: BingoGameCollection, game: BingoGameData) {
+export async function playerDisconnectHandler(socket: TypedSocket, playerId: SocketID, collection: BingoGameCollection, game: BingoGameData, gracePeriodMs: number = 0) {
     // If the player disconnects while still being in the game,
     // remove them from the game and notify other players in the game
     if (game.hasPlayerBySocketId(playerId)) {
         console.log(`Player [${playerId}] disconnected, removing from game [${game.id}]`);
-        game.removePlayerBySocketId(playerId);
+        
+        game.removePlayerBySocketId(playerId, gracePeriodMs, true);
         await socket.leave(game.getSocketRoomName());
         socket.to(game.getSocketRoomName()).emit("playersChange", {
             type: "disconnect",

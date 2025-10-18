@@ -273,20 +273,35 @@ export class BingoGameData {
         // Give the player some time to potentially rejoin before removing their boards
         // If a new player with the same name doesn't join in time (the socket ID will be different),
         // remove the boards
-        if (debug) {
-            console.log(`Player [${ownerName}] boards will be removed from game [${this.id}] in ${delay}ms if they do not reconnect before then.`);
-        }
-
-        const timerId = setTimeout(() => {
+        const run = () => {
             const exists = this.hasPlayerByName(ownerName);
             if (!exists) {
                 if (debug) console.log(`Removing boards for player [${ownerName}] from game [${this.id}] after grace period of ${delay}ms, as they did not reconnect.`);
                 this.removeBoardsByOwnerName(ownerName);
             }
-            this.clearTimeout(timerId, true);
-        }, delay);
-        this.activeTimeoutIds.push(timerId);
-        return timerId;
+        };
+
+        if (debug) {
+            if (delay === 0) {
+                console.log(`Player [${ownerName}] boards will be removed from game [${this.id}] immediately.`);
+            } else {
+                console.log(`Player [${ownerName}] boards will be removed from game [${this.id}] in ${delay}ms if they do not reconnect before then.`);
+            }
+        }
+
+        const boardsToRemove = this.boards.filter(board => board.owner.name === ownerName);
+
+        if (delay === 0) {
+            run();
+            return [boardsToRemove, null] as const;
+        } else {
+            const timerId = setTimeout(() => {
+                run();
+                this.clearTimeout(timerId, true);
+            }, delay);
+            this.activeTimeoutIds.push(timerId);
+            return [boardsToRemove, timerId] as const;
+        }
     }
 
     removePlayerByName(name: string, boardRemoveDelay: number = 0, boardRemoveDebug: boolean = false) {

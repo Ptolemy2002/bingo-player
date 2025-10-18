@@ -118,6 +118,7 @@ function SpaceEditPageBody({
     const {
         handleSubmit,
         setValue,
+        getValues,
         formState: {submitCount, errors}
     } = formMethods;
 
@@ -181,6 +182,18 @@ function SpaceEditPageBody({
                         shouldTouch: false,
                         shouldValidate: false,
                     });
+                    
+                    // Convert collection syntax tags back to internal syntax
+                    setValue("tags",
+                        getValues("tags")?.map(tag =>
+                            tag.startsWith("#") ? "in:" + tag.slice(1) : tag
+                        ),
+                        {
+                            shouldDirty: false,
+                            shouldTouch: false,
+                            shouldValidate: false,
+                        }
+                    );
 
                     return handleSubmit(onSubmit)(...args)
                 }}>

@@ -33,7 +33,7 @@
     "@ptolemy2002/react-force-rerender": "^2.0.0",
     "@ptolemy2002/react-hook-result": "^2.2.4",
     "@ptolemy2002/react-manual-error-handling": "^2.0.3",
-    "@ptolemy2002/react-mongo-data": "^2.5.5",
+    "@ptolemy2002/react-mongo-data": "^2.5.6",
     "@ptolemy2002/react-mount-effects": "^2.0.0",
     "@ptolemy2002/react-proxy-context": "^2.3.5",
     "@ptolemy2002/react-search-param-state": "^3.2.2",

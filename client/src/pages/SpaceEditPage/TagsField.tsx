@@ -119,7 +119,7 @@ export function SpaceEditTagItemField({
                     >
                         <option value="_unselected">Select a tag...</option>
                         {tagList.sortTags().map((tag) => (
-                            <option key={tag} value={tag}>{tag}</option>
+                            <option key={tag} value={tag}>{tag.startsWith("in:") ? "#" + tag.slice(3) : tag}</option>
                         ))}
                     </Form.Control>
                 :

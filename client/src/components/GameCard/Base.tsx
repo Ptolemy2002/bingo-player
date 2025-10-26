@@ -5,6 +5,7 @@ import { listInPlainEnglish } from "@ptolemy2002/js-utils";
 import { useMemo } from "react";
 import { BingoGameData } from "shared";
 import { LinkContainer } from "react-router-bootstrap";
+import StyledButton from "src/components/StyledButton";
 
 function GameCardBase({
     className,
@@ -38,7 +39,9 @@ function GameCardBase({
 
                 {mine ? (
                     <LinkContainer to={`/game/${encodeURIComponent(game.id)}`}>
-                        <p>Enter Game</p>
+                        <StyledButton $variant="enterGame">
+                            Enter Game
+                        </StyledButton>
                     </LinkContainer>
                 ) : (
                     null

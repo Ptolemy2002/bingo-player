@@ -139,7 +139,7 @@ export async function playerDisconnectHandler(socket: TypedSocket, playerId: Soc
         // If the game is empty, remove it from the collection
         if (game.players.length === 0) {
             console.log(`Game [${game.id}] is now empty, removing from collection`);
-            collection.removeGame(game.id);
+            collection.removeGame(game.id, true, true);
         }
     }
 }

@@ -356,6 +356,10 @@ importers:
         version: 5.4.20(@types/node@22.18.6)(less@4.4.1)
 
   shared:
+    dependencies:
+      ms:
+        specifier: ^2.1.3
+        version: 2.1.3
     devDependencies:
       '@asteasolutions/zod-to-openapi':
         specifier: ^8.0.0

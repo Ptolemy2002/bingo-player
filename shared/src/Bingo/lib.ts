@@ -1,5 +1,6 @@
 import { omit } from "@ptolemy2002/ts-utils";
 import { BingoGame, BingoPlayer, BingoPlayerRole, BingoSpaceSet, cleanMongoSpace, MongoSpace, SocketID, RouteError, BingoBoard } from "src";
+import ms from "ms";
 
 // Creating partials that still require necessary fields
 export type BingoGameInit = Partial<BingoGame> & Pick<BingoGame, "id">;
@@ -23,14 +24,16 @@ export class BingoGameData {
         this.fromJSON(omit(game, "id"));
     }
 
-    clearTimeout(id: number, skipCancel: boolean = false) {
+    clearTimeout(id: number, skipCancel: boolean = false, debug: boolean = false) {
         if (!skipCancel) clearTimeout(id);
         this.activeTimeoutIds = this.activeTimeoutIds.filter(activeId => activeId !== id);
+        if (debug) console.log(`Cleared timeout [${id}] for game [${this.id}]`);
         return this;
     }
 
-    clearTimeouts(skipCancel: boolean = false) {
+    clearTimeouts(skipCancel: boolean = false, debug: boolean = false) {
         this.activeTimeoutIds.forEach(id => this.clearTimeout(id, skipCancel));
+        if (debug) console.log(`Cleared all active timeouts for game [${this.id}]`);
         return this;
     }
 
@@ -276,7 +279,7 @@ export class BingoGameData {
         const run = () => {
             const exists = this.hasPlayerByName(ownerName);
             if (!exists) {
-                if (debug) console.log(`Removing boards for player [${ownerName}] from game [${this.id}] after grace period of ${delay}ms, as they did not reconnect.`);
+                if (debug) console.log(`Removing boards for player [${ownerName}] from game [${this.id}] after grace period of ${ms(delay)}, as they did not reconnect.`);
                 this.removeBoardsByOwnerName(ownerName);
             }
         };
@@ -285,7 +288,7 @@ export class BingoGameData {
             if (delay === 0) {
                 console.log(`Player [${ownerName}] boards will be removed from game [${this.id}] immediately.`);
             } else {
-                console.log(`Player [${ownerName}] boards will be removed from game [${this.id}] in ${delay}ms if they do not reconnect before then.`);
+                console.log(`Player [${ownerName}] boards will be removed from game [${this.id}] in ${ms(delay)} if they do not reconnect before then.`);
             }
         }
 
@@ -645,11 +648,11 @@ export class BingoGameCollection {
         }
     }
 
-    removeGame(gameId: BingoGame["id"] | number, cleanup: boolean = true) {
+    removeGame(gameId: BingoGame["id"] | number, cleanup: boolean = true, debug: boolean = false) {
         const game = this.getGame(gameId);
         if (game) {
             if (cleanup) {
-                game.clearTimeouts();
+                game.clearTimeouts(false, debug);
             }
             
             this.games.delete(game.id);

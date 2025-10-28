@@ -35,5 +35,8 @@
         "@ptolemy2002/ts-utils": "^3.0.0",
         "mongoose": "^8.9.2",
         "zod": "^4.0.14"
+    },
+    "dependencies": {
+        "ms": "^2.1.3"
     }
 }

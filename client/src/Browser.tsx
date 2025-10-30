@@ -11,6 +11,7 @@ import { ErrorBoundary } from 'react-error-boundary';
 import ErrorPage from 'src/pages/ErrorPage';
 import SpaceDetailPage from './pages/SpaceDetailPage';
 import SpaceEditPage from './pages/SpaceEditPage';
+import GamePage from './pages/GamePage';
 
 export function PageLayout() {
     const location = useLocation();
@@ -59,6 +60,11 @@ export const router = createBrowserRouter([{
         {
             path: "/space/:name/edit",
             element: <SpaceEditPage />
+        },
+
+        {
+            path: "/game/:gameId",
+            element: <GamePage />
         },
 
         // The reason we don't use errorElement here is because we want to render the NotFoundPage

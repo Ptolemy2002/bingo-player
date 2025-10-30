@@ -11,7 +11,6 @@ import { useBingoGameCollectionContext } from "src/context/BingoGameCollection";
 
 function GameListBase({
     className,
-    socketId,
     category="all",
     colSizeXs=12,
     colSizeSm=12,
@@ -24,6 +23,7 @@ function GameListBase({
     const [{suspend}] = useSuspenseController();
     const { _try } = useManualErrorHandling();
     const socket = getSocket();
+    const socketId = socket.id ?? null;
 
     useEffect(() => {
         if (!socketId) {
@@ -58,7 +58,7 @@ function GameListBase({
                                 lg={colSizeLg}
                                 xl={colSizeXl}
                             >
-                                <GameCard game={game.toJSON()} mine={game.hasPlayerBySocketId(socketId!)} />
+                                <GameCard game={game.toJSON()} />
                             </Col>
                         ))}
                     </Row>

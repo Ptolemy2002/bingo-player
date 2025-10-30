@@ -5,21 +5,17 @@ import DefaultGameList from "./GameListStyled";
 import { GameListCategory, HomePageProps } from "./Types";
 import { SuspenseBoundary } from "@ptolemy2002/react-suspense";
 import { useState } from "react";
-import { SocketID } from "shared";
-import getSocket from "src/Socket";
 import { BingoGameCollectionProvider } from "src/context/BingoGameCollection";
 import { Form } from "react-bootstrap";
 
-function HomePage({
+function HomePageBase({
     NameField = DefaultNameField,
     GameCreateField = DefaultGameCreateField,
     GameList = DefaultGameList,
     className
 }: HomePageProps["functional"]) {
     const [name] = usePersistentState("bingoPlayerApp.name", "");
-    const [socketId, setSocketId] = useState<SocketID | null>(null);
     const [listCategory, setListCategory] = useState<GameListCategory>("all");
-    const socket = getSocket();
 
     return (
         <div id="home-page" className={className}>
@@ -29,10 +25,7 @@ function HomePage({
 
                 {
                     name ? (
-                        <SuspenseBoundary fallback={<p>Loading Game List...</p>} init={async () => {
-                            const res = await socket.emitSafeWithAck("socketId");
-                            setSocketId(res.id);
-                        }} renderDeps={[socketId, listCategory]}>
+                        <SuspenseBoundary fallback={<p>Loading Game List...</p>} renderDeps={[listCategory]}>
                             <Form.Select
                                 className="list-category-select"
                                 id="list-category-select"
@@ -44,7 +37,7 @@ function HomePage({
                                 <option value="not-mine">Other Games</option>
                             </Form.Select>
 
-                            <GameList socketId={socketId} category={listCategory} />
+                            <GameList category={listCategory} />
 
                             <br />
                             <GameCreateField />
@@ -58,11 +51,11 @@ function HomePage({
     );
 }
 export function applySubComponents<
-    T extends typeof HomePage
+    T extends typeof HomePageBase
 >(C: T) {
     return Object.assign(C, {
         NameField: DefaultNameField,
     });
 }
 
-export default applySubComponents(HomePage);
+export default applySubComponents(HomePageBase);

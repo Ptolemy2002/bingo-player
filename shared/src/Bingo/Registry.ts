@@ -3,7 +3,7 @@ import { Override } from "@ptolemy2002/ts-utils";
 
 export type BingoMetaSchemaType = "prop" | "collection" | "game-element" | "other";
 
-export type BingoMeta<T extends ZodType = ZodType> =Override<
+export type BingoMeta<T extends ZodType = ZodType> = Override<
     GlobalMeta,
     {
         id: string;

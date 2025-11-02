@@ -15,8 +15,8 @@ importers:
         specifier: ^3.0.0
         version: 3.0.0(zod@4.1.11)
       '@ptolemy2002/ts-utils':
-        specifier: ^3.0.0
-        version: 3.0.0(@ptolemy2002/ts-brand-utils@1.0.0)(is-callable@1.2.7)
+        specifier: ^3.1.0
+        version: 3.1.0(@ptolemy2002/ts-brand-utils@1.0.0)(is-callable@1.2.7)
       zod:
         specifier: ^4.0.14
         version: 4.1.11
@@ -82,7 +82,7 @@ importers:
         version: 2.1.3
       shared:
         specifier: file:../shared
-        version: link:../shared
+        version: file:shared(@asteasolutions/zod-to-openapi@8.1.0(zod@4.1.11))(@ptolemy2002/ts-utils@3.0.0(@ptolemy2002/ts-brand-utils@1.0.0)(is-callable@1.2.7))(mongoose@8.18.1)(zod@4.1.11)
       socket.io:
         specifier: ^4.8.1
         version: 4.8.1
@@ -266,7 +266,7 @@ importers:
         version: 6.0.0
       shared:
         specifier: file:../shared
-        version: link:../shared
+        version: file:shared(@asteasolutions/zod-to-openapi@8.1.0(zod@4.1.11))(@ptolemy2002/ts-utils@3.0.0(@ptolemy2002/ts-brand-utils@1.0.0)(is-callable@1.2.7))(mongoose@8.18.1)(zod@4.1.11)
       socket.io-client:
         specifier: ^4.8.1
         version: 4.8.1
@@ -365,8 +365,8 @@ importers:
         specifier: ^8.0.0
         version: 8.1.0(zod@4.1.11)
       '@ptolemy2002/ts-utils':
-        specifier: ^3.0.0
-        version: 3.0.0(@ptolemy2002/ts-brand-utils@1.0.0)(is-callable@1.2.7)
+        specifier: ^3.1.0
+        version: 3.1.0(@ptolemy2002/ts-brand-utils@1.0.0)(is-callable@1.2.7)
       mongoose:
         specifier: ^8.9.2
         version: 8.18.1
@@ -860,6 +860,12 @@ packages:
 
   '@ptolemy2002/ts-utils@3.0.0':
     resolution: {integrity: sha512-RNr2PZvqty1YcDdZJZCyN/iWHtU13zkA76sRicpjVAivI2vNAOtWrwPUV3sPDiwRWfqHCYfjGtx9prh/9mpcyg==}
+    peerDependencies:
+      '@ptolemy2002/ts-brand-utils': ^1.0.0
+      is-callable: ^1.2.7
+
+  '@ptolemy2002/ts-utils@3.1.0':
+    resolution: {integrity: sha512-D+7ReeUgtJtCOMi5DMbA7Q97syoTAFRORts3tKC3T+SNluLkjAHVf4ZF77o5OMpgV+PHFMobVqhwewhvLsOMrw==}
     peerDependencies:
       '@ptolemy2002/ts-brand-utils': ^1.0.0
       is-callable: ^1.2.7
@@ -2655,6 +2661,14 @@ packages:
   shallowequal@1.1.0:
     resolution: {integrity: sha512-y0m1JoUZSlPAjXVtPPW70aZWfIL/dSP7AFkRnniLCrK/8MDKog3TySTBmckD+RObVxH0v4Tox67+F14PdED2oQ==}
 
+  shared@file:shared:
+    resolution: {directory: shared, type: directory}
+    peerDependencies:
+      '@asteasolutions/zod-to-openapi': ^8.0.0
+      '@ptolemy2002/ts-utils': ^3.0.0
+      mongoose: ^8.9.2
+      zod: ^4.0.14
+
   shebang-command@2.0.0:
     resolution: {integrity: sha512-kHxr2zZpYtdmrN1qDjrrX/Z1rR1kG8Dx+gkpK1G4eXmvXswmcE1hTWBWYUzlraYw1/yZp6YuDY77YtvbN0dmDA==}
     engines: {node: '>=8'}
@@ -3439,6 +3453,11 @@ snapshots:
   '@ptolemy2002/ts-brand-utils@1.0.0': {}
 
   '@ptolemy2002/ts-utils@3.0.0(@ptolemy2002/ts-brand-utils@1.0.0)(is-callable@1.2.7)':
+    dependencies:
+      '@ptolemy2002/ts-brand-utils': 1.0.0
+      is-callable: 1.2.7
+
+  '@ptolemy2002/ts-utils@3.1.0(@ptolemy2002/ts-brand-utils@1.0.0)(is-callable@1.2.7)':
     dependencies:
       '@ptolemy2002/ts-brand-utils': 1.0.0
       is-callable: 1.2.7
@@ -5621,6 +5640,14 @@ snapshots:
   shallow-equal@3.1.0: {}
 
   shallowequal@1.1.0: {}
+
+  shared@file:shared(@asteasolutions/zod-to-openapi@8.1.0(zod@4.1.11))(@ptolemy2002/ts-utils@3.0.0(@ptolemy2002/ts-brand-utils@1.0.0)(is-callable@1.2.7))(mongoose@8.18.1)(zod@4.1.11):
+    dependencies:
+      '@asteasolutions/zod-to-openapi': 8.1.0(zod@4.1.11)
+      '@ptolemy2002/ts-utils': 3.0.0(@ptolemy2002/ts-brand-utils@1.0.0)(is-callable@1.2.7)
+      mongoose: 8.18.1
+      ms: 2.1.3
+      zod: 4.1.11
 
   shebang-command@2.0.0:
     dependencies:

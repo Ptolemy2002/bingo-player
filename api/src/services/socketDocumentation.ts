@@ -145,7 +145,7 @@ class SchemaProcessor {
     private processSocketPropSchema(meta: any): void {
         const endpointEntry = Array.from(this.endpoints.entries()).find(([key]) => {
             const cleanKey = key.replace(/(Args|(Success)?Response)$/, "");
-            return meta.id.startsWith(cleanKey);
+            return meta.id.startsWith(cleanKey + ".");
         });
 
         if (endpointEntry) {
@@ -153,7 +153,7 @@ class SchemaProcessor {
             return;
         }
 
-        const messageDataEntry = Array.from(this.messageData.entries()).find(([key]) => meta.id.startsWith(key));
+        const messageDataEntry = Array.from(this.messageData.entries()).find(([key]) => meta.id.startsWith(key + "."));
         if (messageDataEntry) {
             this.addPropertyToMessageData(messageDataEntry[1], meta);
             return;
@@ -196,10 +196,16 @@ class SchemaProcessor {
     }
 
     private processBingoPropSchema(meta: any): void {
-        const miscEntry = Array.from(this.misc.entries()).find(([key]) => meta.id.startsWith(key));
+        const miscEntry = Array.from(this.misc.entries()).find(([key]) => meta.id.startsWith(key + "."));
         if (!miscEntry) return;
 
         const miscItem = miscEntry[1];
+
+        // Check if property already exists
+        if (miscItem.props.some(p => p.id === meta.id)) {
+            return;
+        }
+
         const examples = this.extractExamples(meta);
 
         miscItem.props.push({
@@ -230,13 +236,24 @@ class SchemaProcessor {
         };
 
         if (root.endsWith("Response")) {
-            endpoint.response.props.push(property);
+            // Check if property already exists in response
+            if (!endpoint.response.props.some(p => p.id === meta.id)) {
+                endpoint.response.props.push(property);
+            }
         } else if (root.endsWith("Args")) {
-            endpoint.args.props.push(property);
+            // Check if property already exists in args
+            if (!endpoint.args.props.some(p => p.id === meta.id)) {
+                endpoint.args.props.push(property);
+            }
         }
     }
 
     private addPropertyToMessageData(messageDataItem: MessageData, meta: any): void {
+        // Check if property already exists
+        if (messageDataItem.props.some(p => p.id === meta.id)) {
+            return;
+        }
+
         const examples = this.extractExamples(meta);
 
         messageDataItem.props.push({
@@ -247,10 +264,16 @@ class SchemaProcessor {
     }
 
     private addPropertyToMisc(meta: any): void {
-        const miscEntry = Array.from(this.misc.entries()).find(([key]) => meta.id.startsWith(key));
+        const miscEntry = Array.from(this.misc.entries()).find(([key]) => meta.id.startsWith(key + "."));
         if (!miscEntry) return;
 
         const miscItem = miscEntry[1];
+
+        // Check if property already exists
+        if (miscItem.props.some(p => p.id === meta.id)) {
+            return;
+        }
+
         const examples = this.extractExamples(meta);
 
         miscItem.props.push({
@@ -261,14 +284,42 @@ class SchemaProcessor {
     }
 
     private addExamples(target: { examples: string[] }, meta: any): void {
-        if (meta.example) target.examples.push(JSON.stringify(meta.example, null, 2));
-        if (meta.examples) target.examples.push(...meta.examples.map((e: any) => JSON.stringify(e, null, 2)));
+        if (meta.example) {
+            const exampleStr = JSON.stringify(meta.example, null, 2);
+            if (!target.examples.includes(exampleStr)) {
+                target.examples.push(exampleStr);
+            }
+        }
+        if (meta.examples) {
+            meta.examples.forEach((e: any) => {
+                const exampleStr = JSON.stringify(e, null, 2);
+                if (!target.examples.includes(exampleStr)) {
+                    target.examples.push(exampleStr);
+                }
+            });
+        }
     }
 
     private extractExamples(meta: any): string[] {
         const examples: string[] = [];
-        if (meta.example) examples.push(JSON.stringify(meta.example, null, 2));
-        if (meta.examples) examples.push(...meta.examples.map((e: any) => JSON.stringify(e, null, 2)));
+        const seen = new Set<string>();
+
+        if (meta.example) {
+            const exampleStr = JSON.stringify(meta.example, null, 2);
+            if (!seen.has(exampleStr)) {
+                examples.push(exampleStr);
+                seen.add(exampleStr);
+            }
+        }
+        if (meta.examples) {
+            meta.examples.forEach((e: any) => {
+                const exampleStr = JSON.stringify(e, null, 2);
+                if (!seen.has(exampleStr)) {
+                    examples.push(exampleStr);
+                    seen.add(exampleStr);
+                }
+            });
+        }
         return examples;
     }
 }

@@ -9,8 +9,8 @@ export type BingoMeta<T extends ZodType = ZodType> = Override<
         id: string;
         description: string;
         type: BingoMetaSchemaType;
-        example?: z.output<T>;
-        examples?: z.output<T>[];
+        example?: z.input<T>;
+        examples?: z.input<T>[];
     }
 >;
 

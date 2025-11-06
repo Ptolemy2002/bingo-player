@@ -38,9 +38,9 @@ export const ZodBingoSpaceTagConditionSchema = registerBingoSchema(
     ]),
     {
         id: "BingoSpaceTagCondition",
-        type: "prop",
+        type: "other",
         description: "Condition to match bingo space tags. Can be a string, an advanced condition object, or an array of strings and/or advanced condition objects.",
-        example: BingoSpaceTagConditionExample
+        example: BingoSpaceTagConditionExample as any // Doing an assertion here because of some issues with branding.
     }
 );
 

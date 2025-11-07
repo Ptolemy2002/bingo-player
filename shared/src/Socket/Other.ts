@@ -12,3 +12,9 @@ export const SocketPlayersChangeTypeEnum = [
     "disconnect",
     "nameChange"
 ] as const;
+
+export const SocketBoardsChangeTypeEnum = [
+    "add",
+    "remove",
+    "update"
+] as const;

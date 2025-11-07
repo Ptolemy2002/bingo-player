@@ -100,7 +100,7 @@ export const ZodBingoBoardTemplateSchema = registerBingoSchema(
 
         grid: registerBingoSchema(
             z.array(
-                z.string()
+                z.string().min(1, "Each row in the grid must have at least one character.")
             ).refine((arr) => {
                 // Make sure all rows have the same length
                 return arr.every(row => row.length === arr[0].length);
@@ -120,7 +120,7 @@ export const ZodBingoBoardTemplateSchema = registerBingoSchema(
                 z.string().length(1),
                 z.discriminatedUnion("type", [
                     zodBingoBoardTemplateKeyEntryBase("exact", (s) => registerBingoSchema(s, {
-                        id: 'BingoBoardTemplate.key<"exact">.type',
+                        id: 'BingoBoardTemplate.key.value<"exact">.type',
                         type: "prop",
                         description: "The type of this key entry, in this case 'exact'. Indicates the exact space with this id will be used for the corresponding grid character(s).",
                         example: "exact" as any // Doing an assertion here because Typescript has no way of knowing what ZT is, even though we do.
@@ -128,7 +128,7 @@ export const ZodBingoBoardTemplateSchema = registerBingoSchema(
                         id: registerBingoSchema(
                             z.string(),
                             {
-                                id: 'BingoBoardTemplate.key<"exact">.id',
+                                id: 'BingoBoardTemplate.key.value<"exact">.id',
                                 type: "prop",
                                 description: "Identifier of the exact space type for this key entry. Must be a string.",
                                 example: BingoBoardTemplateExample.key["F"].id
@@ -137,7 +137,7 @@ export const ZodBingoBoardTemplateSchema = registerBingoSchema(
                     }),
 
                     zodBingoBoardTemplateKeyEntryBase("byTag", (s) => registerBingoSchema(s, {
-                        id: 'BingoBoardTemplate.key<"byTag">.type',
+                        id: 'BingoBoardTemplate.key.value<"byTag">.type',
                         type: "prop",
                         description: "The type of this key entry, in this case 'byTag'. Indicates that spaces will be selected based on their tags for the corresponding grid character(s).",
                         example: "byTag" as any // Doing an assertion here because Typescript has no way of knowing what ZT is, even though we do.
@@ -148,7 +148,7 @@ export const ZodBingoBoardTemplateSchema = registerBingoSchema(
                                 z.boolean()
                             ]).default(true),
                             {
-                                id: 'BingoBoardTemplate.key<"byTag">.shuffle',
+                                id: 'BingoBoardTemplate.key.value<"byTag">.shuffle',
                                 type: "prop",
                                 description: "Whether to shuffle the selected spaces for this key entry when generating the board. " +
                                              "Parses common affirmative and negative strings to booleans, case insensitively. Defaults to true.",
@@ -163,7 +163,7 @@ export const ZodBingoBoardTemplateSchema = registerBingoSchema(
                         condition: registerBingoSchema(
                             ZodBingoSpaceTagConditionSchema,
                             {
-                                id: 'BingoBoardTemplate.key<"byTag">.condition',
+                                id: 'BingoBoardTemplate.key.value<"byTag">.condition',
                                 type: "prop",
                                 description: "Condition to select spaces based on their tags for this key entry. " + 
                                              "Can be a string, an advanced condition object, or an array of strings and/or advanced condition objects.",

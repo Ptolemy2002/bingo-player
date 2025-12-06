@@ -242,5 +242,29 @@ export const ZodBingoBoardTemplateSchema = registerBingoSchema(
     }
 );
 
+export const ZodBingoBoardTemplateSetSchema = registerBingoSchema(
+    z.array(ZodBingoBoardTemplateSchema).superRefine((templates, ctx) => {
+        const seenIds: string[] = [];
+        for (const [index, template] of templates.entries()) {
+            if (seenIds.includes(template.id)) {
+                ctx.addIssue({
+                    code: "custom",
+                    message: `No two board templates in this list should have the same id.`,
+                    path: [index, "id"]
+                });
+            } else {
+                seenIds.push(template.id);
+            }
+        }
+    }), {
+        id: "BingoBoardTemplateSet",
+        type: "collection",
+        description: "Set of bingo board templates, enforcing ID uniqueness.",
+        example: [BingoBoardTemplateExample]
+    }
+);
+
 export type BingoBoardKeyEntryType = "exact" | "byTag";
-export type BingoBoardTemplate = z.input<typeof ZodBingoBoardTemplateSchema>;
+export type BingoBoardTemplateInput = z.input<typeof ZodBingoBoardTemplateSchema>;
+export type BingoBoardTemplateOutput = z.output<typeof ZodBingoBoardTemplateSchema>;
+export type BingoBoardTemplateSet = z.infer<typeof ZodBingoBoardTemplateSetSchema>;

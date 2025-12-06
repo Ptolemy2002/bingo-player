@@ -3,12 +3,14 @@ import { registerBingoSchema } from "src/Bingo/Registry";
 import { BingoSpaceSetExample, ZodBingoSpaceSetSchema } from "./SpaceSet";
 import { BingoPlayerExamples, ZodBingoPlayerSetSchema } from "./Player";
 import { BingoBoardExample, ZodBingoBoardSetSchema } from "./Board";
+import { BingoBoardTemplateExample, ZodBingoBoardTemplateSetSchema } from "./BoardTemplate";
 
 export const BingoGameExample = {
     id: "game123",
     players: BingoPlayerExamples,
     spaces: BingoSpaceSetExample,
-    boards: [BingoBoardExample]
+    boards: [BingoBoardExample],
+    boardTemplates: [BingoBoardTemplateExample]
 };
 
 export const ZodBingoGameSchema = registerBingoSchema(
@@ -53,6 +55,17 @@ export const ZodBingoGameSchema = registerBingoSchema(
                 type: "prop",
                 description: "Set of bingo boards in the game, enforcing ID uniqueness.",
                 example: BingoGameExample.boards
+            }
+        ),
+        boardTemplates: registerBingoSchema(
+            // This `refine` pattern allows us to copy the schema so that the original metadata
+            // is not overwritten on `ZodBingoBoardTemplateSetSchema`.
+            ZodBingoBoardTemplateSetSchema.refine(() => true),
+            {
+                id: "BingoGame.boardTemplates",
+                type: "prop",
+                description: "Set of bingo board templates available in the game, enforcing ID uniqueness.",
+                example: BingoGameExample.boardTemplates
             }
         )
     }),

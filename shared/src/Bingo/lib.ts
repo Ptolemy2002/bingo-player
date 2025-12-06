@@ -1,5 +1,5 @@
 import { omit } from "@ptolemy2002/ts-utils";
-import { BingoGame, BingoPlayer, BingoPlayerRole, BingoSpaceSet, cleanMongoSpace, MongoSpace, SocketID, RouteError, BingoBoard } from "src";
+import { BingoGame, BingoPlayer, BingoPlayerRole, BingoSpaceSet, cleanMongoSpace, MongoSpace, SocketID, RouteError, BingoBoard, BingoBoardTemplateOutput } from "src";
 import ms from "ms";
 
 // Creating partials that still require necessary fields
@@ -14,6 +14,7 @@ export class BingoGameData {
     id: string;
     players: BingoPlayerData[] = [];
     boards: BingoBoardData[] = [];
+    boardTemplates: BingoBoardTemplateOutput[] = [];
     spaces: BingoSpaceSet = [];
 
     activeTimeoutIds: number[] = [];
@@ -81,6 +82,7 @@ export class BingoGameData {
             id: this.id,
             players: this.players.map(player => player.toJSON()),
             boards: this.boards.map(board => board.toJSON()),
+            boardTemplates: [...this.boardTemplates],
             spaces: [...this.spaces]
         };
     }
@@ -88,6 +90,8 @@ export class BingoGameData {
     getSpaceIndex(space: string | number) {
         if (typeof space === "string") {
             return this.spaces.findIndex(s => s.spaceData._id === space);
+        } else if (space >= this.spaces.length || space < 0) {
+            return -1;
         } else {
             return space;
         }
@@ -96,8 +100,20 @@ export class BingoGameData {
     getBoardIndex(boardId: string | number) {
         if (typeof boardId === "string") {
             return this.boards.findIndex(b => b.id === boardId);
+        } else if (boardId >= this.boards.length || boardId < 0) {
+            return -1;
         } else {
             return boardId;
+        }
+    }
+
+    getBoardTemplateIndex(templateId: string | number) {
+        if (typeof templateId === "string") {
+            return this.boardTemplates.findIndex(t => t.id === templateId);
+        } else if (templateId >= this.boardTemplates.length || templateId < 0) {
+            return -1;
+        } else {
+            return templateId;
         }
     }
 
@@ -107,6 +123,10 @@ export class BingoGameData {
 
     hasBoard(boardId: string | number) {
         return this.getBoardIndex(boardId) !== -1;
+    }
+
+    hasBoardTemplate(templateId: string | number) {
+        return this.getBoardTemplateIndex(templateId) !== -1;
     }
 
     getPlayerIndexByName(name: string) {
@@ -147,6 +167,12 @@ export class BingoGameData {
         const index = this.getBoardIndex(boardId);
         if (index === -1) return null;
         return this.boards[index];
+    }
+
+    getBoardTemplate(templateId: string | number) {
+        const index = this.getBoardTemplateIndex(templateId);
+        if (index === -1) return null;
+        return this.boardTemplates[index];
     }
 
     mark(_space: string | number) {
@@ -367,6 +393,22 @@ export class BingoGameData {
             return board;
         } else {
             throw new RouteError(`Board with ID "${boardId}" not found in game "${this.id}"`, 404, "NOT_FOUND");
+        }
+    }
+
+    addBoardTemplate(template: BingoBoardTemplateOutput) {
+        this.boardTemplates.push(template);
+        return template;
+    }
+
+    removeBoardTemplate(templateId: string | number) {
+        const index = this.getBoardTemplateIndex(templateId);
+        if (index !== -1) {
+            const template = this.boardTemplates[index];
+            this.boardTemplates.splice(index, 1);
+            return template;
+        } else {
+            throw new RouteError(`Board template with ID "${templateId}" not found in game "${this.id}"`, 404, "NOT_FOUND");
         }
     }
 

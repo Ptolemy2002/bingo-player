@@ -170,13 +170,13 @@ importers:
         version: 2.0.3(@ptolemy2002/react-hook-result@2.2.4(@ptolemy2002/js-utils@3.2.2)(@ptolemy2002/ts-utils@3.0.0(@ptolemy2002/ts-brand-utils@1.0.0)(is-callable@1.2.7)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@ptolemy2002/react-mongo-data':
         specifier: ^2.5.6
-        version: 2.5.6(af70658a291b52956110a1adc3e68fb2)
+        version: 2.5.6(2189789349c4ab18e5f120f2bafe4b82)
       '@ptolemy2002/react-mount-effects':
         specifier: ^2.0.0
         version: 2.0.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@ptolemy2002/react-proxy-context':
-        specifier: ^2.3.5
-        version: 2.3.6(@ptolemy2002/react-force-rerender@2.0.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@ptolemy2002/react-hook-result@2.2.4(@ptolemy2002/js-utils@3.2.2)(@ptolemy2002/ts-utils@3.0.0(@ptolemy2002/ts-brand-utils@1.0.0)(is-callable@1.2.7)))(@ptolemy2002/react-utils@3.8.0(clsx@2.1.1)(is-callable@1.2.7)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(is-callable@1.2.7)(nanoid@5.1.6)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^2.4.0
+        version: 2.4.0(@ptolemy2002/react-force-rerender@2.0.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@ptolemy2002/react-hook-result@2.2.4(@ptolemy2002/js-utils@3.2.2)(@ptolemy2002/ts-utils@3.0.0(@ptolemy2002/ts-brand-utils@1.0.0)(is-callable@1.2.7)))(@ptolemy2002/react-utils@3.8.0(clsx@2.1.1)(is-callable@1.2.7)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(is-callable@1.2.7)(nanoid@5.1.6)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@ptolemy2002/react-search-param-state':
         specifier: ^3.2.2
         version: 3.2.2(@ptolemy2002/js-utils@3.2.2)(@ptolemy2002/react-hook-result@2.2.4(@ptolemy2002/js-utils@3.2.2)(@ptolemy2002/ts-utils@3.0.0(@ptolemy2002/ts-brand-utils@1.0.0)(is-callable@1.2.7)))(@ptolemy2002/ts-brand-utils@1.0.0)(is-callable@1.2.7)(react-dom@18.3.1(react@18.3.1))(react-router-dom@6.30.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
@@ -185,7 +185,7 @@ importers:
         version: 1.1.4(@ptolemy2002/bs-utils@1.0.0)(polished@4.3.1)(styled-components@6.1.19(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
       '@ptolemy2002/react-suspense':
         specifier: ^2.0.4
-        version: 2.0.4(@ptolemy2002/react-mount-effects@2.0.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@ptolemy2002/react-proxy-context@2.3.6(@ptolemy2002/react-force-rerender@2.0.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@ptolemy2002/react-hook-result@2.2.4(@ptolemy2002/js-utils@3.2.2)(@ptolemy2002/ts-utils@3.0.0(@ptolemy2002/ts-brand-utils@1.0.0)(is-callable@1.2.7)))(@ptolemy2002/react-utils@3.8.0(clsx@2.1.1)(is-callable@1.2.7)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(is-callable@1.2.7)(nanoid@5.1.6)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@ptolemy2002/react-utils@3.8.0(clsx@2.1.1)(is-callable@1.2.7)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-components@6.1.19(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
+        version: 2.0.4(@ptolemy2002/react-mount-effects@2.0.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@ptolemy2002/react-proxy-context@2.4.0(@ptolemy2002/react-force-rerender@2.0.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@ptolemy2002/react-hook-result@2.2.4(@ptolemy2002/js-utils@3.2.2)(@ptolemy2002/ts-utils@3.0.0(@ptolemy2002/ts-brand-utils@1.0.0)(is-callable@1.2.7)))(@ptolemy2002/react-utils@3.8.0(clsx@2.1.1)(is-callable@1.2.7)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(is-callable@1.2.7)(nanoid@5.1.6)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@ptolemy2002/react-utils@3.8.0(clsx@2.1.1)(is-callable@1.2.7)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-components@6.1.19(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
       '@ptolemy2002/react-utils':
         specifier: ^3.8.0
         version: 3.8.0(clsx@2.1.1)(is-callable@1.2.7)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -800,8 +800,8 @@ packages:
       react: ^18.3.1
       react-dom: ^18.3.1
 
-  '@ptolemy2002/react-proxy-context@2.3.6':
-    resolution: {integrity: sha512-+GkEIthBH4Kv/bMsjoxtue+BGEjPNY0ihXGILmyo7w94FfuEKHQ+5V0JpA2Fk3Qj0NkeF2tLoVdA4GhL24sdyA==}
+  '@ptolemy2002/react-proxy-context@2.4.0':
+    resolution: {integrity: sha512-ZSI9mPzQuJxC3y+ofLdffg6QjtDyvh0rcQgiZi/SbA0e1yuRk6CJJjWlx6lFflZ5oAZj/HiD52d/8z3gt0qhAg==}
     peerDependencies:
       '@ptolemy2002/react-force-rerender': ^2.0.0
       '@ptolemy2002/react-hook-result': ^2.1.1
@@ -3386,12 +3386,12 @@ snapshots:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
 
-  '@ptolemy2002/react-mongo-data@2.5.6(af70658a291b52956110a1adc3e68fb2)':
+  '@ptolemy2002/react-mongo-data@2.5.6(2189789349c4ab18e5f120f2bafe4b82)':
     dependencies:
       '@ptolemy2002/js-utils': 3.2.2
       '@ptolemy2002/list-object-utils': 3.0.1(@ptolemy2002/ts-utils@3.0.0(@ptolemy2002/ts-brand-utils@1.0.0)(is-callable@1.2.7))(is-callable@1.2.7)
       '@ptolemy2002/react-hook-result': 2.2.4(@ptolemy2002/js-utils@3.2.2)(@ptolemy2002/ts-utils@3.0.0(@ptolemy2002/ts-brand-utils@1.0.0)(is-callable@1.2.7))
-      '@ptolemy2002/react-proxy-context': 2.3.6(@ptolemy2002/react-force-rerender@2.0.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@ptolemy2002/react-hook-result@2.2.4(@ptolemy2002/js-utils@3.2.2)(@ptolemy2002/ts-utils@3.0.0(@ptolemy2002/ts-brand-utils@1.0.0)(is-callable@1.2.7)))(@ptolemy2002/react-utils@3.8.0(clsx@2.1.1)(is-callable@1.2.7)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(is-callable@1.2.7)(nanoid@5.1.6)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@ptolemy2002/react-proxy-context': 2.4.0(@ptolemy2002/react-force-rerender@2.0.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@ptolemy2002/react-hook-result@2.2.4(@ptolemy2002/js-utils@3.2.2)(@ptolemy2002/ts-utils@3.0.0(@ptolemy2002/ts-brand-utils@1.0.0)(is-callable@1.2.7)))(@ptolemy2002/react-utils@3.8.0(clsx@2.1.1)(is-callable@1.2.7)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(is-callable@1.2.7)(nanoid@5.1.6)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@ptolemy2002/react-utils': 3.8.0(clsx@2.1.1)(is-callable@1.2.7)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@ptolemy2002/ts-utils': 3.0.0(@ptolemy2002/ts-brand-utils@1.0.0)(is-callable@1.2.7)
       is-callable: 1.2.7
@@ -3404,7 +3404,7 @@ snapshots:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
 
-  '@ptolemy2002/react-proxy-context@2.3.6(@ptolemy2002/react-force-rerender@2.0.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@ptolemy2002/react-hook-result@2.2.4(@ptolemy2002/js-utils@3.2.2)(@ptolemy2002/ts-utils@3.0.0(@ptolemy2002/ts-brand-utils@1.0.0)(is-callable@1.2.7)))(@ptolemy2002/react-utils@3.8.0(clsx@2.1.1)(is-callable@1.2.7)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(is-callable@1.2.7)(nanoid@5.1.6)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@ptolemy2002/react-proxy-context@2.4.0(@ptolemy2002/react-force-rerender@2.0.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@ptolemy2002/react-hook-result@2.2.4(@ptolemy2002/js-utils@3.2.2)(@ptolemy2002/ts-utils@3.0.0(@ptolemy2002/ts-brand-utils@1.0.0)(is-callable@1.2.7)))(@ptolemy2002/react-utils@3.8.0(clsx@2.1.1)(is-callable@1.2.7)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(is-callable@1.2.7)(nanoid@5.1.6)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@ptolemy2002/react-force-rerender': 2.0.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@ptolemy2002/react-hook-result': 2.2.4(@ptolemy2002/js-utils@3.2.2)(@ptolemy2002/ts-utils@3.0.0(@ptolemy2002/ts-brand-utils@1.0.0)(is-callable@1.2.7))
@@ -3432,10 +3432,10 @@ snapshots:
       polished: 4.3.1
       styled-components: 6.1.19(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
 
-  '@ptolemy2002/react-suspense@2.0.4(@ptolemy2002/react-mount-effects@2.0.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@ptolemy2002/react-proxy-context@2.3.6(@ptolemy2002/react-force-rerender@2.0.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@ptolemy2002/react-hook-result@2.2.4(@ptolemy2002/js-utils@3.2.2)(@ptolemy2002/ts-utils@3.0.0(@ptolemy2002/ts-brand-utils@1.0.0)(is-callable@1.2.7)))(@ptolemy2002/react-utils@3.8.0(clsx@2.1.1)(is-callable@1.2.7)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(is-callable@1.2.7)(nanoid@5.1.6)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@ptolemy2002/react-utils@3.8.0(clsx@2.1.1)(is-callable@1.2.7)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-components@6.1.19(react-dom@18.3.1(react@18.3.1))(react@18.3.1))':
+  '@ptolemy2002/react-suspense@2.0.4(@ptolemy2002/react-mount-effects@2.0.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@ptolemy2002/react-proxy-context@2.4.0(@ptolemy2002/react-force-rerender@2.0.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@ptolemy2002/react-hook-result@2.2.4(@ptolemy2002/js-utils@3.2.2)(@ptolemy2002/ts-utils@3.0.0(@ptolemy2002/ts-brand-utils@1.0.0)(is-callable@1.2.7)))(@ptolemy2002/react-utils@3.8.0(clsx@2.1.1)(is-callable@1.2.7)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(is-callable@1.2.7)(nanoid@5.1.6)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@ptolemy2002/react-utils@3.8.0(clsx@2.1.1)(is-callable@1.2.7)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-components@6.1.19(react-dom@18.3.1(react@18.3.1))(react@18.3.1))':
     dependencies:
       '@ptolemy2002/react-mount-effects': 2.0.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@ptolemy2002/react-proxy-context': 2.3.6(@ptolemy2002/react-force-rerender@2.0.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@ptolemy2002/react-hook-result@2.2.4(@ptolemy2002/js-utils@3.2.2)(@ptolemy2002/ts-utils@3.0.0(@ptolemy2002/ts-brand-utils@1.0.0)(is-callable@1.2.7)))(@ptolemy2002/react-utils@3.8.0(clsx@2.1.1)(is-callable@1.2.7)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(is-callable@1.2.7)(nanoid@5.1.6)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@ptolemy2002/react-proxy-context': 2.4.0(@ptolemy2002/react-force-rerender@2.0.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@ptolemy2002/react-hook-result@2.2.4(@ptolemy2002/js-utils@3.2.2)(@ptolemy2002/ts-utils@3.0.0(@ptolemy2002/ts-brand-utils@1.0.0)(is-callable@1.2.7)))(@ptolemy2002/react-utils@3.8.0(clsx@2.1.1)(is-callable@1.2.7)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(is-callable@1.2.7)(nanoid@5.1.6)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@ptolemy2002/react-utils': 3.8.0(clsx@2.1.1)(is-callable@1.2.7)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)

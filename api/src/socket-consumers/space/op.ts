@@ -1,4 +1,3 @@
-import { request } from "http";
 import SocketRouteHandler, { SocketRouteHandlerRequestData } from "lib/SocketRouteHandler";
 import SpaceModel from "models/SpaceModel";
 import { SocketConsumer } from "services/socket";

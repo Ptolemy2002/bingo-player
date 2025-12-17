@@ -18,3 +18,9 @@ export const SocketBoardsChangeTypeEnum = [
     "remove",
     "update"
 ] as const;
+
+export const SocketBoardTemplateChangeTypeEnum = [
+    "add",
+    "remove",
+    "update"
+] as const;

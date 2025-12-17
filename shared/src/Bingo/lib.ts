@@ -83,7 +83,10 @@ export class BingoGameData {
             players: this.players.map(player => player.toJSON()),
             boards: this.boards.map(board => board.toJSON()),
             boardTemplates: [...this.boardTemplates],
-            spaces: [...this.spaces]
+            spaces: this.spaces.map(space => ({
+                isMarked: space.isMarked,
+                spaceData: { ...space.spaceData }
+            }))
         };
     }
 

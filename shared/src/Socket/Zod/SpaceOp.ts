@@ -1,5 +1,3 @@
-import { ZodErrorResponseSchema, zodSuccessResponseSchema } from "src/Api";
-import { BingoGameExample, ZodBingoGameSchema } from "src/Bingo";
 import { registerSocketSchema } from "src/Socket/Registry";
 import { z } from "zod";
 import { SocketSpaceOpEnum } from "../Other";

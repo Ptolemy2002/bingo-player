@@ -1,0 +1,121 @@
+import { ZodErrorResponseSchema, zodSuccessResponseSchema } from "src/Api";
+import { BingoGameExample, ZodBingoGameSchema } from "src/Bingo";
+import { registerSocketSchema, SocketBoardOpEnum, SocketBoardOpExample, ZodSocketBoardOpSchema } from "src/Socket";
+import { z, ZodObject, ZodString, ZodType, ZodOptional, ZodArray } from "zod";
+
+export const SocketBoardOpArgsExample = {
+    gameId: BingoGameExample.id,
+    op: SocketBoardOpExample,
+    boards: ["board123", "board456"],
+    template: "template789"
+};
+
+export const SocketBoardOpEventName = "boardOp" as const;
+
+type SocketBoardOp = z.infer<typeof ZodSocketBoardOpSchema>;
+
+function zodSocketBoardOpArgsBase<T extends SocketBoardOp, TemplateOptional extends boolean>(
+    op: T,
+    templateOptional: TemplateOptional,
+    register: <ZT extends ZodType>(prop: keyof typeof SocketBoardOpArgsExample, s: ZT) => ZT = (_, s) => s
+): ZodObject<{
+    gameId: z.ZodString;
+    op: z.ZodLiteral<T>;
+    boards: ZodArray<ZodString>;
+    template: TemplateOptional extends true ? ZodOptional<ZodString> : ZodString;
+}> {
+    // "as any" is used here to avoid TypeScript issues with the conditional types above.
+    return z.object({
+        gameId: register("gameId", z.string()),
+        op: register("op", z.literal(op)),
+        boards: register("boards", z.array(z.string())),
+        template: register("template", templateOptional ? z.string().optional() : z.string())
+    }) as any;
+}
+
+function createPropertyRegister(op: SocketBoardOp, descriptions: Record<keyof typeof SocketBoardOpArgsExample, { description: string; example: any }>) {
+    return <ZT extends ZodType>(prop: keyof typeof SocketBoardOpArgsExample, s: ZT) => {
+        const desc = descriptions[prop];
+        return registerSocketSchema(s, {
+            id: `BoardOpArgs[${op}].${prop}`,
+            type: "prop",
+            description: desc.description,
+            example: desc.example as any
+        });
+    };
+}
+
+export const ZodSocketBoardOpArgsSchema = registerSocketSchema(
+    z.discriminatedUnion("op", [
+        registerSocketSchema(
+            zodSocketBoardOpArgsBase("add", false, createPropertyRegister("add", {
+                gameId: { description: "The unique identifier for the game you want to perform the operation on. Must be a string.", example: SocketBoardOpArgsExample.gameId },
+                op: { description: `The operation to perform on the boards (in this case, "add")`, example: "add" },
+                boards: { description: "An array of unique identifiers of the boards to add. Each must be a string.", example: SocketBoardOpArgsExample.boards },
+                template: { description: "The unique identifier of the template to base the new boards on. Must be a string. Required when adding boards.", example: SocketBoardOpArgsExample.template }
+            })),
+            {
+                id: "BoardOpArgs[add]",
+                type: "args",
+                description: `Arguments for adding boards in the '${SocketBoardOpEventName}' socket event.`
+            }
+        ),
+
+        registerSocketSchema(
+            zodSocketBoardOpArgsBase("remove", true, createPropertyRegister("remove", {
+                gameId: { description: "The unique identifier for the game you want to perform the operation on. Must be a string.", example: SocketBoardOpArgsExample.gameId },
+                op: { description: `The operation to perform on the boards (in this case, "remove")`, example: "remove" },
+                boards: { description: "An array of unique identifiers of the boards to remove. Each must be a string.", example: SocketBoardOpArgsExample.boards },
+                template: { description: "The template identifier (optional and irrelevant when removing boards)", example: undefined }
+            })),
+            {
+                id: "BoardOpArgs[remove]",
+                type: "args",
+                description: `Arguments for removing boards in the '${SocketBoardOpEventName}' socket event.`
+            }
+        )
+    ]),
+    {
+        id: "BoardOpArgs",
+        type: "args",
+        description: `Arguments for the '${SocketBoardOpEventName}' socket event.`,
+        example: SocketBoardOpArgsExample
+    }
+);
+
+export const ZodSocketBoardOpSuccessResponseSchema = registerSocketSchema(
+    zodSuccessResponseSchema(z.object({
+        game: registerSocketSchema(
+            // This `refine` pattern allows us to copy the schema so that the original metadata
+            // is not overwritten on `ZodBingoGameSchema`.
+            ZodBingoGameSchema.refine(() => true),
+            {
+                id: "BoardOpSuccessResponse.game",
+                type: "prop",
+                description: "The current state of the bingo game an operation was performed on.",
+                example: BingoGameExample
+            }
+        )
+    })),
+    {
+        id: "BoardOpSuccessResponse",
+        type: "success-response",
+        description: `The updated state of the bingo game after a board operation was performed successfully.`
+    }
+);
+
+export const ZodSocketBoardOpResponseSchema = registerSocketSchema(
+    z.union([
+        ZodSocketBoardOpSuccessResponseSchema,
+        ZodErrorResponseSchema,
+    ]),
+    {
+        id: "BoardOpResponse",
+        type: "response",
+        description: `Response schema for the [${SocketBoardOpEventName}] event`
+    }
+);
+
+export type SocketBoardOpResponse = z.infer<typeof ZodSocketBoardOpResponseSchema>;
+export type SocketBoardOpSuccessResponse = z.infer<typeof ZodSocketBoardOpSuccessResponseSchema>;
+export type SocketBoardOpArgs = z.infer<typeof ZodSocketBoardOpArgsSchema>;

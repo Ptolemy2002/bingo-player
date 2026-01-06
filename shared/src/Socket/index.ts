@@ -20,18 +20,20 @@ import {
     SocketBoardsChangeEventName,
     SocketBoardsChangeData,
     SocketBoardTemplatesChangeEventName,
-    SocketBoardTemplatesChangeData
+    SocketBoardTemplatesChangeData,
+    SocketBoardOpArgs, SocketBoardOpEventName, SocketBoardOpResponse,
+    SocketBoardTemplateOpArgs, SocketBoardTemplateOpEventName, SocketBoardTemplateOpResponse
 } from "./Zod";
 
 export * from "./Zod";
 export * from "./Registry";
 export * from "./Other";
 
-export type SocketEvent<A=undefined, R=undefined> = (...args: 
+export type SocketEvent<A = undefined, R = undefined> = (...args:
     [A] extends [undefined] ?
-        [R] extends [undefined] ? [] : [(value: R) => void]
+    [R] extends [undefined] ? [] : [(value: R) => void]
     :
-        [R] extends [undefined] ? [A] : [A, (value: R) => void]
+    [R] extends [undefined] ? [A] : [A, (value: R) => void]
 ) => void;
 
 export type SocketClientToServerEvents = {
@@ -45,6 +47,8 @@ export type SocketClientToServerEvents = {
     [SocketGameLeaveEventName]: SocketEvent<SocketGameLeaveArgs, SocketGameLeaveResponse>;
 
     [SocketSpaceOpEventName]: SocketEvent<SocketSpaceOpArgs, SocketSpaceOpResponse>;
+    [SocketBoardOpEventName]: SocketEvent<SocketBoardOpArgs, SocketBoardOpResponse>;
+    [SocketBoardTemplateOpEventName]: SocketEvent<SocketBoardTemplateOpArgs, SocketBoardTemplateOpResponse>;
 };
 
 export type SocketServerToClientEvents = {

@@ -6,6 +6,16 @@ export const SocketSpaceOpEnum = [
     "remove"
 ] as const;
 
+export const SocketBoardOpEnum = [
+    "add",
+    "remove"
+] as const;
+
+export const SocketBoardTemplateOpEnum = [
+    "add",
+    "remove"
+] as const;
+
 export const SocketPlayersChangeTypeEnum = [
     "join",
     "leave",

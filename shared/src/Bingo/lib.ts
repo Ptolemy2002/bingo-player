@@ -400,6 +400,7 @@ export class BingoGameData {
     }
 
     addBoardTemplate(template: BingoBoardTemplateOutput) {
+        if (this.hasBoardTemplate(template.id)) throw new RouteError(`Board template with ID "${template.id}" already exists in game "${this.id}"`, 409, "CONFLICT");
         this.boardTemplates.push(template);
         return template;
     }

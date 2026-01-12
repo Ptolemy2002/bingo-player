@@ -57,59 +57,73 @@ export class BingoSpaceOpHandler extends SocketRouteHandler<SocketSpaceOpSuccess
                     };
                 }
 
-                switch (op) {
-                    case "mark": {
-                        game.mark(space);
-                        break;
-                    }
+                try {
+                    switch (op) {
+                        case "mark": {
+                            game.mark(space);
+                            break;
+                        }
 
-                    case "unmark": {
-                        game.unmark(space);
-                        break;
-                    }
+                        case "unmark": {
+                            game.unmark(space);
+                            break;
+                        }
 
-                    case "toggleMark": {
-                        game.toggleMark(space);
-                        break;
-                    }
+                        case "toggleMark": {
+                            game.toggleMark(space);
+                            break;
+                        }
 
-                    case "remove": {
-                        game.removeSpace(space);
-                        break;
+                        case "remove": {
+                            game.removeSpace(space);
+                            break;
+                        }
                     }
+                } catch (e) {
+                    // This should be a RouteError, which can be rethrown and handled by the root level error handler
+                    // If it's not, the handler will find what it can from the error object and report it back to the client
+                    revertGameState();
+                    throw e;
                 }
             }
 
             req.socket.to(game.getSocketRoomName()).emit("spacesChange", { op, spaces, gameId });
         } else {
-            for (const space in spaces) {
-                if (typeof space === "number") {
-                    revertGameState();
-                    return {
-                        status: 400,
-                        response: this.buildErrorResponse("BAD_INPUT", `Space IDs cannot be numbers when adding new spaces. Offending value: ${space}`)
-                    };
+            try {
+                for (const space in spaces) {
+                    if (typeof space === "number") {
+                        revertGameState();
+                        return {
+                            status: 400,
+                            response: this.buildErrorResponse("BAD_INPUT", `Space IDs cannot be numbers when adding new spaces. Offending value: ${space}`)
+                        };
+                    }
+
+                    if (game.hasSpace(space)) {
+                        revertGameState();
+                        return {
+                            status: 409,
+                            response: this.buildErrorResponse("CONFLICT", `Space with ID "${space}" already exists in game "${gameId}"`)
+                        };
+                    }
+
+                    const spaceData = await SpaceModel.findOne({ _id: space });
+
+                    if (spaceData === null) {
+                        revertGameState();
+                        return {
+                            status: 404,
+                            response: this.buildNotFoundResponse(`Space with ID "${space}" does not exist`)
+                        };
+                    }
+
+                    game.addSpace(spaceData.toClientJSON());
                 }
-
-                if (game.hasSpace(space)) {
-                    revertGameState();
-                    return {
-                        status: 409,
-                        response: this.buildErrorResponse("CONFLICT", `Space with ID "${space}" already exists in game "${gameId}"`)
-                    };
-                }
-
-                const spaceData = await SpaceModel.findOne({ _id: space });
-
-                if (spaceData === null) {
-                    revertGameState();
-                    return {
-                        status: 404,
-                        response: this.buildNotFoundResponse(`Space with ID "${space}" does not exist`)
-                    };
-                }
-
-                game.addSpace(spaceData.toClientJSON());
+            } catch (e) {
+                // This should be a RouteError, which can be rethrown and handled by the root level error handler
+                // If it's not, the handler will find what it can from the error object and report it back to the client
+                revertGameState();
+                throw e;
             }
 
             // When notifying clients of added spaces, we need to send the full space data to save on the need for clients to fetch it themselves

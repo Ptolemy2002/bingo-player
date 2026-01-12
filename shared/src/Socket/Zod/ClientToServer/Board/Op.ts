@@ -56,7 +56,7 @@ export const ZodSocketBoardOpArgsSchema = registerSocketSchema(
             })),
             {
                 id: "BoardOpArgs[add]",
-                type: "args",
+                type: "prop",
                 description: `Arguments for adding boards in the '${SocketBoardOpEventName}' socket event.`
             }
         ),
@@ -70,7 +70,7 @@ export const ZodSocketBoardOpArgsSchema = registerSocketSchema(
             })),
             {
                 id: "BoardOpArgs[remove]",
-                type: "args",
+                type: "prop",
                 description: `Arguments for removing boards in the '${SocketBoardOpEventName}' socket event.`
             }
         )
@@ -78,6 +78,7 @@ export const ZodSocketBoardOpArgsSchema = registerSocketSchema(
     {
         id: "BoardOpArgs",
         type: "args",
+        eventName: SocketBoardOpEventName,
         description: `Arguments for the '${SocketBoardOpEventName}' socket event.`,
         example: SocketBoardOpArgsExample
     }
@@ -100,6 +101,7 @@ export const ZodSocketBoardOpSuccessResponseSchema = registerSocketSchema(
     {
         id: "BoardOpSuccessResponse",
         type: "success-response",
+        eventName: SocketBoardOpEventName,
         description: `The updated state of the bingo game after a board operation was performed successfully.`
     }
 );
@@ -112,6 +114,7 @@ export const ZodSocketBoardOpResponseSchema = registerSocketSchema(
     {
         id: "BoardOpResponse",
         type: "response",
+        eventName: SocketBoardOpEventName,
         description: `Response schema for the [${SocketBoardOpEventName}] event`
     }
 );

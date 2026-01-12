@@ -56,7 +56,7 @@ export const ZodSocketBoardTemplateOpArgsSchema = registerSocketSchema(
             })),
             {
                 id: "BoardTemplateOpArgs[add]",
-                type: "args",
+                type: "prop",
                 description: `Arguments for adding board templates in the '${SocketBoardTemplateOpEventName}' socket event.`
             }
         ),
@@ -70,7 +70,7 @@ export const ZodSocketBoardTemplateOpArgsSchema = registerSocketSchema(
             })),
             {
                 id: "BoardTemplateOpArgs[remove]",
-                type: "args",
+                type: "prop",
                 description: `Arguments for removing board templates in the '${SocketBoardTemplateOpEventName}' socket event.`
             }
         )
@@ -78,6 +78,7 @@ export const ZodSocketBoardTemplateOpArgsSchema = registerSocketSchema(
     {
         id: "BoardTemplateOpArgs",
         type: "args",
+        eventName: SocketBoardTemplateOpEventName,
         description: `Arguments for the '${SocketBoardTemplateOpEventName}' socket event.`,
         example: SocketBoardTemplateOpArgsExample
     }
@@ -100,6 +101,7 @@ export const ZodSocketBoardTemplateOpSuccessResponseSchema = registerSocketSchem
     {
         id: "BoardTemplateOpSuccessResponse",
         type: "success-response",
+        eventName: SocketBoardTemplateOpEventName,
         description: `The updated state of the bingo game after a board template operation was performed successfully.`
     }
 );

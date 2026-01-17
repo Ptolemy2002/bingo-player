@@ -128,12 +128,12 @@ export async function playerDisconnectHandler(socket: TypedSocket, playerId: Soc
     if (game.hasPlayerBySocketId(playerId)) {
         console.log(`Player [${playerId}] disconnected, removing from game [${game.id}]`);
         
-        game.removePlayerBySocketId(playerId, gracePeriodMs, true);
+        const prevPlayer = game.removePlayerBySocketId(playerId, gracePeriodMs, true);
         await socket.leave(game.getSocketRoomName());
         socket.to(game.getSocketRoomName()).emit("playersChange", {
             type: "disconnect",
             gameId: game.id,
-            prevPlayerName: game.getPlayerBySocketId(playerId)?.name || "Unknown"
+            prevPlayerName: prevPlayer?.name || "Unknown"
         });
 
         // If the game is empty, remove it from the collection

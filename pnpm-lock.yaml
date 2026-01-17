@@ -82,7 +82,7 @@ importers:
         version: 2.1.3
       shared:
         specifier: file:../shared
-        version: link:../shared
+        version: file:shared(@asteasolutions/zod-to-openapi@8.1.0(zod@4.1.11))(@ptolemy2002/ts-utils@3.2.0(@ptolemy2002/ts-brand-utils@1.0.0)(is-callable@1.2.7))(mongoose@8.18.1)(zod@4.1.11)
       socket.io:
         specifier: ^4.8.1
         version: 4.8.1
@@ -357,6 +357,9 @@ importers:
 
   shared:
     dependencies:
+      is-callable:
+        specifier: ^1.2.7
+        version: 1.2.7
       ms:
         specifier: ^2.1.3
         version: 2.1.3
@@ -365,8 +368,11 @@ importers:
         specifier: ^8.0.0
         version: 8.1.0(zod@4.1.11)
       '@ptolemy2002/ts-utils':
-        specifier: ^3.2.0
-        version: 3.2.0(@ptolemy2002/ts-brand-utils@1.0.0)(is-callable@1.2.7)
+        specifier: ^3.2.1
+        version: 3.2.1(@ptolemy2002/ts-brand-utils@1.0.0)(is-callable@1.2.7)
+      '@types/ms':
+        specifier: ~0.7.34
+        version: 0.7.34
       mongoose:
         specifier: ^8.9.2
         version: 8.18.1
@@ -872,6 +878,12 @@ packages:
 
   '@ptolemy2002/ts-utils@3.2.0':
     resolution: {integrity: sha512-krZHNX3vo3ZHyDUED+j0mlO0CO/mklVKDVypoz8ZfOpf21cAk5SWHzuLMoX+bWM49qmygNDgLftD8fO/ygPoRg==}
+    peerDependencies:
+      '@ptolemy2002/ts-brand-utils': ^1.0.0
+      is-callable: ^1.2.7
+
+  '@ptolemy2002/ts-utils@3.2.1':
+    resolution: {integrity: sha512-wO88FtcQyhH+mqQ7/XUoTkP7c06guCkrZC6xooeldjBUYlYTac9YNfhyhocNB6Vj5FZC8Ru5ogpT2RYDoSZ7/A==}
     peerDependencies:
       '@ptolemy2002/ts-brand-utils': ^1.0.0
       is-callable: ^1.2.7
@@ -3473,6 +3485,11 @@ snapshots:
       '@ptolemy2002/ts-brand-utils': 1.0.0
       is-callable: 1.2.7
 
+  '@ptolemy2002/ts-utils@3.2.1(@ptolemy2002/ts-brand-utils@1.0.0)(is-callable@1.2.7)':
+    dependencies:
+      '@ptolemy2002/ts-brand-utils': 1.0.0
+      is-callable: 1.2.7
+
   '@react-aria/ssr@3.9.10(react@18.3.1)':
     dependencies:
       '@swc/helpers': 0.5.17
@@ -5656,6 +5673,16 @@ snapshots:
     dependencies:
       '@asteasolutions/zod-to-openapi': 8.1.0(zod@4.1.11)
       '@ptolemy2002/ts-utils': 3.0.0(@ptolemy2002/ts-brand-utils@1.0.0)(is-callable@1.2.7)
+      is-callable: 1.2.7
+      mongoose: 8.18.1
+      ms: 2.1.3
+      zod: 4.1.11
+
+  shared@file:shared(@asteasolutions/zod-to-openapi@8.1.0(zod@4.1.11))(@ptolemy2002/ts-utils@3.2.0(@ptolemy2002/ts-brand-utils@1.0.0)(is-callable@1.2.7))(mongoose@8.18.1)(zod@4.1.11):
+    dependencies:
+      '@asteasolutions/zod-to-openapi': 8.1.0(zod@4.1.11)
+      '@ptolemy2002/ts-utils': 3.2.0(@ptolemy2002/ts-brand-utils@1.0.0)(is-callable@1.2.7)
+      is-callable: 1.2.7
       mongoose: 8.18.1
       ms: 2.1.3
       zod: 4.1.11

@@ -1,4 +1,4 @@
-import { omit } from "@ptolemy2002/ts-utils";
+import { omit, SerializableAdvancedCondition, SerializableValueCondition, serializableValueConditionType, ValueCondition, valueConditionMatches } from "@ptolemy2002/ts-utils";
 import { BingoGame, BingoPlayer, BingoPlayerRole, BingoSpaceSet, cleanMongoSpace, MongoSpace, SocketID, RouteError, BingoBoard, BingoBoardTemplateOutput } from "src";
 import ms from "ms";
 
@@ -418,6 +418,196 @@ export class BingoGameData {
 
     clone() {
         return new BingoGameData(this.toJSON());
+    }
+
+    // Mostly used internally to determine how many spaces need to be fetched to fulfill a particular template
+    getSpacesByTagCondition(tagCondition: ValueCondition<string>) {
+        const matchingSpaces: BingoSpaceSet = [];
+        this.spaces.forEach((space) => {
+            if (space.spaceData.tags.some(tag => valueConditionMatches(tag, tagCondition))) {
+                matchingSpaces.push(space);
+            }
+        });
+
+        return matchingSpaces;
+    }
+
+    countSpacesByTagCondition(tagCondition: ValueCondition<string>) {
+        return this.getSpacesByTagCondition(tagCondition).length;
+    }
+
+    async buildBoardFromTemplate(
+        id: string,
+        templateId: string | number,
+        owner: string | BingoPlayerData,
+
+        // These will be provided by the caller to fetch spaces as needed.
+        // The caller will deal with it (possibly by throwing an error)
+        // if there aren't enough spaces to fulfill the request.
+        fetchExactSpaces: (exactSpaceIds: string[]) => Promise<MongoSpace[]>,
+        fetchWithTags: (includedTags: string[], excludedTags: string[], excludedIds: string[], count: number) => Promise<MongoSpace[]>
+    ) {
+        const template = this.getBoardTemplate(templateId);
+        if (!template) throw new RouteError(`Board template with ID "${templateId}" not found in game "${this.id}"`, 404, "NOT_FOUND");
+
+        if (typeof owner === "string") {
+            const player = this.getPlayerByName(owner);
+            if (!player) throw new RouteError(`Player "${owner}" not found in game "${this.id}"`, 404, "NOT_FOUND");
+            owner = player;
+        }
+
+        /*
+            Determine which spaces are needed to fulfill the template.
+        */
+        type TagBasedNeed = { condition: SerializableValueCondition<string>, count: number };
+
+        const exactNeeded: string[] = [];
+        const othersNeeded: Record<string, TagBasedNeed> = {};
+
+        for (const keyEntry of Object.keys(template.key)) {
+            const keyDef = template.key[keyEntry];
+            if (keyDef.type === "exact") {
+                if (!this.hasSpace(keyDef.id)) exactNeeded.push(keyDef.id);
+            } else if (keyDef.type === "byTag") {
+                const condition = keyDef.condition;
+
+                // Determine how many we already have that match this condition
+                const existingCount = this.countSpacesByTagCondition(condition);
+                
+                // Determine how many instances of keyDef exists in the grid
+                let requiredCount = 0;
+                for (const row of template.grid) {
+                    for (const cell of row) {
+                        if (cell === keyEntry) requiredCount++;
+                    }
+                }
+
+                const neededCount = requiredCount - existingCount;
+
+                if (neededCount > 0) {
+                    othersNeeded[keyEntry] = { condition, count: neededCount };
+                }
+            }
+        }
+
+        /*
+            Fetch all the spaces we need, if any.
+        */
+
+        if (exactNeeded.length > 0) {
+            const fetchedExactSpaces = await fetchExactSpaces(exactNeeded);
+            for (const space of fetchedExactSpaces) {
+                this.addSpace(space);
+            }
+        }
+
+        if (Object.keys(othersNeeded).length > 0) {
+            const self = this;
+
+            async function fetchSpacesBasedOnCondition(condition: SerializableValueCondition<string>, count: number) {
+                const conditionType = serializableValueConditionType(condition);
+
+                const alreadyCollected = self.getSpacesByTagCondition(condition).map(s => s.spaceData._id);
+
+                let result: MongoSpace[] = [];
+
+                if (conditionType === "value") {
+                    // Safe to assume the type of the condition since we ran the type check above
+                    result = [...result, ...(await fetchWithTags([condition as string], [], alreadyCollected, count))];
+                } else if (conditionType === "advanced") {
+                    // Safe to assume the type of the condition since we ran the type check above
+                    const advCondition = condition as SerializableAdvancedCondition<string>;
+                    let include: string[] = [];
+                    let exclude: string[] = [];
+
+                    // We're skipping any instance of `false` in both of these arrays, as that indicates
+                    // a condition that should never match anything.
+                    if (Array.isArray(advCondition.include)) {
+                        include = [...include, ...advCondition.include.filter((i) => i !== false)];
+                    } else if (advCondition.include) {
+                        include.push(advCondition.include);
+                    }
+
+                    if (Array.isArray(advCondition.exclude)) {
+                        exclude = [...exclude, ...advCondition.exclude.filter((e) => e !== false)];
+                    } else if (advCondition.exclude) {
+                        exclude.push(advCondition.exclude);
+                    }
+
+                    result = [...result, ...(await fetchWithTags(include, exclude, alreadyCollected, count))];
+                } else if (Array.isArray(conditionType)) {
+                    // Recursively fetch for each condition enclosed
+                    condition = condition as Extract<typeof condition, any[]>;
+                    for (const subCondition of condition) {
+                        if (subCondition === false) continue; // Skip conditions that should never match anything
+                        result = [...result, ...(await fetchSpacesBasedOnCondition(subCondition, count))];
+                    }
+                }
+
+                return result;
+            }
+
+            for (const keyEntry of Object.keys(othersNeeded)) {
+                const { condition, count } = othersNeeded[keyEntry];
+                let fetchedSpaces = await fetchSpacesBasedOnCondition(condition, count);
+                
+                if (template.key[keyEntry].type === "byTag" && template.key[keyEntry].shuffle) {
+                    fetchedSpaces = fetchedSpaces.sort(() => Math.random() - 0.5);
+                }
+
+                for (const space of fetchedSpaces) {
+                    this.addSpace(space);
+                }
+            }
+        }
+
+        /*
+            Build the board according to the template, now that all needed spaces are present.
+        */
+
+        const boardSpaces: (number | null)[] = [];
+        const matchingSpacesStore: Record<string, number[]> = {};
+
+        for (const row of template.grid) {
+            for (const cell of row) {
+                const keyDef = template.key[cell];
+                if (keyDef.type === "exact") {
+                    const spaceIndex = this.getSpaceIndex(keyDef.id);
+                    if (spaceIndex === -1) {
+                        throw new RouteError(
+                            `Failed to find exact space "${keyDef.id}" for board template "${templateId}" in game "${this.id}" after fetching.`,
+                            500, "INTERNAL"
+                        );
+                    }
+                    boardSpaces.push(spaceIndex);
+                } else if (keyDef.type === "byTag") {
+                    const condition = keyDef.condition;
+                    if (!matchingSpacesStore[cell]) {
+                        matchingSpacesStore[cell] = this.getSpacesByTagCondition(condition).map(s => this.getSpaceIndex(s.spaceData._id)!);
+                    }
+
+                    if (matchingSpacesStore[cell].length === 0) {
+                        throw new RouteError(
+                            `Failed to find enough spaces matching condition for key "${cell}" for board template "${templateId}" in game "${this.id}" after fetching.`
+                            + ` Found ${this.countSpacesByTagCondition(condition)}/${othersNeeded[cell].count} required.`,
+                            500, "INTERNAL"
+                        );
+                    }
+
+                    // Select a random space then remove it from the store so we don't reuse it
+                    const selectedIndex = matchingSpacesStore[cell][Math.floor(Math.random() * matchingSpacesStore[cell].length)];
+                    matchingSpacesStore[cell] = matchingSpacesStore[cell].filter(i => i !== selectedIndex);
+                    boardSpaces.push(selectedIndex);
+                }
+            }
+        }
+
+        return this.addBoard({
+            id,
+            shape: template.shape,
+            spaces: boardSpaces,
+        }, owner)
+
     }
 }
 

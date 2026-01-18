@@ -12,6 +12,7 @@ import ErrorPage from 'src/pages/ErrorPage';
 import SpaceDetailPage from './pages/SpaceDetailPage';
 import SpaceEditPage from './pages/SpaceEditPage';
 import GamePage from './pages/GamePage';
+import SocketTestPage from './pages/SocketTestPage';
 
 export function PageLayout() {
     const location = useLocation();
@@ -45,6 +46,11 @@ export const router = createBrowserRouter([{
         {
             path: "/",
             element: <HomePage />
+        },
+
+        {
+            path: "/socket-test",
+            element: <SocketTestPage />
         },
 
         {

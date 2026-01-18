@@ -2,6 +2,7 @@ import { ErrorResponse, SuccessResponseBase, ZodErrorCodeSchema, ZodErrorMessage
 import RouteHandler, { GeneratedResonse } from "./RouteHandler";
 import getEnv, { EnvType } from "env";
 import { TypedSocket, TypedSocketServer } from "services/socket";
+import isCallable from "is-callable";
 
 export type SocketRouteHandlerRequestData = {
     socket: TypedSocket;
@@ -56,10 +57,10 @@ export default class SocketRouteHandler<SuccessResponse extends SuccessResponseB
     async handle(socket: TypedSocket, io: TypedSocketServer, args: unknown, callback: (res: SuccessResponse | ErrorResponse) => void): Promise<void> {
         try {
             const { status, response } = await this.generateResponse({ socket, io, id: socket.id, args });
-            callback(response);
-            console.log("Socket route", `[${this.docsEndpoint}]`, "handled request from", `[${socket.id}]`, "with args", JSON.stringify(args), "and status", status);
+            if (isCallable(callback)) callback(response);
+            console.log("Socket route", `[${this.docsEndpoint}]`, "handled request from", `[${socket.id}]`, "with args", JSON.stringify(args ?? {}), "and status", status);
         } catch (err: any) {
-            console.log("Socket route", `[${this.docsEndpoint}]`, "with args", JSON.stringify(args), "caught error:");
+            console.log("Socket route", `[${this.docsEndpoint}]`, "with args", JSON.stringify(args ?? {}), "caught error:");
             console.error(err.stack);
 
             let code = err.code ?? "UNKNOWN";
@@ -75,8 +76,8 @@ export default class SocketRouteHandler<SuccessResponse extends SuccessResponseB
             if (!messageSuccess) {
                 message = "Unknown error";
             }
-
-            callback(this.buildErrorResponse(code, message));
+            
+            if (isCallable(callback)) callback(this.buildErrorResponse(code, message));
         }
     }
 }

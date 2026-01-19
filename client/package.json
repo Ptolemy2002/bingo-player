@@ -66,7 +66,7 @@
     "rehype-katex": "^7.0.1",
     "remark-gfm": "^4.0.1",
     "remark-math": "^6.0.0",
-    "shared": "file:../shared",
+    "shared": "file:./shared",
     "socket.io-client": "^4.8.1",
     "styled-components": "^6.1.19",
     "typed-axios-instance": "file:/home/ptolemy/test/typed-axios-test/lib",

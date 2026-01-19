@@ -2240,14 +2240,7 @@
       },
       "sortBySearchListProp": {
         "schema": {
-          "allOf": [
-            {
-              "$ref": "#/components/schemas/sortBySearchListProp"
-            },
-            {
-              "default": "_score"
-            }
-          ]
+          "$ref": "#/components/schemas/sortBySearchListProp"
         },
         "required": false,
         "description": "The field to sort by.",
@@ -2368,14 +2361,7 @@
             "$ref": "#/components/schemas/SpaceName"
           },
           "description": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/SpaceDescription"
-              },
-              {
-                "default": null
-              }
-            ]
+            "$ref": "#/components/schemas/SpaceDescription"
           },
           "examples": {
             "type": "array",
@@ -2458,14 +2444,7 @@
             "$ref": "#/components/schemas/SpaceName"
           },
           "description": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/SpaceDescription"
-              },
-              {
-                "default": null
-              }
-            ]
+            "$ref": "#/components/schemas/SpaceDescription"
           },
           "examples": {
             "type": "array",
@@ -2852,6 +2831,36 @@
           }
         ]
       },
+      "GetSpacesQueryParams": {
+        "type": "object",
+        "properties": {
+          "limit": {
+            "$ref": "#/components/schemas/limit"
+          },
+          "l": {
+            "$ref": "#/components/schemas/l"
+          },
+          "offset": {
+            "$ref": "#/components/schemas/offset"
+          },
+          "o": {
+            "$ref": "#/components/schemas/o"
+          },
+          "sortBy": {
+            "$ref": "#/components/schemas/sortBy"
+          },
+          "sb": {
+            "$ref": "#/components/schemas/sb"
+          },
+          "sortOrder": {
+            "$ref": "#/components/schemas/sortOrder"
+          },
+          "so": {
+            "$ref": "#/components/schemas/so"
+          }
+        },
+        "description": "Query parameters for getting all spaces."
+      },
       "limit": {
         "type": "integer",
         "minimum": 1,
@@ -2950,36 +2959,6 @@
         "description": "[Query Parameter] Shorthand for sortOrder.",
         "example": "asc"
       },
-      "GetSpacesQueryParams": {
-        "type": "object",
-        "properties": {
-          "limit": {
-            "$ref": "#/components/schemas/limit"
-          },
-          "l": {
-            "$ref": "#/components/schemas/l"
-          },
-          "offset": {
-            "$ref": "#/components/schemas/offset"
-          },
-          "o": {
-            "$ref": "#/components/schemas/o"
-          },
-          "sortBy": {
-            "$ref": "#/components/schemas/sortBy"
-          },
-          "sb": {
-            "$ref": "#/components/schemas/sb"
-          },
-          "sortOrder": {
-            "$ref": "#/components/schemas/sortOrder"
-          },
-          "so": {
-            "$ref": "#/components/schemas/so"
-          }
-        },
-        "description": "Query parameters for getting all spaces."
-      },
       "GetSpacesByPropURLParams": {
         "type": "object",
         "properties": {
@@ -2995,6 +2974,43 @@
           "query"
         ],
         "description": "URL Parameters for getting spaces filtered by a property value."
+      },
+      "GetSpacesByPropQueryParams": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/GetSpacesQueryParams"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "caseSensitive": {
+                "$ref": "#/components/schemas/caseSensitive"
+              },
+              "cs": {
+                "$ref": "#/components/schemas/cs"
+              },
+              "accentSensitive": {
+                "$ref": "#/components/schemas/accentSensitive"
+              },
+              "as": {
+                "$ref": "#/components/schemas/as"
+              },
+              "matchWhole": {
+                "$ref": "#/components/schemas/matchWhole"
+              },
+              "mw": {
+                "$ref": "#/components/schemas/mw"
+              },
+              "invert": {
+                "$ref": "#/components/schemas/invert"
+              },
+              "i": {
+                "$ref": "#/components/schemas/i"
+              }
+            }
+          }
+        ],
+        "description": "Query parameters for getting spaces filtered by a property value."
       },
       "caseSensitive": {
         "type": "string",
@@ -3147,82 +3163,6 @@
         ],
         "default": "f",
         "description": "[Query Parameter] Shorthand for invert."
-      },
-      "GetSpacesByPropQueryParams": {
-        "allOf": [
-          {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GetSpacesQueryParams"
-              },
-              {
-                "properties": {
-                  "limit": {
-                    "$ref": "#/components/schemas/limit"
-                  },
-                  "l": {
-                    "$ref": "#/components/schemas/l"
-                  },
-                  "offset": {
-                    "$ref": "#/components/schemas/offset"
-                  },
-                  "o": {
-                    "$ref": "#/components/schemas/o"
-                  },
-                  "sortBy": {
-                    "allOf": [
-                      {
-                        "$ref": "#/components/schemas/sortBy"
-                      },
-                      {
-                        "default": "name"
-                      }
-                    ]
-                  },
-                  "sb": {
-                    "$ref": "#/components/schemas/sb"
-                  },
-                  "sortOrder": {
-                    "$ref": "#/components/schemas/sortOrder"
-                  },
-                  "so": {
-                    "$ref": "#/components/schemas/so"
-                  }
-                }
-              }
-            ]
-          },
-          {
-            "type": "object",
-            "properties": {
-              "caseSensitive": {
-                "$ref": "#/components/schemas/caseSensitive"
-              },
-              "cs": {
-                "$ref": "#/components/schemas/cs"
-              },
-              "accentSensitive": {
-                "$ref": "#/components/schemas/accentSensitive"
-              },
-              "as": {
-                "$ref": "#/components/schemas/as"
-              },
-              "matchWhole": {
-                "$ref": "#/components/schemas/matchWhole"
-              },
-              "mw": {
-                "$ref": "#/components/schemas/mw"
-              },
-              "invert": {
-                "$ref": "#/components/schemas/invert"
-              },
-              "i": {
-                "$ref": "#/components/schemas/i"
-              }
-            }
-          }
-        ],
-        "description": "Query parameters for getting spaces filtered by a property value."
       },
       "GetSpacesByProp200ResponseBody": {
         "allOf": [
@@ -3415,6 +3355,36 @@
           }
         ]
       },
+      "SearchSpacesQueryParams": {
+        "type": "object",
+        "properties": {
+          "limit": {
+            "$ref": "#/components/schemas/limit"
+          },
+          "l": {
+            "$ref": "#/components/schemas/l"
+          },
+          "offset": {
+            "$ref": "#/components/schemas/offset"
+          },
+          "o": {
+            "$ref": "#/components/schemas/o"
+          },
+          "sortBy": {
+            "$ref": "#/components/schemas/sortByWithScore"
+          },
+          "sb": {
+            "$ref": "#/components/schemas/sbWithScore"
+          },
+          "sortOrder": {
+            "$ref": "#/components/schemas/sortOrderDescDefault"
+          },
+          "so": {
+            "$ref": "#/components/schemas/soDescDefault"
+          }
+        },
+        "description": "Query parameters for searching spaces."
+      },
       "sortByWithScore": {
         "type": "string",
         "enum": [
@@ -3486,36 +3456,6 @@
         "default": "desc",
         "description": "[Query Parameter] Shorthand for sortOrder.",
         "example": "asc"
-      },
-      "SearchSpacesQueryParams": {
-        "type": "object",
-        "properties": {
-          "limit": {
-            "$ref": "#/components/schemas/limit"
-          },
-          "l": {
-            "$ref": "#/components/schemas/l"
-          },
-          "offset": {
-            "$ref": "#/components/schemas/offset"
-          },
-          "o": {
-            "$ref": "#/components/schemas/o"
-          },
-          "sortBy": {
-            "$ref": "#/components/schemas/sortByWithScore"
-          },
-          "sb": {
-            "$ref": "#/components/schemas/sbWithScore"
-          },
-          "sortOrder": {
-            "$ref": "#/components/schemas/sortOrderDescDefault"
-          },
-          "so": {
-            "$ref": "#/components/schemas/soDescDefault"
-          }
-        },
-        "description": "Query parameters for searching spaces."
       },
       "CountSpaces200ResponseBody": {
         "allOf": [
@@ -3626,9 +3566,6 @@
                         },
                         {
                           "type": "null"
-                        },
-                        {
-                          "type": "null"
                         }
                       ],
                       "description": "The value of the property."
@@ -3666,26 +3603,6 @@
           }
         ]
       },
-      "sortBySearchListProp": {
-        "type": "string",
-        "enum": [
-          "_score",
-          "score",
-          "value"
-        ],
-        "default": "score",
-        "description": "The field to sort by."
-      },
-      "sbSearchListProp": {
-        "type": "string",
-        "enum": [
-          "_score",
-          "score",
-          "value"
-        ],
-        "default": "_score",
-        "description": "[Query Parameter] Shorthand for searchListPropSortBy."
-      },
       "SearchSpacesListPropQueryParams": {
         "type": "object",
         "properties": {
@@ -3715,6 +3632,26 @@
           }
         },
         "description": "Query parameters for searching spaces."
+      },
+      "sortBySearchListProp": {
+        "type": "string",
+        "enum": [
+          "_score",
+          "score",
+          "value"
+        ],
+        "default": "score",
+        "description": "The field to sort by."
+      },
+      "sbSearchListProp": {
+        "type": "string",
+        "enum": [
+          "_score",
+          "score",
+          "value"
+        ],
+        "default": "_score",
+        "description": "[Query Parameter] Shorthand for searchListPropSortBy."
       },
       "CountSpacesByProp200ResponseBody": {
         "allOf": [
@@ -3842,9 +3779,6 @@
                     },
                     {
                       "type": "null"
-                    },
-                    {
-                      "type": "null"
                     }
                   ]
                 },
@@ -3905,9 +3839,6 @@
                     },
                     {
                       "type": "null"
-                    },
-                    {
-                      "type": "null"
                     }
                   ]
                 },
@@ -3944,14 +3875,7 @@
                 "$ref": "#/components/schemas/SpaceName"
               },
               "description": {
-                "allOf": [
-                  {
-                    "$ref": "#/components/schemas/SpaceDescription"
-                  },
-                  {
-                    "default": null
-                  }
-                ]
+                "$ref": "#/components/schemas/SpaceDescription"
               },
               "examples": {
                 "type": "array",

@@ -1,11 +1,11 @@
 import { z } from "zod";
-import { ZodCleanSpaceSchema, ZodSpaceSchema } from "./Space";
 import { swaggerRegistry } from "src/Swagger";
 import { ZodSpaceIDSchema } from "./SpaceID";
 import { ZodSpaceExampleSchema } from "./SpaceExample";
 import { ZodSpaceNameSchema } from "./SpaceName";
 import { ZodSpaceTagSchema } from "./SpaceTag";
 import { refineNoAliasMatchingName, findAliasMatchingNameIndex } from "../Other";
+import { ZodCleanSpaceShape, ZodSpaceShape } from "./Space";
 
 function validateNotRepeat<T>(arr: T[]): boolean {
     if (arr.length === 0) return true;
@@ -41,7 +41,7 @@ const Zod_id_optional = Zod_id.extend(z.object({
 
 export const ZodCleanMongoSpaceSchema = swaggerRegistry.register(
     "CleanMongoSpace",
-    ZodCleanSpaceSchema.omit({ id: true })
+    z.object(ZodCleanSpaceShape).omit({ id: true })
     .extend(Zod_id.shape)
     .superRefine(({ name, aliases }, ctx) => {
         if (!refineNoAliasMatchingName(name, aliases)) {
@@ -61,7 +61,7 @@ export const ZodCleanMongoSpaceShape = ZodCleanMongoSpaceSchema.shape;
 
 export const ZodMongoSpaceSchema = swaggerRegistry.register(
     "MongoSpace",
-    ZodSpaceSchema.omit({ id: true })
+    z.object(ZodSpaceShape).omit({ id: true })
     .extend(Zod_id_optional.shape)
     .superRefine(({ name, aliases }, ctx) => {
         if (!refineNoAliasMatchingName(name, aliases)) {

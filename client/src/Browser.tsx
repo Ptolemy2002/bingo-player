@@ -52,7 +52,7 @@ export const router = createBrowserRouter([{
             path: "/socket-test",
             // Accessing the environment variable the long way, as if an error occurs in the function
             // found in Env.tsx, there's no way to catch it here.
-            element: ["test", "development"].includes(import.meta.env.NODE_ENV) ? <SocketTestPage /> : <NotFoundPage />
+            element: ["test", "development"].includes(import.meta.env.VITE_NODE_ENV) ? <SocketTestPage /> : <NotFoundPage />
         },
 
         {

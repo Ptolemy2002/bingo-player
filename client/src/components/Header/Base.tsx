@@ -4,12 +4,15 @@ import { HeaderProps } from "./Types";
 import DefaultMenuIcon from "src/components/icons/MenuIcon";
 import ToggleThemeButton from "src/components/ToggleThemeButton";
 import clsx from "clsx";
+import getEnv from "src/Env";
 
 function HeaderBase({
     title,
     className,
     MenuIcon = DefaultMenuIcon
 }: HeaderProps["functional"]) {
+    const env = getEnv();
+
     return (
         <Navbar
             as="header"
@@ -37,6 +40,12 @@ function HeaderBase({
                     <LinkContainer to="/space-gallery">
                         <Nav.Link>Space Gallery</Nav.Link>
                     </LinkContainer>
+
+                    {(env.isTest || env.isDev) && (
+                        <LinkContainer to="/socket-test">
+                            <Nav.Link>Socket Test</Nav.Link>
+                        </LinkContainer>
+                    )}
                 </ul>
 
                 <ul className="navbar-nav ms-auto mb-2 mb-lg-0">

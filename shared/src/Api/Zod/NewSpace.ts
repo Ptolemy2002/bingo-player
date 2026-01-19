@@ -2,12 +2,12 @@ import { swaggerRegistry } from "src/Swagger";
 import { zodSuccessResponseSchema } from "./SuccessResponse";
 import { ZodErrorResponseSchema } from "./ErrorResponse";
 import { z } from "zod";
-import { findAliasMatchingNameIndex, refineNoAliasMatchingName, ZodCleanMongoSpaceSchema, ZodMongoSpaceSchema } from "src/Space";
+import { findAliasMatchingNameIndex, refineNoAliasMatchingName, ZodCleanMongoSpaceSchema, ZodMongoSpaceShape } from "src/Space";
 
 export const ZodNewSpaceRequestBodySchema = swaggerRegistry.register(
     "NewSpaceRequestBody",
     z.object({
-        space: ZodMongoSpaceSchema.omit({ _id: true })
+        space: z.object(ZodMongoSpaceShape).omit({ _id: true })
             .superRefine(({ name, aliases }, ctx) => {
                 if (!refineNoAliasMatchingName(name, aliases)) {
                     const index = findAliasMatchingNameIndex(name, aliases);
@@ -19,8 +19,8 @@ export const ZodNewSpaceRequestBodySchema = swaggerRegistry.register(
                 }
             })
         }).openapi({
-        description: "The request body for creating a new space"
-    })
+            description: "The request body for creating a new space"
+        })
 );
 
 export const ZodNewSpace200ResponseBodySchema = swaggerRegistry.register(

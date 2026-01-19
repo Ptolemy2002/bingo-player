@@ -2,6 +2,7 @@ import { SocketTestPageProps } from "./Types";
 import getSocket from "src/Socket";
 import { useCallback, useEffect, useState } from "react";
 import JSON5 from "json5";
+import StyledButton from "src/components/StyledButton";
 
 function SocketTestPageBase({
     className
@@ -116,7 +117,8 @@ function SocketTestPageBase({
             
             <br /> <br />
 
-            <button
+            <StyledButton
+                $variant="socketTestSubmit"
                 onClick={async () => {
                     setSocketOut(null);
                     setSocketError(null);
@@ -142,7 +144,7 @@ function SocketTestPageBase({
                 disabled={!!parseError || socketEvent.trim() === ""}
             >
                 Emit Event
-            </button>
+            </StyledButton>
 
             {socketError && (
                 <p className="error">Socket Error: {socketError}</p>

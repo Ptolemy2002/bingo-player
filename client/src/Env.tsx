@@ -41,7 +41,7 @@ function url(defaultValue?: string, emptyIsDefault = true) {
 }
 
 export const EnvSchema = z.object({
-    NODE_ENV: z.enum(["development", "production", "test"]).default("development"),
+    VITE_NODE_ENV: z.enum(["development", "production", "test"]).default("development"),
     VITE_DEV_API_URL: url("http://localhost:8080", false),
     VITE_PROD_API_URL: nullableUrl(null),
     VITE_DEV_CLIENT_URL: url("http://localhost:3000"),
@@ -75,26 +75,26 @@ let EnvInstance: EnvType | null = null;
 export default function getEnv(createNew=false): EnvType {
     if (createNew || Env === null) Env = EnvSchema.parse(import.meta.env);
     if (createNew || !EnvInstance) {
-        if (Env.NODE_ENV === "production") {
+        if (Env.VITE_NODE_ENV === "production") {
             if (!Env.VITE_PROD_API_URL) throw new Error("PROD_API_URL is required in production environment");
             if (!Env.VITE_PROD_CLIENT_URL) throw new Error("PROD_CLIENT_URL is required in production environment");
             if (!Env.VITE_PROD_SOCKET_URL) throw new Error("PROD_SOCKET_URL is required in production environment");
         }
 
         EnvInstance = Object.freeze({
-            nodeEnv: Env.NODE_ENV,
-            isProd: Env.NODE_ENV === "production",
-            isDev: Env.NODE_ENV === "development",
-            isTest: Env.NODE_ENV === "test",
+            nodeEnv: Env.VITE_NODE_ENV,
+            isProd: Env.VITE_NODE_ENV === "production",
+            isDev: Env.VITE_NODE_ENV === "development",
+            isTest: Env.VITE_NODE_ENV === "test",
             devApiUrl: Env.VITE_DEV_API_URL,
             prodApiUrl: Env.VITE_PROD_API_URL,
             devClientUrl: Env.VITE_DEV_CLIENT_URL,
             prodClientUrl: Env.VITE_PROD_CLIENT_URL,
-            apiURL: Env.NODE_ENV === "production" ? Env.VITE_PROD_API_URL! : Env.VITE_DEV_API_URL,
-            clientURL: Env.NODE_ENV === "production" ? Env.VITE_PROD_CLIENT_URL! : Env.VITE_DEV_CLIENT_URL,
+            apiURL: Env.VITE_NODE_ENV === "production" ? Env.VITE_PROD_API_URL! : Env.VITE_DEV_API_URL,
+            clientURL: Env.VITE_NODE_ENV === "production" ? Env.VITE_PROD_CLIENT_URL! : Env.VITE_DEV_CLIENT_URL,
             devSocketUrl: Env.VITE_DEV_SOCKET_URL,
             prodSocketUrl: Env.VITE_PROD_SOCKET_URL,
-            socketUrl: Env.NODE_ENV === "production" ? Env.VITE_PROD_SOCKET_URL! : Env.VITE_DEV_SOCKET_URL,
+            socketUrl: Env.VITE_NODE_ENV === "production" ? Env.VITE_PROD_SOCKET_URL! : Env.VITE_DEV_SOCKET_URL,
         });
     }
 

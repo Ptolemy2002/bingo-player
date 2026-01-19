@@ -1,6 +1,7 @@
 import SocketRouteHandler, { SocketRouteHandlerRequestData } from "lib/SocketRouteHandler";
+import SpaceModel from "models/SpaceModel";
 import { SocketConsumer } from "services/socket";
-import { SocketBoardOpSuccessResponse, SocketBoardOpEventName, ZodSocketBoardOpArgsSchema, BingoGameCollection } from "shared";
+import { SocketBoardOpSuccessResponse, SocketBoardOpEventName, ZodSocketBoardOpArgsSchema, BingoGameCollection, RouteError } from "shared";
 
 export class BingoBoardOpHandler extends SocketRouteHandler<SocketBoardOpSuccessResponse> {
     constructor() {
@@ -46,12 +47,12 @@ export class BingoBoardOpHandler extends SocketRouteHandler<SocketBoardOpSuccess
             return game.fromJSON(prevGameState);
         }
 
-        for (const board of boards) {
-            if (op !== "add" && !game.hasBoard(board)) {
+        for (const boardId of boards) {
+            if (op !== "add" && !game.hasBoard(boardId)) {
                 revertGameState();
                 return {
                     status: 404,
-                    response: this.buildNotFoundResponse(`Board with ID "${board}" does not exist in game "${gameId}"`)
+                    response: this.buildNotFoundResponse(`Board with ID "${boardId}" does not exist in game "${gameId}"`)
                 };
             }
             
@@ -67,24 +68,56 @@ export class BingoBoardOpHandler extends SocketRouteHandler<SocketBoardOpSuccess
                             };
                         }
 
-                        const template = game.getBoardTemplate(templateName);
+                        await game.buildBoardFromTemplate(
+                            boardId, templateName, player,
+                            async (ids) => {
+                                const spaces = await SpaceModel.find({ _id: { $in: ids } }).limit(ids.length).exec();
+                                const res = spaces.map(s => s.toClientJSON());
+                                if (res.length < ids.length) {
+                                    throw new RouteError(
+                                        `Found only ${res.length} spaces, but ${ids.length} were required for board generation`,
+                                        500,
+                                        "INTERNAL",
+                                        this.help
+                                    )
+                                }
 
-                        if (!template) {
-                            revertGameState();
-                            return {
-                                status: 404,
-                                response: this.buildNotFoundResponse(`Board template with name "${templateName}" does not exist in game "${gameId}"`)
-                            };
-                        }
+                                return res;
+                            },
+
+                            async (includedTags, excludedTags, excludedIds, count) => {
+                                const spaces = await SpaceModel.find({
+                                    _id: { $nin: excludedIds },
+                                    $and: [
+                                        { $tags: { $in: includedTags } },
+                                        { $tags: { $nin: excludedTags } }
+                                    ]
+                                }).limit(count).exec();
+
+                                const res = spaces.map(s => s.toClientJSON());
+                                if (res.length < count) {
+                                    throw new RouteError(
+                                        `Found only ${res.length} spaces, but ${count} were required for board generation`,
+                                        500,
+                                        "INTERNAL",
+                                        this.help
+                                    )
+                                }
+
+                                return res;
+                            }
+                        );
 
                         return {
-                            status: 501,
-                            response: this.buildNotImplementedResponse("Adding boards is not yet implemented")
+                            status: 200,
+                            response: this.buildSuccessResponse({
+                                game: game.toJSON()
+                            })
                         };
                     }
 
                     case "remove": {
-                        game.removeBoard(board);
+                        game.removeBoard(boardId);
                         break;
                     }
                 }

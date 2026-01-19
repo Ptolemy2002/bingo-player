@@ -71,7 +71,9 @@ export const ZodCleanSpaceShape = ZodCleanSpaceSchema.shape;
 
 export const ZodSpaceSchema = swaggerRegistry.register(
     "Space",
-    ZodCleanSpaceSchema.omit({
+    // To bypass the omit restriction for schemas with refinements, we create a new schema using
+    // the same shape.
+    z.object(ZodCleanSpaceShape).omit({
         description: true,
         examples: true,
         aliases: true,

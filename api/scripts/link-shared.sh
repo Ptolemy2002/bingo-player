@@ -1,8 +1,9 @@
 #! /usr/bin/bash
+# Get the current directory
+currentDir=$(pwd)
+
 if [ ! -d "../shared/dist" ]; then
-    echo "Shared dependencies not built. Building now"
-    # Get the current directory
-    currentDir=$(pwd)
+    echo "Shared dependencies not built. Building now."
 
     cd ../shared
     pnpm build

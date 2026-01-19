@@ -6,5 +6,6 @@ import { CardStyles } from "styled-components";
 
 export type GameCardProps = StyledComponentPropsWithCSS<Override<CardProps, {
     className?: string;
+    showLink?: boolean;
     game: BingoGame;
 }>, CardStyles>;

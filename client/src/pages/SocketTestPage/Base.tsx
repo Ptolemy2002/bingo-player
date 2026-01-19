@@ -40,14 +40,20 @@ function SocketTestPageBase({
             addLogEntry(`Emit Event: ${event} | Args: ${JSON.stringify(args)}`);
         }
 
+        function onAnyIncoming(event: string, ...args: unknown[]) {
+            addLogEntry(`Receive Event: ${event} | Args: ${JSON.stringify(args)}`);
+        }
+
         socket.on("connect", onConnect);
         socket.on("disconnect", onDisconnect);
         socket.onAnyOutgoing(onAnyOutgoing);
+        socket.onAny(onAnyIncoming);
 
         return () => {
             socket.off("connect", onConnect);
             socket.off("disconnect", onDisconnect);
             socket.offAnyOutgoing(onAnyOutgoing);
+            socket.offAny(onAnyIncoming);
         };
     }, [socket, addLogEntry]);
 
@@ -59,6 +65,8 @@ function SocketTestPageBase({
             <p>Activity Log:</p>
             <ul>
                 {activityLog.map((entry, index) => (
+                    // Index as key is fine here. Entries do not change order, nor are they removed
+                    // or mutated at all.
                     <li key={index}>{entry}</li>
                 ))}
             </ul>
@@ -70,7 +78,8 @@ function SocketTestPageBase({
             />
             
             <br /> <br />
-
+            
+            {/* We don't explicitly set the value here. The user may freely type what they want, and the last valid JSON5 parse will be used. */}
             <textarea
                 placeholder="Input Data"
                 onKeyDown={(e) => {
@@ -88,6 +97,7 @@ function SocketTestPageBase({
                         target.selectionStart = target.selectionEnd = start + 4;
                     }
                 }}
+
                 onChange={(e) => {
                     const input = e.target.value;
                     try {
@@ -112,17 +122,17 @@ function SocketTestPageBase({
                     setSocketError(null);
 
                     try {
+                        let res;
                         if (userInput && Object.keys(userInput).length > 0) {
                             // @ts-expect-error TS2345. Typing isn't necessary here. This is a developer tool.
-                            const res = await socket.emitSafeWithAck(socketEvent, userInput);
-                            addLogEntry(`Response for event "${socketEvent}": ${JSON.stringify(res)}`);
-                            setSocketOut(res);
+                            res = await socket.emitSafeWithAck(socketEvent, userInput);
                         } else {
                             // @ts-expect-error TS2345. Typing isn't necessary here. This is a developer tool.
-                            const res = await socket.emitSafeWithAck(socketEvent, {});
-                            addLogEntry(`Response for event "${socketEvent}": ${JSON.stringify(res)}`);
-                            setSocketOut(res);
+                            res = await socket.emitSafeWithAck(socketEvent, {});
                         }
+
+                        addLogEntry(`Response for event "${socketEvent}": ${JSON.stringify(res)}`);
+                        setSocketOut(res);
                     } catch (err) {
                         console.error("Socket emit error:", err);
                         addLogEntry(`Socket Error for event "${socketEvent}": ${err instanceof Error ? err.message : String(err)}`);

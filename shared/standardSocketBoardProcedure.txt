@@ -1,0 +1,8 @@
+gameCreate
+{"id":"Test Game","hostName":"Ptolemy"}
+
+boardTemplateOp
+{"gameId":"Test Game","op":"add","templates":[{"id":"standard","shape":{"width":3,"height":3},"grid":["XXX","XFX","XXX"],"key":{"F":{"type":"exact","id":"696ecad350cb7981075b8dc7"},"X":{"type":"byTag","shuffle":true,"condition":{"include":["basically-free","common","uncommon","rare","legendary"],"exclude":"meme"}}}}]}
+
+boardOp
+{"gameId":"Test Game","op":"add","boards":["Test Board"],"template":"standard"}

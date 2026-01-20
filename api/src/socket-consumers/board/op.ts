@@ -89,8 +89,8 @@ export class BingoBoardOpHandler extends SocketRouteHandler<SocketBoardOpSuccess
                                 const spaces = await SpaceModel.find({
                                     _id: { $nin: excludedIds },
                                     $and: [
-                                        { $tags: { $in: includedTags } },
-                                        { $tags: { $nin: excludedTags } }
+                                        { tags: { $in: includedTags } },
+                                        { tags: { $nin: excludedTags } }
                                     ]
                                 }).limit(count).exec();
 

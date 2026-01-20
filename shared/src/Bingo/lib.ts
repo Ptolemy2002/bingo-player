@@ -738,10 +738,10 @@ export class BingoBoardData {
         width: number;
         height: number;
     };
-    _spaces: (number | null)[];
+    _spaces: (number | null)[] = [];
 
     get spaces() {
-        return this.spaces;
+        return this._spaces;
     }
 
     set spaces(value: (number | null)[]) {

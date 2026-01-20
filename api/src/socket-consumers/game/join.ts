@@ -54,7 +54,8 @@ export class BingoGameJoinHandler extends SocketRouteHandler<SocketGameJoinSucce
         req.socket.to(game.getSocketRoomName()).emit("playersChange", {
             type: "join",
             gameId: game.id,
-            newPlayerName: playerName
+            newPlayerName: playerName,
+            newPlayerRole: playerRole,
         });
 
         req.socket.on("disconnect", () => playerDisconnectHandler(req.socket, req.id, BingoGameCollection.global, game, this.env.boardGracePeriod));

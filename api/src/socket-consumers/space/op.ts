@@ -39,6 +39,13 @@ export class BingoSpaceOpHandler extends SocketRouteHandler<SocketSpaceOpSuccess
             };
         }
 
+        if (player.role === "spectator") {
+            return {
+                status: 403,
+                response: this.buildErrorResponse("FORBIDDEN", "Spectators are not allowed to perform space operations")
+            };
+        }
+
         const prevGameState = game.toJSON();
 
         // Necessary because if an error occurs midway through processing the space operation, we should

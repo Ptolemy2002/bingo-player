@@ -1,7 +1,7 @@
 import SocketRouteHandler, { SocketRouteHandlerRequestData } from "lib/SocketRouteHandler";
 import SpaceModel from "models/SpaceModel";
 import { SocketConsumer } from "services/socket";
-import { SocketBoardOpSuccessResponse, SocketBoardOpEventName, ZodSocketBoardOpArgsSchema, BingoGameCollection, RouteError } from "shared";
+import { SocketBoardOpSuccessResponse, SocketBoardOpEventName, ZodSocketBoardOpArgsSchema, BingoGameCollection, RouteError, BingoBoardData } from "shared";
 
 export class BingoBoardOpHandler extends SocketRouteHandler<SocketBoardOpSuccessResponse> {
     constructor() {
@@ -25,7 +25,7 @@ export class BingoBoardOpHandler extends SocketRouteHandler<SocketBoardOpSuccess
         if (!BingoGameCollection.global.hasGame(gameId)) {
             return {
                 status: 404,
-                response: this.buildNotFoundResponse("Game with that ID does not exist")
+                response: this.buildNotFoundResponse(`Game with ID "${gameId}" does not exist`)
             };
         }
 
@@ -39,6 +39,13 @@ export class BingoBoardOpHandler extends SocketRouteHandler<SocketBoardOpSuccess
             };
         }
 
+        if (player.role === "spectator") {
+            return {
+                status: 403,
+                response: this.buildErrorResponse("FORBIDDEN", "Spectators are not allowed to perform board operations")
+            };
+        }
+
         const prevGameState = game.toJSON();
 
         // Necessary because if an error occurs midway through processing the board operation, we should
@@ -46,6 +53,9 @@ export class BingoBoardOpHandler extends SocketRouteHandler<SocketBoardOpSuccess
         function revertGameState() {
             return game.fromJSON(prevGameState);
         }
+
+        const boardsTouched: BingoBoardData[] = [];
+        const prevSpacesLength = game.spaces.length;
 
         for (const boardId of boards) {
             if (op !== "add" && !game.hasBoard(boardId)) {
@@ -55,7 +65,7 @@ export class BingoBoardOpHandler extends SocketRouteHandler<SocketBoardOpSuccess
                     response: this.buildNotFoundResponse(`Board with ID "${boardId}" does not exist in game "${gameId}"`)
                 };
             }
-            
+
             try {
                 switch (op) {
                     case "add": {
@@ -68,7 +78,7 @@ export class BingoBoardOpHandler extends SocketRouteHandler<SocketBoardOpSuccess
                             };
                         }
 
-                        await game.buildBoardFromTemplate(
+                        boardsTouched.push(await game.buildBoardFromTemplate(
                             boardId, templateName, player,
                             async (ids) => {
                                 const spaces = await SpaceModel.find({ _id: { $in: ids } }).limit(ids.length).exec();
@@ -106,18 +116,12 @@ export class BingoBoardOpHandler extends SocketRouteHandler<SocketBoardOpSuccess
 
                                 return res;
                             }
-                        );
-
-                        return {
-                            status: 200,
-                            response: this.buildSuccessResponse({
-                                game: game.toJSON()
-                            })
-                        };
+                        ));
+                        break;
                     }
 
                     case "remove": {
-                        game.removeBoard(boardId);
+                        boardsTouched.push(game.removeBoard(boardId));
                         break;
                     }
                 }
@@ -128,6 +132,20 @@ export class BingoBoardOpHandler extends SocketRouteHandler<SocketBoardOpSuccess
                 throw e;
             }
         }
+
+        if (game.spaces.length > prevSpacesLength) {
+            req.socket.to(game.getSocketRoomName()).emit("spacesChange", {
+                op: "add",
+                spaces: game.spaces.slice(prevSpacesLength).map(s => s.spaceData),
+                gameId
+            });
+        }
+
+        req.socket.to(game.getSocketRoomName()).emit("boardsChange", {
+            type: op,
+            boards: boardsTouched.map(b => b.toJSON()),
+            gameId
+        });
 
         // If we reach this point, all board operations were successful
         return {

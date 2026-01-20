@@ -40,9 +40,7 @@ export const ZodBingoPlayerSchema = registerBingoSchema(
             }
         ),
         socketId: registerBingoSchema(
-            // This `refine` pattern allows us to copy the schema so that the original metadata
-            // is not overwritten on `ZodSocketIDSchema`.
-            ZodSocketIDSchema.refine(() => true),
+            ZodSocketIDSchema.optional(),
             {
                 id: "BingoPlayer.socketId",
                 type: "prop",

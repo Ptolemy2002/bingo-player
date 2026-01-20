@@ -136,7 +136,8 @@ export class BingoGameData {
         return this.players.findIndex(player => player.name === name);
     }
 
-    getPlayerIndexBySocketId(socketId: SocketID) {
+    getPlayerIndexBySocketId(socketId?: SocketID) {
+        if (!socketId) return -1;
         return this.players.findIndex(player => player.socketId === socketId);
     }
 
@@ -146,7 +147,7 @@ export class BingoGameData {
         return this.players[index];
     }
 
-    getPlayerBySocketId(socketId: SocketID) {
+    getPlayerBySocketId(socketId?: SocketID) {
         const index = this.getPlayerIndexBySocketId(socketId);
         if (index === -1) return null;
         return this.players[index];
@@ -156,7 +157,7 @@ export class BingoGameData {
         return this.getPlayerIndexByName(name) !== -1;
     }
 
-    hasPlayerBySocketId(socketId: SocketID) {
+    hasPlayerBySocketId(socketId?: SocketID) {
         return this.getPlayerIndexBySocketId(socketId) !== -1;
     }
 
@@ -293,7 +294,7 @@ export class BingoGameData {
         return removedBoards;
     }
 
-    removeBoardsByOwnerSocketId(socketId: SocketID) {
+    removeBoardsByOwnerSocketId(socketId?: SocketID) {
         const owner = this.getPlayerBySocketId(socketId);
         if (!owner) throw new RouteError(`Player with socket ID ${socketId} not found in game "${this.id}"`, 404, "NOT_FOUND");
 
@@ -349,7 +350,7 @@ export class BingoGameData {
         }
     }
 
-    removePlayerBySocketId(socketId: SocketID, boardRemoveDelay: number = 0, boardRemoveDebug: boolean = false) {
+    removePlayerBySocketId(socketId?: SocketID, boardRemoveDelay: number = 0, boardRemoveDebug: boolean = false) {
         const index = this.getPlayerIndexBySocketId(socketId);
 
         if (index !== -1) {
@@ -650,7 +651,7 @@ export class BingoGameData {
 export class BingoPlayerData {
     game: BingoGameData | null = null;
     name: string;
-    socketId: SocketID;
+    socketId?: SocketID;
     role: BingoPlayerRole = "player";
 
     constructor(player: BingoPlayerInit | BingoPlayerData, game: BingoGameInit | BingoGameData | null = null) {

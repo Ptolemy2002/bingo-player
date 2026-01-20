@@ -154,8 +154,8 @@ importers:
         specifier: ^5.2.2
         version: 5.2.2(react-hook-form@7.71.1(react@18.3.1))
       '@ptolemy2002/js-math-utils':
-        specifier: ^2.0.4
-        version: 2.0.4
+        specifier: ^2.0.5
+        version: 2.0.5
       '@ptolemy2002/js-utils':
         specifier: ^3.2.2
         version: 3.2.2
@@ -752,8 +752,8 @@ packages:
     peerDependencies:
       express: ^4.21.0
 
-  '@ptolemy2002/js-math-utils@2.0.4':
-    resolution: {integrity: sha512-SF+8p87G1ldCIpaPLwi+qzH52vY+NP7E/ySEVQ7d13hJo5oKYqGYlhxaTRFQSFa+VzGvY+CZxdudFJRw+czfqw==}
+  '@ptolemy2002/js-math-utils@2.0.5':
+    resolution: {integrity: sha512-dHSnkA29HAOnimvRH4IbwD+hKChJdC2W/DAU0Xe2DK9blkyWHiG66uTYzb30/dV8+CXNByEFARojsn4EEh7a3A==}
 
   '@ptolemy2002/js-utils@3.2.2':
     resolution: {integrity: sha512-77JJdYsdZGqzOF+36LozPUDV1haSHzdar8vR99M0t0V0z4FdJsjkMJbaCWSvnONWZOpULkaMdPVKsM8l3OyAGA==}
@@ -3367,7 +3367,7 @@ snapshots:
     dependencies:
       express: 4.22.1
 
-  '@ptolemy2002/js-math-utils@2.0.4': {}
+  '@ptolemy2002/js-math-utils@2.0.5': {}
 
   '@ptolemy2002/js-utils@3.2.2': {}
 

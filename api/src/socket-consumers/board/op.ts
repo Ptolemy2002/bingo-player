@@ -115,7 +115,9 @@ export class BingoBoardOpHandler extends SocketRouteHandler<SocketBoardOpSuccess
                                 }
 
                                 return res;
-                            }
+                            },
+
+                            ["literally-free"] // This specific tag will cause spaces to be marked automatically
                         ));
                         break;
                     }

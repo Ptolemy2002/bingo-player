@@ -70,7 +70,6 @@ export function SpaceDetailPageBase({
                         }
                     }}
                 >
-                    
                     <SpaceDetailPageBody />
                 </SuspenseBoundary>
             </ErrorBoundary>
@@ -79,7 +78,7 @@ export function SpaceDetailPageBase({
 }
 
 export function SpaceDetailPageBody() {
-    const [space] = SpaceData.useContext(["name", "description", "aliases", "examples", "tags", "lastRequest", "requestInProgress"]);
+    const [space] = SpaceData.useContext(["id", "name", "description", "aliases", "examples", "tags", "lastRequest", "requestInProgress"]);
     const navigate = useNavigate();
     const { _try } = useManualErrorHandling();
 
@@ -117,6 +116,7 @@ export function SpaceDetailPageBody() {
     if (space === null) return null;
     return (
         <div className="space-detail-page-body">
+            <p><b>id:</b> {space.id}</p>
             <h2>{space.name}</h2>
             <p className="mb-0"><b>{aliasesText}</b></p>
             {tagsElements}

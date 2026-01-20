@@ -78,6 +78,13 @@ export const NamedThemes: NamedTheme[] = [
                     textColor: "black"
                 },
 
+                "literally-free": {
+                    showBorder: true,
+                    borderColor: "black",
+                    backgroundColor: "white",
+                    textColor: "black"
+                },
+
                 common: {
                     backgroundColor: "#aaaaaa"
                 },
@@ -184,9 +191,16 @@ export const NamedThemes: NamedTheme[] = [
                     textColor: "white"
                 },
 
+                "literally-free": {
+                    showBorder: true,
+                    borderColor: "white",
+                    backgroundColor: "black",
+                    textColor: "white"
+                },
+
                 "basically-free": {
-                    backgroundColor: "white",
-                    textColor: "black"
+                    backgroundColor: "black",
+                    textColor: "white"
                 },
 
                 common: {

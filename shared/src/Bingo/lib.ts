@@ -521,7 +521,8 @@ export class BingoGameData {
         othersNeeded: Record<string, { condition: SerializableValueCondition<string>, count: number, totalRequired: number }>,
         template: BingoBoardTemplateOutput,
         fetchExactSpaces: (exactSpaceIds: string[]) => Promise<MongoSpace[]>,
-        fetchWithTags: (includedTags: string[], excludedTags: string[], excludedIds: string[], count: number) => Promise<MongoSpace[]>
+        fetchWithTags: (includedTags: string[], excludedTags: string[], excludedIds: string[], count: number) => Promise<MongoSpace[]>,
+        freeTags: string[] = []
     ) {
         if (exactNeeded.length > 0) {
             const fetchedExactSpaces = await fetchExactSpaces(exactNeeded);
@@ -543,6 +544,8 @@ export class BingoGameData {
 
                 for (const space of spaces) {
                     this.addSpace(space);
+                    // Spaces with these tags are marked automatically upon board generation
+                    if (space.tags?.some(t => freeTags.includes(t))) this.mark(space._id);
                 }
             }
         }
@@ -628,7 +631,9 @@ export class BingoGameData {
         // The caller will deal with it (possibly by throwing an error)
         // if there aren't enough spaces to fulfill the request.
         fetchExactSpaces: (exactSpaceIds: string[]) => Promise<MongoSpace[]>,
-        fetchWithTags: (includedTags: string[], excludedTags: string[], excludedIds: string[], count: number) => Promise<MongoSpace[]>
+        fetchWithTags: (includedTags: string[], excludedTags: string[], excludedIds: string[], count: number) => Promise<MongoSpace[]>,
+
+        freeTags: string[] = []
     ) {
         const template = this.getBoardTemplate(templateId);
         if (!template) throw new RouteError(`Board template with ID "${templateId}" not found in game "${this.id}"`, 404, "NOT_FOUND");
@@ -637,7 +642,7 @@ export class BingoGameData {
         if (!ownerPlayer) throw new RouteError(`Player "${owner}" not found in game "${this.id}"`, 404, "NOT_FOUND");
 
         const { exactNeeded, othersNeeded } = this.determineSpaceRequirements(template);
-        await this.fetchRequiredSpaces(exactNeeded, othersNeeded, template, fetchExactSpaces, fetchWithTags);
+        await this.fetchRequiredSpaces(exactNeeded, othersNeeded, template, fetchExactSpaces, fetchWithTags, freeTags);
         const boardSpaces = this.buildBoardSpacesFromTemplate(template, templateId, othersNeeded);
 
         return this.addBoard({

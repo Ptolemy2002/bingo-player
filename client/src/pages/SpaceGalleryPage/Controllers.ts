@@ -145,7 +145,7 @@ export function useSpaceGallerySearchFunctions() {
 
             const { offset, limit } = calcPagination(p, ps, search.totalCount);
 
-            const { data: spacesData } = await api.get(`/spaces/get/by-prop/[prop]/[q]`, {
+            const { data: spacesData } = await api.get(`/spaces/get/by-prop/[prop]/[query]`, {
                 id: RouteTags.searchSpaces,
                 params: {
                     prop: cat,

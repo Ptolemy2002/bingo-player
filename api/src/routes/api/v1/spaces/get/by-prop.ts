@@ -103,7 +103,7 @@ export class GetSpacesByPropHandler extends RouteHandler<GetSpacesByProp200Respo
             .then("pagination")
             .build();
         
-        const spaces = await SpaceModel.executeDocumentAggregation(pipeline);
+        const spaces = (await SpaceModel.executeDocumentAggregation(pipeline)).map(SpaceModel.normalizeMongoDocumentSpace);
 
         if (spaces.length === 0) {
             return {

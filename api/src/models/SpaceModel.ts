@@ -28,12 +28,13 @@ export type SpaceInstanceMethods = {
 export type SpaceModel = Model<MongoDocumentSpace, {}, SpaceInstanceMethods>;
 
 export interface SpaceModelWithStatics extends SpaceModel {
-    executeDocumentAggregation(pipeline: PipelineStage[]): Promise<CleanMongoSpace[]>;
+    executeDocumentAggregation(pipeline: PipelineStage[]): Promise<MongoDocumentSpace[]>;
     getPaths(): string[];
     getUniqueName(name: string): Promise<string>;
     createWithUniqueName(name: string, space: Omit<CleanMongoSpace, "_id" | "name">): Promise<
         HydratedDocumentFromSchema<typeof SpaceSchema>
     >;
+    normalizeMongoDocumentSpace(doc: MongoDocumentSpace): CleanMongoSpace;
 }
 
 // Validation is done in custom validators, as they access more context.
@@ -136,11 +137,15 @@ SpaceSchema.method("removeUnsetFields", function() {
 });
 
 SpaceSchema.static("executeDocumentAggregation", function(pipeline: PipelineStage[]) {
-    return this.aggregate<CleanMongoSpace>(pipeline).exec();
+    return this.aggregate<MongoDocumentSpace>(pipeline).exec();
 });
 
 SpaceSchema.static("getPaths", function() {
     return Object.keys(this.schema.paths);
+});
+
+SpaceSchema.static("normalizeMongoDocumentSpace", function(doc: MongoDocumentSpace): CleanMongoSpace {
+    return {...omit(doc, "_id", "__v"), _id: doc._id.toString()};
 });
 
 // Define the search index for the spaces collection

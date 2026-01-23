@@ -77,7 +77,7 @@ export class SearchSpacesHandler extends RouteHandler<SearchSpaces200ResponseBod
             .then("pagination")
             .build();
 
-        const spaces = await SpaceModel.executeDocumentAggregation(pipeline);
+        const spaces = (await SpaceModel.executeDocumentAggregation(pipeline)).map(SpaceModel.normalizeMongoDocumentSpace);
 
         if (spaces.length === 0) {
             return {

@@ -110,10 +110,7 @@ export class BingoBoardOpHandler extends SocketRouteHandler<SocketBoardOpSuccess
                                     { $sample: { size: count } }
                                 ]);
 
-                                const res = spaces.map(s => {
-                                    // @ts-expect-error __v is added by mongoose, but not in the type definition
-                                    return {...omit(s, "_id", "__v"), _id: s._id.toString()} as CleanMongoSpace;
-                                });
+                                const res = spaces.map(SpaceModel.normalizeMongoDocumentSpace);
                                 
                                 if (res.length < count) {
                                     throw new RouteError(

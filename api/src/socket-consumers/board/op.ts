@@ -1,7 +1,8 @@
 import SocketRouteHandler, { SocketRouteHandlerRequestData } from "lib/SocketRouteHandler";
 import SpaceModel from "models/SpaceModel";
 import { SocketConsumer } from "services/socket";
-import { SocketBoardOpSuccessResponse, SocketBoardOpEventName, ZodSocketBoardOpArgsSchema, BingoGameCollection, RouteError, BingoBoardData } from "shared";
+import { SocketBoardOpSuccessResponse, SocketBoardOpEventName, ZodSocketBoardOpArgsSchema, BingoGameCollection, RouteError, BingoBoardData, CleanMongoSpace } from "shared";
+import { omit } from "@ptolemy2002/ts-utils";
 
 export class BingoBoardOpHandler extends SocketRouteHandler<SocketBoardOpSuccessResponse> {
     constructor() {
@@ -96,15 +97,24 @@ export class BingoBoardOpHandler extends SocketRouteHandler<SocketBoardOpSuccess
                             },
 
                             async (includedTags, excludedTags, excludedIds, count) => {
-                                const spaces = await SpaceModel.find({
-                                    _id: { $nin: excludedIds },
-                                    $and: [
-                                        { tags: { $in: includedTags } },
-                                        { tags: { $nin: excludedTags } }
-                                    ]
-                                }).limit(count).exec();
+                                const spaces = await SpaceModel.executeDocumentAggregation([
+                                    {
+                                        $match: {
+                                            _id: { $nin: excludedIds },
+                                            $and: [
+                                                { tags: { $in: includedTags } },
+                                                { tags: { $nin: excludedTags } }
+                                            ]
+                                        }
+                                    },
+                                    { $sample: { size: count } }
+                                ]);
 
-                                const res = spaces.map(s => s.toClientJSON());
+                                const res = spaces.map(s => {
+                                    // @ts-expect-error __v is added by mongoose, but not in the type definition
+                                    return {...omit(s, "_id", "__v"), _id: s._id.toString()} as CleanMongoSpace;
+                                });
+                                
                                 if (res.length < count) {
                                     throw new RouteError(
                                         `Found only ${res.length} spaces, but ${count} were required for board generation`,

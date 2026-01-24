@@ -1,9 +1,9 @@
 import { registerSocketConsumer } from "services/socket";
 import pingSocketConsumer from "./ping";
 import idSocketConsumer from "./id";
-import { SocketGameCreateEventName, SocketGameGetEventName, SocketGameJoinEventName, SocketGameLeaveEventName, SocketGameListEventName, SocketPingEventName, SocketIDEventName, SocketSpaceOpEventName, SocketBoardOpEventName, SocketBoardTemplateOpEventName } from "shared";
+import { SocketGameCreateEventName, SocketGameGetEventName, SocketGameJoinEventName, SocketGameLeaveEventName, SocketGameListEventName, SocketPingEventName, SocketIDEventName, SocketSpaceOpEventName, SocketBoardOpEventName, SocketBoardTemplateOpEventName, SocketSpaceFillEventName } from "shared";
 import { gameCreateSocketConsumer, gameGetSocketConsumer, gameJoinSocketConsumer, gameLeaveSocketConsumer, gameListSocketConsumer } from "./game";
-import { spaceOpSocketConsumer } from "./space";
+import { spaceFillSocketConsumer, spaceOpSocketConsumer } from "./space";
 import { boardOpSocketConsumer } from "./board";
 import { boardTemplateOpSocketConsumer } from "./board-template";
 
@@ -19,3 +19,5 @@ registerSocketConsumer(SocketGameListEventName, gameListSocketConsumer);
 registerSocketConsumer(SocketSpaceOpEventName, spaceOpSocketConsumer);
 registerSocketConsumer(SocketBoardOpEventName, boardOpSocketConsumer);
 registerSocketConsumer(SocketBoardTemplateOpEventName, boardTemplateOpSocketConsumer);
+
+registerSocketConsumer(SocketSpaceFillEventName, spaceFillSocketConsumer);

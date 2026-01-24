@@ -1,4 +1,4 @@
-import { omit, SerializableAdvancedCondition, SerializableValueCondition, serializableValueConditionType, ValueCondition, valueConditionMatches } from "@ptolemy2002/ts-utils";
+import { omit, SerializableAdvancedCondition, SerializableValueCondition, serializableValueConditionType, ValueCondition, valueConditionMatches, valueConditionType } from "@ptolemy2002/ts-utils";
 import { BingoGame, BingoPlayer, BingoPlayerRole, BingoSpaceSet, cleanMongoSpace, MongoSpace, SocketID, RouteError, BingoBoard, BingoBoardTemplateOutput } from "src";
 import ms from "ms";
 
@@ -446,10 +446,11 @@ export class BingoGameData {
         return count;
     }
 
-    private async fetchSpacesBasedOnCondition(
+    async fetchSpacesBasedOnCondition(
         condition: SerializableValueCondition<string>,
         count: number,
-        fetchWithTags: (includedTags: string[], excludedTags: string[], excludedIds: string[], count: number) => Promise<MongoSpace[]>
+        fetchWithTags: (includedTags: string[] | undefined, excludedTags: string[], excludedIds: string[], count: number) => Promise<MongoSpace[]>,
+        numFetched=0
     ): Promise<MongoSpace[]> {
         const conditionType = serializableValueConditionType(condition);
         const alreadyCollected = this.getSpacesByTagCondition(condition).map(s => s.spaceData._id);
@@ -457,10 +458,11 @@ export class BingoGameData {
         let result: MongoSpace[] = [];
 
         if (conditionType === "value") {
-            result = await fetchWithTags([condition as string], [], alreadyCollected, count);
+            result = await fetchWithTags([condition as string], [], alreadyCollected, count - numFetched);
+            numFetched += result.length;
         } else if (conditionType === "advanced") {
             const advCondition = condition as SerializableAdvancedCondition<string>;
-            let include: string[] = [];
+            let include: string[] | undefined = undefined;
             let exclude: string[] = [];
 
             // We're skipping any instance of `false` in both of these arrays, as that indicates
@@ -468,6 +470,7 @@ export class BingoGameData {
             if (Array.isArray(advCondition.include)) {
                 include = advCondition.include.filter((i): i is string => i !== false);
             } else if (advCondition.include) {
+                if (!include) include = [];
                 include.push(advCondition.include);
             }
 
@@ -477,14 +480,32 @@ export class BingoGameData {
                 exclude.push(advCondition.exclude);
             }
 
-            result = await fetchWithTags(include, exclude, alreadyCollected, count);
+            result = await fetchWithTags(include, exclude, alreadyCollected, count - numFetched);
+            numFetched += result.length;
         } else if (Array.isArray(conditionType)) {
-            // Recursively fetch for each condition enclosed
             const arrayCondition = condition as (SerializableValueCondition<string> | false)[];
-            for (const subCondition of arrayCondition) {
-                if (subCondition === false) continue;
-                const subResult = await this.fetchSpacesBasedOnCondition(subCondition, count, fetchWithTags);
+
+            // Collect all the value conditions and get them in one go.
+            // The reason we can modify execution order like this is that
+            // ValueCondition is designed to be a filter, not an ordered request.
+            const valueConditions = arrayCondition.filter(
+                (c): c is string => Boolean(c) && valueConditionType(c) === "value"
+            );
+            if (valueConditions.length > 0) {
+                const spaces = await fetchWithTags(valueConditions, [], alreadyCollected, count - numFetched);
+                result.push(...spaces);
+                numFetched += spaces.length;
+            }
+
+            // Recursively fetch for each other condition enclosed
+            const otherConditions: SerializableValueCondition<string>[] =arrayCondition.filter(
+                (c): c is Exclude<typeof arrayCondition[number], false> => Boolean(c) && serializableValueConditionType(c) !== "value"
+            );
+
+            for (const subCondition of otherConditions) {
+                const subResult = await this.fetchSpacesBasedOnCondition(subCondition, count, fetchWithTags, numFetched);
                 result.push(...subResult);
+                numFetched += subResult.length;
             }
         }
 
@@ -521,7 +542,7 @@ export class BingoGameData {
         othersNeeded: Record<string, { condition: SerializableValueCondition<string>, count: number, totalRequired: number }>,
         template: BingoBoardTemplateOutput,
         fetchExactSpaces: (exactSpaceIds: string[]) => Promise<MongoSpace[]>,
-        fetchWithTags: (includedTags: string[], excludedTags: string[], excludedIds: string[], count: number) => Promise<MongoSpace[]>,
+        fetchWithTags: (includedTags: string[] | undefined, excludedTags: string[], excludedIds: string[], count: number) => Promise<MongoSpace[]>,
         freeTags: string[] = []
     ) {
         if (exactNeeded.length > 0) {
@@ -631,7 +652,7 @@ export class BingoGameData {
         // The caller will deal with it (possibly by throwing an error)
         // if there aren't enough spaces to fulfill the request.
         fetchExactSpaces: (exactSpaceIds: string[]) => Promise<MongoSpace[]>,
-        fetchWithTags: (includedTags: string[], excludedTags: string[], excludedIds: string[], count: number) => Promise<MongoSpace[]>,
+        fetchWithTags: (includedTags: string[] | undefined, excludedTags: string[], excludedIds: string[], count: number) => Promise<MongoSpace[]>,
 
         freeTags: string[] = []
     ) {

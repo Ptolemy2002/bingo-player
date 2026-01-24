@@ -1,6 +1,9 @@
 gameCreate
 {"id":"Test Game","hostName":"Ptolemy"}
 
+spaceFill
+{"gameId":"Test Game","maxSpaces":50,"condition":["basically-free","common","uncommon","rare","legendary"]}
+
 gameJoin
 {"id":"Test Game","playerName":"PT","playerRole":"player"}
 

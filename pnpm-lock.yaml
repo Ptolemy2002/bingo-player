@@ -15,8 +15,8 @@ importers:
         specifier: ^8.4.0
         version: 8.4.0(zod@4.3.6)
       '@ptolemy2002/regex-utils':
-        specifier: ^3.0.0
-        version: 3.0.0(zod@4.3.6)
+        specifier: ^4.2.0
+        version: 4.2.0(zod@4.3.6)
       '@ptolemy2002/ts-utils':
         specifier: ^3.3.0
         version: 3.3.0(@ptolemy2002/ts-brand-utils@1.0.0)(is-callable@1.2.7)
@@ -39,8 +39,8 @@ importers:
         specifier: ^1.1.1
         version: 1.1.1(@ptolemy2002/ts-utils@3.3.0(@ptolemy2002/ts-brand-utils@1.0.0)(is-callable@1.2.7))(is-callable@1.2.7)(mongoose@8.21.1)
       '@ptolemy2002/regex-utils':
-        specifier: ^4.1.0
-        version: 4.1.0(zod@4.3.6)
+        specifier: ^4.2.0
+        version: 4.2.0(zod@4.3.6)
       '@ptolemy2002/ts-utils':
         specifier: ^3.3.0
         version: 3.3.0(@ptolemy2002/ts-brand-utils@1.0.0)(is-callable@1.2.7)
@@ -366,6 +366,9 @@ importers:
 
   shared:
     dependencies:
+      '@ptolemy2002/regex-utils':
+        specifier: ^4.2.0
+        version: 4.2.0(zod@4.3.6)
       is-callable:
         specifier: ^1.2.7
         version: 1.2.7
@@ -872,8 +875,8 @@ packages:
     peerDependencies:
       zod: ^4.0.0
 
-  '@ptolemy2002/regex-utils@4.1.0':
-    resolution: {integrity: sha512-xubf0SbFXpkzcbZoQg11k6f1lsztIeviwHWufDr+RkEPpOJRzzgdjPjSPupNk9U3cZCVVjupqLtrMVBCJB8OPQ==}
+  '@ptolemy2002/regex-utils@4.2.0':
+    resolution: {integrity: sha512-zrZx5/90V9OKHWFxrtFQs+mJ5S7hFFwiDyUAuIgDKYnACleVZ4JvjNDUqgF5dd+NXhr/LTBbizrCBOuslEtA/A==}
     peerDependencies:
       zod: ^4.0.0
 
@@ -3485,7 +3488,7 @@ snapshots:
     dependencies:
       zod: 4.3.6
 
-  '@ptolemy2002/regex-utils@4.1.0(zod@4.3.6)':
+  '@ptolemy2002/regex-utils@4.2.0(zod@4.3.6)':
     dependencies:
       zod: 4.3.6
 

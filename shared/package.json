@@ -33,7 +33,8 @@
     },
     "peerDependencies": {
         "@asteasolutions/zod-to-openapi": "^8.0.0",
-        "@ptolemy2002/ts-utils": "^3.0.0",
+        "@ptolemy2002/ts-utils": "^3.3.0",
+        "@ptolemy2002/regex-utils": "^4.2.0",
         "mongoose": "^8.9.2",
         "zod": "^4.1.9"
     },

@@ -1,7 +1,8 @@
+import { zodGenericFactory, MaybeZodOptional } from "@ptolemy2002/regex-utils";
 import { ZodErrorResponseSchema, zodSuccessResponseSchema } from "src/Api";
 import { BingoGameExample, ZodBingoGameSchema, BingoBoardTemplateExample, ZodBingoBoardTemplateSchema } from "src/Bingo";
 import { registerSocketSchema, SocketBoardTemplateOpExample, ZodSocketBoardTemplateOpSchema } from "src/Socket";
-import { z, ZodObject, ZodString, ZodType, ZodOptional, ZodArray } from "zod";
+import { z, ZodObject, ZodLiteral, ZodString, ZodType, ZodOptional, ZodArray } from "zod";
 
 export const SocketBoardTemplateOpArgsExample = {
     gameId: BingoGameExample.id,
@@ -14,23 +15,38 @@ export const SocketBoardTemplateOpEventName = "boardTemplateOp" as const;
 
 type SocketBoardTemplateOp = z.infer<typeof ZodSocketBoardTemplateOpSchema>;
 
+const zodSocketBoardTemplateOpGeneric = zodGenericFactory<
+    [ZodLiteral<SocketBoardTemplateOp>, MaybeZodOptional<ZodArray<typeof ZodBingoBoardTemplateSchema>>, MaybeZodOptional<ZodArray<ZodString>>],
+    ZodObject<{
+        gameId: ZodString;
+        op: ZodLiteral<SocketBoardTemplateOp>;
+        templates: MaybeZodOptional<ZodArray<typeof ZodBingoBoardTemplateSchema>>;
+        templateNames: MaybeZodOptional<ZodArray<ZodString>>;
+    }>
+>();
+
 function zodSocketBoardTemplateOpArgsBase<T extends SocketBoardTemplateOp, TT extends "name" | "full">(
     op: T,
     templatesType: TT,
     register: <ZT extends ZodType>(prop: keyof typeof SocketBoardTemplateOpArgsExample, s: ZT) => ZT = (_, s) => s
 ): ZodObject<{
-    gameId: z.ZodString;
-    op: z.ZodLiteral<T>;
+    gameId: ZodString;
+    op: ZodLiteral<T>;
     templates: TT extends "full" ? ZodArray<typeof ZodBingoBoardTemplateSchema> : ZodOptional<ZodArray<typeof ZodBingoBoardTemplateSchema>>;
     templateNames: TT extends "name" ? ZodArray<ZodString> : ZodOptional<ZodArray<ZodString>>;
 }> {
-    // "as any" is used here to avoid TypeScript issues with the conditional types above.
-    return z.object({
-        gameId: register("gameId", z.string()),
-        op: register("op", z.literal(op)),
-        templates: register("templates", templatesType === "full" ? z.array(ZodBingoBoardTemplateSchema) : z.array(ZodBingoBoardTemplateSchema).optional()),
-        templateNames: register("templateNames", templatesType === "name" ? z.array(z.string()) : z.array(z.string()).optional())
-    }) as any;
+    return zodSocketBoardTemplateOpGeneric(
+        z.literal(op),
+        templatesType === "full" ? z.array(ZodBingoBoardTemplateSchema) : z.array(ZodBingoBoardTemplateSchema).optional(),
+        templatesType === "name" ? z.array(z.string()) : z.array(z.string()).optional()
+    )(
+        (opSchema, templatesSchema, templateNamesSchema) => z.object({
+            gameId: register("gameId", z.string()),
+            op: register("op", opSchema),
+            templates: register("templates", templatesSchema),
+            templateNames: register("templateNames", templateNamesSchema)
+        })
+    ) as any; // Used to make sure Typescript doesn't complain about the conditional type in the return.
 }
 
 function createPropertyRegister(op: SocketBoardTemplateOp, descriptions: Record<keyof typeof SocketBoardTemplateOpArgsExample, { description: string; example: any }>) {

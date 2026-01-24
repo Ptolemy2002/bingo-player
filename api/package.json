@@ -25,7 +25,7 @@
     "@ptolemy2002/js-utils": "^3.2.2",
     "@ptolemy2002/mongoose-utils": "^1.1.1",
     "@ptolemy2002/regex-utils": "^4.2.0",
-    "@ptolemy2002/ts-utils": "^3.3.0",
+    "@ptolemy2002/ts-utils": "^3.4.0",
     "@types/is-callable": "^1.1.2",
     "app-module-path": "^2.2.0",
     "cookie-parser": "~1.4.7",

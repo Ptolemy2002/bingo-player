@@ -22,7 +22,8 @@ import {
     SocketBoardTemplatesChangeEventName,
     SocketBoardTemplatesChangeData,
     SocketBoardOpArgs, SocketBoardOpEventName, SocketBoardOpResponse,
-    SocketBoardTemplateOpArgs, SocketBoardTemplateOpEventName, SocketBoardTemplateOpResponse
+    SocketBoardTemplateOpArgs, SocketBoardTemplateOpEventName, SocketBoardTemplateOpResponse,
+    SocketSpaceFillArgs, SocketSpaceFillEventName, SocketSpaceFillResponse
 } from "./Zod";
 
 export * from "./Zod";
@@ -49,6 +50,7 @@ export type SocketClientToServerEvents = {
     [SocketSpaceOpEventName]: SocketEvent<SocketSpaceOpArgs, SocketSpaceOpResponse>;
     [SocketBoardOpEventName]: SocketEvent<SocketBoardOpArgs, SocketBoardOpResponse>;
     [SocketBoardTemplateOpEventName]: SocketEvent<SocketBoardTemplateOpArgs, SocketBoardTemplateOpResponse>;
+    [SocketSpaceFillEventName]: SocketEvent<SocketSpaceFillArgs, SocketSpaceFillResponse>;
 };
 
 export type SocketServerToClientEvents = {

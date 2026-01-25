@@ -8,6 +8,7 @@ import { useSpaceGallerySearchFunctions } from "./Controllers";
 import { useCallback, useEffect, useRef } from "react";
 import useManualErrorHandling from "@ptolemy2002/react-manual-error-handling";
 import { useSuspenseController } from "@ptolemy2002/react-suspense";
+import SpaceTagList from "src/context/SpaceTagList";
 
 function SpaceGallerySearchBarBase({
     className,
@@ -20,11 +21,11 @@ function SpaceGallerySearchBarBase({
     const {
         q, setQ
     } = useSpaceGallerySearchParamState();
+    const [ctx] = SpaceTagList.useContext(["queryJustChanged"]);
     const { runSearch, runGetAll } = useSpaceGallerySearchFunctions();
     const { _try } = useManualErrorHandling();
     const [{ suspend }] = useSuspenseController();
 
-    const justChangedRef = useRef(false);
     const formControlRef = useRef<HTMLInputElement>(null);
 
     const updateResults = useCallback(() => {
@@ -36,14 +37,12 @@ function SpaceGallerySearchBarBase({
     }, [q, _try, suspend, runSearch, runGetAll]);
 
     useEffect(() => {
-        // If the query was changed in a way other than pressing enter or typing in
-        // the field
-        if (!justChangedRef.current) {
-            formControlRef.current!.value = q;
+        // If the query was changed in a way other than pressing enter or clicking the submit button
+        if (ctx.queryJustChanged) {
             formControlRef.current!.focus();
             updateResults();
         }
-        justChangedRef.current = false;
+        ctx.queryJustChanged = false;
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [q]);
 
@@ -57,14 +56,14 @@ function SpaceGallerySearchBarBase({
                 placeholder={placeholder}
                 defaultValue={q}
                 onChange={(e) => {
-                    justChangedRef.current = true;
+                    ctx.queryJustChanged = true;
                     setQ(e.target.value)
                 }}
                 onKeyDown={(e) => {
                     if (e.key === "Enter") {
                         // Prevent form submission
                         e.preventDefault();
-                        justChangedRef.current = true;
+                        ctx.queryJustChanged = true;
                         updateResults();
                     }
                 }}
@@ -74,8 +73,15 @@ function SpaceGallerySearchBarBase({
                 <PageChangeButton type="prev">Previous Page</PageChangeButton>
                 <PageChangeButton type="next">Next Page</PageChangeButton>
 
-                <SearchSubmitButton />
-                <SearchSettingsButton />
+                <SearchSubmitButton onClick={() => {
+                    ctx.queryJustChanged = true;
+                    updateResults();
+                }} />
+
+                <SearchSettingsButton onApply={() => {
+                    ctx.queryJustChanged = true;
+                    updateResults();
+                }} />
             </div>
         </Form>
     )

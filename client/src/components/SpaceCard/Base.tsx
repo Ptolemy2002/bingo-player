@@ -9,6 +9,7 @@ import { Spacer } from "@ptolemy2002/react-utils";
 import { useMemo } from "react";
 import { LinkContainer } from "react-router-bootstrap";
 import StyledButton from "src/components/StyledButton";
+import SpaceTagList from "src/context/SpaceTagList";
 
 function SpaceCardBase({
     className,
@@ -16,6 +17,7 @@ function SpaceCardBase({
     ...props
 }: SpaceCardProps["functional"]) {
     const [space] = SpaceData.useContextNonNullable();
+    const [ctx] = SpaceTagList.useContext(["queryJustChanged"]);
 
     const aliasesText = useMemo(() => {
             if (space.aliases.size > 0) {
@@ -37,7 +39,7 @@ function SpaceCardBase({
                     {
                         Array.from(space.tags).map(
                             (tag) => {
-                                return <TagBadge className="me-1" key={`tag-${tag}`} tag={tag} pill />;
+                                return <TagBadge className="me-1" key={`tag-${tag}`} tag={tag} onClick={() => { ctx.queryJustChanged = true }} pill />;
                             }
                         )
                     }

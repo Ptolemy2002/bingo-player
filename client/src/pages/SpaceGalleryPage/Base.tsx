@@ -17,6 +17,7 @@ function SpaceGalleryPageBase({
     CreateButton=DefaultCreateButton
 }: SpaceGalleryPageProps["functional"]) {
     const { q, setQ } = useSpaceGallerySearchParamState();
+    console.log("SpaceGalleryPageBase render", { q });
 
     return (
         <div id="space-gallery-page" className={className}>
@@ -40,7 +41,7 @@ function SpaceGalleryPageBase({
                         }}
                     </ErrorAlert>
             }>
-                <SpaceGallerySearchProvider value={{ hasPressed: false, results: [], totalCount: 0 }}>
+                <SpaceGallerySearchProvider value={{ hasPressed: false, results: [], totalCount: 0 }} renderDeps={[q]}>
                     <SuspenseBoundary
                         fallback={
                             <LoadingAlert>

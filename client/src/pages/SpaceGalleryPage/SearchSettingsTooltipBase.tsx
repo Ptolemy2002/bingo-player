@@ -10,6 +10,7 @@ function SpaceGallerySearchSettingsTooltipBase({
     id="search-settings-tooltip",
     className,
     hide,
+    onApply,
     ...props
 }: SearchSettingsTooltipProps["functional"]) {
     const {
@@ -79,7 +80,8 @@ function SpaceGallerySearchSettingsTooltipBase({
 
         setPs(value);
         hide();
-    }, [setPs, hide]);
+        onApply?.();
+    }, [setPs, hide, onApply]);
 
     const interpretedSo = interpretSortOrder(so);
     return (

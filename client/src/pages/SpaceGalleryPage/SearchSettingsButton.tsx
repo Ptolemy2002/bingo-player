@@ -10,6 +10,7 @@ function SpaceGallerySearchSettingsButton({
     tooltipId="search-settings-tooltip",
     GearIcon=DefaultGearIcon,
     SearchSettingsTooltip=DefaultSearchSettingsTooltip,
+    onApply,
     ...props
 }: SpaceGallerySearchSettingsButtonProps["all"]) {
     const [open, setOpen] = useState(false);
@@ -26,6 +27,7 @@ function SpaceGallerySearchSettingsButton({
                 // visibility
                 isOpen={open}
                 hide={() => setOpen(false)}
+                onApply={onApply}
             />
         }
         

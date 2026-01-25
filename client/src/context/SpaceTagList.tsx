@@ -26,6 +26,7 @@ export type SpaceTagListProviderProps = PartialBy<
 export default class SpaceTagList {
     tags: string[] | null = null;
     requstInProgress = false;
+    queryJustChanged = false;
 
     static defaultDependencies: Dependency<SpaceTagList>[] = ['tags'];
 
@@ -99,6 +100,7 @@ export default class SpaceTagList {
             // we filter out these values
             this.tags = data.values.filter((s) => s !== null);
         }
+        this.queryJustChanged = false;
         
         return this.tags;
     }

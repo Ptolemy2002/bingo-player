@@ -65,6 +65,7 @@ export type SpaceGallerySearchSettingsButtonProps = StyledComponentPropsWithCSS<
         tooltipId?: string;
         GearIcon?: ComponentType<GearIconProps>;
         SearchSettingsTooltip?: ComponentType<SearchSettingsTooltipProps["functional"]>;
+        onApply?: () => void;
     }>,
     ButtonStyles
 >;
@@ -80,6 +81,7 @@ export type SpaceGallerySearchSubmitButtonProps = StyledComponentPropsWithCSS<
 export type SearchSettingsTooltipProps = StyledComponentPropsWithCSS<ComponentProps<typeof Tooltip> & {
     className?: string;
     hide: () => void;
+    onApply?: () => void;
 }, TooltipStyles & {
     minWidth?: RequiredCSSProperties["width"];
     lgLabelWidth?: RequiredCSSProperties["width"];

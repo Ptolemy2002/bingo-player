@@ -469,9 +469,11 @@ export class BingoGameData {
             // a condition that should never match anything.
             if (Array.isArray(advCondition.include)) {
                 include = advCondition.include.filter((i): i is string => i !== false);
+                if (include.length === 0) include = undefined;
             } else if (advCondition.include) {
                 if (!include) include = [];
                 include.push(advCondition.include);
+                if (include.length === 0) include = undefined;
             }
 
             if (Array.isArray(advCondition.exclude)) {
@@ -491,6 +493,7 @@ export class BingoGameData {
             const valueConditions = arrayCondition.filter(
                 (c): c is string => Boolean(c) && valueConditionType(c) === "value"
             );
+
             if (valueConditions.length > 0) {
                 const spaces = await fetchWithTags(valueConditions, [], alreadyCollected, count - numFetched);
                 result.push(...spaces);

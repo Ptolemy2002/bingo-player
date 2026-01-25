@@ -56,7 +56,7 @@ function SpaceGallerySearchBarBase({
                 placeholder={placeholder}
                 defaultValue={q}
                 onChange={(e) => {
-                    ctx.queryJustChanged = true;
+                    if (e.target.value.length !== 0) ctx.queryJustChanged = false;
                     setQ(e.target.value)
                 }}
                 onKeyDown={(e) => {

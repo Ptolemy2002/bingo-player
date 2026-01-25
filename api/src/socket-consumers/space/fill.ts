@@ -64,7 +64,6 @@ export class BingoSpaceFillHandler extends SocketRouteHandler<SocketSpaceFillSuc
                 ]);
 
                 const res = spaces.map(SpaceModel.normalizeMongoDocumentSpace);
-                console.log(`Fetched ${res.length} spaces from database for filling (requested ${count})`, includedTags, excludedTags, excludedIds);
 
                 // We aren't throwing an error if we don't get enough spaces back because the variable
                 // is a maximum number of spaces to fill, not a required number.

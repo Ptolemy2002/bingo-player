@@ -2,10 +2,9 @@ import {
     createProxyContext,
     createProxyContextProvider,
     Dependency,
-    OnChangePropCallback,
-    OnChangeReinitCallback,
     ProxyContextProviderProps,
     useProxyContext,
+    UseProxyContextArgsNoClass,
 } from '@ptolemy2002/react-proxy-context';
 import HookResult, { HookResultData } from '@ptolemy2002/react-hook-result';
 import getApi from 'src/Api';
@@ -38,21 +37,13 @@ export default class SpaceTagList {
     };
 
     static useContext(
-        deps:
-            | Dependency<SpaceTagList>[]
-            | null = SpaceTagList.defaultDependencies,
-        onChangeProp?: OnChangePropCallback<SpaceTagList>,
-        onChangeReinit?: OnChangeReinitCallback<SpaceTagList>,
-        listenReinit = true,
+        ...args: UseProxyContextArgsNoClass<SpaceTagList>
     ) {
         // Disabling rules of hooks because this is a direct hook and not a nested one
         // eslint-disable-next-line react-hooks/rules-of-hooks
         const [value, setValue] = useProxyContext(
             SpaceTagList.Context,
-            deps,
-            onChangeProp,
-            onChangeReinit,
-            listenReinit,
+            ...args
         );
 
         // eslint-disable-next-line react-hooks/rules-of-hooks

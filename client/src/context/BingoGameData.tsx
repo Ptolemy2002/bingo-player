@@ -1,7 +1,6 @@
-import useForceRerender from "@ptolemy2002/react-force-rerender";
+import { createProxyContext, createProxyContextProvider, ProxyContextProviderProps, useProxyContext, UseProxyContextArgsNoClass } from "@ptolemy2002/react-proxy-context";
 import { MaybeTransformer } from "@ptolemy2002/ts-utils";
-import isCallable from "is-callable";
-import { createContext, useCallback, useContext, useRef } from "react";
+import { useCallback } from "react";
 import { BingoGameData, BingoGameInit } from "shared";
 
 // Don't use ProxyContext Here, because it's just a simple value.
@@ -11,62 +10,43 @@ export type BingoGameDataContextValue = {
     reset: () => BingoGameData;
 };
 
-export type BingoGameDataProviderProps = {
-    value: BingoGameData | BingoGameInit;
-    children: React.ReactNode;
+export type BingoGameDataProviderProps = ProxyContextProviderProps<BingoGameData, BingoGameData | BingoGameInit> & {
+    // Required so that the provider can receive this value and determine
+    // exactly when to re-render, since it's memoized using the partialMemo function
+    // from @ptolemy2002/react-utils
+    renderDeps?: unknown[];
 };
 
-export const BingoGameDataContext = createContext<BingoGameDataContextValue | null>(null);
+export const BingoGameDataContext = createProxyContext<BingoGameData>("BingoGameDataContext");
 
 export function BingoGameDataProvider({
     value,
-    children
+    ...props
 }: BingoGameDataProviderProps) {
-    const valueRef = useRef(
-        value instanceof BingoGameData ?
-            value
-        :
-            new BingoGameData(value)
+    const P = createProxyContextProvider<BingoGameData, BingoGameData | BingoGameInit>(
+        BingoGameDataContext, (v) => v instanceof BingoGameData ? v : new BingoGameData(v)
     );
+    return <P value={value} {...props}></P>
+}
 
-    const forceRerender = useForceRerender();
+export function useBingoGameDataContext(...[deps=[], ...args]: UseProxyContextArgsNoClass<BingoGameData>) {
+    const [context, setContext] = useProxyContext(BingoGameDataContext, deps, ...args);
 
-    const set = useCallback<BingoGameDataContextValue["set"]>((v) => {
-        let newValue = isCallable(v) ? v(valueRef.current) : v;
+    const set = useCallback<(v: MaybeTransformer<BingoGameInit | BingoGameData, [BingoGameData]>) => BingoGameData>((v) => {
+        let newValue = typeof v === "function" ? v(context) : v;
 
         if (!(newValue instanceof BingoGameData)) {
             newValue = new BingoGameData(newValue);
         }
 
-        if (valueRef.current !== newValue) {
-            valueRef.current = newValue;
-            forceRerender();
-        }
+        setContext(newValue);
 
         return newValue;
-    }, [valueRef, forceRerender]);
+    }, [context, setContext]);
 
-    const reset = useCallback<BingoGameDataContextValue["reset"]>(() => {
-        return set(() => new BingoGameData({id: valueRef.current.id}));
-    }, [set]);
+    const reset = useCallback<() => BingoGameData>(() => {
+        return set(() => new BingoGameData({id: context.id}));
+    }, [context, set]);
 
-    return (
-        <BingoGameDataContext.Provider
-            value={{
-                value: valueRef.current,
-                set,
-                reset
-            }}
-        >
-            {children}
-        </BingoGameDataContext.Provider>
-    );
-}
-
-export function useBingoGameDataContext() {
-    const context = useContext(BingoGameDataContext);
-    if (context === null) {
-        throw new Error("useBingoGameDataContext must be used within a BingoGameDataProvider");
-    }
-    return [context.value, context.set, context.reset] as const;
+    return [context, set, reset] as const;
 }

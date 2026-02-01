@@ -15,7 +15,7 @@ declare module "styled-components" {
         "goToSpaceEdit" | "spaceEditUndo" | "spaceEditSubmit" | "spaceEditCancel" |
         "spaceSave" | "spaceRefresh" | "spaceDelete" | "spaceDuplicate" |
         "addAlias" | "removeAlias" | "removeTag" | "addTag" | "addExample" | "removeExample" | "selectTagExisting" | "writeTag" |
-        "createSpace" | "createGame" | "enterGame" | "socketTestSubmit"
+        "createSpace" | "createGame" | "enterGame" | "joinGame" | "socketTestSubmit"
     ;
     export type ButtonStyles = Partial<{
         borderStyle: RequiredCSSProperties["borderStyle"],

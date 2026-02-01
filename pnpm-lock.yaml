@@ -153,6 +153,9 @@ importers:
       '@hookform/resolvers':
         specifier: ^5.2.2
         version: 5.2.2(react-hook-form@7.71.1(react@18.3.1))
+      '@ptolemy2002/immutability-utils':
+        specifier: ^1.1.0
+        version: 1.1.0(@ptolemy2002/regex-utils@4.2.0(zod@4.3.6))(@ptolemy2002/ts-brand-utils@1.0.0)(zod@4.3.6)
       '@ptolemy2002/js-math-utils':
         specifier: ^2.0.5
         version: 2.0.5

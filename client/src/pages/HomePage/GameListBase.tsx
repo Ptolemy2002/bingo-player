@@ -8,6 +8,7 @@ import getSocket from "src/Socket";
 import GameCard from "src/components/GameCard";
 import { Col, Row } from "react-bootstrap";
 import { useBingoGameCollectionContext } from "src/context/BingoGameCollection";
+import { usePersistentState } from "@ptolemy2002/react-utils";
 
 function GameListBase({
     className,
@@ -19,6 +20,7 @@ function GameListBase({
     colSizeXl=3,
     ...props
 }: GameListProps["functional"]) {
+    const [name] = usePersistentState("bingoPlayerApp.name", "");
     const [games, setGames] = useBingoGameCollectionContext();
     const [{suspend}] = useSuspenseController();
     const { _try } = useManualErrorHandling();
@@ -58,7 +60,28 @@ function GameListBase({
                                 lg={colSizeLg}
                                 xl={colSizeXl}
                             >
-                                <GameCard game={game.toJSON()} />
+                                <GameCard
+                                    game={game.toJSON()}
+                                    showViewLink={game.hasPlayerBySocketId(socketId!)}
+                                    showJoinLink={!game.hasPlayerBySocketId(socketId!)}
+                                    onJoinClicked={() => _try(async () => {
+                                        const res = await socket.emitSafeWithAck(
+                                            "gameJoin",
+                                            {
+                                                id: game.id,
+                                                playerName: name,
+                                                playerRole: "player"
+                                            }
+                                        );
+                                        
+                                        // Make any necessary updates to the game in the collection
+                                        game.fromJSON(res.game);
+
+                                        const ngc = games.clone();
+                                        ngc.addOrUpdateGame(game);
+                                        setGames(ngc);
+                                    })}
+                                />
                             </Col>
                         ))}
                     </Row>

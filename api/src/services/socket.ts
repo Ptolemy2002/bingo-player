@@ -122,7 +122,14 @@ export function getSocketConsumers() {
     return socketConsumers;
 }
 
-export async function playerDisconnectHandler(socket: TypedSocket, playerId: SocketID, collection: BingoGameCollection, game: BingoGameData, gracePeriodMs: number = 0) {
+export async function playerDisconnectHandler(
+    socket: TypedSocket,
+    playerId: SocketID,
+    collection: BingoGameCollection,
+    game: BingoGameData,
+    gracePeriodMs: number = 0,
+    removeWhenEmpty: boolean = false
+) {
     // If the player disconnects while still being in the game,
     // remove them from the game and notify other players in the game
     if (game.hasPlayerBySocketId(playerId)) {
@@ -137,7 +144,7 @@ export async function playerDisconnectHandler(socket: TypedSocket, playerId: Soc
         });
 
         // If the game is empty, remove it from the collection
-        if (game.players.length === 0) {
+        if (removeWhenEmpty && game.players.length === 0) {
             console.log(`Game [${game.id}] is now empty, removing from collection`);
             collection.removeGame(game.id, true, true);
         }

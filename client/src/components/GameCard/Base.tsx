@@ -10,7 +10,9 @@ import StyledButton from "src/components/StyledButton";
 function GameCardBase({
     className,
     game: _game,
-    showLink = true,
+    showViewLink = true,
+    showJoinLink = false,
+    onJoinClicked,
     ...props
 }: GameCardProps["functional"]) {
     const game = new BingoGameData(_game)
@@ -37,11 +39,18 @@ function GameCardBase({
                     <b>Boards Involved:</b> {game.boards.length}
                 </Card.Text>
 
-                {showLink && <LinkContainer to={`/game/${encodeURIComponent(game.id)}`}>
+                {showViewLink && <LinkContainer to={`/game/${encodeURIComponent(game.id)}`}>
                     <StyledButton $variant="enterGame">
                         View Game
                     </StyledButton>
                 </LinkContainer>}
+
+                {showJoinLink && <StyledButton
+                    $variant="joinGame"
+                    onClick={onJoinClicked}
+                >
+                    Join Game
+                </StyledButton>}
             </Card.Body>
         </Card>
     )

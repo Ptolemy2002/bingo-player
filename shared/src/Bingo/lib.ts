@@ -311,6 +311,8 @@ export class BingoGameData {
             if (!exists) {
                 if (debug) console.log(`Removing boards for player [${ownerName}] from game [${this.id}] after grace period of ${ms(delay)}, as they did not reconnect.`);
                 this.removeBoardsByOwnerName(ownerName);
+            } else {
+                if (debug) console.log(`Not removing boards for player [${ownerName}] from game [${this.id}] as they have reconnected.`);
             }
         };
 
@@ -896,7 +898,7 @@ export class BingoBoardData {
             this.spaces[index] = null;
         } else {
             const spaceIndex = this.game.getSpaceIndex(space);
-            if (spaceIndex === -1) throw new RouteError(`Space ${space} not found in game "${this.game.id}"`, 404, "NOT_FOUND");
+            if (spaceIndex === -1) throw new RouteError(`Space [${space}] not found in game [${this.game.id}]`, 404, "NOT_FOUND");
             this.spaces[index] = spaceIndex;
         }
         return this;
@@ -925,19 +927,19 @@ export class BingoGameCollection {
 
     addGame(game: BingoGameInit | BingoGameData) {
         if (game instanceof BingoGameData) game = game.toJSON();
-        if (this.hasGame(game.id)) throw new RouteError(`Game with ID "${game.id}" already exists`, 409, "CONFLICT");
+        if (this.hasGame(game.id)) throw new RouteError(`Game with ID [${game.id}] already exists`, 409, "CONFLICT");
         return this.setGame(game);
     }
 
     updateGame(game: BingoGameInit | BingoGameData | number) {
         if (typeof game === "number") {
             game = this.getGame(game)!; // Use non-null assertion so that TypeScript lets us assign it - we check for null on the next line
-            if (!game) throw new RouteError(`Game with ID "${game}" not found`, 404, "NOT_FOUND");
+            if (!game) throw new RouteError(`Game with index [${game}] not found`, 404, "NOT_FOUND");
         } else if (game instanceof BingoGameData) {
             game = game.toJSON();
         }
 
-        if (!this.hasGame(game.id)) throw new RouteError(`Game with ID "${game.id}" not found`, 404, "NOT_FOUND");
+        if (!this.hasGame(game.id)) throw new RouteError(`Game with ID [${game.id}] not found`, 404, "NOT_FOUND");
         return this.getGame(game.id)!.fromJSON(game instanceof BingoGameData ? game.toJSON() : game);
     }
 

@@ -8,6 +8,8 @@ export type GameCardProps = StyledComponentPropsWithCSS<Override<CardProps, {
     className?: string;
     showViewLink?: boolean;
     showJoinLink?: boolean;
-    onJoinClicked?: () => MaybePromise<void>;
+    showSpectateLink?: boolean;
+    onJoin?: (role: "player" | "spectator") => MaybePromise<void>;
+    loading?: boolean;
     game: BingoGame;
 }>, CardStyles>;

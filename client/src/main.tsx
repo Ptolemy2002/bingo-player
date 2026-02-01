@@ -74,6 +74,12 @@ export const GlobalStyle = createGlobalStyle`
         gap: 0.5rem;
     }
 
+    .btn-col {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
     // Override Bootstrap Alert styles where applicable
     ${({ theme }) => {
         if (!theme.alerts) return null;

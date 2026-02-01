@@ -63,6 +63,7 @@ export function GamePageBody() {
     if (!game) return null;
 
     const isHere = game.hasPlayerBySocketId(socketId!);
+    const myRole = isHere ? game.getPlayerBySocketId(socketId!)!.role : null;
 
     return (
         <div>
@@ -71,6 +72,13 @@ export function GamePageBody() {
             <p>Number of Board Templates: {game.boardTemplates.length}</p>
             <p>Number of Boards: {game.boards.length}</p>
             <p>Number of Spaces Involved: {game.spaces.length}</p>
+
+            <p>You are {
+                myRole === "host" ? "hosting" :
+                myRole === "player" ? "playing" :
+                myRole === "spectator" ? "spectating" :
+                "not involved in"
+            } this game.</p>
         </div>
     );
 }

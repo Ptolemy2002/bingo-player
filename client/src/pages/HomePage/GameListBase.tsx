@@ -2,7 +2,7 @@ import clsx from "clsx";
 import { GameListProps } from "./Types";
 import { useSuspenseController } from "@ptolemy2002/react-suspense";
 import useManualErrorHandling from "@ptolemy2002/react-manual-error-handling";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { BingoGameCollection } from "shared";
 import getSocket from "src/Socket";
 import GameCard from "src/components/GameCard";
@@ -22,6 +22,7 @@ function GameListBase({
 }: GameListProps["functional"]) {
     const [name] = usePersistentState("bingoPlayerApp.name", "");
     const [games, setGames] = useBingoGameCollectionContext();
+    const [inProgress, setInProgress] = useState(false);
     const [{suspend}] = useSuspenseController();
     const { _try } = useManualErrorHandling();
     const socket = getSocket();
@@ -62,15 +63,18 @@ function GameListBase({
                             >
                                 <GameCard
                                     game={game.toJSON()}
-                                    showViewLink={game.hasPlayerBySocketId(socketId!)}
-                                    showJoinLink={!game.hasPlayerBySocketId(socketId!)}
-                                    onJoinClicked={() => _try(async () => {
+                                    showViewLink={!inProgress && game.hasPlayerBySocketId(socketId!)}
+                                    showJoinLink={!inProgress && !game.hasPlayerBySocketId(socketId!)}
+                                    showSpectateLink={!inProgress && !game.hasPlayerBySocketId(socketId!)}
+
+                                    onJoin={(role) => _try(async () => {
+                                        setInProgress(true);
                                         const res = await socket.emitSafeWithAck(
                                             "gameJoin",
                                             {
                                                 id: game.id,
                                                 playerName: name,
-                                                playerRole: "player"
+                                                playerRole: role
                                             }
                                         );
                                         
@@ -80,8 +84,11 @@ function GameListBase({
                                         const ngc = games.clone();
                                         ngc.addOrUpdateGame(game);
                                         setGames(ngc);
-                                    })}
-                                />
+                                    }).finally(() => {
+                                        setInProgress(false);
+                                    })
+                                }
+                            />
                             </Col>
                         ))}
                     </Row>

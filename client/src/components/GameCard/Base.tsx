@@ -12,7 +12,9 @@ function GameCardBase({
     game: _game,
     showViewLink = true,
     showJoinLink = false,
-    onJoinClicked,
+    showSpectateLink = false,
+    onJoin,
+    loading=false,
     ...props
 }: GameCardProps["functional"]) {
     const game = new BingoGameData(_game)
@@ -39,18 +41,33 @@ function GameCardBase({
                     <b>Boards Involved:</b> {game.boards.length}
                 </Card.Text>
 
-                {showViewLink && <LinkContainer to={`/game/${encodeURIComponent(game.id)}`}>
-                    <StyledButton $variant="enterGame">
-                        View Game
-                    </StyledButton>
-                </LinkContainer>}
+                <div className="btn-col">
+                    {loading && <StyledButton $variant="gameCardLoading" disabled>
+                        Loading...
+                    </StyledButton>}
 
-                {showJoinLink && <StyledButton
-                    $variant="joinGame"
-                    onClick={onJoinClicked}
-                >
-                    Join Game
-                </StyledButton>}
+                    {showViewLink && <LinkContainer to={`/game/${encodeURIComponent(game.id)}`}>
+                        <StyledButton $variant="enterGame" disabled={loading}>
+                            View Game
+                        </StyledButton>
+                    </LinkContainer>}
+
+                    {showJoinLink && <StyledButton
+                        $variant="joinGame"
+                        onClick={() => onJoin?.("player")}
+                        disabled={loading}
+                    >
+                        Join Game
+                    </StyledButton>}
+
+                    {showSpectateLink && <StyledButton
+                        $variant="spectateGame"
+                        onClick={() => onJoin?.("spectator")}
+                        disabled={loading}
+                    >
+                        Spectate Game
+                    </StyledButton>}
+                </div>
             </Card.Body>
         </Card>
     )

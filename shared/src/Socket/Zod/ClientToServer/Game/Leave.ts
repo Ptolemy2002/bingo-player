@@ -30,11 +30,27 @@ export const ZodSocketGameLeaveArgsSchema = registerSocketSchema(
         id: "GameLeaveArgs",
         type: "args",
         eventName: SocketGameLeaveEventName,
-        description: `Leave the game with the specified ID. Doubles as a kick action for hosts.`
+        description: `Leave the game with the specified ID. Doubles as a kick action for hosts.`,
+        example: {
+            id: BingoGameExample.id,
+            playerName: "Player2"
+        }
     }
 );
 
-export const ZodSocketGameLeaveSuccessResponseSchema = zodSuccessResponseSchema(z.object({}));
+export const ZodSocketGameLeaveSuccessResponseSchema = registerSocketSchema(
+    zodSuccessResponseSchema(z.object({})),
+    {
+        id: "GameLeaveSuccessResponse",
+        type: "success-response",
+        eventName: SocketGameLeaveEventName,
+        description: "Successful response for the gameLeave event.",
+        example: {
+            ok: true,
+            help: "http://bingo.api/docs#event-gameLeave"
+        }
+    }
+);
 
 export const ZodSocketGameLeaveResponseSchema = registerSocketSchema(
     z.union([
@@ -45,7 +61,13 @@ export const ZodSocketGameLeaveResponseSchema = registerSocketSchema(
         id: "GameLeaveResponse",
         type: "response",
         eventName: SocketGameLeaveEventName,
-        description: `Response schema for the [${SocketGameLeaveEventName}] event`
+        description: `Response schema for the [${SocketGameLeaveEventName}] event`,
+        example: {
+            ok: false,
+            code: "UNKNOWN",
+            message: "An unknown error occurred.",
+            help: "http://bingo.api/docs#event-gameLeave",
+        }
     }
 );
 

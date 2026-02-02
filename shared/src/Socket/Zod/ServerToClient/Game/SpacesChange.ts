@@ -86,7 +86,8 @@ export const ZodSocketSpacesChangeDataSchema = registerSocketSchema(
         id: "SpacesChangeData",
         type: "message-data",
         eventName: SocketSpacesChangeEventName,
-        description: "Data for when spaces in a game are changed"
+        description: "Data for when spaces in a game are changed",
+        example: SocketSpacesChangeDataExample as any
     }
 );
 

@@ -21,7 +21,10 @@ export const ZodSocketGameGetArgsSchema = registerSocketSchema(
         id: "GameGetArgs",
         type: "args",
         eventName: SocketGameGetEventName,
-        description: `Retrieve the current state of the game with the specified ID.`
+        description: `Retrieve the current state of the game with the specified ID.`,
+        example: {
+            id: BingoGameExample.id
+        }
     }
 );
 
@@ -43,7 +46,12 @@ export const ZodSocketGameGetSuccessResponseSchema = registerSocketSchema(
         id: "GameGetSuccessResponse",
         type: "success-response",
         eventName: SocketGameGetEventName,
-        description: `The current state of the game with the specified ID`
+        description: `The current state of the game with the specified ID`,
+        example: {
+            ok: true,
+            help: "http://bingo.api/docs#event-gameGet",
+            game: BingoGameExample
+        } as any // To avoid TS error about excess properties in the example
     }
 );
 
@@ -56,7 +64,13 @@ export const ZodSocketGameGetResponseSchema = registerSocketSchema(
         id: "GameGetResponse",
         type: "response",
         eventName: SocketGameGetEventName,
-        description: `Response schema for the [${SocketGameGetEventName}] event`
+        description: `Response schema for the [${SocketGameGetEventName}] event`,
+        example: {
+            ok: false,
+            code: "UNKNOWN",
+            message: "An unknown error occurred.",
+            help: "http://bingo.api/docs#event-gameGet",
+        }
     }
 );
 

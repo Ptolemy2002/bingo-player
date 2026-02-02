@@ -50,7 +50,12 @@ export const ZodSocketGameListSuccessResponseSchema = registerSocketSchema(
         id: "GameListSuccessResponse",
         type: "success-response",
         eventName: SocketGameListEventName,
-        description: `Each game currently in the database, or only those you are a part of if \`mine\` was true.`
+        description: `Each game currently in the database, or only those you are a part of if \`mine\` was true.`,
+        example: {
+            ok: true,
+            help: "http://bingo.api/docs#event-gameList",
+            games: [BingoGameExample]
+        } as any // To avoid TS error about excess properties in the example
     }
 );
 
@@ -63,7 +68,13 @@ export const ZodSocketGameListResponseSchema = registerSocketSchema(
         id: "GameListResponse",
         type: "response",
         eventName: SocketGameListEventName,
-        description: `Response schema for the [${SocketGameListEventName}] event`
+        description: `Response schema for the [${SocketGameListEventName}] event`,
+        example: {
+            ok: false,
+            code: "UNKNOWN",
+            message: "An unknown error occurred.",
+            help: "http://bingo.api/docs#event-gameList",
+        }
     }
 );
 

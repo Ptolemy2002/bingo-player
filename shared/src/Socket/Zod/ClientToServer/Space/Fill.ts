@@ -48,7 +48,7 @@ export const ZodSocketSpaceFillArgsSchema = registerSocketSchema(
         )
     }),
     {
-        id: "SocketSpaceFillArgs",
+        id: "SpaceFillArgs",
         type: "args",
         description: "Fill a game with spaces based on the provided conditions.",
         eventName: SocketSpaceFillEventName,
@@ -84,7 +84,13 @@ export const ZodSocketSpaceFillSuccessResponseSchema = zodSuccessResponseSchema(
             id: "SpaceFillSuccessResponse",
             type: "success-response",
             eventName: SocketSpaceFillEventName,
-            description: "The number of spaces filled and the updated game after a successful space fill operation."
+            description: "The number of spaces filled and the updated game after a successful space fill operation.",
+            example: {
+                ok: true,
+                help: "http://bingo.api/docs#event-spaceFill",
+                filledSpacesCount: 10,
+                game: BingoGameExample
+            } as any // To avoid TS error about excess properties in the example
         }
     )
 );
@@ -98,7 +104,13 @@ export const ZodSocketSpaceFillResponseSchema = registerSocketSchema(
         id: "SpaceFillResponse",
         type: "response",
         eventName: SocketSpaceFillEventName,
-        description: `Response schema for the [${SocketSpaceFillEventName}] event.`
+        description: `Response schema for the [${SocketSpaceFillEventName}] event.`,
+        example: {
+            ok: false,
+            code: "UNKNOWN",
+            message: "An unknown error occurred.",
+            help: "http://bingo.api/docs#event-spaceFill",
+        }
     }
 );
 

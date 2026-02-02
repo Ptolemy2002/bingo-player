@@ -15,7 +15,7 @@ export const ZodSocketBoardsChangeTypeSchema = registerSocketSchema(
     z.enum(SocketBoardsChangeTypeEnum),
     {
         id: "BoardsChangeType",
-        type: "prop",
+        type: "other",
         description: `The operation that was performed on the boards. Options: ${JSON.stringify(SocketBoardsChangeTypeEnum)}`,
         example: SocketBoardsChangeDataExample.type
     }
@@ -60,8 +60,9 @@ export const ZodSocketBoardsChangeDataSchema = registerSocketSchema(
     {
         id: "BoardsChangeData",
         type: "message-data",
+        eventName: SocketBoardsChangeEventName,
         description: "Data for the 'boardsChange' ServerToClient event, which notifies clients about changes to the boards in a game.",
-        example: SocketBoardsChangeDataExample as any // Doing this to bypass the readonly issue+
+        example: SocketBoardsChangeDataExample as any, // Doing this to bypass the readonly issue
     }
 );
 

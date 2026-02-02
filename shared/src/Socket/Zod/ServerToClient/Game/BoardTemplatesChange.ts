@@ -15,7 +15,7 @@ export const ZodSocketBoardTemplatesChangeTypeSchema = registerSocketSchema(
     z.enum(SocketBoardTemplateChangeTypeEnum),
     {
         id: "BoardTemplatesChangeType",
-        type: "prop",
+        type: "other",
         description: `The operation that was performed on the board templates. Options: ${JSON.stringify(SocketBoardTemplateChangeTypeEnum)}`,
         example: SocketBoardTemplatesChangeDataExample.type
     }
@@ -60,6 +60,7 @@ export const ZodSocketBoardTemplatesChangeDataSchema = registerSocketSchema(
     {
         id: "BoardTemplatesChangeData",
         type: "message-data",
+        eventName: SocketBoardTemplatesChangeEventName,
         description: "Data for the 'boardTemplatesChange' ServerToClient event, which notifies clients about changes to the board templates in a game.",
         example: SocketBoardTemplatesChangeDataExample as any // Doing this to bypass the readonly issue+
     }

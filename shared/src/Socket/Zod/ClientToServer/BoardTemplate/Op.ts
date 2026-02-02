@@ -118,7 +118,12 @@ export const ZodSocketBoardTemplateOpSuccessResponseSchema = registerSocketSchem
         id: "BoardTemplateOpSuccessResponse",
         type: "success-response",
         eventName: SocketBoardTemplateOpEventName,
-        description: `The updated state of the bingo game after a board template operation was performed successfully.`
+        description: `The updated state of the bingo game after a board template operation was performed successfully.`,
+        example: {
+            ok: true,
+            help: "http://bingo.api/docs#event-boardTemplateOp",
+            game: BingoGameExample
+        } as any // To avoid TS error about excess properties in the example
     }
 );
 
@@ -130,7 +135,14 @@ export const ZodSocketBoardTemplateOpResponseSchema = registerSocketSchema(
     {
         id: "BoardTemplateOpResponse",
         type: "response",
-        description: `Response schema for the [${SocketBoardTemplateOpEventName}] event`
+        eventName: SocketBoardTemplateOpEventName,
+        description: `Response schema for the [${SocketBoardTemplateOpEventName}] event`,
+        example: {
+            ok: false,
+            code: "UNKNOWN",
+            message: "An unknown error occurred.",
+            help: "http://bingo.api/docs#event-boardTemplateOp",
+        }
     }
 );
 

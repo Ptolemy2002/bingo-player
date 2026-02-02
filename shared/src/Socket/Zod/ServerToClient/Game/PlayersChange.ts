@@ -18,7 +18,7 @@ export const ZodSocketPlayersChangeTypeSchema = registerSocketSchema(
     {
         id: "PlayersChangeType",
         type: "other",
-        description: "The type of change that may have occurred to the players in a game",
+        description: `The type of change that may have occurred to the players in a game. Options: ${JSON.stringify(SocketPlayersChangeTypeEnum)}`,
         example: "join"
     }
 );
@@ -131,7 +131,8 @@ export const SocketPlayersChangeDataSchema = registerSocketSchema(
         id: "PlayersChangeData",
         type: "message-data",
         eventName: SocketPlayersChangeEventName,
-        description: `Data for when a player joins, leaves, or changes their name in a game`
+        description: `Data for when a player joins, leaves, or changes their name in a game`,
+        example: SocketPlayersChangeDataExample
     }
 );
 

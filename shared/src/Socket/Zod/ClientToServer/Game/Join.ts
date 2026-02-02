@@ -43,7 +43,12 @@ export const ZodSocketGameJoinArgsSchema = registerSocketSchema(
         id: "GameJoinArgs",
         type: "args",
         eventName: SocketGameJoinEventName,
-        description: `Add a player with the specified name and role to the game with the specified ID. The player will be associated with your socket ID.`
+        description: `Add a player with the specified name and role to the game with the specified ID. The player will be associated with your socket ID.`,
+        example: {
+            id: BingoGameExample.id,
+            playerName: "Player2",
+            playerRole: "player"
+        }
     }
 );
 
@@ -65,7 +70,12 @@ export const ZodSocketGameJoinSuccessResponseSchema = registerSocketSchema(
         id: "GameJoinSuccessResponse",
         type: "success-response",
         eventName: SocketGameJoinEventName,
-        description: `The bingo game you joined`
+        description: `The bingo game you joined`,
+        example: {
+            ok: true,
+            help: "http://bingo.api/docs#event-gameJoin",
+            game: BingoGameExample
+        } as any // To avoid TS error about excess properties in the example
     }
 );
 
@@ -78,7 +88,13 @@ export const ZodSocketGameJoinResponseSchema = registerSocketSchema(
         id: "GameJoinResponse",
         type: "response",
         eventName: SocketGameJoinEventName,
-        description: `Response schema for the [${SocketGameJoinEventName}] event`
+        description: `Response schema for the [${SocketGameJoinEventName}] event`,
+        example: {
+            ok: false,
+            code: "UNKNOWN",
+            message: "An unknown error occurred.",
+            help: "http://bingo.api/docs#event-gameJoin",
+        }
     }
 );
 

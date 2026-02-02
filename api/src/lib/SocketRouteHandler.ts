@@ -41,7 +41,7 @@ export default class SocketRouteHandler<SuccessResponse extends SuccessResponseB
     }
 
     protected recalculateHelp() {
-        this.help = this.env.socketDocsURL + "#" + this._docsEndpoint;
+        this.help = this.env.socketDocsURL + "#event-" + this._docsEndpoint;
         return this.help;
     }
 

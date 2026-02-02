@@ -72,7 +72,13 @@ export const ZodSocketBoardOpArgsSchema = registerSocketSchema(
             {
                 id: "BoardOpArgs[add]",
                 type: "prop",
-                description: `Arguments for adding boards in the '${SocketBoardOpEventName}' socket event.`
+                description: `Arguments for adding boards in the '${SocketBoardOpEventName}' socket event.`,
+                example: {
+                    gameId: SocketBoardOpArgsExample.gameId,
+                    op: "add" as const,
+                    boards: SocketBoardOpArgsExample.boards,
+                    template: SocketBoardOpArgsExample.template
+                }
             }
         ),
 
@@ -86,7 +92,13 @@ export const ZodSocketBoardOpArgsSchema = registerSocketSchema(
             {
                 id: "BoardOpArgs[remove]",
                 type: "prop",
-                description: `Arguments for removing boards in the '${SocketBoardOpEventName}' socket event.`
+                description: `Arguments for removing boards in the '${SocketBoardOpEventName}' socket event.`,
+                example: {
+                    gameId: SocketBoardOpArgsExample.gameId,
+                    op: "remove" as const,
+                    boards: SocketBoardOpArgsExample.boards,
+                    template: undefined
+                }
             }
         )
     ]),
@@ -117,7 +129,12 @@ export const ZodSocketBoardOpSuccessResponseSchema = registerSocketSchema(
         id: "BoardOpSuccessResponse",
         type: "success-response",
         eventName: SocketBoardOpEventName,
-        description: `The updated state of the bingo game after a board operation was performed successfully.`
+        description: `The updated state of the bingo game after a board operation was performed successfully.`,
+        example: {
+            ok: true,
+            help: "http://bingo.api/docs#event-boardOp",
+            game: BingoGameExample
+        } as any // To avoid TS error about excess properties in the example
     }
 );
 
@@ -130,7 +147,13 @@ export const ZodSocketBoardOpResponseSchema = registerSocketSchema(
         id: "BoardOpResponse",
         type: "response",
         eventName: SocketBoardOpEventName,
-        description: `Response schema for the [${SocketBoardOpEventName}] event`
+        description: `Response schema for the [${SocketBoardOpEventName}] event`,
+        example: {
+            ok: false,
+            code: "UNKNOWN",
+            message: "An unknown error occurred.",
+            help: "http://bingo.api/docs#event-boardOp",
+        }
     }
 );
 

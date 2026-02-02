@@ -30,7 +30,12 @@ export const ZodSocketIDSuccessResponseSchema = registerSocketSchema(
         id: "SocketIDSuccessResponse",
         type: "success-response",
         eventName: SocketIDEventName,
-        description: `Your unique socket ID assigned by the server`
+        description: `Your unique socket ID assigned by the server`,
+        example: {
+            ok: true,
+            help: "http://bingo.api/docs#event-socketId",
+            id: SocketIDExample
+        } as any // To avoid TS error about excess properties in the example
     }
 );
 
@@ -43,7 +48,13 @@ export const ZodSocketIDResponseSchema = registerSocketSchema(
         id: "SocketIDResponse",
         eventName: SocketIDEventName,
         type: "response",
-        description: `Response schema for the [${SocketIDEventName}] event`
+        description: `Response schema for the [${SocketIDEventName}] event`,
+        example: {
+            ok: false,
+            code: "UNKNOWN",
+            message: "An unknown error occurred.",
+            help: "http://bingo.api/docs#event-socketId",
+        }
     }
 );
 

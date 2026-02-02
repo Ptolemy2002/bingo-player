@@ -78,7 +78,8 @@ export const ZodSocketSpaceOpArgsSchema = registerSocketSchema(
         id: "SpaceOpArgs",
         type: "args",
         eventName: SocketSpaceOpEventName,
-        description: `Perform a space operation on the specified spaces in the specified game.`
+        description: `Perform a space operation on the specified spaces in the specified game.`,
+        example: SocketSpaceOpArgsExample
     }
 );
 
@@ -100,7 +101,12 @@ export const ZodSocketSpaceOpSuccessResponseSchema = registerSocketSchema(
         id: "SpaceOpSuccessResponse",
         type: "success-response",
         eventName: SocketSpaceOpEventName,
-        description: `The updated state of the bingo game after a space operation was performed successfully.`
+        description: `The updated state of the bingo game after a space operation was performed successfully.`,
+        example: {
+            ok: true,
+            help: "http://bingo.api/docs#event-spaceOp",
+            game: BingoGameExample
+        } as any // To avoid TS error about excess properties in the example
     }
 );
 
@@ -113,7 +119,13 @@ export const ZodSocketSpaceOpResponseSchema = registerSocketSchema(
         id: "SpaceOpResponse",
         type: "response",
         eventName: SocketSpaceOpEventName,
-        description: `Response schema for the [${SocketSpaceOpEventName}] event`
+        description: `Response schema for the [${SocketSpaceOpEventName}] event`,
+        example: {
+            ok: false,
+            code: "UNKNOWN",
+            message: "An unknown error occurred.",
+            help: "http://bingo.api/docs#event-spaceOp"
+        }
     }
 );
 

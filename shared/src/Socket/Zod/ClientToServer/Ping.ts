@@ -19,7 +19,11 @@ export const ZodSocketPingSuccessResponseSchema = registerSocketSchema(
         id: "SocketPingSuccessResponse",
         type: "success-response",
         eventName: SocketPingEventName,
-        description: `Acknowledgement of your ping`
+        description: `Acknowledgement of your ping`,
+        example: {
+            ok: true,
+            message: "pong"
+        } as any // To avoid TS error about excess properties in the example
     }
 );
 
@@ -32,7 +36,13 @@ export const ZodSocketPingResponseSchema = registerSocketSchema(
         id: "SocketPingResponse",
         eventName: SocketPingEventName,
         type: "response",
-        description: `Response schema for the [${SocketPingEventName}] event`
+        description: `Response schema for the [${SocketPingEventName}] event`,
+        example: {
+            ok: false,
+            code: "UNKNOWN",
+            message: "An unknown error occurred.",
+            help: "http://bingo.api/docs#event-bingoPing",
+        }
     }
 );
 

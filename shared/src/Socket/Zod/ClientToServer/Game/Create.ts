@@ -30,7 +30,11 @@ export const ZodSocketGameCreateArgsSchema = registerSocketSchema(
         id: "GameCreateArgs",
         type: "args",
         eventName: SocketGameCreateEventName,
-        description: `Create a game with the specified identifier and add a host player with the specified name and your socket ID`
+        description: `Create a game with the specified identifier and add a host player with the specified name and your socket ID`,
+        example: {
+            id: BingoGameExample.id,
+            hostName: "Player1"
+        }
     }
 );
 
@@ -52,7 +56,12 @@ export const ZodSocketGameCreateSuccessResponseSchema = registerSocketSchema(
         id: "GameCreateSuccessResponse",
         type: "success-response",
         eventName: SocketGameCreateEventName,
-        description: `The newly created game including the host player`
+        description: `The newly created game including the host player`,
+        example: {
+            ok: true,
+            help: "http://bingo.api/docs#event-gameCreate",
+            game: BingoGameExample
+        } as any // To avoid TS error about excess properties in the example
     }
 );
 
@@ -65,7 +74,13 @@ export const ZodSocketGameCreateResponseSchema = registerSocketSchema(
         id: "GameCreateResponse",
         type: "response",
         eventName: SocketGameCreateEventName,
-        description: `Response schema for the [${SocketGameCreateEventName}] event`
+        description: `Response schema for the [${SocketGameCreateEventName}] event`,
+        example: {
+            ok: false,
+            code: "UNKNOWN",
+            message: "An unknown error occurred.",
+            help: "http://bingo.api/docs#event-gameCreate",
+        }
     }
 );
 

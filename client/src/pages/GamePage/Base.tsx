@@ -2,11 +2,10 @@ import { usePersistentState } from "@ptolemy2002/react-utils";
 import { GamePageProps } from "./Types";
 import { useParams } from "react-router";
 import { BingoGameDataProvider, useBingoGameDataContext } from "src/context/BingoGameData";
-import getSocket from "src/Socket";
+import { useSocket } from "src/Socket";
 import { useEffect } from "react";
 import useManualErrorHandling from "@ptolemy2002/react-manual-error-handling";
 import { SuspenseBoundary, useSuspenseController } from "@ptolemy2002/react-suspense";
-import useForceRerender from "@ptolemy2002/react-force-rerender";
 
 function GamePageBase({
     className
@@ -31,24 +30,18 @@ export function GamePageBody() {
     const [game, setGame] = useBingoGameDataContext();
     const [{ suspend }] = useSuspenseController();
     const { _try } = useManualErrorHandling();
-    const forceRerender = useForceRerender();
 
     const { gameId } = useParams();
 
     // If this happens, the error will be caught at a boundary higher up.
     if (!gameId) throw new Error("Game ID is required in the URL parameters.");
 
-    const socket = getSocket();
-    const socketId = socket.id ?? null;
+    const [socket, socketReady] = useSocket();
     
     useEffect(() => {
-        if (!socketId) {
-            // Try again in a bit
-            const timeout = setTimeout(() => {
-                forceRerender();
-            }, 100);
-
-            return () => clearTimeout(timeout);
+        if (!socketReady) {
+            setGame(null);
+            return;
         }
 
         if (!game) {
@@ -58,12 +51,12 @@ export function GamePageBody() {
             }));
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [socketId, game]);
+    }, [socketReady, game]);
 
     if (!game) return null;
 
-    const isHere = game.hasPlayerBySocketId(socketId!);
-    const myRole = isHere ? game.getPlayerBySocketId(socketId!)!.role : null;
+    const isHere = game.hasPlayerBySocketId(socket.id!);
+    const myRole = isHere ? game.getPlayerBySocketId(socket.id!)!.role : null;
 
     return (
         <div>

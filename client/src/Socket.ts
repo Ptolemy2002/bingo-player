@@ -1,6 +1,8 @@
 import { io, ManagerOptions, SocketOptions as _SocketOptions, Socket as _Socket, EmitSafeReturn, EmitSafeParameters } from "socket.io-client";
 import getEnv from "./Env";
 import { ErrorCode, HelpLink, SocketClientToServerEvents, SocketServerToClientEvents } from "shared";
+import useForceRerender from "@ptolemy2002/react-force-rerender";
+import { useEffect } from "react";
 
 export type Socket = _Socket<SocketServerToClientEvents, SocketClientToServerEvents> & {
     name: string,
@@ -124,4 +126,31 @@ export default function getSocket(
     }
 
     return result;
+}
+
+// This hook will cause a rerender when the socket id becomes available.
+export function useSocket({
+    key="default",
+    options,
+    debug=false
+} : GetSocketOptions = {}) {
+    const socket = getSocket({ key, options, debug });
+    const forceRerender = useForceRerender();
+
+    useEffect(() => {
+        if (socket.id) return;
+
+        const onConnect = () => {
+            forceRerender();
+        };
+
+        socket.on("connect", onConnect);
+
+        return () => {
+            socket.off("connect", onConnect);
+        };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [socket]);
+
+    return [socket, !!socket.id] as const;
 }

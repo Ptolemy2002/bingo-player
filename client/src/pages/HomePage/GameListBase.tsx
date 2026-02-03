@@ -4,7 +4,7 @@ import { useSuspenseController } from "@ptolemy2002/react-suspense";
 import useManualErrorHandling from "@ptolemy2002/react-manual-error-handling";
 import { useEffect, useState } from "react";
 import { BingoGameCollection } from "shared";
-import getSocket from "src/Socket";
+import { useSocket } from "src/Socket";
 import GameCard from "src/components/GameCard";
 import { Col, Row } from "react-bootstrap";
 import { useBingoGameCollectionContext } from "src/context/BingoGameCollection";
@@ -25,11 +25,10 @@ function GameListBase({
     const [inProgress, setInProgress] = useState(false);
     const [{suspend}] = useSuspenseController();
     const { _try } = useManualErrorHandling();
-    const socket = getSocket();
-    const socketId = socket.id ?? null;
+    const [socket, socketReady] = useSocket();
 
     useEffect(() => {
-        if (!socketId) {
+        if (!socketReady) {
             setGames([]);
             return;
         }
@@ -39,13 +38,13 @@ function GameListBase({
             let gc = new BingoGameCollection(res.games);
 
             if (category === "not-mine") {
-                gc = gc.filter(g => !g.hasPlayerBySocketId(socketId));
+                gc = gc.filter(g => !g.hasPlayerBySocketId(socket.id));
             }
 
             setGames(gc);
         }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [category, socketId]);
+    }, [category, socketReady]);
 
     return (
         <div className={clsx("game-list", "card-container", className)} {...props}>
@@ -63,9 +62,9 @@ function GameListBase({
                             >
                                 <GameCard
                                     game={game.toJSON()}
-                                    showViewLink={!inProgress && game.hasPlayerBySocketId(socketId!)}
-                                    showJoinLink={!inProgress && !game.hasPlayerBySocketId(socketId!)}
-                                    showSpectateLink={!inProgress && !game.hasPlayerBySocketId(socketId!)}
+                                    showViewLink={!inProgress && game.hasPlayerBySocketId(socket.id!)}
+                                    showJoinLink={!inProgress && !game.hasPlayerBySocketId(socket.id!)}
+                                    showSpectateLink={!inProgress && !game.hasPlayerBySocketId(socket.id!)}
 
                                     onJoin={(role) => _try(async () => {
                                         setInProgress(true);

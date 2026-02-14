@@ -26,7 +26,7 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
-    "@ptolemy2002/immutability-utils": "^1.1.0",
+    "@ptolemy2002/immutability-utils": "^1.2.1",
     "@ptolemy2002/js-math-utils": "^2.0.5",
     "@ptolemy2002/js-utils": "^3.2.2",
     "@ptolemy2002/list-object-utils": "^3.0.1",

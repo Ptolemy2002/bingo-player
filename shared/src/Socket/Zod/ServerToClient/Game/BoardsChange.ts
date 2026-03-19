@@ -24,9 +24,7 @@ export const ZodSocketBoardsChangeTypeSchema = registerSocketSchema(
 export const ZodSocketBoardsChangeDataSchema = registerSocketSchema(
     z.object({
         type: registerSocketSchema(
-            // This `refine` pattern allows us to copy the schema so that the original metadata
-            // is not overwritten on `ZodSocketBoardsChangeTypeSchema`.
-            ZodSocketBoardsChangeTypeSchema.refine(() => true),
+            ZodSocketBoardsChangeTypeSchema,
             {
                 id: "BoardsChangeData.type",
                 type: "prop",
@@ -45,9 +43,7 @@ export const ZodSocketBoardsChangeDataSchema = registerSocketSchema(
         ),
         boards: registerSocketSchema(
             z.array(
-                // This `refine` pattern allows us to copy the schema so that the original metadata
-                // is not overwritten on `ZodBingoBoardSchema`.
-                ZodBingoBoardSchema.refine(() => true)
+                ZodBingoBoardSchema
             ),
             {
                 id: "BoardsChangeData.boards",

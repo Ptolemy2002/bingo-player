@@ -1,4 +1,4 @@
-import { MaybeZodOptional, zodGenericFactory } from "@ptolemy2002/regex-utils";
+import { MaybeZodOptional } from "@ptolemy2002/zod-utils";
 import { ZodErrorResponseSchema, zodSuccessResponseSchema } from "src/Api";
 import { BingoGameExample, ZodBingoGameSchema } from "src/Bingo";
 import { registerSocketSchema, SocketBoardOpExample, ZodSocketBoardOpSchema } from "src/Socket";
@@ -15,16 +15,6 @@ export const SocketBoardOpEventName = "boardOp" as const;
 
 type SocketBoardOp = z.infer<typeof ZodSocketBoardOpSchema>;
 
-const zodSocketBoardOpGeneric = zodGenericFactory<
-    [ZodLiteral<SocketBoardOp>, MaybeZodOptional<ZodString>],
-    ZodObject<{
-        gameId: ZodString;
-        op: ZodLiteral<SocketBoardOp>;
-        boards: ZodArray<ZodString>;
-        template: MaybeZodOptional<ZodString>;
-    }>
->();
-
 function zodSocketBoardOpArgsBase<T extends SocketBoardOp, TemplateOptional extends boolean>(
     op: T,
     templateOptional: TemplateOptional,
@@ -35,17 +25,12 @@ function zodSocketBoardOpArgsBase<T extends SocketBoardOp, TemplateOptional exte
     boards: ZodArray<ZodString>;
     template: TemplateOptional extends true ? ZodOptional<ZodString> : ZodString;
 }> {
-    return zodSocketBoardOpGeneric(
-        z.literal(op),
-        templateOptional ? z.string().optional() : z.string()
-    )(
-        (opSchema, templateSchema) => z.object({
-            gameId: register("gameId", z.string()),
-            op: register("op", opSchema),
-            boards: register("boards", z.array(z.string())),
-            template: register("template", templateSchema)
-        })
-    ) as any; // Used to make sure Typescript doesn't complain about the conditional type in the return.
+    return z.object({
+        gameId: register("gameId", z.string()),
+        op: register("op", z.literal(op)),
+        boards: register("boards", z.array(z.string())),
+        template: register("template", templateOptional ? z.string().optional() : z.string())
+    }) as any; // Used to make sure Typescript doesn't complain about the conditional type in the return.
 }
 
 function createPropertyRegister(op: SocketBoardOp, descriptions: Record<keyof typeof SocketBoardOpArgsExample, { description: string; example: any }>) {
@@ -114,9 +99,7 @@ export const ZodSocketBoardOpArgsSchema = registerSocketSchema(
 export const ZodSocketBoardOpSuccessResponseSchema = registerSocketSchema(
     zodSuccessResponseSchema(z.object({
         game: registerSocketSchema(
-            // This `refine` pattern allows us to copy the schema so that the original metadata
-            // is not overwritten on `ZodBingoGameSchema`.
-            ZodBingoGameSchema.refine(() => true),
+            ZodBingoGameSchema,
             {
                 id: "BoardOpSuccessResponse.game",
                 type: "prop",

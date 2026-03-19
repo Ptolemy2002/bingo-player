@@ -1,6 +1,7 @@
 import { z, ZodObject } from "zod";
 import { registerBingoSchema } from "src/Bingo";
 import { ZodBingoSpaceTagConditionSchema } from "./SpaceTagCondition";
+import { stringboolEnum, stringboolSchema } from "src/Utilities";
 
 export const BingoBoardTemplateExample = {
     id: "Standard 5x5 Template",
@@ -143,20 +144,13 @@ export const ZodBingoBoardTemplateSchema = registerBingoSchema(
                         example: "byTag" as any // Doing an assertion here because Typescript has no way of knowing what ZT is, even though we do.
                     })).extend({
                         shuffle: registerBingoSchema(
-                            z.union([
-                                z.stringbool(),
-                                z.boolean()
-                            ]).default(true),
+                            stringboolSchema.default(true),
                             {
                                 id: 'BingoBoardTemplate.key.value<"byTag">.shuffle',
                                 type: "prop",
                                 description: "Whether to shuffle the selected spaces for this key entry when generating the board. " +
                                              "Parses common affirmative and negative strings to booleans, case insensitively. Defaults to true.",
-                                examples: [
-                                    true, false,
-                                    "true", "1", "yes", "on", "y", "enabled",
-                                    "false", "0", "no", "off", "n", "disabled"
-                                ]
+                                enum: stringboolEnum
                             }
                         ),
 

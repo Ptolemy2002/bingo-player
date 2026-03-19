@@ -1,4 +1,5 @@
 import { Override } from "@ptolemy2002/ts-utils";
+import { zodClone } from "@ptolemy2002/zod-utils/dist/clone";
 import z, { GlobalMeta, ZodType } from "zod";
 
 export type SocketMetaSchemaType = "args" | "prop" | "response" | "success-response" | "message-data" | "other";
@@ -19,7 +20,8 @@ export const SocketSchemas: ZodType[] = [];
 export const socketRegistry = z.registry<SocketMeta>();
 
 export function registerSocketSchema<T extends ZodType>(schema: T, meta: SocketMeta<T>): T {
-    SocketSchemas.push(schema);
-    socketRegistry.add(schema, meta);
-    return schema;
+    const clonedSchema = zodClone(schema);
+    SocketSchemas.push(clonedSchema);
+    socketRegistry.add(clonedSchema, meta);
+    return clonedSchema;
 }

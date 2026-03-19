@@ -14,9 +14,7 @@ export const SocketSpacesChangeDataExample = {
 export const ZodSocketSpacesChangeDataSchema = registerSocketSchema(
     z.object({
         op: registerSocketSchema(
-            // This `refine` pattern allows us to copy the schema so that the original metadata
-            // is not overwritten on `ZodSocketSpaceOpSchema`.
-            ZodSocketSpaceOpSchema.refine(() => true),
+            ZodSocketSpaceOpSchema,
             {
                 id: "SpacesChangeData.op",
                 type: "prop",
@@ -49,9 +47,7 @@ export const ZodSocketSpacesChangeDataSchema = registerSocketSchema(
                     ),
 
                     registerSocketSchema(
-                        // This `refine` pattern allows us to copy the schema so that the original metadata
-                        // is not overwritten on `ZodSpaceIDSchema`.
-                        ZodSpaceIDSchema.refine(() => true),
+                        ZodSpaceIDSchema,
                         {
                             id: "SpacesChangeData.spaces.item<string>",
                             type: "prop",
@@ -61,9 +57,7 @@ export const ZodSocketSpacesChangeDataSchema = registerSocketSchema(
                     ),
 
                     registerSocketSchema(
-                        // This `refine` pattern allows us to copy the schema so that the original metadata
-                        // is not overwritten on `ZodMongoSpaceSchema`.
-                        ZodMongoSpaceSchema.refine(() => true),
+                        ZodMongoSpaceSchema,
                         {
                             id: "SpacesChangeData.spaces.item<Space>",
                             type: "prop",

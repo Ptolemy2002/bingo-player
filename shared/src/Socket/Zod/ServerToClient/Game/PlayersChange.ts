@@ -42,7 +42,7 @@ function zodSocketPlayersChangeDataBase<T extends SocketPlayersChangeType, PO ex
         gameId: register("gameId", z.string()),
         prevPlayerName: register("prevPlayerName", prevOptional ? z.string().nullable().optional() : z.string()),
         newPlayerName: register("newPlayerName", newOptional ? z.string().nullable().optional() : z.string()),
-        newPlayerRole: register("newPlayerRole", roleOptional ? ZodBingoPlayerRoleSchema.nullable().optional() : ZodBingoPlayerRoleSchema.refine(() => true))
+        newPlayerRole: register("newPlayerRole", roleOptional ? ZodBingoPlayerRoleSchema.nullable().optional() : ZodBingoPlayerRoleSchema)
     }) as any;
 }
 

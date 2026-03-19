@@ -36,9 +36,7 @@ export const ZodSocketSpaceFillArgsSchema = registerSocketSchema(
         ),
 
         condition: registerSocketSchema(
-            // This `refine` pattern allows us to copy the schema so that the original metadata
-            // is not overwritten on `ZodBingoSpaceTagConditionSchema`.
-            ZodBingoSpaceTagConditionSchema.refine(() => true),
+            ZodBingoSpaceTagConditionSchema,
             {
                 id: "SpaceFillArgs.condition",
                 type: "prop",
@@ -69,9 +67,7 @@ export const ZodSocketSpaceFillSuccessResponseSchema = zodSuccessResponseSchema(
                 }
             ),
             game: registerSocketSchema(
-                // This `refine` pattern allows us to copy the schema so that the original metadata
-                // is not overwritten on `ZodBingoGameSchema`.
-                ZodBingoGameSchema.refine(() => true),
+                ZodBingoGameSchema,
                 {
                     id: "SpaceFillSuccessResponse.game",
                     type: "prop",

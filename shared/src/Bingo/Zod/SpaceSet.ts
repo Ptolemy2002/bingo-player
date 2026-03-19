@@ -29,9 +29,7 @@ export const ZodBingoSpaceSetSchema = registerBingoSchema(
                 }
             ),
             spaceData: registerBingoSchema(
-                // This `refine` pattern allows us to copy the schema so that the original metadata
-                // is not overwritten on `ZodMongoSpaceSchema`.
-                ZodMongoSpaceSchema.refine(() => true),
+                ZodMongoSpaceSchema,
                 {
                     id: "BingoSpaceSet.spaceData",
                     type: "prop",

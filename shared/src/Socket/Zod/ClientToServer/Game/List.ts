@@ -1,6 +1,7 @@
 import { ZodErrorResponseSchema, zodSuccessResponseSchema } from "src/Api";
 import { BingoGameExample, ZodBingoGameSchema } from "src/Bingo";
 import { registerSocketSchema } from "src/Socket/Registry";
+import { stringboolSchema, stringboolEnum } from "src/Utilities";
 import { z } from "zod";
 
 export const SocketGameListEventName = "gameList" as const;
@@ -8,10 +9,7 @@ export const SocketGameListEventName = "gameList" as const;
 export const ZodSocketGameListArgsSchema = registerSocketSchema(
     z.object({
         mine: registerSocketSchema(
-            z.union([
-                z.stringbool(),
-                z.boolean()
-            ]).default(false),
+            stringboolSchema.default(false),
             {
                 id: "GameListArgs.mine",
                 type: "prop",
@@ -19,11 +17,7 @@ export const ZodSocketGameListArgsSchema = registerSocketSchema(
                     "Whether to include only games you are a part of in the list. " +
                     "Parses common affirmative and negative strings to booleans, " +
                     "case insensitively. Defaults to false.",
-                examples: [
-                    true, false,
-                    "true", "1", "yes", "on", "y", "enabled",
-                    "false", "0", "no", "off", "n", "disabled"
-                ]
+                enum: stringboolEnum
             }
         )
     }), {

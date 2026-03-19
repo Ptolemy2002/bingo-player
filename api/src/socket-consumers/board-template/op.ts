@@ -12,9 +12,7 @@ export class BingoBoardTemplateOpHandler extends SocketRouteHandler<SocketBoardT
         if (!argsSuccess) {
             return {
                 status: 400,
-                response: this.buildZodErrorResponse(argsError, "BAD_INPUT", {
-                    prefix: "args"
-                })
+                response: this.buildZodErrorResponse(argsError, "BAD_INPUT", "args")
             };
         }
 

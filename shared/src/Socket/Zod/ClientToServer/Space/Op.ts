@@ -26,9 +26,7 @@ export const ZodSocketSpaceOpArgsSchema = registerSocketSchema(
 
         
         op: registerSocketSchema(
-            // This `refine` pattern allows us to copy the schema so that the original metadata
-            // is not overwritten on `ZodBingoPlayerSetSchema`.
-            ZodSocketSpaceOpSchema.refine(() => true),
+            ZodSocketSpaceOpSchema,
             {
                 id: "SpaceOpArgs.op",
                 type: "prop",
@@ -53,9 +51,7 @@ export const ZodSocketSpaceOpArgsSchema = registerSocketSchema(
                     ),
 
                     registerSocketSchema(
-                        // This `refine` pattern allows us to copy the schema so that the original metadata
-                        // is not overwritten on `ZodSpaceIDSchema`.
-                        ZodSpaceIDSchema.refine(() => true),
+                        ZodSpaceIDSchema,
                         {
                             id: "SpaceOpArgs.spaces.item<string>",
                             type: "prop",
@@ -86,9 +82,7 @@ export const ZodSocketSpaceOpArgsSchema = registerSocketSchema(
 export const ZodSocketSpaceOpSuccessResponseSchema = registerSocketSchema(
     zodSuccessResponseSchema(z.object({
         game: registerSocketSchema(
-            // This `refine` pattern allows us to copy the schema so that the original metadata
-            // is not overwritten on `ZodBingoGameSchema`.
-            ZodBingoGameSchema.refine(() => true),
+            ZodBingoGameSchema,
             {
                 id: "SpaceOpSuccessResponse.game",
                 type: "prop",

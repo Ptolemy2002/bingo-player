@@ -1,6 +1,6 @@
 import { HydratedDocumentFromSchema, Model, PipelineStage, Schema, Types, model } from 'mongoose';
 import { CleanMongoSpace, ZodMongoSpaceShape } from 'shared';
-import { zodValidateWithErrors } from '@ptolemy2002/regex-utils';
+import { zodValidateWithErrors } from '@ptolemy2002/zod-utils';
 import { refineNoAliasMatchingName } from 'shared';
 import { omit } from '@ptolemy2002/ts-utils';
 
@@ -79,16 +79,16 @@ const SpaceSchema = new Schema<MongoDocumentSpace, SpaceModel, SpaceInstanceMeth
     }
 });
 
-SpaceSchema.path("name").validate(zodValidateWithErrors(ZodMongoSpaceShape.name, { _throw: true, prefix: "name" }));
-SpaceSchema.path("description").validate(zodValidateWithErrors(ZodMongoSpaceShape.description, { _throw: true, prefix: "description" }));
-SpaceSchema.path("examples").validate(zodValidateWithErrors(ZodMongoSpaceShape.examples, { _throw: true, prefix: "examples" }));
+SpaceSchema.path("name").validate((v) => zodValidateWithErrors(ZodMongoSpaceShape.name, { _throw: true, prefix: "name" })(v).success);
+SpaceSchema.path("description").validate((v) => zodValidateWithErrors(ZodMongoSpaceShape.description, { _throw: true, prefix: "description" })(v).success);
+SpaceSchema.path("examples").validate((v) => zodValidateWithErrors(ZodMongoSpaceShape.examples, { _throw: true, prefix: "examples" })(v).success);
 
 SpaceSchema.path("aliases").validate(function(aliases: string[]) {
-    zodValidateWithErrors(ZodMongoSpaceShape.aliases, { _throw: true })(aliases);
+    zodValidateWithErrors(ZodMongoSpaceShape.aliases, { _throw: true, prefix: "aliases" })(aliases);
     return refineNoAliasMatchingName(this.name, aliases);
 }, "The aliases must be unique and not include the name of the space.");
 
-SpaceSchema.path("tags").validate(zodValidateWithErrors(ZodMongoSpaceShape.tags, { _throw: true, prefix: "tags" }));
+SpaceSchema.path("tags").validate((v) => zodValidateWithErrors(ZodMongoSpaceShape.tags, { _throw: true, prefix: "tags" })(v).success);
 
 SpaceSchema.method("toClientJSON", function() {
     const {_id, ...space} = omit(this.toJSON(), "__v");

@@ -1,8 +1,8 @@
 import { z } from "zod";
 import { swaggerRegistry } from "src/Swagger";
-import { ZodCoercedBoolean } from "src/Utilities";
 import { ZodSortOrderSchema } from "./SortOrder";
 import { ZodSpaceQueryPropSchema, ZodSpaceQueryPropWithScoreSchema } from "src/Space";
+import { stringboolEnum, stringboolSchema } from "src/Utilities";
 
 export const ZodLimitQueryParamSchema = swaggerRegistry.registerParameter(
     "limit",
@@ -64,11 +64,12 @@ export const ZodOffsetShorthandQueryParamSchema = swaggerRegistry.registerParame
 
 export const ZodCaseSensitiveQueryParamSchema = swaggerRegistry.registerParameter(
     "caseSensitive",
-    ZodCoercedBoolean
+    stringboolSchema
         .optional()
         .openapi({
             description: "[Query Parameter] Whether to match the query case-sensitively. False if not provided.",
             default: "f",
+            enum: stringboolEnum,
             param: {
                 name: "caseSensitive",
                 in: "query"
@@ -90,11 +91,12 @@ export const ZodCaseSensitiveShorthandQueryParamSchema = swaggerRegistry.registe
 
 export const ZodAccentSensitiveQueryParamSchema = swaggerRegistry.registerParameter(
     "accentSensitive",
-    ZodCoercedBoolean
+    stringboolSchema
         .optional()
         .openapi({
             description: "[Query Parameter] Whether to match the query accent-sensitively. False if not provided.",
             default: "f",
+            enum: stringboolEnum,
             param: {
                 name: "accentSensitive",
                 in: "query"
@@ -116,11 +118,12 @@ export const ZodAccentSensitiveShorthandQueryParamSchema = swaggerRegistry.regis
 
 export const ZodMatchWholeQueryParamSchema = swaggerRegistry.registerParameter(
     "matchWhole",
-    ZodCoercedBoolean
+    stringboolSchema
         .optional()
         .openapi({
             description: "[Query Parameter] Whether to match the query as the whole string. False if not provided.",
             default: "f",
+            enum: stringboolEnum,
             param: {
                 name: "matchWhole",
                 in: "query"
@@ -278,11 +281,12 @@ export const ZodSearchListPropSortByShorthandQueryParamSchema = swaggerRegistry.
 
 export const ZodInvertQueryParamSchema = swaggerRegistry.registerParameter(
     "invert",
-    ZodCoercedBoolean
+    stringboolSchema
         .optional()
         .openapi({
             description: "[Query Parameter] Whether to invert the match. False if not provided.",
             default: "f",
+            enum: stringboolEnum,
             param: {
                 name: "invert",
                 in: "query"

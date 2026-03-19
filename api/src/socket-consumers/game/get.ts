@@ -13,9 +13,7 @@ export class BingoGameGetHandler extends SocketRouteHandler<SocketGameGetSuccess
         if (!argsSuccess) {
             return {
                 status: 400,
-                response: this.buildZodErrorResponse(argsError, "BAD_INPUT", {
-                    prefix: "args"
-                })
+                response: this.buildZodErrorResponse(argsError, "BAD_INPUT", "args")
             };
         }
 

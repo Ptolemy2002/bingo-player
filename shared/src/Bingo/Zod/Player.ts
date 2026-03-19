@@ -29,9 +29,7 @@ export const ZodBingoPlayerSchema = registerBingoSchema(
             }
         ),
         role: registerBingoSchema(
-            // This `refine` pattern allows us to copy the schema so that the original metadata
-            // is not overwritten on `ZodBingoPlayerRoleSchema`.
-            ZodBingoPlayerRoleSchema.refine(() => true),
+            ZodBingoPlayerRoleSchema,
             {
                 id: "BingoPlayer.role",
                 type: "prop",

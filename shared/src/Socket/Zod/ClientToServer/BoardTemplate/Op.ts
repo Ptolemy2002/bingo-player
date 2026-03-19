@@ -1,4 +1,4 @@
-import { zodGenericFactory, MaybeZodOptional } from "@ptolemy2002/regex-utils";
+import { MaybeZodOptional } from "@ptolemy2002/zod-utils";
 import { ZodErrorResponseSchema, zodSuccessResponseSchema } from "src/Api";
 import { BingoGameExample, ZodBingoGameSchema, BingoBoardTemplateExample, ZodBingoBoardTemplateSchema } from "src/Bingo";
 import { registerSocketSchema, SocketBoardTemplateOpExample, ZodSocketBoardTemplateOpSchema } from "src/Socket";
@@ -15,16 +15,6 @@ export const SocketBoardTemplateOpEventName = "boardTemplateOp" as const;
 
 type SocketBoardTemplateOp = z.infer<typeof ZodSocketBoardTemplateOpSchema>;
 
-const zodSocketBoardTemplateOpGeneric = zodGenericFactory<
-    [ZodLiteral<SocketBoardTemplateOp>, MaybeZodOptional<ZodArray<typeof ZodBingoBoardTemplateSchema>>, MaybeZodOptional<ZodArray<ZodString>>],
-    ZodObject<{
-        gameId: ZodString;
-        op: ZodLiteral<SocketBoardTemplateOp>;
-        templates: MaybeZodOptional<ZodArray<typeof ZodBingoBoardTemplateSchema>>;
-        templateNames: MaybeZodOptional<ZodArray<ZodString>>;
-    }>
->();
-
 function zodSocketBoardTemplateOpArgsBase<T extends SocketBoardTemplateOp, TT extends "name" | "full">(
     op: T,
     templatesType: TT,
@@ -35,18 +25,12 @@ function zodSocketBoardTemplateOpArgsBase<T extends SocketBoardTemplateOp, TT ex
     templates: TT extends "full" ? ZodArray<typeof ZodBingoBoardTemplateSchema> : ZodOptional<ZodArray<typeof ZodBingoBoardTemplateSchema>>;
     templateNames: TT extends "name" ? ZodArray<ZodString> : ZodOptional<ZodArray<ZodString>>;
 }> {
-    return zodSocketBoardTemplateOpGeneric(
-        z.literal(op),
-        templatesType === "full" ? z.array(ZodBingoBoardTemplateSchema) : z.array(ZodBingoBoardTemplateSchema).optional(),
-        templatesType === "name" ? z.array(z.string()) : z.array(z.string()).optional()
-    )(
-        (opSchema, templatesSchema, templateNamesSchema) => z.object({
-            gameId: register("gameId", z.string()),
-            op: register("op", opSchema),
-            templates: register("templates", templatesSchema),
-            templateNames: register("templateNames", templateNamesSchema)
-        })
-    ) as any; // Used to make sure Typescript doesn't complain about the conditional type in the return.
+    return z.object({
+        gameId: register("gameId", z.string()),
+        op: register("op", z.literal(op)),
+        templates: register("templates", templatesType === "full" ? z.array(ZodBingoBoardTemplateSchema) : z.array(ZodBingoBoardTemplateSchema).optional()),
+        templateNames: register("templateNames", templatesType === "name" ? z.array(z.string()) : z.array(z.string()).optional())
+    }) as any; // Used to make sure Typescript doesn't complain about the conditional type in the return.
 }
 
 function createPropertyRegister(op: SocketBoardTemplateOp, descriptions: Record<keyof typeof SocketBoardTemplateOpArgsExample, { description: string; example: any }>) {
@@ -103,9 +87,7 @@ export const ZodSocketBoardTemplateOpArgsSchema = registerSocketSchema(
 export const ZodSocketBoardTemplateOpSuccessResponseSchema = registerSocketSchema(
     zodSuccessResponseSchema(z.object({
         game: registerSocketSchema(
-            // This `refine` pattern allows us to copy the schema so that the original metadata
-            // is not overwritten on `ZodBingoGameSchema`.
-            ZodBingoGameSchema.refine(() => true),
+            ZodBingoGameSchema,
             {
                 id: "BoardTemplateOpSuccessResponse.game",
                 type: "prop",

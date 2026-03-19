@@ -25,9 +25,7 @@ export const ZodBingoGameSchema = registerBingoSchema(
             }
         ),
         players: registerBingoSchema(
-            // This `refine` pattern allows us to copy the schema so that the original metadata
-            // is not overwritten on `ZodBingoPlayerSetSchema`.
-            ZodBingoPlayerSetSchema.refine(() => true),
+            ZodBingoPlayerSetSchema,
             {
                 id: "BingoGame.players",
                 type: "prop",
@@ -36,9 +34,7 @@ export const ZodBingoGameSchema = registerBingoSchema(
             }
         ),
         spaces: registerBingoSchema(
-            // This `refine` pattern allows us to copy the schema so that the original metadata
-            // is not overwritten on `ZodBingoSpaceSetSchema`.
-            ZodBingoSpaceSetSchema.refine(() => true),
+            ZodBingoSpaceSetSchema,
             {
                 id: "BingoGame.spaces",
                 type: "prop",
@@ -47,9 +43,7 @@ export const ZodBingoGameSchema = registerBingoSchema(
             }
         ),
         boards: registerBingoSchema(
-            // This `refine` pattern allows us to copy the schema so that the original metadata
-            // is not overwritten on `ZodBingoBoardSetSchema`.
-            ZodBingoBoardSetSchema.refine(() => true),
+            ZodBingoBoardSetSchema,
             {
                 id: "BingoGame.boards",
                 type: "prop",
@@ -58,9 +52,7 @@ export const ZodBingoGameSchema = registerBingoSchema(
             }
         ),
         boardTemplates: registerBingoSchema(
-            // This `refine` pattern allows us to copy the schema so that the original metadata
-            // is not overwritten on `ZodBingoBoardTemplateSetSchema`.
-            ZodBingoBoardTemplateSetSchema.refine(() => true),
+            ZodBingoBoardTemplateSetSchema,
             {
                 id: "BingoGame.boardTemplates",
                 type: "prop",

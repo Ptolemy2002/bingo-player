@@ -2,7 +2,6 @@ import useSearchParamState, { ConvertFunctions, SetSearchParamFunction } from "@
 import { SpaceGallerySearchParams, UseSpaceGallerySearchParamResult } from "./Types";
 import { useCallback } from "react";
 import { ZodGetSpacesByPropURLParamsSchema, ZodSearchSpacesQueryParamsSchema } from "shared";
-import { ZodCoercedBoolean } from "@ptolemy2002/regex-utils";
 import { z } from "zod";
 
 export const converts: ConvertFunctions<SpaceGallerySearchParams> = {
@@ -16,22 +15,22 @@ export const converts: ConvertFunctions<SpaceGallerySearchParams> = {
     },
 
     cs: {
-        fromURL: (value) => ZodCoercedBoolean.catch(false).parse(value),
+        fromURL: (value) => z.stringbool().catch(false).default(false).parse(value),
         toURL: (value) => value ? "y" : "n"
     },
     
     mw: {
-        fromURL: (value) => ZodCoercedBoolean.catch(false).parse(value),
+        fromURL: (value) => z.stringbool().catch(false).default(false).parse(value),
         toURL: (value) => value ? "y" : "n"
     },
 
     as: {
-        fromURL: (value) => ZodCoercedBoolean.catch(false).parse(value),
+        fromURL: (value) => z.stringbool().catch(false).default(false).parse(value),
         toURL: (value) => value ? "y" : "n"
     },
 
     i: {
-        fromURL: (value) => ZodCoercedBoolean.catch(false).parse(value),
+        fromURL: (value) => z.stringbool().catch(false).default(false).parse(value),
         toURL: (value) => value ? "y" : "n"
     },
 

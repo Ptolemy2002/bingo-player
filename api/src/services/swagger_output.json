@@ -3013,156 +3013,228 @@
         "description": "Query parameters for getting spaces filtered by a property value."
       },
       "caseSensitive": {
-        "type": "string",
-        "enum": [
-          "0",
-          "1",
-          "true",
-          "false",
-          "t",
-          "f",
-          "yes",
-          "no",
-          "y",
-          "n",
-          "on",
-          "off"
+        "anyOf": [
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "string"
+          }
         ],
         "default": "f",
-        "description": "[Query Parameter] Whether to match the query case-sensitively. False if not provided."
+        "description": "[Query Parameter] Whether to match the query case-sensitively. False if not provided.",
+        "enum": [
+          true,
+          "true",
+          "t",
+          "yes",
+          "on",
+          "y",
+          "1",
+          false,
+          "false",
+          "f",
+          "no",
+          "off",
+          "n",
+          "0"
+        ]
       },
       "cs": {
-        "type": "string",
-        "enum": [
-          "0",
-          "1",
-          "true",
-          "false",
-          "t",
-          "f",
-          "yes",
-          "no",
-          "y",
-          "n",
-          "on",
-          "off"
+        "anyOf": [
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "string"
+          }
         ],
         "default": "f",
-        "description": "[Query Parameter] Shorthand for caseSensitive."
+        "description": "[Query Parameter] Shorthand for caseSensitive.",
+        "enum": [
+          true,
+          "true",
+          "t",
+          "yes",
+          "on",
+          "y",
+          "1",
+          false,
+          "false",
+          "f",
+          "no",
+          "off",
+          "n",
+          "0"
+        ]
       },
       "accentSensitive": {
-        "type": "string",
-        "enum": [
-          "0",
-          "1",
-          "true",
-          "false",
-          "t",
-          "f",
-          "yes",
-          "no",
-          "y",
-          "n",
-          "on",
-          "off"
+        "anyOf": [
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "string"
+          }
         ],
         "default": "f",
-        "description": "[Query Parameter] Whether to match the query accent-sensitively. False if not provided."
+        "description": "[Query Parameter] Whether to match the query accent-sensitively. False if not provided.",
+        "enum": [
+          true,
+          "true",
+          "t",
+          "yes",
+          "on",
+          "y",
+          "1",
+          false,
+          "false",
+          "f",
+          "no",
+          "off",
+          "n",
+          "0"
+        ]
       },
       "as": {
-        "type": "string",
-        "enum": [
-          "0",
-          "1",
-          "true",
-          "false",
-          "t",
-          "f",
-          "yes",
-          "no",
-          "y",
-          "n",
-          "on",
-          "off"
+        "anyOf": [
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "string"
+          }
         ],
         "default": "f",
-        "description": "[Query Parameter] Shorthand for accentSensitive."
+        "description": "[Query Parameter] Shorthand for accentSensitive.",
+        "enum": [
+          true,
+          "true",
+          "t",
+          "yes",
+          "on",
+          "y",
+          "1",
+          false,
+          "false",
+          "f",
+          "no",
+          "off",
+          "n",
+          "0"
+        ]
       },
       "matchWhole": {
-        "type": "string",
-        "enum": [
-          "0",
-          "1",
-          "true",
-          "false",
-          "t",
-          "f",
-          "yes",
-          "no",
-          "y",
-          "n",
-          "on",
-          "off"
+        "anyOf": [
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "string"
+          }
         ],
         "default": "f",
-        "description": "[Query Parameter] Whether to match the query as the whole string. False if not provided."
+        "description": "[Query Parameter] Whether to match the query as the whole string. False if not provided.",
+        "enum": [
+          true,
+          "true",
+          "t",
+          "yes",
+          "on",
+          "y",
+          "1",
+          false,
+          "false",
+          "f",
+          "no",
+          "off",
+          "n",
+          "0"
+        ]
       },
       "mw": {
-        "type": "string",
-        "enum": [
-          "0",
-          "1",
-          "true",
-          "false",
-          "t",
-          "f",
-          "yes",
-          "no",
-          "y",
-          "n",
-          "on",
-          "off"
+        "anyOf": [
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "string"
+          }
         ],
         "default": "f",
-        "description": "[Query Parameter] Shorthand for matchWhole."
+        "description": "[Query Parameter] Shorthand for matchWhole.",
+        "enum": [
+          true,
+          "true",
+          "t",
+          "yes",
+          "on",
+          "y",
+          "1",
+          false,
+          "false",
+          "f",
+          "no",
+          "off",
+          "n",
+          "0"
+        ]
       },
       "invert": {
-        "type": "string",
-        "enum": [
-          "0",
-          "1",
-          "true",
-          "false",
-          "t",
-          "f",
-          "yes",
-          "no",
-          "y",
-          "n",
-          "on",
-          "off"
+        "anyOf": [
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "string"
+          }
         ],
         "default": "f",
-        "description": "[Query Parameter] Whether to invert the match. False if not provided."
+        "description": "[Query Parameter] Whether to invert the match. False if not provided.",
+        "enum": [
+          true,
+          "true",
+          "t",
+          "yes",
+          "on",
+          "y",
+          "1",
+          false,
+          "false",
+          "f",
+          "no",
+          "off",
+          "n",
+          "0"
+        ]
       },
       "i": {
-        "type": "string",
-        "enum": [
-          "0",
-          "1",
-          "true",
-          "false",
-          "t",
-          "f",
-          "yes",
-          "no",
-          "y",
-          "n",
-          "on",
-          "off"
+        "anyOf": [
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "string"
+          }
         ],
         "default": "f",
-        "description": "[Query Parameter] Shorthand for invert."
+        "description": "[Query Parameter] Shorthand for invert.",
+        "enum": [
+          true,
+          "true",
+          "t",
+          "yes",
+          "on",
+          "y",
+          "1",
+          false,
+          "false",
+          "f",
+          "no",
+          "off",
+          "n",
+          "0"
+        ]
       },
       "GetSpacesByProp200ResponseBody": {
         "allOf": [

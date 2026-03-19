@@ -1,4 +1,4 @@
-import { escapeRegex, transformRegex } from '@ptolemy2002/regex-utils';
+import rgx from '@ptolemy2002/rgx';
 import { ValuesIntersection } from '@ptolemy2002/ts-utils';
 import {
     AggregationBuilder,
@@ -240,11 +240,14 @@ export default class SpaceAggregationBuilder extends AggregationBuilder<SpaceAgg
                 }
 
                 const interpretedProp = interpretSpaceQueryPropWithScore(queryProp);
-                const pattern = transformRegex(escapeRegex(queryString), {
-                    caseInsensitive: !caseSensitive,
-                    accentInsensitive: !accentSensitive,
-                    matchWhole: matchWhole,
-                });
+                
+                const flags = [
+                    caseSensitive ? '' : 'i',
+                    accentSensitive ? '' : 'a',
+                    matchWhole ? 'w' : ''
+                ].join('');
+
+                const pattern = rgx(flags)`${queryString}`;
 
                 return {
                     type: 'match',

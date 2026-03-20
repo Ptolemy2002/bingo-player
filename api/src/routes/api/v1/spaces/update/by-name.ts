@@ -4,6 +4,7 @@ import SpaceModel from "models/SpaceModel";
 import { UpdateSpaceByName200ResponseBody, ZodUpdateSpaceByNameURLParamsSchema, ZodUpdateSpaceByNameRequestBodySchema } from "shared";
 import { asyncErrorHandler } from "@ptolemy2002/express-utils";
 import { Error } from "mongoose";
+import { interpretValidationError } from "lib/mongoose";
 
 const router = Router();
 
@@ -84,15 +85,18 @@ export class UpdateSpaceByNameHandler extends RouteHandler<UpdateSpaceByName200R
         // Re-validate the space
         try {
             await newSpace.validate();
-        } catch (_e) {
+        } catch (e) {
             // Find and replace with the original space
             await SpaceModel.findOneAndReplace({ name }, oldSpaceJSON);
 
-            const e = _e as Error.ValidationError;
-            return {
-                status: 500,
-                response: this.buildErrorResponse("VALIDATION", e.message)
-            };
+            if (e instanceof Error.ValidationError) {
+                return {
+                    status: 500,
+                    response: this.buildErrorResponse("VALIDATION", interpretValidationError(e))
+                };
+            }
+
+            throw e;
         }
 
         return {

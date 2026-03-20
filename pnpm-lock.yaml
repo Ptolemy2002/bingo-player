@@ -23,14 +23,14 @@ importers:
         specifier: ^1.1.1
         version: 1.1.1(@ptolemy2002/ts-utils@3.5.1(@ptolemy2002/regex-utils@4.2.0(zod@4.3.6))(@ptolemy2002/ts-brand-utils@1.0.0)(is-callable@1.2.7)(zod@4.3.6))(is-callable@1.2.7)(mongoose@8.23.0)
       '@ptolemy2002/rgx':
-        specifier: ^12.4.0
-        version: 12.4.0(@ptolemy2002/regex-utils@4.2.0(zod@4.3.6))(lodash.clone@4.5.0)(zod@4.3.6)
+        specifier: ^12.5.0
+        version: 12.5.0(@ptolemy2002/regex-utils@4.2.0(zod@4.3.6))(lodash.clone@4.5.0)(zod@4.3.6)
       '@ptolemy2002/ts-utils':
         specifier: ^3.5.1
         version: 3.5.1(@ptolemy2002/regex-utils@4.2.0(zod@4.3.6))(@ptolemy2002/ts-brand-utils@1.0.0)(is-callable@1.2.7)(zod@4.3.6)
       '@ptolemy2002/zod-utils':
-        specifier: ^1.1.0
-        version: 1.1.0(zod@4.3.6)
+        specifier: ^1.2.0
+        version: 1.2.0(zod@4.3.6)
       '@types/is-callable':
         specifier: ^1.1.2
         version: 1.1.2
@@ -192,8 +192,8 @@ importers:
         specifier: ^3.5.1
         version: 3.5.1(@ptolemy2002/regex-utils@4.2.0(zod@4.3.6))(@ptolemy2002/ts-brand-utils@1.0.0)(is-callable@1.2.7)(zod@4.3.6)
       '@ptolemy2002/zod-utils':
-        specifier: ^1.1.0
-        version: 1.1.0(zod@4.3.6)
+        specifier: ^1.2.0
+        version: 1.2.0(zod@4.3.6)
       axios:
         specifier: ^1.13.6
         version: 1.13.6
@@ -377,8 +377,8 @@ importers:
         specifier: ^3.5.1
         version: 3.5.1(@ptolemy2002/regex-utils@4.2.0(zod@4.3.6))(@ptolemy2002/ts-brand-utils@1.0.0)(is-callable@1.2.7)(zod@4.3.6)
       '@ptolemy2002/zod-utils':
-        specifier: ^1.1.0
-        version: 1.1.0(zod@4.3.6)
+        specifier: ^1.2.0
+        version: 1.2.0(zod@4.3.6)
       '@types/is-callable':
         specifier: ~1.1.2
         version: 1.1.2
@@ -876,6 +876,9 @@ packages:
   '@ptolemy2002/rgx@12.4.0':
     resolution: {integrity: sha512-8DsB4VSyi1G3BWYFAWIf1YhV2oZCapGupeU8g88oGXKsj/hdd6jUrGzt62q5IxBoQ7NV3JMUbQoErP/d7JNZvg==}
 
+  '@ptolemy2002/rgx@12.5.0':
+    resolution: {integrity: sha512-ku/1Cf0o1CcvSr+8kuUm9RBGRM8aAWiA0xJ5yA0ENiXBvbhCKKfI4YOaXV+Y0vEZrkI1lMgfqCoFFcnTqEBawA==}
+
   '@ptolemy2002/ts-brand-utils@1.0.0':
     resolution: {integrity: sha512-E8u3dXr2UG0FYifa4RvM3EU1lD/Zvq57ziZN+8Mn/duMOIY6WRwICq8YNrYoOHamR5QDNnLcersNtN5IiAwrNA==}
 
@@ -887,8 +890,8 @@ packages:
       is-callable: ^1.2.7
       zod: ^4.3.6
 
-  '@ptolemy2002/zod-utils@1.1.0':
-    resolution: {integrity: sha512-up3xqpCTyKR+LUNGcioHZPBiZAs9bIZtRecVDE/EY3MA4noF4YH0vdHEGZhu6+M14Xr7HdQtNu2ZWxGukaPUsg==}
+  '@ptolemy2002/zod-utils@1.2.0':
+    resolution: {integrity: sha512-mJX3eO1rSGuiECfQtUiNFpRrVVvYpciShWxNtDMPX2TTOueTFMXYKoOCiO59oyaSQUdetTwnyCQkcSH3IPOgHg==}
     peerDependencies:
       zod: ^4.3.6
 
@@ -3530,6 +3533,19 @@ snapshots:
       - lodash.clone
       - zod
 
+  '@ptolemy2002/rgx@12.5.0(@ptolemy2002/regex-utils@4.2.0(zod@4.3.6))(lodash.clone@4.5.0)(zod@4.3.6)':
+    dependencies:
+      '@ptolemy2002/immutability-utils': 2.1.0(is-callable@1.2.7)(lodash.clone@4.5.0)(lodash.clonedeep@4.5.0)
+      '@ptolemy2002/js-utils': 3.2.2
+      '@ptolemy2002/ts-brand-utils': 1.0.0
+      '@ptolemy2002/ts-utils': 3.5.1(@ptolemy2002/regex-utils@4.2.0(zod@4.3.6))(@ptolemy2002/ts-brand-utils@1.0.0)(is-callable@1.2.7)(zod@4.3.6)
+      is-callable: 1.2.7
+      lodash.clonedeep: 4.5.0
+    transitivePeerDependencies:
+      - '@ptolemy2002/regex-utils'
+      - lodash.clone
+      - zod
+
   '@ptolemy2002/ts-brand-utils@1.0.0': {}
 
   '@ptolemy2002/ts-utils@3.5.1(@ptolemy2002/regex-utils@4.2.0(zod@4.3.6))(@ptolemy2002/ts-brand-utils@1.0.0)(is-callable@1.2.7)(zod@4.3.6)':
@@ -3539,7 +3555,7 @@ snapshots:
       is-callable: 1.2.7
       zod: 4.3.6
 
-  '@ptolemy2002/zod-utils@1.1.0(zod@4.3.6)':
+  '@ptolemy2002/zod-utils@1.2.0(zod@4.3.6)':
     dependencies:
       zod: 4.3.6
 

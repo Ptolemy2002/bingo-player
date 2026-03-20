@@ -25,7 +25,7 @@
         "@asteasolutions/zod-to-openapi": "^8.4.3",
         "@ptolemy2002/rgx": "^12.4.0",
         "@ptolemy2002/ts-utils": "^3.5.1",
-        "@ptolemy2002/zod-utils": "^1.1.0",
+        "@ptolemy2002/zod-utils": "^1.2.0",
         "@types/is-callable": "~1.1.2",
         "@types/ms": "~0.7.34",
         "mongoose": "^8.23.0",

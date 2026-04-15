@@ -1,6 +1,6 @@
 import { ErrorCode, ErrorResponse, ErrorResponse400, ErrorResponse404, ErrorResponse501, ErrorResponseWithCode, SuccessResponseBase } from 'shared';
 import { ZodError } from 'zod';
-import { interpretZodError } from '@ptolemy2002/zod-utils';
+import { interpretZodError, InterpretZodErrorOptions } from '@ptolemy2002/zod-utils';
 
 export type GeneratedResonse<SuccessResponse extends SuccessResponseBase> = {
     status: number;
@@ -43,8 +43,11 @@ export default class RouteHandler<SuccessResponse extends SuccessResponseBase> {
     protected buildZodErrorResponse(
         error: ZodError,
         code: ErrorResponse400['code'] = 'BAD_INPUT',
-        prefix?: string,
+        options: string | InterpretZodErrorOptions = {}
     ): ErrorResponse400 {
+        if (typeof options === 'string') options = { prefix: options };
+        let { prefix, ...other } = options;
+
         if (prefix === undefined) {
             if (code === 'BAD_BODY') {
                 prefix = 'body';
@@ -57,7 +60,7 @@ export default class RouteHandler<SuccessResponse extends SuccessResponseBase> {
 
         return this.buildErrorResponse(
             code,
-            interpretZodError(error,  prefix)
+            interpretZodError(error, { prefix, ...other })
         );
     }
 

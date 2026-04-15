@@ -79,16 +79,16 @@ const SpaceSchema = new Schema<MongoDocumentSpace, SpaceModel, SpaceInstanceMeth
     }
 });
 
-SpaceSchema.path("name").validate((v) => zodValidateWithErrors(ZodMongoSpaceShape.name, { _throw: true, prefix: "name" })(v).success);
-SpaceSchema.path("description").validate((v) => zodValidateWithErrors(ZodMongoSpaceShape.description, { _throw: true, prefix: "description" })(v).success);
-SpaceSchema.path("examples").validate((v) => zodValidateWithErrors(ZodMongoSpaceShape.examples, { _throw: true, prefix: "examples" })(v).success);
+SpaceSchema.path("name").validate((v) => zodValidateWithErrors(ZodMongoSpaceShape.name, { _throw: true, prefix: "name", multiline: false })(v).success);
+SpaceSchema.path("description").validate((v) => zodValidateWithErrors(ZodMongoSpaceShape.description, { _throw: true, prefix: "description", multiline: false })(v).success);
+SpaceSchema.path("examples").validate((v) => zodValidateWithErrors(ZodMongoSpaceShape.examples, { _throw: true, prefix: "examples", multiline: false })(v).success);
 
 SpaceSchema.path("aliases").validate(function(aliases: string[]) {
-    zodValidateWithErrors(ZodMongoSpaceShape.aliases, { _throw: true, prefix: "aliases" })(aliases);
+    zodValidateWithErrors(ZodMongoSpaceShape.aliases, { _throw: true, prefix: "aliases", multiline: false })(aliases);
     return refineNoAliasMatchingName(this.name, aliases);
 }, "The aliases must be unique and not include the name of the space.");
 
-SpaceSchema.path("tags").validate((v) => zodValidateWithErrors(ZodMongoSpaceShape.tags, { _throw: true, prefix: "tags" })(v).success);
+SpaceSchema.path("tags").validate((v) => zodValidateWithErrors(ZodMongoSpaceShape.tags, { _throw: true, prefix: "tags", multiline: false })(v).success);
 
 SpaceSchema.method("toClientJSON", function() {
     const {_id, ...space} = omit(this.toJSON(), "__v");

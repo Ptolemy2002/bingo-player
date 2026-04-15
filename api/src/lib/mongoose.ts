@@ -1,9 +1,9 @@
 import { isZodError, interpretZodError } from "@ptolemy2002/zod-utils";
 import { Error } from "mongoose";
 
-export function interpretValidationError(e: Error.ValidationError): string | string[] {
+export function interpretValidationError(e: Error.ValidationError, multiline=true): string | string[] {
     const messages = Object.entries(e.errors).map(([key, err]) => {
-        if (isZodError(err.reason)) return interpretZodError(err.reason, key);
+        if (isZodError(err.reason)) return interpretZodError(err.reason, { prefix: key, multiline });
         return `${key}: ${err.message}`;
     });
 

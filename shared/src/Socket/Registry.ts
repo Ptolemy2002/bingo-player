@@ -1,5 +1,5 @@
 import { Override } from "@ptolemy2002/ts-utils";
-import { zodClone } from "@ptolemy2002/zod-utils/dist/clone";
+import { zodClone } from "@ptolemy2002/zod-utils";
 import z, { GlobalMeta, ZodType } from "zod";
 
 export type SocketMetaSchemaType = "args" | "prop" | "response" | "success-response" | "message-data" | "other";

@@ -2,3 +2,32 @@ packages:
   - api
   - client
   - shared
+# Install scripts of dependencies that don't need to run: the @ptolemy2002 packages only
+# run `typesync` (a dev-time helper), esbuild's only verifies its platform binary, and
+# @scarf/scarf is install telemetry.
+allowBuilds:
+  '@ptolemy2002/bs-utils': false
+  '@ptolemy2002/express-utils': false
+  '@ptolemy2002/immutability-utils': false
+  '@ptolemy2002/js-math-utils': false
+  '@ptolemy2002/js-utils': false
+  '@ptolemy2002/list-object-utils': false
+  '@ptolemy2002/mongoose-utils': false
+  '@ptolemy2002/react-bs-media-queries': false
+  '@ptolemy2002/react-force-rerender': false
+  '@ptolemy2002/react-hook-result': false
+  '@ptolemy2002/react-manual-error-handling': false
+  '@ptolemy2002/react-mongo-data': false
+  '@ptolemy2002/react-mount-effects': false
+  '@ptolemy2002/react-proxy-context': false
+  '@ptolemy2002/react-search-param-state': false
+  '@ptolemy2002/react-styled-component-utils': false
+  '@ptolemy2002/react-suspense': false
+  '@ptolemy2002/react-utils': false
+  '@ptolemy2002/regex-utils': false
+  '@ptolemy2002/rgx': false
+  '@ptolemy2002/ts-brand-utils': false
+  '@ptolemy2002/ts-utils': false
+  '@ptolemy2002/zod-utils': false
+  '@scarf/scarf': false
+  esbuild: false
